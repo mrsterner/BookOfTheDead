@@ -1,11 +1,13 @@
 {
 	"required": true,
 	"minVersion": "0.8",
-	"package": "com.example.example_mod.mixin",
+	"package": "dev.sterner.legemeton.mixin",
 	"compatibilityLevel": "JAVA_17",
-	"mixins": [],
+	"mixins": [
+      "LivingEntityMixin"
+    ],
 	"client": [
-		"TitleScreenMixin"
+
 	],
 	"injectors": {
 		"defaultRequire": 1
