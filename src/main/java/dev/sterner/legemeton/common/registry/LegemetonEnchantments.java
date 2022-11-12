@@ -18,7 +18,7 @@ public interface LegemetonEnchantments {
 	EnchantmentTarget AXE = ClassTinkerers.getEnum(EnchantmentTarget.class, "AXE");
 
 
-	Enchantment BUTCHERING = register("butchering", new ButcheringEnchantment(Enchantment.Rarity.VERY_RARE, AXE, EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND));
+	Enchantment BUTCHERING = register("butchering", new ButcheringEnchantment(Enchantment.Rarity.RARE, AXE, EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND));
 
 	static <T extends Enchantment> T register(String id, T enchantment) {
 		ENCHANTMENTS.put(Constants.id(id), enchantment);

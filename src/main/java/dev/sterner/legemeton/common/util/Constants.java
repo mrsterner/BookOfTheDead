@@ -1,5 +1,6 @@
 package dev.sterner.legemeton.common.util;
 
+import dev.sterner.legemeton.common.registry.LegemetonObjects;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -12,7 +13,7 @@ import org.quiltmc.qsl.item.group.api.QuiltItemGroup;
 public class Constants {
 
 	public static final String MOD_ID = "legemeton";
-	public static final QuiltItemGroup LEGEMETON_GROUP = QuiltItemGroup.builder(Constants.id("items")).icon(() -> new ItemStack(Items.AIR)).build();
+	public static final QuiltItemGroup LEGEMETON_GROUP = QuiltItemGroup.builder(Constants.id("items")).icon(() -> new ItemStack(LegemetonObjects.BUTCHER_KNIFE)).build();
 
 	public static Identifier id(String string){
 		return new Identifier(MOD_ID, string);

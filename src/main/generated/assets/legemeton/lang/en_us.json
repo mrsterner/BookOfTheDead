@@ -1,5 +1,6 @@
 {
   "enchantment.legemeton.butchering": "Butchering",
+  "entity.legemeton.corpse": "Corpse",
   "item.legemeton.bottle_of_blood": "Bottle of Blood",
   "item.legemeton.butcher_knife": "Butcher Knife",
   "item.legemeton.cage": "Cage",
@@ -12,5 +13,6 @@
   "item.legemeton.packet": "Packet",
   "item.legemeton.signed_contract": "Signed Contract",
   "item.legemeton.skin": "Skin",
-  "item.legemeton.sliced_flesh": "The Legemeton"
+  "item.legemeton.sliced_flesh": "The Legemeton",
+  "itemGroup.legemeton.items": "The Legemeton"
 }

@@ -2,7 +2,6 @@ package dev.sterner.legemeton.common.enchantment;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentTarget;
-import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.EquipmentSlot;
 
 public class ButcheringEnchantment extends Enchantment {
@@ -22,7 +21,7 @@ public class ButcheringEnchantment extends Enchantment {
 
 	@Override
 	public boolean isTreasure() {
-		return true;
+		return false;
 	}
 
 	@Override
