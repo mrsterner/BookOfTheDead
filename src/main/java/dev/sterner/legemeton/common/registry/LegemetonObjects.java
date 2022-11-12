@@ -14,7 +14,7 @@ public class LegemetonObjects {
 	public static final Map<Block, Identifier> BLOCKS = new LinkedHashMap<>();
 	public static final Map<Item, Identifier> ITEMS = new LinkedHashMap<>();
 
-	public static final Item BUTCHER_KNIFE = register("butcher_knife", new SwordItem(ToolMaterials.NETHERITE, 6, -2, settings()));
+	public static final Item BUTCHER_KNIFE = register("butcher_knife", new AxeItem(ToolMaterials.NETHERITE, 6, -2, settings()));
 	public static final Item LEGEMETON = register("legemeton", new Item(settings()));
 	public static final Item CONTRACT = register("contract", new Item(settings()));
 	public static final Item SIGNED_CONTRACT = register("signed_contract", new Item(settings()));

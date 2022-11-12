@@ -30,5 +30,7 @@ public class Constants {
 
 		public static final String TARGET = "Target";
         public static final String TARGET_ROT = "Rotation";
-    }
+        public static final String VILLAGER_DATA = "VillagerData";
+		public static final String IS_BABY = "IsBaby";
+	}
 }

@@ -8,10 +8,12 @@ import net.minecraft.client.render.entity.model.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3f;
+import net.minecraft.village.VillagerProfession;
 
 public class CorpseEntityRenderer extends LivingEntityRenderer<CorpseEntity, EntityModel<CorpseEntity>> {
 	public static final Identifier EMPTY = new Identifier("minecraft", "textures/block/redstone_dust_overlay.png");
@@ -30,6 +32,10 @@ public class CorpseEntityRenderer extends LivingEntityRenderer<CorpseEntity, Ent
 		EntityType.get(nbtCompound.getString("id")).ifPresent(type -> {
 			if(renderedEntity == null){
 				renderedEntity = type.create(livingEntity.world);
+			}
+			if(renderedEntity instanceof VillagerEntity villagerEntity && livingEntity.getVillagerData().getProfession() != VillagerProfession.NONE){
+				villagerEntity.setVillagerData(livingEntity.getVillagerData());
+				renderedEntity = villagerEntity;
 			}
 
 			matrixStack.push();

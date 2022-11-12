@@ -35,7 +35,10 @@ sourceSets {
 }
 
 repositories {
-
+	maven {
+		name "jitpack"
+		url "https://jitpack.io"
+	}
 }
 
 dependencies {
@@ -44,6 +47,10 @@ dependencies {
 	modImplementation libs.quilt.loader
 
 	modImplementation libs.quilted.fabric.api
+
+	//Fabric ASM
+	modImplementation 'com.github.Chocohead:Fabric-ASM:v2.3'
+	include 'com.github.Chocohead:Fabric-ASM:v2.3'
 }
 
 processResources {

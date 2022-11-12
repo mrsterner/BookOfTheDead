@@ -6,8 +6,8 @@ import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.EquipmentSlot;
 
 public class ButcheringEnchantment extends Enchantment {
-	public ButcheringEnchantment(Rarity weight, EquipmentSlot... slotTypes) {
-		super(weight, EnchantmentTarget.WEAPON, slotTypes);
+	public ButcheringEnchantment(Rarity weight, EnchantmentTarget target, EquipmentSlot... slotTypes) {
+		super(weight, target, slotTypes);
 	}
 
 	@Override

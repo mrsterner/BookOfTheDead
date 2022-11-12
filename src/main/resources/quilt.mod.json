@@ -21,7 +21,8 @@
 		"entrypoints": {
 			"init": "dev.sterner.legemeton.Legemeton",
 			"client_init": "dev.sterner.legemeton.LegemetonClient",
-			"fabric-datagen": "dev.sterner.legemeton.data.LegemetonDataGen"
+			"fabric-datagen": "dev.sterner.legemeton.data.LegemetonDataGen",
+			"mm:early_risers":"dev.sterner.legemeton.common.asm.LegemetonEarlyRiser"
 		},
 		"depends": [
 			{
