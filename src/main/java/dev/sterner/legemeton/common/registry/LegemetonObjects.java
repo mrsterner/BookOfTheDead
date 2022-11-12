@@ -4,6 +4,8 @@ import dev.sterner.legemeton.common.util.Constants;
 import net.minecraft.block.Block;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
+import net.minecraft.item.SwordItem;
+import net.minecraft.item.ToolMaterials;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import org.quiltmc.qsl.item.setting.api.QuiltItemSettings;
@@ -15,7 +17,7 @@ public class LegemetonObjects {
 	public static final Map<Block, Identifier> BLOCKS = new LinkedHashMap<>();
 	public static final Map<Item, Identifier> ITEMS = new LinkedHashMap<>();
 
-	public static final Item BUTCHER_KNIFE = register("butcher_knife", new Item(settings()));
+	public static final Item BUTCHER_KNIFE = register("butcher_knife", new SwordItem(ToolMaterials.NETHERITE, 6, -2, settings()));
 
 
 	private static Item.Settings settings() {

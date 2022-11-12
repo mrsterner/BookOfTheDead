@@ -28,5 +28,7 @@ public class Constants {
 
 	public static class Nbt {
 
-	}
+		public static final String TARGET = "Target";
+        public static final String TARGET_ROT = "Rotation";
+    }
 }

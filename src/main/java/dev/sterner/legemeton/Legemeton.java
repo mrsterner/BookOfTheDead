@@ -6,12 +6,17 @@ import dev.sterner.legemeton.common.registry.LegemetonBlockEntityTypes;
 import dev.sterner.legemeton.common.registry.LegemetonEntityTypes;
 import dev.sterner.legemeton.common.registry.LegemetonObjects;
 import dev.sterner.legemeton.common.util.Constants;
+import net.minecraft.client.render.entity.model.CowEntityModel;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.passive.CowEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.EulerAngle;
 import net.minecraft.world.World;
 import org.quiltmc.loader.api.ModContainer;
 import org.quiltmc.qsl.base.api.entrypoint.ModInitializer;
@@ -31,16 +36,23 @@ public class Legemeton implements ModInitializer {
 	}
 
 	private void onButcheredEntity(LivingEntity livingEntity, BlockPos blockPos, DamageSource source) {
-		if(source.getAttacker() instanceof PlayerEntity player && player.getStackInHand(Hand.MAIN_HAND).isOf(LegemetonObjects.BUTCHER_KNIFE)){
-			if(livingEntity.getType().isIn(Constants.Tags.BUTCHERABLE)){
+		if(source.getAttacker() instanceof PlayerEntity player && player.getMainHandStack().isOf(LegemetonObjects.BUTCHER_KNIFE)){
+			if(livingEntity instanceof CowEntity){
 				World world = player.world;
 				CorpseEntity corpse = LegemetonEntityTypes.CORPSE_ENTITY.create(world);
 				if (corpse != null) {
-					corpse.setLivingEntity(livingEntity);
+					corpse.setBodyRotation(new EulerAngle(livingEntity.getPitch(), livingEntity.bodyYaw, livingEntity.getRoll()));
+
+
+					NbtCompound nbtCompound = new NbtCompound();
+					nbtCompound.putString("id", livingEntity.getSavedEntityId());
+					corpse.writeNbt(nbtCompound);
+					corpse.setCorpseEntity(nbtCompound);
 					corpse.copyPositionAndRotation(livingEntity);
 					corpse.refreshPositionAndAngles(livingEntity.getX(), livingEntity.getY(), livingEntity.getZ(), livingEntity.getYaw(), livingEntity.getPitch());
 					corpse.setPersistent();
 					world.spawnEntity(corpse);
+					livingEntity.discard();
 				}
 			}
 		}
