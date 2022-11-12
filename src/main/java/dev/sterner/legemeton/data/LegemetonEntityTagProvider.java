@@ -12,7 +12,15 @@ public class LegemetonEntityTagProvider extends FabricTagProvider.EntityTypeTagP
 
 	@Override
 	protected void generateTags() {
-		getOrCreateTagBuilder(Constants.Tags.BUTCHERABLE).add(EntityType.COW);
+		getOrCreateTagBuilder(Constants.Tags.BUTCHERABLE)
+				.add(EntityType.COW)
+				.add(EntityType.VILLAGER)
+				.add(EntityType.PILLAGER)
+				.add(EntityType.SHEEP)
+				.add(EntityType.PIG)
+				.add(EntityType.PIGLIN)
+				.add(EntityType.PIGLIN_BRUTE)
+				.add(EntityType.CHICKEN);
 	}
 
 }

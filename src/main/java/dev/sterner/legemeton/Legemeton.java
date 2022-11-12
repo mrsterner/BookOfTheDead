@@ -14,6 +14,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.passive.CowEntity;
+import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -46,7 +47,12 @@ public class Legemeton implements ModInitializer {
 				CorpseEntity corpse = LegemetonEntityTypes.CORPSE_ENTITY.create(world);
 				if (corpse != null) {
 					corpse.setBodyRotation(new EulerAngle(livingEntity.getPitch(), livingEntity.bodyYaw, livingEntity.getRoll()));
-
+					if(livingEntity instanceof VillagerEntity villagerEntity){
+						corpse.setVillagerData(villagerEntity.getVillagerData());
+					}
+					if(livingEntity.isBaby()){
+						corpse.setIsBaby(true);
+					}
 
 					NbtCompound nbtCompound = new NbtCompound();
 					nbtCompound.putString("id", livingEntity.getSavedEntityId());
