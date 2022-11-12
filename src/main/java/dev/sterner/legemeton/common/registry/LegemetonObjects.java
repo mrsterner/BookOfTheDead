@@ -2,10 +2,7 @@ package dev.sterner.legemeton.common.registry;
 
 import dev.sterner.legemeton.common.util.Constants;
 import net.minecraft.block.Block;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.SwordItem;
-import net.minecraft.item.ToolMaterials;
+import net.minecraft.item.*;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import org.quiltmc.qsl.item.setting.api.QuiltItemSettings;
@@ -18,6 +15,20 @@ public class LegemetonObjects {
 	public static final Map<Item, Identifier> ITEMS = new LinkedHashMap<>();
 
 	public static final Item BUTCHER_KNIFE = register("butcher_knife", new SwordItem(ToolMaterials.NETHERITE, 6, -2, settings()));
+	public static final Item LEGEMETON = register("legemeton", new Item(settings()));
+	public static final Item CONTRACT = register("contract", new Item(settings()));
+	public static final Item SIGNED_CONTRACT = register("signed_contract", new Item(settings()));
+	public static final Item PACKET = register("packet", new Item(settings()));
+	public static final Item CAGE = register("cage", new Item(settings()));
+	public static final Item HOOK = register("hook", new Item(settings()));
+
+	public static final Item FLESH = register("flesh", new Item(settings().food(FoodComponents.COOKED_CHICKEN)));
+
+	public static final Item SLICED_FLESH = register("sliced_flesh", new Item(settings().food(FoodComponents.PORKCHOP)));
+	public static final Item COOKED_SLICED_FLESH = register("cooked_sliced_flesh", new Item(settings().food(FoodComponents.COOKED_PORKCHOP)));
+	public static final Item FAT = register("fat", new Item(settings()));
+	public static final Item SKIN = register("skin", new Item(settings()));
+	public static final Item BOTTLE_OF_BLOOD = register("bottle_of_blood", new Item(settings()));
 
 
 	private static Item.Settings settings() {

@@ -1,1 +1,15 @@
-{}
+{
+  "item.legemeton.bottle_of_blood": "Bottle of Blood",
+  "item.legemeton.butcher_knife": "Butcher Knife",
+  "item.legemeton.cage": "Cage",
+  "item.legemeton.contract": "Contract",
+  "item.legemeton.cooked_sliced_flesh": "Cooked Sliced Flesh",
+  "item.legemeton.fat": "Fat",
+  "item.legemeton.flesh": "Flesh",
+  "item.legemeton.hook": "Hook",
+  "item.legemeton.legemeton": "The Legemeton",
+  "item.legemeton.packet": "Packet",
+  "item.legemeton.signed_contract": "Signed Contract",
+  "item.legemeton.skin": "Skin",
+  "item.legemeton.sliced_flesh": "The Legemeton"
+}

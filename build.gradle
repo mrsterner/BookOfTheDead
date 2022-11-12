@@ -22,6 +22,18 @@ loom {
 	}
 }
 
+assemble.dependsOn(runDatagen)
+
+sourceSets {
+	main {
+		resources {
+			srcDirs += [
+					"src/main/generated"
+			]
+		}
+	}
+}
+
 repositories {
 
 }
