@@ -1,3 +1,4 @@
 accessWidener   v2        named
 accessible      method    net/minecraft/entity/Entity                       getSavedEntityId        ()Ljava/lang/String;
 extendable      class     net/minecraft/enchantment/EnchantmentTarget
+accessible field net/minecraft/client/render/entity/EntityRenderDispatcher renderers Ljava/util/Map;

@@ -1,6 +1,7 @@
 package dev.sterner.legemeton.client.renderer;
 
 import dev.sterner.legemeton.common.entity.CorpseEntity;
+import dev.sterner.legemeton.common.util.Constants;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.*;
@@ -17,7 +18,7 @@ import net.minecraft.village.VillagerProfession;
 
 public class CorpseEntityRenderer extends LivingEntityRenderer<CorpseEntity, EntityModel<CorpseEntity>> {
 	public static final Identifier EMPTY = new Identifier("minecraft", "textures/block/redstone_dust_overlay.png");
-	Entity renderedEntity = null;
+	private Entity renderedEntity = null;
 	private final EntityRenderDispatcher dispatcher;
 
 	public CorpseEntityRenderer(EntityRendererFactory.Context ctx) {
@@ -30,24 +31,29 @@ public class CorpseEntityRenderer extends LivingEntityRenderer<CorpseEntity, Ent
 		super.render(livingEntity, yaw, tickDelta, matrixStack, vertexConsumerProvider, light);
 		NbtCompound nbtCompound = livingEntity.getCorpseEntity();
 		EntityType.get(nbtCompound.getString("id")).ifPresent(type -> {
-			if(renderedEntity == null){
-				renderedEntity = type.create(livingEntity.world);
-			}
+			renderedEntity = type.create(livingEntity.world);
+
+
 			if(renderedEntity instanceof VillagerEntity villagerEntity && livingEntity.getVillagerData().getProfession() != VillagerProfession.NONE){
 				villagerEntity.setVillagerData(livingEntity.getVillagerData());
 				renderedEntity = villagerEntity;
 			}
 
+
+
 			matrixStack.push();
-			if (livingEntity.age > 0) {
+			matrixStack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(livingEntity.getDataTracker().get(Constants.DataTrackers.TRACKER_BODY_ROTATION).getYaw()));
+			if (livingEntity.age > 0 && livingEntity.getIsDying()) {
 				float f = ((float)livingEntity.age + tickDelta - 1.0F) / 20.0F * 1.6F;
 				f = MathHelper.sqrt(f);
 				if (f > 1.0F) {
 					f = 1.0F;
 				}
 				matrixStack.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(f * this.getLyingAngle(livingEntity)));
+			}else{
+				matrixStack.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(this.getLyingAngle(livingEntity)));
 			}
-			matrixStack.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(livingEntity.getDataTracker().get(CorpseEntity.TRACKER_BODY_ROTATION).getYaw()));
+
 			matrixStack.translate(0.25F,-0.5F,0.0F);
 			if(livingEntity.getIsBaby()){
 				float g = 0.5F;

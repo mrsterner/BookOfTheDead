@@ -5,9 +5,11 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "EnchantmentTargetMixin",
-    "LivingEntityMixin"
+    "LivingEntityMixin",
+    "PlayerEntityMixin"
   ],
   "client": [
+    "PlayerEntityRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
