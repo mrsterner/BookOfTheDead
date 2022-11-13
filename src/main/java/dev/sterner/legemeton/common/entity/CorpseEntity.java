@@ -5,15 +5,22 @@ import com.mojang.serialization.Dynamic;
 import dev.sterner.legemeton.Legemeton;
 import dev.sterner.legemeton.api.interfaces.Hauler;
 import dev.sterner.legemeton.common.util.Constants;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.PathAwareEntity;
+import net.minecraft.loot.LootTable;
+import net.minecraft.loot.context.LootContext;
+import net.minecraft.loot.context.LootContextTypes;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtOps;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.EulerAngle;
 import net.minecraft.village.VillagerData;
 import net.minecraft.village.VillagerProfession;
@@ -49,6 +56,20 @@ public class CorpseEntity extends PathAwareEntity implements Hauler {
 
 	public static DefaultAttributeContainer.Builder createAttributes() {
 		return MobEntity.createMobAttributes().add(EntityAttributes.GENERIC_MAX_HEALTH, 20);
+	}
+
+	@Override
+	protected void dropLoot(DamageSource source, boolean causedByPlayer) {
+		NbtCompound nbtCompound = getCorpseEntity();
+		EntityType.get(nbtCompound.getString("id")).ifPresent(type -> {
+			Entity entity = type.create(this.world);
+			if(entity instanceof LivingEntity livingEntity){
+				Identifier identifier = livingEntity.getLootTable();
+				LootTable lootTable = this.world.getServer().getLootManager().getTable(identifier);
+				LootContext.Builder builder = this.getLootContextBuilder(causedByPlayer, source);
+				lootTable.generateLoot(builder.build(LootContextTypes.ENTITY), this::dropStack);
+			}
+		});
 	}
 
 	@Override

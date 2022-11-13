@@ -1,8 +1,6 @@
 package dev.sterner.legemeton.client.renderer.feature;
 
 import dev.sterner.legemeton.api.interfaces.Hauler;
-import dev.sterner.legemeton.common.entity.CorpseEntity;
-import dev.sterner.legemeton.common.util.Constants;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
@@ -13,9 +11,11 @@ import net.minecraft.client.render.entity.model.PlayerEntityModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.VillagerEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
+import net.minecraft.util.math.Vec3f;
 import net.minecraft.village.VillagerProfession;
 
 public class ShoulderCropseFeatureRenderer extends FeatureRenderer<AbstractClientPlayerEntity, PlayerEntityModel<AbstractClientPlayerEntity>> {
@@ -33,49 +33,31 @@ public class ShoulderCropseFeatureRenderer extends FeatureRenderer<AbstractClien
 		matrices.push();
 		Hauler.of(entity).ifPresent(hauler -> {
 			if(!hauler.getCorpseEntity().isEmpty()){
-				//NbtCompound nbtCompound = hauler.getCorpsedEntity();
 				NbtCompound nbtCompound2 = hauler.getCorpseEntity();
 				EntityType.get(nbtCompound2.getString("id")).ifPresent(type -> {
 					newEntity = type.create(entity.world);
+					if(newEntity instanceof VillagerEntity villagerEntity && hauler.getVillagerData().getProfession() != VillagerProfession.NONE){
+						villagerEntity.setVillagerData(hauler.getVillagerData());
+						newEntity = villagerEntity;
+					}
+					if(newEntity instanceof AnimalEntity){
+						matrices.multiply(Vec3f.NEGATIVE_X.getDegreesQuaternion(90));
+						matrices.translate(0,-1,0);
+					}
 					if(dispatcher != null){
-						System.out.println("RenderNew: " + newEntity);
+						if(hauler.getIsBaby()){
+							float g = 0.5F;
+							matrices.scale(g, g, g);
+						}else{
+							float f = 0.85F;
+							matrices.scale(f,f,f);
+						}
+						matrices.translate(0,-0.2,0.4);
 						dispatcher.render(newEntity, 0, 0, 0, 0, 0, matrices, vertexConsumers, light);
 
 					}
 				});
-
-				/*
-				EntityType.get(nbtCompound.getString("id")).ifPresent(type -> {
-						shoulderEntity = type.create(entity.world);
-						NbtCompound nbt = new NbtCompound();
-						//System.out.println("Entity" + shoulderEntity);
-						shoulderEntity.writeNbt(nbt);
-						if(shoulderEntity instanceof CorpseEntity corpse){
-							System.out.println("U: "+ nbt.contains(Constants.Nbt.TARGET, NbtElement.COMPOUND_TYPE));
-							if (nbt.contains(Constants.Nbt.TARGET, NbtElement.COMPOUND_TYPE)) {
-								corpse.setCorpseEntity(nbt.getCompound(Constants.Nbt.TARGET));
-							}
-						}
-						System.out.println("NBTTTTTTT" + nbt);
-						EntityType.get(nbt.getString("id")).ifPresent(type2 -> {
-							System.out.println("Type2: " + type2);
-						});
-
-						if(dispatcher != null){
-							System.out.println("Render: " + shoulderEntity);
-							dispatcher.render(shoulderEntity, 0, 0, 0, 0, 0, matrices, vertexConsumers, light);
-
-						}
-
-					//System.out.println("NBT: "+ nbt);
-
-
-				});
-
-				 */
-
 			}
-
 		});
 		matrices.pop();
 	}

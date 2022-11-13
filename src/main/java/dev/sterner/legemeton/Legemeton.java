@@ -17,7 +17,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -60,12 +59,10 @@ public class Legemeton implements ModInitializer {
 	private ActionResult placeCorpse(PlayerEntity player, World world, Hand hand, BlockHitResult blockHitResult) {
 		if(world instanceof ServerWorld serverWorld){
 			Hauler.of(player).ifPresent(hauler -> {
-				System.out.println("getCorpse: " + hauler.getCorpseEntity());
 				if(hauler.getCorpseEntity() != null){
 					NbtCompound nbtCompound = hauler.getCorpseEntity();
 					EntityType.get(nbtCompound.getString("id")).ifPresent(type -> {
 						Entity entity = type.create(serverWorld);
-						System.out.println("entity: " + entity);
 						if (entity != null) {
 							BlockPos pos = blockHitResult.getBlockPos().offset(blockHitResult.getSide());
 
@@ -75,11 +72,10 @@ public class Legemeton implements ModInitializer {
 								corpseEntity.setCorpseEntity(hauler.getCorpseEntity());
 								corpseEntity.setIsBaby(hauler.getIsBaby());
 								corpseEntity.setIsDying(false);
-
+								corpseEntity.setVillagerData(hauler.getVillagerData());
+								corpseEntity.setBodyRotation(new EulerAngle(0, -player.bodyYaw, 0));
 								corpseEntity.refreshPositionAndAngles(player.getBlockPos(), 0, 0);
-								corpseEntity.copyPositionAndRotation(player);
 								corpseEntity.teleport(pos.getX(), pos.getY(), pos.getZ());
-								System.out.println("Summon Corpse: " + corpseEntity);
 								serverWorld.spawnEntity(corpseEntity);
 							}
 
@@ -113,28 +109,8 @@ public class Legemeton implements ModInitializer {
 					DataResult<VillagerData> dataResult = VillagerData.CODEC.parse(new Dynamic<>(NbtOps.INSTANCE, nbt.get(Constants.Nbt.VILLAGER_DATA)));
 					dataResult.resultOrPartial(Legemeton.LOGGER::error).ifPresent(hauler::setVillagerData);
 				}
-
-				corpse.remove(Entity.RemovalReason.DISCARDED);
-				System.out.println("1: " + hauler.getCorpseEntity());
-				System.out.println("2: " + hauler.getIsBaby());
-				System.out.println("3: " + hauler.getVillagerData());
-			});
-
-
-
-
-			/*
-			corpse.saveSelfNbt(entityCompound);
-			NbtCompound nbt = corpse.writeNbt(entityCompound);
-
-			EntityType.get(nbt.getString("id")).flatMap(type -> Hauler.of(player)).ifPresent(hauler -> {
-				hauler.setCorpseEntity(nbt);
-				hauler.setIsBaby();
-				hauler.setVillagerData();
 				corpse.remove(Entity.RemovalReason.DISCARDED);
 			});
-
-			 */
 			return ActionResult.CONSUME;
 		}
 		return ActionResult.PASS;
