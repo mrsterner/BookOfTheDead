@@ -27,20 +27,19 @@ public class Constants {
 	}
 
 	public static class DataTrackers{
-		public static final TrackedData<NbtCompound> HAULED_CORPSE = DataTracker.registerData(PlayerEntity.class, TrackedDataHandlerRegistry.TAG_COMPOUND);
-
 		public static final TrackedData<Boolean> IS_BABY = DataTracker.registerData(CorpseEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
 		public static final TrackedData<VillagerData> VILLAGER_DATA = DataTracker.registerData(CorpseEntity.class, TrackedDataHandlerRegistry.VILLAGER_DATA);
 		public static final TrackedData<NbtCompound> STORED_CORPSE_ENTITY = DataTracker.registerData(CorpseEntity.class, TrackedDataHandlerRegistry.TAG_COMPOUND);
 		public static final TrackedData<EulerAngle> TRACKER_BODY_ROTATION = DataTracker.registerData(CorpseEntity.class, TrackedDataHandlerRegistry.ROTATION);
 		public static final TrackedData<Boolean> IS_DYING = DataTracker.registerData(CorpseEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
-
+		public static final TrackedData<String> IDENTIFIER_ID = DataTracker.registerData(CorpseEntity.class, TrackedDataHandlerRegistry.STRING);
 
 		public static final TrackedData<Boolean> PLAYER_IS_BABY = DataTracker.registerData(PlayerEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
 		public static final TrackedData<VillagerData>  PLAYER_VILLAGER_DATA = DataTracker.registerData(PlayerEntity.class, TrackedDataHandlerRegistry.VILLAGER_DATA);
-		public static final TrackedData<NbtCompound>  PLAYER_CORPSE_ENTITY = DataTracker.registerData(PlayerEntity.class, TrackedDataHandlerRegistry.TAG_COMPOUND);
+		//public static final TrackedData<NbtCompound>  PLAYER_CORPSE_ENTITY = DataTracker.registerData(PlayerEntity.class, TrackedDataHandlerRegistry.TAG_COMPOUND);
 
-	}
+
+    }
 
 	public static class Tags {
 		public static final TagKey<EntityType<?>> BUTCHERABLE = TagKey.of(Registry.ENTITY_TYPE_KEY, id("butcherable"));
@@ -53,5 +52,6 @@ public class Constants {
 		public static final String IS_BABY = "IsBaby";
 		public static final String CORPSE_ENTITY = "CorpseEntity";
 		public static final String IS_DYING = "IsDying";
+		public static final String IDENTIFIER_ID = "IdentifierId";
 	}
 }

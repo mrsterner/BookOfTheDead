@@ -27,6 +27,7 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.BlockPos;
@@ -69,11 +70,7 @@ public class Legemeton implements ModInitializer {
 							CorpseEntity corpseEntity = LegemetonEntityTypes.CORPSE_ENTITY.create(serverWorld);
 							if (corpseEntity != null) {
 
-								corpseEntity.setCorpseEntity(hauler.getCorpseEntity());
-								corpseEntity.setIsBaby(hauler.getIsBaby());
-								corpseEntity.setIsDying(false);
-								corpseEntity.setVillagerData(hauler.getVillagerData());
-								corpseEntity.setBodyRotation(new EulerAngle(0, -player.bodyYaw, 0));
+
 								corpseEntity.refreshPositionAndAngles(player.getBlockPos(), 0, 0);
 								corpseEntity.teleport(pos.getX(), pos.getY(), pos.getZ());
 								serverWorld.spawnEntity(corpseEntity);
@@ -82,9 +79,7 @@ public class Legemeton implements ModInitializer {
 							serverWorld.playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 1, 1);
 
 							//Reset Data
-							hauler.setIsBaby(false);
 							hauler.setCorpseEntity(new NbtCompound());
-							hauler.setVillagerData(new VillagerData(VillagerType.PLAINS, VillagerProfession.NONE, 1));
 						}
 					});
 				}
@@ -103,12 +98,8 @@ public class Legemeton implements ModInitializer {
 				NbtCompound nbt = corpse.writeNbt(entityCompound);
 
 				hauler.setCorpseEntity(nbt.getCompound(Constants.Nbt.CORPSE_ENTITY));
-				hauler.setIsBaby(nbt.getBoolean(Constants.Nbt.IS_BABY));
 
-				if (nbt.contains(Constants.Nbt.VILLAGER_DATA, NbtElement.COMPOUND_TYPE)) {
-					DataResult<VillagerData> dataResult = VillagerData.CODEC.parse(new Dynamic<>(NbtOps.INSTANCE, nbt.get(Constants.Nbt.VILLAGER_DATA)));
-					dataResult.resultOrPartial(Legemeton.LOGGER::error).ifPresent(hauler::setVillagerData);
-				}
+
 				corpse.remove(Entity.RemovalReason.DISCARDED);
 			});
 			return ActionResult.CONSUME;
@@ -122,18 +113,10 @@ public class Legemeton implements ModInitializer {
 				World world = player.world;
 				CorpseEntity corpse = LegemetonEntityTypes.CORPSE_ENTITY.create(world);
 				if (corpse != null) {
-					corpse.setBodyRotation(new EulerAngle(livingEntity.getPitch(), livingEntity.bodyYaw, livingEntity.getRoll()));
-					if(livingEntity instanceof VillagerEntity villagerEntity){
-						corpse.setVillagerData(villagerEntity.getVillagerData());
-					}
-					if(livingEntity.isBaby()){
-						corpse.setIsBaby(true);
-					}
+					corpse.storedCorpseEntity = livingEntity;
+					corpse.setCorpseEntity(livingEntity);
 
-					NbtCompound nbtCompound = new NbtCompound();
-					nbtCompound.putString("id", livingEntity.getSavedEntityId());
-					corpse.writeNbt(nbtCompound);
-					corpse.setCorpseEntity(nbtCompound);
+
 					corpse.copyPositionAndRotation(livingEntity);
 					corpse.refreshPositionAndAngles(livingEntity.getX(), livingEntity.getY(), livingEntity.getZ(), livingEntity.getYaw(), livingEntity.getPitch());
 					corpse.setPersistent();

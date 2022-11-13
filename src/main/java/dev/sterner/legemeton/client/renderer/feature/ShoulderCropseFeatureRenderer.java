@@ -36,22 +36,12 @@ public class ShoulderCropseFeatureRenderer extends FeatureRenderer<AbstractClien
 				NbtCompound nbtCompound2 = hauler.getCorpseEntity();
 				EntityType.get(nbtCompound2.getString("id")).ifPresent(type -> {
 					newEntity = type.create(entity.world);
-					if(newEntity instanceof VillagerEntity villagerEntity && hauler.getVillagerData().getProfession() != VillagerProfession.NONE){
-						villagerEntity.setVillagerData(hauler.getVillagerData());
-						newEntity = villagerEntity;
-					}
+
 					if(newEntity instanceof AnimalEntity){
 						matrices.multiply(Vec3f.NEGATIVE_X.getDegreesQuaternion(90));
 						matrices.translate(0,-1,0);
 					}
 					if(dispatcher != null){
-						if(hauler.getIsBaby()){
-							float g = 0.5F;
-							matrices.scale(g, g, g);
-						}else{
-							float f = 0.85F;
-							matrices.scale(f,f,f);
-						}
 						matrices.translate(0,-0.2,0.4);
 						dispatcher.render(newEntity, 0, 0, 0, 0, 0, matrices, vertexConsumers, light);
 

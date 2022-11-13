@@ -23,7 +23,6 @@ public class LegemetonEntityTypes {
 					"corpse",
 					QuiltEntityTypeBuilder.<CorpseEntity>create()
 							.spawnGroup(SpawnGroup.MISC)
-							.setDimensions(EntityDimensions.changing(1.0f, 1.0f))
 							.entityFactory(CorpseEntity::new)
 							.build());
 

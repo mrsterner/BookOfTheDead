@@ -18,11 +18,4 @@ public interface Hauler {
 
 	void setCorpseEntity(NbtCompound entityNbt);
 
-	VillagerData getVillagerData();
-
-	void setVillagerData(VillagerData villagerData);
-
-	boolean getIsBaby();
-
-	void setIsBaby(boolean isBaby);
 }
