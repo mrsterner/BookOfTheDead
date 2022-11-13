@@ -58,6 +58,9 @@ public class CorpseEntityRenderer extends LivingEntityRenderer<CorpseEntity, Ent
 			if(livingEntity.getIsBaby()){
 				float g = 0.5F;
 				matrixStack.scale(g, g, g);
+			}else{
+				float g = 0.85F;
+				matrixStack.scale(g, g, g);
 			}
 			//Damage red int p = getOverlay(livingEntity, this.getAnimationCounter(livingEntity, g));
 			dispatcher.render(renderedEntity, 0, 0, 0, 0, 0, matrixStack, vertexConsumerProvider, light);
