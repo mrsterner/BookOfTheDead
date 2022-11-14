@@ -60,12 +60,12 @@ public class ShoulderCropseFeatureRenderer extends FeatureRenderer<AbstractClien
 	public void renderQuadraped(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, LivingEntity livingEntity){
 		matrices.push();
 		matrices.multiply(Vec3f.NEGATIVE_X.getDegreesQuaternion(90));
-		matrices.translate(0,-1.1,0);
 		if(livingEntity.isBaby()){
-			matrices.translate(0,0.1,0);
+			matrices.translate(0,-1,0);
 		}else{
 			float f = 0.75f;
 			matrices.scale(f,f,f);
+			matrices.translate(0,-1.5,0);
 		}
 		dispatcher.render(livingEntity, 0, 0, 0, 0, 0, matrices, vertexConsumers, light);
 		matrices.pop();
@@ -80,13 +80,12 @@ public class ShoulderCropseFeatureRenderer extends FeatureRenderer<AbstractClien
 
 	public void renderHumanoid(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, LivingEntity livingEntity){
 		matrices.push();
-		matrices.translate(0,-1,0.6);
 		if(livingEntity.isBaby()){
-			matrices.translate(0,0.75,0);
+			matrices.translate(0,-0.25,0.6);
 		}else{
 			float f = 0.75f;
 			matrices.scale(f,f,f);
-			matrices.translate(0,0.5,0);
+			matrices.translate(0,-0.75,0.6);
 		}
 		dispatcher.render(livingEntity, 0, 0, 0, 0, 0, matrices, vertexConsumers, light);
 		matrices.pop();
