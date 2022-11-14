@@ -77,10 +77,12 @@ public class Legemeton implements ModInitializer {
 	}
 
 	private ActionResult onPickupCorpse(PlayerEntity player, World world, Hand hand, Entity entity, @Nullable EntityHitResult entityHitResult) {
-		if(!world.isClient() && entity instanceof CorpseEntity corpse && player.isSneaking()){
+		if(!world.isClient() && entity instanceof CorpseEntity corpse && player.isSneaking() && player.getMainHandStack().isEmpty()){
 			Hauler.of(player).ifPresent(hauler -> {
-				hauler.setCorpseEntity(corpse);
-				corpse.remove(Entity.RemovalReason.DISCARDED);
+				if(hauler.getCorpseEntity().isEmpty()){
+					hauler.setCorpseEntity(corpse);
+					corpse.remove(Entity.RemovalReason.DISCARDED);
+				}
 			});
 			return ActionResult.CONSUME;
 		}
