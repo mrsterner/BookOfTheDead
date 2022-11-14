@@ -4,7 +4,6 @@ import dev.sterner.legemeton.common.entity.CorpseEntity;
 import dev.sterner.legemeton.common.util.Constants;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.util.Identifier;

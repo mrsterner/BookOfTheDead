@@ -1,7 +1,7 @@
 package dev.sterner.legemeton.api.interfaces;
 
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.village.VillagerData;
 
 import java.util.Optional;
 
@@ -16,6 +16,7 @@ public interface Hauler {
 
 	NbtCompound getCorpseEntity();
 
-	void setCorpseEntity(NbtCompound entityNbt);
+	void setCorpseEntity(LivingEntity livingEntity);
 
+	void clearCorpseData();
 }

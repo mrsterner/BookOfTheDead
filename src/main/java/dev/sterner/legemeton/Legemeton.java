@@ -1,7 +1,5 @@
 package dev.sterner.legemeton;
 
-import com.mojang.serialization.DataResult;
-import com.mojang.serialization.Dynamic;
 import dev.sterner.legemeton.api.event.OnEntityDeathEvent;
 import dev.sterner.legemeton.api.interfaces.Hauler;
 import dev.sterner.legemeton.common.entity.CorpseEntity;
@@ -17,24 +15,16 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
-import net.minecraft.nbt.NbtOps;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.EulerAngle;
-import net.minecraft.village.VillagerData;
-import net.minecraft.village.VillagerProfession;
-import net.minecraft.village.VillagerType;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import org.quiltmc.loader.api.ModContainer;
@@ -58,29 +48,26 @@ public class Legemeton implements ModInitializer {
 	}
 
 	private ActionResult placeCorpse(PlayerEntity player, World world, Hand hand, BlockHitResult blockHitResult) {
-		if(world instanceof ServerWorld serverWorld){
+		if(world instanceof ServerWorld serverWorld && hand == Hand.MAIN_HAND && player.getMainHandStack().isEmpty() && player.isSneaking()){
 			Hauler.of(player).ifPresent(hauler -> {
 				if(hauler.getCorpseEntity() != null){
 					NbtCompound nbtCompound = hauler.getCorpseEntity();
-					EntityType.get(nbtCompound.getString("id")).ifPresent(type -> {
-						Entity entity = type.create(serverWorld);
-						if (entity != null) {
-							BlockPos pos = blockHitResult.getBlockPos().offset(blockHitResult.getSide());
-
-							CorpseEntity corpseEntity = LegemetonEntityTypes.CORPSE_ENTITY.create(serverWorld);
-							if (corpseEntity != null) {
+					EntityType.getEntityFromNbt(nbtCompound.getCompound(Constants.Nbt.CORPSE_ENTITY), world).ifPresent(storedEntity -> {
+						BlockPos pos = blockHitResult.getBlockPos().offset(blockHitResult.getSide());
 
 
-								corpseEntity.refreshPositionAndAngles(player.getBlockPos(), 0, 0);
-								corpseEntity.teleport(pos.getX(), pos.getY(), pos.getZ());
-								serverWorld.spawnEntity(corpseEntity);
-							}
-
-							serverWorld.playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 1, 1);
-
-							//Reset Data
-							hauler.setCorpseEntity(new NbtCompound());
+						CorpseEntity corpseEntity = LegemetonEntityTypes.CORPSE_ENTITY.create(serverWorld);
+						if (corpseEntity != null && storedEntity instanceof LivingEntity storedLivingEntity) {
+							corpseEntity.setCorpseEntity(storedLivingEntity);
+							corpseEntity.refreshPositionAndAngles(player.getBlockPos(), 0, 0);
+							corpseEntity.teleport(pos.getX(), pos.getY(), pos.getZ());
+							serverWorld.spawnEntity(corpseEntity);
 						}
+
+						serverWorld.playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 1, 1);
+
+						//Reset Data
+						hauler.clearCorpseData();
 					});
 				}
 			});
@@ -91,15 +78,8 @@ public class Legemeton implements ModInitializer {
 
 	private ActionResult onPickupCorpse(PlayerEntity player, World world, Hand hand, Entity entity, @Nullable EntityHitResult entityHitResult) {
 		if(!world.isClient() && entity instanceof CorpseEntity corpse && player.isSneaking()){
-
 			Hauler.of(player).ifPresent(hauler -> {
-				NbtCompound entityCompound = new NbtCompound();
-				corpse.saveSelfNbt(entityCompound);
-				NbtCompound nbt = corpse.writeNbt(entityCompound);
-
-				hauler.setCorpseEntity(nbt.getCompound(Constants.Nbt.CORPSE_ENTITY));
-
-
+				hauler.setCorpseEntity(corpse);
 				corpse.remove(Entity.RemovalReason.DISCARDED);
 			});
 			return ActionResult.CONSUME;

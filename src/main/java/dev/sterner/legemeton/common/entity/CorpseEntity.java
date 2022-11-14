@@ -8,24 +8,16 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.PathAwareEntity;
-import net.minecraft.entity.passive.ChickenEntity;
-import net.minecraft.entity.passive.HorseEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.loot.LootTable;
 import net.minecraft.loot.context.LootContext;
 import net.minecraft.loot.context.LootContextTypes;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.EulerAngle;
 import net.minecraft.world.World;
 
 
-public class CorpseEntity extends PathAwareEntity {
-
+public class CorpseEntity extends PathAwareEntity implements Hauler {
 	public LivingEntity storedCorpseEntity;
-
 
 	public CorpseEntity(EntityType<? extends PathAwareEntity> entityType, World world) {
 		super(entityType, world);
@@ -41,18 +33,23 @@ public class CorpseEntity extends PathAwareEntity {
 		return false;
 	}
 
-	@Override
-	public boolean collides() {
-		return this.age > 20 && super.collides();
-	}
+
 
 	public static DefaultAttributeContainer.Builder createAttributes() {
 		return MobEntity.createMobAttributes().add(EntityAttributes.GENERIC_MAX_HEALTH, 10);
 	}
 
+
 	@Override
 	public EntityDimensions getDimensions(EntityPose pose) {
-		return  EntityDimensions.changing(1, 0.5f);
+		/*
+		if(storedCorpseEntity != null) {
+			EntityDimensions dimensions = storedCorpseEntity.getType().getDimensions();
+			return EntityDimensions.changing(dimensions.width, dimensions.height);
+		}
+
+		 */
+		return EntityDimensions.changing(1, 0.5f);
 	}
 
 	@Override
@@ -64,6 +61,8 @@ public class CorpseEntity extends PathAwareEntity {
 			lootTable.generateLoot(builder.build(LootContextTypes.ENTITY), this::dropStack);
 		}
 	}
+
+
 
 	@Override
 	public void writeCustomDataToNbt(NbtCompound nbt) {
@@ -83,16 +82,23 @@ public class CorpseEntity extends PathAwareEntity {
 		});
 	}
 
-
+	@Override
 	public NbtCompound getCorpseEntity() {
 		return this.dataTracker.get(Constants.DataTrackers.STORED_CORPSE_ENTITY);
 	}
 
+	@Override
 	public void setCorpseEntity(LivingEntity entity) {
 		NbtCompound nbtCompound = new NbtCompound();
 		nbtCompound.putString("id", entity.getSavedEntityId());
 		entity.writeNbt(nbtCompound);
 		this.dataTracker.set(Constants.DataTrackers.STORED_CORPSE_ENTITY, nbtCompound);
 		this.storedCorpseEntity = entity;
+	}
+
+	@Override
+	public void clearCorpseData() {
+		this.storedCorpseEntity = null;
+		this.dataTracker.set(Constants.DataTrackers.STORED_CORPSE_ENTITY, new NbtCompound());
 	}
 }

@@ -30,10 +30,13 @@ public class CorpseEntityRenderer extends LivingEntityRenderer<CorpseEntity, Ent
 		NbtCompound nbtCompound = corpseEntity.getCorpseEntity();
 		if(renderedEntity != null){
 			renderedEntity.hurtTime = 0;
+			//corpseEntity.calculateDimensions();
+			//corpseEntity.setBoundingBox(renderedEntity.getBoundingBox());
 
+			matrixStack.translate(-0.25F,0.25F,0.0F);
 			matrixStack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(renderedEntity.bodyYaw));
-			if (renderedEntity.age > 0) {
-				float f = ((float)renderedEntity.age + tickDelta - 1.0F) / 20.0F * 1.6F;
+			if (corpseEntity.age > 0) {
+				float f = ((float)corpseEntity.age + tickDelta - 1.0F) / 20.0F * 1.6F;
 				f = MathHelper.sqrt(f);
 				if (f > 1.0F) {
 					f = 1.0F;
@@ -42,8 +45,8 @@ public class CorpseEntityRenderer extends LivingEntityRenderer<CorpseEntity, Ent
 			}else{
 				matrixStack.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(90));
 			}
-
-			matrixStack.translate(0.25F,-0.75F,0.0F);
+			//matrixStack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(renderedEntity.bodyYaw));
+			//matrixStack.translate(0.25F,-0.75F,0.0F);
 			if(renderedEntity.isBaby()){
 				float g = 0.5F;
 				matrixStack.scale(g, g, g);
@@ -60,6 +63,25 @@ public class CorpseEntityRenderer extends LivingEntityRenderer<CorpseEntity, Ent
 		}
 		matrixStack.pop();
 	}
+
+/*
+	@Override
+	protected void setupTransforms(CorpseEntity entity, MatrixStack matrices, float animationProgress, float bodyYaw, float tickDelta) {
+		matrices.translate(-0.25F,0.25F,0.0F);
+		matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(entity.bodyYaw));
+		if (entity.age > 0) {
+			float f = ((float)entity.age + tickDelta - 1.0F) / 20.0F * 1.6F;
+			f = MathHelper.sqrt(f);
+			if (f > 1.0F) {
+				f = 1.0F;
+			}
+			matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(f * 90));
+		}else{
+			matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(90));
+		}
+	}
+
+ */
 
 	@Override
 	protected boolean hasLabel(CorpseEntity livingEntity) {
