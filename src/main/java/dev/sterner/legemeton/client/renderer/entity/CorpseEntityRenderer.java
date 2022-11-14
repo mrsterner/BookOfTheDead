@@ -1,4 +1,4 @@
-package dev.sterner.legemeton.client.renderer;
+package dev.sterner.legemeton.client.renderer.entity;
 
 import dev.sterner.legemeton.common.entity.CorpseEntity;
 import net.minecraft.client.model.ModelPart;

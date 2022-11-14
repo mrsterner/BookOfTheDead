@@ -1,7 +1,7 @@
 package dev.sterner.legemeton;
 
 import dev.sterner.legemeton.client.model.BagEntityModel;
-import dev.sterner.legemeton.client.renderer.CorpseEntityRenderer;
+import dev.sterner.legemeton.client.renderer.entity.CorpseEntityRenderer;
 import dev.sterner.legemeton.common.registry.LegemetonEntityTypes;
 import dev.sterner.legemeton.common.registry.LegemetonObjects;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
