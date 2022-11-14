@@ -9,13 +9,25 @@ import static net.fabricmc.fabric.impl.base.event.EventFactoryImpl.createArrayBa
 
 public class OnEntityDeathEvent {
 
-	public static final Event<OnDeath> ON_ENTITY_DEATH = createArrayBacked(OnDeath.class, listeners -> (entity, blockPos, source) -> {
-		for (OnDeath listener : listeners) {
-			listener.onDeath(entity, blockPos, source);
+	public static final Event<Start> START = createArrayBacked(Start.class, listeners -> (entity, blockPos, source) -> {
+		for (Start listener : listeners) {
+			listener.start(entity, blockPos, source);
 		}
 	});
+
+	public static final Event<End> END = createArrayBacked(End.class, listeners -> (entity, blockPos, source) -> {
+		for (End listener : listeners) {
+			listener.end(entity, blockPos, source);
+		}
+	});
+
 	@FunctionalInterface
-	public interface OnDeath {
-		void onDeath(LivingEntity entity, BlockPos blockPos, DamageSource source);
+	public interface Start {
+		void start(LivingEntity entity, BlockPos blockPos, DamageSource source);
+	}
+
+	@FunctionalInterface
+	public interface End {
+		void end(LivingEntity entity, BlockPos blockPos, DamageSource source);
 	}
 }

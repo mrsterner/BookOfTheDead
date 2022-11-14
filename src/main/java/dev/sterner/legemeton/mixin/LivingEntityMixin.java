@@ -12,8 +12,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class LivingEntityMixin {
 
 	@Inject(method = "onDeath", at = @At("HEAD"))
-	private void shuck$onDeath(DamageSource source, CallbackInfo ci){
+	private void shuck$PreOnDeath(DamageSource source, CallbackInfo ci){
 		LivingEntity livingEntity = (LivingEntity) (Object) this;
-		OnEntityDeathEvent.ON_ENTITY_DEATH.invoker().onDeath(livingEntity, livingEntity.getBlockPos(), source);
+		OnEntityDeathEvent.START.invoker().start(livingEntity, livingEntity.getBlockPos(), source);
+	}
+
+	@Inject(method = "onDeath", at = @At("TAIL"))
+	private void shuck$postOnDeath(DamageSource source, CallbackInfo ci){
+		LivingEntity livingEntity = (LivingEntity) (Object) this;
+		OnEntityDeathEvent.END.invoker().end(livingEntity, livingEntity.getBlockPos(), source);
 	}
 }

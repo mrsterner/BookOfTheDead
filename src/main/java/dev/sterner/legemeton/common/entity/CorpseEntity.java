@@ -23,8 +23,7 @@ import net.minecraft.world.World;
 
 
 public class CorpseEntity extends PathAwareEntity {
-	private static final EulerAngle DEFAULT_BODY_ROTATION = new EulerAngle(0.0F, 0.0F, 0.0F);
-	private EulerAngle bodyRotation = DEFAULT_BODY_ROTATION;
+
 	public LivingEntity storedCorpseEntity;
 
 
@@ -58,26 +57,12 @@ public class CorpseEntity extends PathAwareEntity {
 
 	@Override
 	protected void dropLoot(DamageSource source, boolean causedByPlayer) {
-		NbtCompound entityNbt = new NbtCompound();
-		NbtCompound nbtCompound = storedCorpseEntity.writeNbt(entityNbt);
-		EntityType.get(nbtCompound.getString("id")).ifPresent(type -> {
-			Entity entity = type.create(this.world);
-			if(entity instanceof LivingEntity livingEntity){
-				Identifier identifier = livingEntity.getLootTable();
-				LootTable lootTable = this.world.getServer().getLootManager().getTable(identifier);
-				LootContext.Builder builder = this.getLootContextBuilder(causedByPlayer, source);
-				lootTable.generateLoot(builder.build(LootContextTypes.ENTITY), this::dropStack);
-			}
-		});
-	}
-
-	@Override
-	protected ActionResult interactMob(PlayerEntity player, Hand hand) {
-		if(hand == Hand.MAIN_HAND){
-			System.out.println("corpseStored: " + storedCorpseEntity);
-			System.out.println("data: " + getCorpseEntity());
+		if(storedCorpseEntity != null) {
+			Identifier identifier = storedCorpseEntity.getLootTable();
+			LootTable lootTable = this.world.getServer().getLootManager().getTable(identifier);
+			LootContext.Builder builder = this.getLootContextBuilder(causedByPlayer, source);
+			lootTable.generateLoot(builder.build(LootContextTypes.ENTITY), this::dropStack);
 		}
-		return super.interactMob(player, hand);
 	}
 
 	@Override
@@ -91,97 +76,23 @@ public class CorpseEntity extends PathAwareEntity {
 	@Override
 	public void readCustomDataFromNbt(NbtCompound nbt) {
 		super.readCustomDataFromNbt(nbt);
-		EntityType.get(nbt.getCompound(Constants.Nbt.CORPSE_ENTITY).toString()).ifPresent(type -> {
-			if(type.create(this.world) instanceof LivingEntity livingEntity){
-				setCorpseEntity(livingEntity);
+		EntityType.getEntityFromNbt(nbt.getCompound(Constants.Nbt.CORPSE_ENTITY), this.world).ifPresent(type -> {
+			if(type instanceof LivingEntity livingEntity){
+				setCorpseEntity( livingEntity);
 			}
 		});
 	}
 
-	//Getters and Setters
-
 
 	public NbtCompound getCorpseEntity() {
 		return this.dataTracker.get(Constants.DataTrackers.STORED_CORPSE_ENTITY);
 	}
-
-
 
 	public void setCorpseEntity(LivingEntity entity) {
 		NbtCompound nbtCompound = new NbtCompound();
-		NbtCompound entityNbt = entity.writeNbt(nbtCompound);
-		//nbtCompound.put(Constants.Nbt.CORPSE_ENTITY, entityNbt);
-
 		nbtCompound.putString("id", entity.getSavedEntityId());
 		entity.writeNbt(nbtCompound);
-
 		this.dataTracker.set(Constants.DataTrackers.STORED_CORPSE_ENTITY, nbtCompound);
 		this.storedCorpseEntity = entity;
 	}
-
-
-/*
-	@Override
-	public String getIdentifierId() {
-		return this.dataTracker.get(Constants.DataTrackers.IDENTIFIER_ID);
-	}
-
-	@Override
-	public void setIdentifierId(String string) {
-		this.dataTracker.set(Constants.DataTrackers.IDENTIFIER_ID, string);
-	}
-
-	@Override
-	public NbtCompound getCorpseEntity() {
-		return this.dataTracker.get(Constants.DataTrackers.STORED_CORPSE_ENTITY);
-	}
-
-	@Override
-	public void setCorpseEntity(NbtCompound entityNbt) {
-		this.dataTracker.set(Constants.DataTrackers.STORED_CORPSE_ENTITY, entityNbt);
-	}
-
-	public void setBodyRotation(EulerAngle angle) {
-		this.bodyRotation = angle;
-		this.dataTracker.set(Constants.DataTrackers.TRACKER_BODY_ROTATION, angle);
-	}
-
-	public EulerAngle getBodyRotation() {
-		return this.bodyRotation;
-	}
-
-
-	@Override
-	public void setVillagerData(VillagerData villagerData) {
-		this.dataTracker.set(Constants.DataTrackers.VILLAGER_DATA, villagerData);
-	}
-
-
-	@Override
-	public VillagerData getVillagerData() {
-		return this.dataTracker.get(Constants.DataTrackers.VILLAGER_DATA);
-	}
-
-	@Override
-	public void setIsBaby(boolean isBaby) {
-		this.dataTracker.set(Constants.DataTrackers.IS_BABY, isBaby);
-	}
-
-
-	@Override
-	public boolean getIsBaby() {
-		return this.dataTracker.get(Constants.DataTrackers.IS_BABY);
-	}
-
-
-	public void setIsDying(boolean isDying) {
-		this.dataTracker.set(Constants.DataTrackers.IS_DYING, isDying);
-	}
-
-	public boolean getIsDying() {
-		return this.dataTracker.get(Constants.DataTrackers.IS_DYING);
-	}
-
- */
-
 }

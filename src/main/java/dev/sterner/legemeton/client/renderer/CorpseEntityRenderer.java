@@ -29,6 +29,8 @@ public class CorpseEntityRenderer extends LivingEntityRenderer<CorpseEntity, Ent
 		matrixStack.push();
 		NbtCompound nbtCompound = corpseEntity.getCorpseEntity();
 		if(renderedEntity != null){
+			renderedEntity.hurtTime = 0;
+
 			matrixStack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(renderedEntity.bodyYaw));
 			if (renderedEntity.age > 0) {
 				float f = ((float)renderedEntity.age + tickDelta - 1.0F) / 20.0F * 1.6F;
@@ -46,6 +48,7 @@ public class CorpseEntityRenderer extends LivingEntityRenderer<CorpseEntity, Ent
 				float g = 0.5F;
 				matrixStack.scale(g, g, g);
 			}
+			dispatcher.setRenderShadows(false);
 			dispatcher.render(renderedEntity, 0, 0, 0, 0, 0, matrixStack, vertexConsumerProvider, light);
 		}else{
 			EntityType.getEntityFromNbt(nbtCompound, corpseEntity.world).ifPresent(type -> {

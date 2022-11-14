@@ -52,7 +52,7 @@ public class Legemeton implements ModInitializer {
 		LegemetonBlockEntityTypes.init();
 		LegemetonEnchantments.init();
 
-		OnEntityDeathEvent.ON_ENTITY_DEATH.register(this::onButcheredEntity);
+		OnEntityDeathEvent.START.register(this::onButcheredEntity);
 		UseEntityCallback.EVENT.register(this::onPickupCorpse);
 		UseBlockCallback.EVENT.register(this::placeCorpse);
 	}
@@ -113,10 +113,7 @@ public class Legemeton implements ModInitializer {
 				World world = player.world;
 				CorpseEntity corpse = LegemetonEntityTypes.CORPSE_ENTITY.create(world);
 				if (corpse != null) {
-					corpse.storedCorpseEntity = livingEntity;
 					corpse.setCorpseEntity(livingEntity);
-
-
 					corpse.copyPositionAndRotation(livingEntity);
 					corpse.refreshPositionAndAngles(livingEntity.getX(), livingEntity.getY(), livingEntity.getZ(), livingEntity.getYaw(), livingEntity.getPitch());
 					corpse.setPersistent();
