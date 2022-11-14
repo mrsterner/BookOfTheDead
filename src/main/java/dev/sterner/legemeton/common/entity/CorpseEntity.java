@@ -115,7 +115,7 @@ public class CorpseEntity extends PathAwareEntity {
 		nbtCompound.putString("id", entity.getSavedEntityId());
 		entity.writeNbt(nbtCompound);
 
-		this.dataTracker.set(Constants.DataTrackers.STORED_CORPSE_ENTITY, entityNbt);
+		this.dataTracker.set(Constants.DataTrackers.STORED_CORPSE_ENTITY, nbtCompound);
 		this.storedCorpseEntity = entity;
 	}
 
