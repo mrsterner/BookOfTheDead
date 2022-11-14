@@ -1,10 +1,12 @@
 package dev.sterner.legemeton.common.registry;
 
+import dev.sterner.legemeton.common.block.entity.HookBlockEntity;
 import dev.sterner.legemeton.common.util.Constants;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+import org.quiltmc.qsl.block.entity.api.QuiltBlockEntityTypeBuilder;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -12,6 +14,8 @@ import java.util.Map;
 public class LegemetonBlockEntityTypes {
 	private static final Map<BlockEntityType<?>, Identifier> BLOCK_ENTITY_TYPES = new LinkedHashMap<>();
 
+	public static final BlockEntityType<HookBlockEntity> HOOK = register("hook",
+			QuiltBlockEntityTypeBuilder.create(HookBlockEntity::new, LegemetonObjects.HOOK_BLOCK).build(null));
 
 
 

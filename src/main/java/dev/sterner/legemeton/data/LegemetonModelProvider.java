@@ -8,6 +8,7 @@ import net.minecraft.data.client.model.BlockStateModelGenerator;
 import net.minecraft.data.client.model.Models;
 
 public class LegemetonModelProvider extends FabricModelProvider {
+
 	public LegemetonModelProvider(FabricDataGenerator dataGenerator) {
 		super(dataGenerator);
 	}
@@ -32,5 +33,6 @@ public class LegemetonModelProvider extends FabricModelProvider {
 		itemModelGenerator.register(LegemetonObjects.FAT, Models.GENERATED);
 		itemModelGenerator.register(LegemetonObjects.SKIN, Models.GENERATED);
 		itemModelGenerator.register(LegemetonObjects.BOTTLE_OF_BLOOD, Models.GENERATED);
+		itemModelGenerator.register(LegemetonObjects.ROPE.asItem(), Models.GENERATED);
 	}
 }

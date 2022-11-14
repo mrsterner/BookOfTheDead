@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "legemeton:block/rope_hook",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "legemeton:block/rope_hook"
+    },
+    "facing=south": {
+      "model": "legemeton:block/rope_hook",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "legemeton:block/rope_hook",
+      "y": 270
+    }
+  }
+}

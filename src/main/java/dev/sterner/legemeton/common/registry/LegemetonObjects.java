@@ -1,10 +1,14 @@
 package dev.sterner.legemeton.common.registry;
 
+import dev.sterner.legemeton.common.block.HookBlock;
+import dev.sterner.legemeton.common.block.RopeBlock;
 import dev.sterner.legemeton.common.util.Constants;
 import net.minecraft.block.Block;
+import net.minecraft.block.Material;
 import net.minecraft.item.*;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+import org.quiltmc.qsl.block.extensions.api.QuiltBlockSettings;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -29,6 +33,8 @@ public class LegemetonObjects {
 	public static final Item SKIN = register("skin", new Item(settings()));
 	public static final Item BOTTLE_OF_BLOOD = register("bottle_of_blood", new Item(settings()));
 
+	public static final Block ROPE = register("rope", new RopeBlock(QuiltBlockSettings.of(Material.WOOL)), settings(), true);
+	public static final Block HOOK_BLOCK = register("hook_block", new HookBlock(QuiltBlockSettings.of(Material.WOOL)), settings(), false);
 
 	private static Item.Settings settings() {
 		return new Item.Settings().group(Constants.LEGEMETON_GROUP);

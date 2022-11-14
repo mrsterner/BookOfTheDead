@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "rope=middle": {
+      "model": "legemeton:block/rope"
+    },
+    "rope=bottom": {
+      "model": "legemeton:block/rope_bottom"
+    }
+  }
+}
