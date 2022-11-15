@@ -10,11 +10,18 @@ import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
+import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.command.argument.EntityAnchorArgumentType;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.brain.task.LookTargetUtil;
+import net.minecraft.entity.ai.control.LookControl;
+import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.World;
 
@@ -52,6 +59,8 @@ public class HookBlockEntityRenderer implements BlockEntityRenderer<HookBlockEnt
 					if(type instanceof LivingEntity livingEntity){
 						livingEntity.hurtTime = 0;
 						livingEntity.bodyYaw = 0;
+						livingEntity.setPitch(20);
+						livingEntity.prevPitch = 20;
 						livingEntity.headYaw = 0;
 						dispatcher.setRenderShadows(false);
 						matrices.translate(0.5,-livingEntity.getHeight() * 0.5,0.5);
@@ -59,7 +68,6 @@ public class HookBlockEntityRenderer implements BlockEntityRenderer<HookBlockEnt
 						matrices.translate(0,0,0.2);
 						dispatcher.render(livingEntity, 0,0,0,0, tickDelta, matrices, vertexConsumers, light);
 					}
-
 				});
 			}
 		});

@@ -2,6 +2,7 @@ package dev.sterner.legemeton.common.block;
 
 import dev.sterner.legemeton.common.block.entity.HookBlockEntity;
 import dev.sterner.legemeton.common.registry.LegemetonObjects;
+import dev.sterner.legemeton.common.registry.LegemetonPrticleTypes;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
@@ -11,11 +12,13 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.DirectionProperty;
+import net.minecraft.tag.BlockTags;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.random.RandomGenerator;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
@@ -33,6 +36,47 @@ public class HookBlock extends Block implements BlockEntityProvider {
 	public HookBlock(Settings settings) {
 		super(settings);
 		this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.NORTH));
+	}
+
+	@Override
+	public void randomDisplayTick(BlockState state, World world, BlockPos pos, RandomGenerator random) {
+		super.randomDisplayTick(state, world, pos, random);
+		if(world.getBlockEntity(pos) instanceof HookBlockEntity hookBlockEntity && !hookBlockEntity.getCorpseEntity().isEmpty()){
+			for (int i = 0; i < random.nextInt(1) + 1; ++i) {
+				this.trySpawnDripParticles(world, pos, state);
+			}
+		}
+
+	}
+
+	private void trySpawnDripParticles(World world, BlockPos pos, BlockState state) {
+		if (state.getFluidState().isEmpty() && !(world.random.nextFloat() < 0.3F)) {
+			VoxelShape voxelshape = state.getCollisionShape(world, pos);
+			double d0 = voxelshape.getMax(Direction.Axis.Y);
+			if (d0 >= 1.0D && !state.isIn(BlockTags.IMPERMEABLE)) {
+				double d1 = voxelshape.getMin(Direction.Axis.Y);
+				if (d1 > 0.0D) {
+					this.spawnParticle(world, pos, voxelshape, (double) pos.getY() + d1 - 0.05D);
+				} else {
+					BlockPos blockpos = pos.down();
+					BlockState blockstate = world.getBlockState(blockpos);
+					VoxelShape voxelshape1 = blockstate.getCollisionShape(world, blockpos);
+					double d2 = voxelshape1.getMax(Direction.Axis.Y);
+					if ((d2 < 1.0D || !blockstate.isFullCube(world, blockpos)) && blockstate.getFluidState().isEmpty()) {
+						this.spawnParticle(world, pos, voxelshape, (double) pos.getY() - 0.05D);
+					}
+				}
+			}
+
+		}
+	}
+
+	private void spawnParticle(World world, BlockPos pos, VoxelShape shape, double y) {
+		this.spawnFluidParticle(world, (double) pos.getX() + shape.getMin(Direction.Axis.X), (double) pos.getX() + shape.getMax(Direction.Axis.X), (double) pos.getZ() + shape.getMin(Direction.Axis.Z), (double) pos.getZ() + shape.getMax(Direction.Axis.Z), y);
+	}
+
+	private void spawnFluidParticle(World world, double minX, double maxX, double minZ, double maxZ, double y) {
+		world.addParticle(LegemetonPrticleTypes.DRIPPING_BLOOD, MathHelper.lerp(world.random.nextDouble(), minX, maxX), y, MathHelper.lerp(world.random.nextDouble(), minZ, maxZ), 0.0D, 0.0D, 0.0D);
 	}
 
 	@Nullable

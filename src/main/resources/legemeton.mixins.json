@@ -9,6 +9,8 @@
     "PlayerEntityMixin"
   ],
   "client": [
+    "ContinuousFallingParticleMixin",
+    "DrippingParticleMixin",
     "PlayerEntityRendererMixin"
   ],
   "injectors": {

@@ -3,3 +3,5 @@ accessible      method    net/minecraft/entity/Entity                           
 extendable      class     net/minecraft/enchantment/EnchantmentTarget
 accessible      field net/minecraft/client/render/entity/EntityRenderDispatcher     renderers Ljava/util/Map;
 accessible      field net/minecraft/client/render/entity/EntityRenderDispatcher     modelRenderers Ljava/util/Map;
+accessible      class net/minecraft/client/particle/BlockLeakParticle
+accessible      class net/minecraft/client/particle/BlockLeakParticle$ContinuousFalling
