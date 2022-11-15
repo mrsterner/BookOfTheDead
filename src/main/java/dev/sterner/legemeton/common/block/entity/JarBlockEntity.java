@@ -35,7 +35,7 @@ public class JarBlockEntity extends BlockEntity implements Inventory {
 	public static void tick(World world, BlockPos pos, BlockState tickerState, JarBlockEntity blockEntity) {
 		boolean mark = false;
 		if (world != null && !world.isClient) {
-			if (world.getTime() % 10 == 0 && blockEntity.getBloodyCorpseAbove(world, pos) && blockEntity.getInventory().isEmpty() && tickerState.get(JarBlock.OPEN)) {
+			if (world.getTime() % 10 == 0 && blockEntity.getBloodyCorpseAbove(world, pos) && tickerState.get(JarBlock.OPEN)) {
 				if(blockEntity.bloodAmount < 100){
 					blockEntity.bloodAmount++;
 					blockEntity.markDirty();

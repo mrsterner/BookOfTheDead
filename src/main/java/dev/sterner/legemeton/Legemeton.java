@@ -87,25 +87,28 @@ public class Legemeton implements ModInitializer {
 	private ActionResult placeCorpse(PlayerEntity player, World world, Hand hand, BlockHitResult blockHitResult) {
 		if(world instanceof ServerWorld serverWorld && hand == Hand.MAIN_HAND && player.getMainHandStack().isEmpty() && player.isSneaking()){
 			Hauler.of(player).ifPresent(hauler -> {
-				if(hauler.getCorpseEntity() != null){
+				if(hauler.getCorpseEntity().isEmpty()){
 					NbtCompound nbtCompound = hauler.getCorpseEntity();
-					EntityType.getEntityFromNbt(nbtCompound.getCompound(Constants.Nbt.CORPSE_ENTITY), world).ifPresent(storedEntity -> {
-						BlockPos pos = blockHitResult.getBlockPos().offset(blockHitResult.getSide());
+					if(nbtCompound.contains(Constants.Nbt.CORPSE_ENTITY)){
+						EntityType.getEntityFromNbt(nbtCompound.getCompound(Constants.Nbt.CORPSE_ENTITY), world).ifPresent(storedEntity -> {
+							BlockPos pos = blockHitResult.getBlockPos().offset(blockHitResult.getSide());
 
 
-						CorpseEntity corpseEntity = LegemetonEntityTypes.CORPSE_ENTITY.create(serverWorld);
-						if (corpseEntity != null && storedEntity instanceof LivingEntity storedLivingEntity) {
-							corpseEntity.setCorpseEntity(storedLivingEntity);
-							corpseEntity.refreshPositionAndAngles(player.getBlockPos(), 0, 0);
-							corpseEntity.teleport(pos.getX(), pos.getY(), pos.getZ());
-							serverWorld.spawnEntity(corpseEntity);
-						}
+							CorpseEntity corpseEntity = LegemetonEntityTypes.CORPSE_ENTITY.create(serverWorld);
+							if (corpseEntity != null && storedEntity instanceof LivingEntity storedLivingEntity) {
+								corpseEntity.setCorpseEntity(storedLivingEntity);
+								corpseEntity.refreshPositionAndAngles(player.getBlockPos(), 0, 0);
+								corpseEntity.teleport(pos.getX(), pos.getY(), pos.getZ());
+								serverWorld.spawnEntity(corpseEntity);
+							}
 
-						serverWorld.playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 1, 1);
+							serverWorld.playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 1, 1);
 
-						//Reset Data
-						hauler.clearCorpseData();
-					});
+							//Reset Data
+							hauler.clearCorpseData();
+						});
+					}
+
 				}
 			});
 		}

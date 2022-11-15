@@ -17,17 +17,21 @@ import net.fabricmc.fabric.api.transfer.v1.client.fluid.FluidVariantRendering;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.impl.client.indigo.renderer.helper.ColorHelper;
 import net.fabricmc.fabric.impl.renderer.RendererAccessImpl;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
+import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.render.model.BakedQuad;
 import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3f;
@@ -39,22 +43,22 @@ public class JarBlockEntityRenderer implements BlockEntityRenderer<JarBlockEntit
 	private static final float EDGE_SIZE = 1f / 8f;
 	private static final float INNER_SIZE = 1f - (EDGE_SIZE * 2f);
 	public static final int BLOOD_COLOR = 0xff0000;
-	private final JarEntityModel jarEntityModel;
+	private final JarEntityModel jarEntityModel =  new JarEntityModel<>(JarEntityModel.createBodyLayer().createModel());
 	private final Identifier TEXTURE = Constants.id("textures/block/jar.png");
+	private final Identifier TEXTURE_ITEM = Constants.id("textures/block/jar_item.png");
 
-	public JarBlockEntityRenderer(BlockEntityRendererFactory.Context ctx) {
-		jarEntityModel = new JarEntityModel<>(ctx.getLayerModelPart(JarEntityModel.LAYER_LOCATION));
-	}
+
 
 	@Override
 	public void render(JarBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
-		matrices.push();
-		float g = 0.5F;
-		matrices.scale(g,g,g);
-		matrices.translate(0.5, 0.05, 0.5);
-		renderFluid(matrices, vertexConsumers, light, overlay, entity, entity.bloodAmount / 100F);
-		matrices.pop();
-
+		if(entity.bloodAmount > 0){
+			matrices.push();
+			float g = 0.5F;
+			matrices.scale(g,g,g);
+			matrices.translate(0.5, 0.05, 0.5);
+			renderFluid(matrices, vertexConsumers, light, overlay, entity,null,entity.bloodAmount / 100F);
+			matrices.pop();
+		}
 
 		matrices.push();
 		float f = 0.5F;
@@ -71,17 +75,34 @@ public class JarBlockEntityRenderer implements BlockEntityRenderer<JarBlockEntit
 
 	@Override
 	public void render(ItemStack stack, ModelTransformation.Mode mode, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
+		matrices.push();
+		NbtCompound nbtCompound = new NbtCompound();
+		if(stack.getNbt() != null) {
+			nbtCompound = stack.getNbt().getCompound("BlockEntityTag");
+		}
+		if(nbtCompound.contains(Constants.Nbt.BLOOD_LEVEL)){
+			float g = 0.5F;
+			matrices.scale(g,g,g);
+			matrices.translate(-0.5, -1, -0.5);
+			renderFluid(matrices, vertexConsumers, light, overlay, null, stack, nbtCompound.getInt(Constants.Nbt.BLOOD_LEVEL) / 100F);
+		}
+		matrices.pop();
 
+		matrices.push();
+		matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(180));
+		VertexConsumer vertexConsumer = ItemRenderer.getItemGlintConsumer(vertexConsumers, jarEntityModel.getLayer(TEXTURE_ITEM), false, stack.hasGlint());
+		jarEntityModel.render(matrices, vertexConsumer, light, overlay, 1, 1, 1, 1);
+		matrices.pop();
 	}
 
-	private void renderFluid(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, @Nullable JarBlockEntity entity, float percent) {
+	private void renderFluid(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, @Nullable JarBlockEntity entity, @Nullable ItemStack itemStack, float percent) {
 		if (RendererAccessImpl.INSTANCE.getRenderer() != null) {
 			percent = Math.min(1, percent);
 			matrices.push();
 			Sprite sprite;
 			MeshBuilder builder = RendererAccessImpl.INSTANCE.getRenderer().meshBuilder();
 			int newColor;
-			if (entity != null) {
+			if (entity != null || itemStack != null) {
 				newColor = ColorHelper.swapRedBlueIfNeeded(BLOOD_COLOR);
 				sprite = LegemetonSpriteIdentifiers.BLOOD.getSprite();
 					emitFluidFace(builder.getEmitter(), sprite, newColor, Direction.UP, 1f, (1f - percent), EDGE_SIZE, INNER_SIZE);

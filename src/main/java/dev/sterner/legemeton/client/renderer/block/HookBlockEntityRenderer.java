@@ -54,7 +54,7 @@ public class HookBlockEntityRenderer implements BlockEntityRenderer<HookBlockEnt
 		matrices.push();
 		Hauler.of(entity).ifPresent(hauler -> {
 			NbtCompound renderedEntity = hauler.getCorpseEntity();
-			if(renderedEntity != null){
+			if(renderedEntity != null && renderedEntity.contains(Constants.Nbt.CORPSE_ENTITY)){
 				EntityType.getEntityFromNbt(renderedEntity.getCompound(Constants.Nbt.CORPSE_ENTITY), entity.getWorld()).ifPresent(type -> {
 					if(type instanceof LivingEntity livingEntity){
 						livingEntity.hurtTime = 0;

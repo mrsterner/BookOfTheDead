@@ -1,11 +1,22 @@
 package dev.sterner.legemeton.common.block;
 
 import dev.sterner.legemeton.common.block.entity.JarBlockEntity;
+import dev.sterner.legemeton.common.registry.LegemetonBlockEntityTypes;
+import dev.sterner.legemeton.common.registry.LegemetonObjects;
+import dev.sterner.legemeton.common.util.LegemetonUtils;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.entity.ItemEntity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.loot.context.LootContextParameters;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.util.ActionResult;
@@ -17,6 +28,10 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
+
+import static net.minecraft.block.ShulkerBoxBlock.CONTENTS;
 
 public class JarBlock extends BlockWithEntity {
 	protected static final VoxelShape OPEN_SHAPE = VoxelShapes.union(
@@ -51,10 +66,71 @@ public class JarBlock extends BlockWithEntity {
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		if(!world.isClient() && hand == Hand.MAIN_HAND){
-			world.setBlockState(pos, state.with(OPEN, !state.get(OPEN)));
+			if(player.getMainHandStack().isEmpty()){
+				world.setBlockState(pos, state.with(OPEN, !state.get(OPEN)));
+				world.playSound(null, player.getBlockPos(), SoundEvents.ITEM_BOTTLE_FILL, SoundCategory.PLAYERS, 1, 0.5f);
+			}else if(world.getBlockEntity(pos) instanceof JarBlockEntity jarBlockEntity){
+				if(player.getMainHandStack().isOf(Items.GLASS_BOTTLE)){
+					if(jarBlockEntity.bloodAmount >= 25){
+						handleBottle(jarBlockEntity, player, hand, LegemetonObjects.BOTTLE_OF_BLOOD, -25);
+						return ActionResult.CONSUME;
+					}
+				}else if(player.getMainHandStack().isOf(LegemetonObjects.BOTTLE_OF_BLOOD)){
+					if(jarBlockEntity.bloodAmount + 25 <= 100){
+						handleBottle(jarBlockEntity, player, hand, Items.GLASS_BOTTLE, 25);
+						return ActionResult.CONSUME;
+					}
+				}
+			}
 		}
+
 		return super.onUse(state, world, pos, player, hand, hit);
 	}
+
+	public void handleBottle(JarBlockEntity jarBlockEntity, PlayerEntity player, Hand hand, Item item, int tooAdd){
+		jarBlockEntity.bloodAmount = jarBlockEntity.bloodAmount + tooAdd;
+		jarBlockEntity.markDirty();
+		player.world.playSound(null, player.getBlockPos(), SoundEvents.ITEM_BOTTLE_FILL, SoundCategory.PLAYERS, 1, 0.5f);
+		LegemetonUtils.addItemToInventoryAndConsume(player, hand, item.getDefaultStack());
+	}
+
+	@Override
+	public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
+		BlockEntity blockEntity = world.getBlockEntity(pos);
+		if (blockEntity instanceof JarBlockEntity jarBlockEntity) {
+			if (!world.isClient && player.isCreative() && !jarBlockEntity.isEmpty()) {
+				ItemStack itemStack = new ItemStack(this);
+				blockEntity.writeNbtToStack(itemStack);
+				ItemEntity itemEntity = new ItemEntity(world, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.5D, itemStack);
+				itemEntity.setToDefaultPickupDelay();
+				world.spawnEntity(itemEntity);
+			}
+		}
+		super.onBreak(world, pos, state, player);
+	}
+
+	@Override
+	public ItemStack getPickStack(BlockView world, BlockPos pos, BlockState state) {
+		ItemStack itemStack = super.getPickStack(world, pos, state);
+		world.getBlockEntity(pos, LegemetonBlockEntityTypes.JAR).ifPresent((blockEntity) -> {
+			blockEntity.writeNbtToStack(itemStack);
+		});
+		return itemStack;
+	}
+
+	@Override
+	public List<ItemStack> getDroppedStacks(BlockState state, net.minecraft.loot.context.LootContext.Builder builder) {
+		BlockEntity blockEntity = builder.getNullable(LootContextParameters.BLOCK_ENTITY);
+		if (blockEntity instanceof JarBlockEntity jarBlockEntity) {
+			builder = builder.putDrop(CONTENTS, (context, consumer) -> {
+				for(int i = 0; i < jarBlockEntity.size(); ++i) {
+					consumer.accept(jarBlockEntity.getStack(i));
+				}
+			});
+		}
+		return super.getDroppedStacks(state, builder);
+	}
+
 
 	@Nullable
 	@Override
