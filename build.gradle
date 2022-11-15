@@ -39,6 +39,10 @@ repositories {
 		name "jitpack"
 		url "https://jitpack.io"
 	}
+	maven {
+		name =  "Patchouli"
+		url = "https://maven.blamejared.com"
+	}
 }
 
 dependencies {
@@ -51,6 +55,9 @@ dependencies {
 	//Fabric ASM
 	modImplementation 'com.github.Chocohead:Fabric-ASM:v2.3'
 	include 'com.github.Chocohead:Fabric-ASM:v2.3'
+
+	//Patchouli
+	modImplementation("vazkii.patchouli:Patchouli:${project.patchouli_version}")
 }
 
 processResources {

@@ -1,0 +1,17 @@
+{
+  "name": "item.legemeton.legemeton",
+  "subtitle": "legemeton.necronomicon.subtitle",
+  "landing_text": "legemeton.necronomicon.landing",
+  "book_texture": "legemeton:textures/gui/legemeton.png",
+  "progress_bar_background": "533f36",
+  "progress_bar_color": "c9b88f",
+  "dont_generate_book": true,
+  "show_progress": false,
+  "custom_book_item": "legemeton:legemeton",
+  "macros": {
+    "$(marked)": "$(#EE0000)",
+    "$(item)": "$(#EE0000)",
+    "$(ml:": "$(marked)$(l:"
+  },
+  "advancements_tab": "legemeton:root"
+}

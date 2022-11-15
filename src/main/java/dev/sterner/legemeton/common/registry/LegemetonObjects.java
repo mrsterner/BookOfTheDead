@@ -2,6 +2,7 @@ package dev.sterner.legemeton.common.registry;
 
 import dev.sterner.legemeton.common.block.HookBlock;
 import dev.sterner.legemeton.common.block.RopeBlock;
+import dev.sterner.legemeton.common.item.LegemetonItem;
 import dev.sterner.legemeton.common.util.Constants;
 import net.minecraft.block.Block;
 import net.minecraft.block.Material;
@@ -18,7 +19,7 @@ public class LegemetonObjects {
 	public static final Map<Item, Identifier> ITEMS = new LinkedHashMap<>();
 
 	public static final Item BUTCHER_KNIFE = register("butcher_knife", new AxeItem(ToolMaterials.NETHERITE, 6, -2, settings()));
-	public static final Item LEGEMETON = register("legemeton", new Item(settings()));
+	public static final Item LEGEMETON = register("legemeton", new LegemetonItem(Constants.id("legemeton"), settings()));
 	public static final Item CONTRACT = register("contract", new Item(settings()));
 	public static final Item SIGNED_CONTRACT = register("signed_contract", new Item(settings()));
 	public static final Item PACKET = register("packet", new Item(settings()));

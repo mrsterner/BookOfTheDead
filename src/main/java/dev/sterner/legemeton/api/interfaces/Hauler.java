@@ -14,6 +14,8 @@ public interface Hauler {
 		return Optional.empty();
 	}
 
+	LivingEntity getCorpseLiving();
+
 	NbtCompound getCorpseEntity();
 
 	void setCorpseEntity(LivingEntity livingEntity);

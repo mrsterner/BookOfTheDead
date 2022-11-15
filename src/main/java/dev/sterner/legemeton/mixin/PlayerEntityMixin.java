@@ -56,6 +56,11 @@ public abstract class PlayerEntityMixin extends LivingEntity implements Hauler  
 	}
 
 	@Override
+	public LivingEntity getCorpseLiving() {
+		return storedCorpseEntity;
+	}
+
+	@Override
 	public void setCorpseEntity(LivingEntity entity) {
 		NbtCompound nbtCompound = new NbtCompound();
 		nbtCompound.putString("id", entity.getSavedEntityId());

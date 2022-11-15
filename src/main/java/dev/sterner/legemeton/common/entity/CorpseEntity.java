@@ -83,6 +83,11 @@ public class CorpseEntity extends PathAwareEntity implements Hauler {
 	}
 
 	@Override
+	public LivingEntity getCorpseLiving() {
+		return storedCorpseEntity;
+	}
+
+	@Override
 	public NbtCompound getCorpseEntity() {
 		return this.dataTracker.get(Constants.DataTrackers.STORED_CORPSE_ENTITY);
 	}

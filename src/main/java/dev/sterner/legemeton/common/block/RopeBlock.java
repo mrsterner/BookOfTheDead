@@ -50,13 +50,12 @@ public class RopeBlock extends Block {
 	public BlockState getPlacementState(ItemPlacementContext ctx) {
 		return this.getDefaultState().with(ROPE, Rope.BOTTOM);
 	}
+
 	@Override
-	public BlockState getStateForNeighborUpdate(
-			BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
-		if (direction == Direction.DOWN.getOpposite() && !state.canPlaceAt(world, pos)) {
+	public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
+		if (direction == Direction.UP && !state.canPlaceAt(world, pos)) {
 			world.scheduleBlockTick(pos, this, 1);
 		}
-
 		if (direction != Direction.DOWN || !neighborState.isOf(this) && !neighborState.isOf(this)) {
 			return super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
 		} else {
