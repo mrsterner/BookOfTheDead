@@ -54,13 +54,13 @@ public class HookBlockEntityRenderer implements BlockEntityRenderer<HookBlockEnt
 						livingEntity.bodyYaw = 0;
 						livingEntity.headYaw = 0;
 						dispatcher.setRenderShadows(false);
-						matrices.translate(0,0,0);
+						matrices.translate(0.5,-livingEntity.getHeight() * 0.5,0.5);
 						matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(getRot(entity)));
+						matrices.translate(0,0,0.2);
 						dispatcher.render(livingEntity, 0,0,0,0, tickDelta, matrices, vertexConsumers, light);
 					}
 
 				});
-
 			}
 		});
 		matrices.pop();
