@@ -24,6 +24,12 @@ public class Constants {
 		return new Identifier(MOD_ID, string);
 	}
 
+	public static class Values{
+
+		public static final int BLEEDING = 120;
+		public static final double JAR_COLLECTION_RANGE = 10;
+	}
+
 	public static class DataTrackers{
 		public static final TrackedData<NbtCompound> STORED_CORPSE_ENTITY = DataTracker.registerData(CorpseEntity.class, TrackedDataHandlerRegistry.TAG_COMPOUND);
 		public static final TrackedData<NbtCompound>  PLAYER_CORPSE_ENTITY = DataTracker.registerData(PlayerEntity.class, TrackedDataHandlerRegistry.TAG_COMPOUND);
@@ -35,5 +41,7 @@ public class Constants {
 
 	public static class Nbt {
 		public static final String CORPSE_ENTITY = "CorpseEntity";
-	}
+        public static final String HOOKED_AGE = "HookedAge";
+        public static final String BLOOD_LEVEL = "BloodLevel";
+    }
 }

@@ -11,7 +11,8 @@
   "client": [
     "ContinuousFallingParticleMixin",
     "DrippingParticleMixin",
-    "PlayerEntityRendererMixin"
+    "PlayerEntityRendererMixin",
+    "TexturedRenderLayersMixin"
   ],
   "injectors": {
     "defaultRequire": 1

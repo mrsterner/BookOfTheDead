@@ -1,14 +1,12 @@
 package dev.sterner.legemeton.common.block.entity;
 
 import dev.sterner.legemeton.api.interfaces.Hauler;
-import dev.sterner.legemeton.common.entity.CorpseEntity;
 import dev.sterner.legemeton.common.registry.LegemetonBlockEntityTypes;
-import dev.sterner.legemeton.common.registry.LegemetonEntityTypes;
 import dev.sterner.legemeton.common.util.Constants;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.CauldronBlock;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -16,8 +14,6 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -25,6 +21,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class HookBlockEntity extends BlockEntity implements Hauler {
 	public NbtCompound storedCorpseNbt = new NbtCompound();
+	public int hookedAge = 0;
 	public HookBlockEntity(BlockPos pos, BlockState state) {
 		super(LegemetonBlockEntityTypes.HOOK, pos, state);
 	}
@@ -36,6 +33,14 @@ public class HookBlockEntity extends BlockEntity implements Hauler {
 			if (world.getTime() % 20 == 0 && !blockEntity.storedCorpseNbt.isEmpty()) {
 				blockEntity.markDirty();
 				mark = true;
+				if(blockEntity.hookedAge < Constants.Values.BLEEDING){
+					blockEntity.hookedAge++;
+				}else{
+					blockEntity.hookedAge = Constants.Values.BLEEDING;
+				}
+			}
+			if(blockEntity.storedCorpseNbt.isEmpty()){
+				blockEntity.hookedAge = 0;
 			}
 		}
 		if(mark){
@@ -95,6 +100,7 @@ public class HookBlockEntity extends BlockEntity implements Hauler {
 	@Override
 	protected void writeNbt(NbtCompound nbt) {
 		super.writeNbt(nbt);
+		nbt.putInt(Constants.Nbt.HOOKED_AGE, this.hookedAge);
 		if(!storedCorpseNbt.isEmpty()){
 			nbt.put(Constants.Nbt.CORPSE_ENTITY, getCorpseEntity());
 		}
@@ -103,6 +109,7 @@ public class HookBlockEntity extends BlockEntity implements Hauler {
 	@Override
 	public void readNbt(NbtCompound nbt) {
 		super.readNbt(nbt);
+		this.hookedAge = nbt.getInt(Constants.Nbt.HOOKED_AGE);
 		setCorpse(nbt.getCompound(Constants.Nbt.CORPSE_ENTITY));
 	}
 

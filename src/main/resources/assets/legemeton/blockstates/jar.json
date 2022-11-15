@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "open=true": {
+      "model": "legemeton:block/jar_open"
+    },
+    "open=false": {
+      "model": "legemeton:block/jar_closed"
+    }
+  }
+}

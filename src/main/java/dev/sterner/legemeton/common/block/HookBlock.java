@@ -3,11 +3,11 @@ package dev.sterner.legemeton.common.block;
 import dev.sterner.legemeton.common.block.entity.HookBlockEntity;
 import dev.sterner.legemeton.common.registry.LegemetonObjects;
 import dev.sterner.legemeton.common.registry.LegemetonPrticleTypes;
+import dev.sterner.legemeton.common.util.Constants;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.block.entity.FurnaceBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
@@ -27,7 +27,6 @@ import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Objects;
 
 public class HookBlock extends Block implements BlockEntityProvider {
 	protected static final VoxelShape NORTH_SHAPE = Block.createCuboidShape(5, 2.0, 5, 11, 16.0, 11);
@@ -41,12 +40,11 @@ public class HookBlock extends Block implements BlockEntityProvider {
 	@Override
 	public void randomDisplayTick(BlockState state, World world, BlockPos pos, RandomGenerator random) {
 		super.randomDisplayTick(state, world, pos, random);
-		if(world.getBlockEntity(pos) instanceof HookBlockEntity hookBlockEntity && !hookBlockEntity.getCorpseEntity().isEmpty()){
+		if(world.getBlockEntity(pos) instanceof HookBlockEntity hookBlockEntity && !hookBlockEntity.getCorpseEntity().isEmpty() && hookBlockEntity.hookedAge < Constants.Values.BLEEDING){
 			for (int i = 0; i < random.nextInt(1) + 1; ++i) {
 				this.trySpawnDripParticles(world, pos, state);
 			}
 		}
-
 	}
 
 	private void trySpawnDripParticles(World world, BlockPos pos, BlockState state) {

@@ -1,12 +1,11 @@
 package dev.sterner.legemeton;
 
 import dev.sterner.legemeton.client.model.BagEntityModel;
+import dev.sterner.legemeton.client.model.JarEntityModel;
 import dev.sterner.legemeton.client.renderer.block.HookBlockEntityRenderer;
+import dev.sterner.legemeton.client.renderer.block.JarBlockEntityRenderer;
 import dev.sterner.legemeton.client.renderer.entity.CorpseEntityRenderer;
-import dev.sterner.legemeton.common.registry.LegemetonBlockEntityTypes;
-import dev.sterner.legemeton.common.registry.LegemetonEntityTypes;
-import dev.sterner.legemeton.common.registry.LegemetonObjects;
-import dev.sterner.legemeton.common.registry.LegemetonPrticleTypes;
+import dev.sterner.legemeton.common.registry.*;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
@@ -23,11 +22,15 @@ public class LegemetonClient implements ClientModInitializer {
 		LegemetonPrticleTypes.init();
 
 
-		BlockRenderLayerMap.put(RenderLayer.getCutout(), LegemetonObjects.ROPE, LegemetonObjects.HOOK_BLOCK);
+		BlockRenderLayerMap.put(RenderLayer.getCutout(), LegemetonObjects.ROPE, LegemetonObjects.HOOK_BLOCK, LegemetonObjects.JAR);
 		BlockEntityRendererRegistry.register(LegemetonBlockEntityTypes.HOOK, HookBlockEntityRenderer::new);
+		BlockEntityRendererRegistry.register(LegemetonBlockEntityTypes.JAR, JarBlockEntityRenderer::new);
 
 		EntityRendererRegistry.register(LegemetonEntityTypes.CORPSE_ENTITY, CorpseEntityRenderer::new);
 
 		EntityModelLayerRegistry.registerModelLayer(BagEntityModel.LAYER_LOCATION, BagEntityModel::createBodyLayer);
+		EntityModelLayerRegistry.registerModelLayer(JarEntityModel.LAYER_LOCATION, JarEntityModel::createBodyLayer);
+
+		LegemetonSpriteIdentifiers.INSTANCE.addIdentifier(LegemetonSpriteIdentifiers.BLOOD);
 	}
 }

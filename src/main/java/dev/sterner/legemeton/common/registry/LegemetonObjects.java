@@ -1,6 +1,7 @@
 package dev.sterner.legemeton.common.registry;
 
 import dev.sterner.legemeton.common.block.HookBlock;
+import dev.sterner.legemeton.common.block.JarBlock;
 import dev.sterner.legemeton.common.block.RopeBlock;
 import dev.sterner.legemeton.common.item.LegemetonItem;
 import dev.sterner.legemeton.common.util.Constants;
@@ -36,6 +37,7 @@ public class LegemetonObjects {
 
 	public static final Block ROPE = register("rope", new RopeBlock(QuiltBlockSettings.of(Material.WOOL)), settings(), true);
 	public static final Block HOOK_BLOCK = register("hook_block", new HookBlock(QuiltBlockSettings.of(Material.WOOL)), settings(), false);
+	public static final Block JAR = register("jar", new JarBlock(QuiltBlockSettings.of(Material.GLASS)), settings(),true);
 
 	private static Item.Settings settings() {
 		return new Item.Settings().group(Constants.LEGEMETON_GROUP);

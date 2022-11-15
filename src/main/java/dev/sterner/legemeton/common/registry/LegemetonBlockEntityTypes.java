@@ -1,6 +1,7 @@
 package dev.sterner.legemeton.common.registry;
 
 import dev.sterner.legemeton.common.block.entity.HookBlockEntity;
+import dev.sterner.legemeton.common.block.entity.JarBlockEntity;
 import dev.sterner.legemeton.common.util.Constants;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
@@ -16,6 +17,9 @@ public class LegemetonBlockEntityTypes {
 
 	public static final BlockEntityType<HookBlockEntity> HOOK = register("hook",
 			QuiltBlockEntityTypeBuilder.create(HookBlockEntity::new, LegemetonObjects.HOOK_BLOCK).build(null));
+
+	public static final BlockEntityType<JarBlockEntity> JAR = register("jar",
+			QuiltBlockEntityTypeBuilder.create(JarBlockEntity::new, LegemetonObjects.JAR).build(null));
 
 
 
