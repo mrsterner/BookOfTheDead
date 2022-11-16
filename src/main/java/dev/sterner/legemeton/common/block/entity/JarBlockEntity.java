@@ -2,7 +2,6 @@ package dev.sterner.legemeton.common.block.entity;
 
 import dev.sterner.legemeton.common.block.JarBlock;
 import dev.sterner.legemeton.common.registry.LegemetonBlockEntityTypes;
-import dev.sterner.legemeton.common.registry.LegemetonObjects;
 import dev.sterner.legemeton.common.util.Constants;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -19,9 +18,6 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class JarBlockEntity extends BlockEntity implements Inventory {
 	private DefaultedList<ItemStack> inventory;

@@ -1,6 +1,5 @@
 package dev.sterner.legemeton.data;
 
-import dev.sterner.legemeton.common.registry.LegemetonBlockEntityTypes;
 import dev.sterner.legemeton.common.registry.LegemetonEnchantments;
 import dev.sterner.legemeton.common.registry.LegemetonEntityTypes;
 import dev.sterner.legemeton.common.registry.LegemetonObjects;
