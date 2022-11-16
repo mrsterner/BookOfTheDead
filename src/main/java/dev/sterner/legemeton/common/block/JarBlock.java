@@ -57,6 +57,8 @@ public class JarBlock extends BlockWithEntity {
 		this.setDefaultState(this.stateManager.getDefaultState().with(OPEN,false));
 	}
 
+
+
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
@@ -98,12 +100,13 @@ public class JarBlock extends BlockWithEntity {
 	public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
 		BlockEntity blockEntity = world.getBlockEntity(pos);
 		if (blockEntity instanceof JarBlockEntity jarBlockEntity) {
-			if (!world.isClient && player.isCreative() && !jarBlockEntity.isEmpty()) {
+			if (!world.isClient) {
 				ItemStack itemStack = new ItemStack(this);
-				blockEntity.writeNbtToStack(itemStack);
+				jarBlockEntity.writeNbtToStack(itemStack);
 				ItemEntity itemEntity = new ItemEntity(world, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.5D, itemStack);
 				itemEntity.setToDefaultPickupDelay();
 				world.spawnEntity(itemEntity);
+				System.out.println("YAAAAAAAAAAAAAa");
 			}
 		}
 		super.onBreak(world, pos, state, player);

@@ -4,10 +4,7 @@ import dev.sterner.legemeton.api.event.OnEntityDeathEvent;
 import dev.sterner.legemeton.api.interfaces.Hauler;
 import dev.sterner.legemeton.common.block.RopeBlock;
 import dev.sterner.legemeton.common.entity.CorpseEntity;
-import dev.sterner.legemeton.common.registry.LegemetonBlockEntityTypes;
-import dev.sterner.legemeton.common.registry.LegemetonEnchantments;
-import dev.sterner.legemeton.common.registry.LegemetonEntityTypes;
-import dev.sterner.legemeton.common.registry.LegemetonObjects;
+import dev.sterner.legemeton.common.registry.*;
 import dev.sterner.legemeton.common.util.Constants;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
@@ -44,6 +41,7 @@ public class Legemeton implements ModInitializer {
 		LegemetonEntityTypes.init();
 		LegemetonBlockEntityTypes.init();
 		LegemetonEnchantments.init();
+		LegemetonRecipeTypes.init();
 
 		OnEntityDeathEvent.START.register(this::onButcheredEntity);
 		UseEntityCallback.EVENT.register(this::onPickupCorpse);

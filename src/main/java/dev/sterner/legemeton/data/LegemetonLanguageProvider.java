@@ -1,5 +1,6 @@
 package dev.sterner.legemeton.data;
 
+import dev.sterner.legemeton.common.registry.LegemetonBlockEntityTypes;
 import dev.sterner.legemeton.common.registry.LegemetonEnchantments;
 import dev.sterner.legemeton.common.registry.LegemetonEntityTypes;
 import dev.sterner.legemeton.common.registry.LegemetonObjects;
@@ -34,5 +35,7 @@ public class LegemetonLanguageProvider extends FabricLanguageProvider {
 		builder.add(LegemetonEnchantments.BUTCHERING, "Butchering");
 
 		builder.add(LegemetonEntityTypes.CORPSE_ENTITY, "Corpse");
+		builder.add(LegemetonObjects.JAR, "Jar");
+		builder.add(LegemetonObjects.ROPE, "Rope");
 	}
 }

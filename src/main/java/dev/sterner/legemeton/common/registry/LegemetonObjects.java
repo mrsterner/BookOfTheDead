@@ -8,6 +8,7 @@ import dev.sterner.legemeton.common.util.Constants;
 import net.minecraft.block.Block;
 import net.minecraft.block.Material;
 import net.minecraft.item.*;
+import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import org.quiltmc.qsl.block.extensions.api.QuiltBlockSettings;
@@ -35,9 +36,9 @@ public class LegemetonObjects {
 	public static final Item SKIN = register("skin", new Item(settings()));
 	public static final Item BOTTLE_OF_BLOOD = register("bottle_of_blood", new Item(settings()));
 
-	public static final Block ROPE = register("rope", new RopeBlock(QuiltBlockSettings.of(Material.WOOL)), settings(), true);
-	public static final Block HOOK_BLOCK = register("hook_block", new HookBlock(QuiltBlockSettings.of(Material.WOOL)), settings(), false);
-	public static final Block JAR = register("jar", new JarBlock(QuiltBlockSettings.of(Material.GLASS)), settings(),true);
+	public static final Block ROPE = register("rope", new RopeBlock(QuiltBlockSettings.of(Material.WOOL).strength(0.2F)), settings(), true);
+	public static final Block HOOK_BLOCK = register("hook_block", new HookBlock(QuiltBlockSettings.of(Material.WOOL).strength(0.2F)), settings(), false);
+	public static final Block JAR = register("jar", new JarBlock(QuiltBlockSettings.of(Material.GLASS).strength(0.3F).sounds(BlockSoundGroup.GLASS)), settings(),true);
 
 	private static Item.Settings settings() {
 		return new Item.Settings().group(Constants.LEGEMETON_GROUP);

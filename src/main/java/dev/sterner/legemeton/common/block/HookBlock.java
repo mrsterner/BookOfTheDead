@@ -29,7 +29,8 @@ import org.jetbrains.annotations.Nullable;
 
 
 public class HookBlock extends Block implements BlockEntityProvider {
-	protected static final VoxelShape NORTH_SHAPE = Block.createCuboidShape(5, 2.0, 5, 11, 16.0, 11);
+	protected static final VoxelShape SHAPE = Block.createCuboidShape(5, 2.0, 5, 11, 16.0, 11);
+	protected static final VoxelShape HOOKED_SHAPE = Block.createCuboidShape(4, 0.0, 4, 12, 16.0, 12);
 	public static final DirectionProperty FACING = HorizontalFacingBlock.FACING;
 
 	public HookBlock(Settings settings) {
@@ -87,7 +88,7 @@ public class HookBlock extends Block implements BlockEntityProvider {
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		if (!world.isClient()) {
 			if(world.getBlockEntity(pos) instanceof HookBlockEntity hookBlockEntity){
-				hookBlockEntity.onUse(player, hand);
+				return hookBlockEntity.onUse(world, state, pos, player, hand);
 			}
 		}
 		return super.onUse(state, world, pos, player, hand, hit);
@@ -124,7 +125,10 @@ public class HookBlock extends Block implements BlockEntityProvider {
 
 	@Override
 	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-		return NORTH_SHAPE;
+		if(world.getBlockEntity(pos) instanceof HookBlockEntity hookBlockEntity && !hookBlockEntity.getCorpseEntity().isEmpty()){
+			return HOOKED_SHAPE;
+		}
+		return SHAPE;
 	}
 
 	@Override

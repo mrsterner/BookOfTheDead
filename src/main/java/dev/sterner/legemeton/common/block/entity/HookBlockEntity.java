@@ -1,26 +1,44 @@
 package dev.sterner.legemeton.common.block.entity;
 
+import com.mojang.datafixers.util.Pair;
 import dev.sterner.legemeton.api.interfaces.Hauler;
+import dev.sterner.legemeton.common.recipe.ButcheringRecipe;
 import dev.sterner.legemeton.common.registry.LegemetonBlockEntityTypes;
+import dev.sterner.legemeton.common.registry.LegemetonRecipeTypes;
 import dev.sterner.legemeton.common.util.Constants;
+import net.fabricmc.fabric.api.util.NbtType;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.CauldronBlock;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.FurnaceBlockEntity;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.Inventories;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.network.Packet;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
 public class HookBlockEntity extends BlockEntity implements Hauler {
 	public NbtCompound storedCorpseNbt = new NbtCompound();
+	public DefaultedList<ItemStack> outputs = DefaultedList.ofSize(8, ItemStack.EMPTY);
+	public DefaultedList<Float> chances  = DefaultedList.ofSize(8, 1F);
 	public int hookedAge = 0;
 	public HookBlockEntity(BlockPos pos, BlockState state) {
 		super(LegemetonBlockEntityTypes.HOOK, pos, state);
@@ -48,7 +66,7 @@ public class HookBlockEntity extends BlockEntity implements Hauler {
 		}
 	}
 
-	public void onUse(PlayerEntity player, Hand hand) {
+	public ActionResult onUse(World world, BlockState state, BlockPos pos, PlayerEntity player, Hand hand) {
 		if(hand == Hand.MAIN_HAND){
 			Hauler.of(player).ifPresent(hauler -> {
 				if(hauler.getCorpseEntity() != null){
@@ -59,6 +77,40 @@ public class HookBlockEntity extends BlockEntity implements Hauler {
 					}
 				}
 			});
+			if(getCorpseEntity() != null && getCorpseEntity().contains(Constants.Nbt.CORPSE_ENTITY)){
+				Optional<Entity> entity = EntityType.getEntityFromNbt(getCorpseEntity().getCompound(Constants.Nbt.CORPSE_ENTITY), world);
+				if(entity.isPresent()){
+					Optional<ButcheringRecipe> optionalButcheringRecipe = world.getRecipeManager().listAllOfType(LegemetonRecipeTypes.BUTCHERING_RECIPE_RECIPE_TYPE)
+							.stream().filter(type -> type.entity_type == entity.get().getType()).findFirst();
+					if(optionalButcheringRecipe.isPresent()){
+						ButcheringRecipe butcheringRecipe = optionalButcheringRecipe.get();
+						DefaultedList<Pair<ItemStack, Float>> outputsWithChance = butcheringRecipe.getOutputs();
+						if(craftRecipe(outputsWithChance)){
+							return ActionResult.CONSUME;
+						}
+					}
+				}
+			}
+		}
+		return ActionResult.PASS;
+	}
+
+	public boolean craftRecipe(DefaultedList<Pair<ItemStack, Float>> outputs) {
+		if (this.world == null) {
+			return false;
+		} else if (outputs == null) {
+			return false;
+		} else if (outputs.isEmpty()) {
+			return false;
+		} else {
+			List<ItemStack> itemStackList = outputs.stream().map(Pair::getFirst).toList();
+			List<Float> chanceList = outputs.stream().map(Pair::getSecond).toList();
+			DefaultedList<ItemStack> defaultedList = DefaultedList.copyOf(ItemStack.EMPTY, itemStackList.toArray(new ItemStack[0]));
+			DefaultedList<Float> defaultedList2 = DefaultedList.copyOf(1F, chanceList.toArray(new Float[0]));
+
+			this.outputs = defaultedList;
+			this.chances = defaultedList2;
+			return true;
 		}
 	}
 
@@ -100,6 +152,21 @@ public class HookBlockEntity extends BlockEntity implements Hauler {
 	@Override
 	protected void writeNbt(NbtCompound nbt) {
 		super.writeNbt(nbt);
+		NbtList nbtList = new NbtList();
+		if(outputs != null){
+			for(int i = 0; i < outputs.size(); ++i) {
+				ItemStack itemStack = outputs.get(i);
+				if (!itemStack.isEmpty()) {
+					NbtCompound nbtCompound = new NbtCompound();
+					nbtCompound.putByte("Slot", (byte)i);
+					itemStack.writeNbt(nbtCompound);
+					nbtCompound.putFloat("Chance", i);
+					nbtList.add(nbtCompound);
+				}
+			}
+			nbt.put("Items", nbtList);
+		}
+
 		nbt.putInt(Constants.Nbt.HOOKED_AGE, this.hookedAge);
 		if(!storedCorpseNbt.isEmpty()){
 			nbt.put(Constants.Nbt.CORPSE_ENTITY, getCorpseEntity());
@@ -109,6 +176,16 @@ public class HookBlockEntity extends BlockEntity implements Hauler {
 	@Override
 	public void readNbt(NbtCompound nbt) {
 		super.readNbt(nbt);
+		NbtList nbtList = nbt.getList("Items", NbtElement.COMPOUND_TYPE);
+		for(int i = 0; i < nbtList.size(); ++i) {
+			NbtCompound nbtCompound = nbtList.getCompound(i);
+			int j = nbtCompound.getByte("Slot") & 255;
+			if (j < outputs.size()) {
+				outputs.set(j, ItemStack.fromNbt(nbtCompound));
+			}
+			chances.set(j, nbtCompound.getFloat("Chance"));
+		}
+
 		this.hookedAge = nbt.getInt(Constants.Nbt.HOOKED_AGE);
 		setCorpse(nbt.getCompound(Constants.Nbt.CORPSE_ENTITY));
 	}
