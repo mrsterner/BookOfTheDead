@@ -1,28 +1,58 @@
-# Quilt Template Mod
+<div align="center">
 
-The official Quilt template Mod. You can use it as a template for your own mods!
+<img alt="The Legemeton Icon" src="src/main/resources/assets/legemeton/icon.png" width="128">
 
-## Usage
+# The Legemeton
 
-In order to use this mod as a template:
+<!-- todo: replace 494721 with your CurseForge project id -->
+[![Release](https://img.shields.io/github/v/release/mrsterner/TheLegemeton?style=for-the-badge&include_prereleases&sort=semver)][releases]
+[![Available For](https://img.shields.io/badge/dynamic/json?label=Available%20For&style=for-the-badge&color=34aa2f&query=gameVersionLatestFiles%5B0%5D.gameVersion&url=https%3A%2F%2Faddons-ecs.forgesvc.net%2Fapi%2Fv2%2Faddon%2F494721)][curseforge]
+[![Downloads](https://img.shields.io/badge/dynamic/json?label=Downloads&style=for-the-badge&color=f16436&query=downloadCount&url=https%3A%2F%2Faddons-ecs.forgesvc.net%2Fapi%2Fv2%2Faddon%2F494721)][curseforge:files]
+</div>
 
-1. Create a new repository from this template with `Use this template`
-2. Clone the recently-created repo on your PC
-3. Make the necessary changes in order to make it yours:
-    - Update `gradle.properties` in order to use your Maven group and mod ID
-        - If you don't know which Maven group to use, and you are planning to host the mod's source code on GitHub, use `io.github.<Your_Username_Here>`
-    - Update `quilt.mod.json` in order to reflect your mod's metadata
-        - If you are planning to include (jar-in-jar) a mod, don't forget to declare its dependency on it!
-        - The icon provided here is a placeholder one. If you aren't able to replace it yet, you can delete it and remove the "icon" property
-    - Create a LICENSE file for this mod! If you don't know which license to use, check out [here](https://choosealicense.com/).
-        - In `quilt.mod.json`, don't forget to put the license's [SPDX identifier](https://spdx.org/licenses/) under the `"license"` property in `"metadata"`.
-        - The GPLv3 and AGPLv3 are not valid mod licenses, so you can use almost any license except for those.
-    - Update the Java sub-directory structure so it reflects your Maven group
-    - If the dependencies on `gradle/libs.versions.toml` isn't up-to-date, feel free to update them! The [linked utility](https://lambdaurora.dev/tools/import_quilt.html) should help you in this easy and quick process.
-4. The mod is now ready to be worked on!
 
-## License
 
-This template on the QuiltMC GitHub is licensed under the [Creative Common Zero v1.0 license](./LICENSE-TEMPLATE.md).
+It is built on the [Quilt][quilt] mod loader and is available for modern
+versions of [Minecraft][minecraft] Java Edition.
 
-Mods created with this template are not automatically licensed under the CC0, and are not required to give any kind of credit back to QuiltMC for this template.
+# Compat
+To add butchering recipes, add entity to the butchering tag and make a recipe like example below. Up to 8 items can be added in the same recipe. chance is chance for item to actaully drop when a butchering attempt is made, values between 0 and 1, default a 1 (100%)
+```
+{
+  "type": "legemeton:butchering",
+  "entity_type": "minecraft:sheep",
+  "results": [
+    {
+      "item": "minecraft:stick",
+      "count": 1,
+      "chance": 1
+    },
+    {
+      "item": "minecraft:iron_sword",
+      "count": 1,
+      "nbt": {
+        "Damage": 240
+      },
+      "chance": 1
+    }
+  ]
+}
+
+```
+
+
+## Licence
+* Code
+    - (c) 2022  [MrSterner]
+    - [![License](https://img.shields.io/badge/License-MIT%201.0-cyan.svg?style=flat-square)](https://opensource.org/licenses/MIT)
+* Models and Textures
+    - (c) 2022  [MrSterner]
+    - [![License](https://img.shields.io/badge/License-ARR-red.svg?style=flat-square)](https://opensource.org/licenses/ARR)
+
+
+[curseforge]: https://curseforge.com/minecraft/mc-mods/legemeton/files
+[curseforge:files]: https://curseforge.com/minecraft/mc-mods/legemeton/files
+[quilt]: https://quiltmc.org/
+[minecraft]: https://minecraft.net/
+[releases]: https://github.com/mrsterner/TheLegemeton/releases
+[mrsterner]: https://github.com/mrsterner
