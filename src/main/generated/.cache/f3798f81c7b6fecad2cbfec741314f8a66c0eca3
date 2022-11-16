@@ -1,4 +1,4 @@
-// 1.19.2	2022-11-15T22:09:47.657139007	Models
+// 1.19.2	2022-11-16T03:53:53.821601957	Models
 6aa98a5b4ebc1fbcb34b937d2436c21e7d89c6d2 assets/legemeton/models/item/sliced_flesh.json
 e547a7af59c3fc2658df960234b9d845475fe802 assets/legemeton/models/item/signed_contract.json
 988ea943a3a101bca685818440ce4143a4df8784 assets/legemeton/models/item/flesh.json
@@ -11,5 +11,6 @@ d49a6da8ae4a8788bbb4a97b63dcd374c0b50cf7 assets/legemeton/models/item/bottle_of_
 c03719c940931404642137527af1ff7e51c8c2ff assets/legemeton/models/item/packet.json
 2e5fda9220b79f8dbd6bab56f059070ba227299c assets/legemeton/models/item/hook.json
 c72d3d304e2b0d63cb2cec9b994e1f2bddc1527e assets/legemeton/models/item/skin.json
+0d82ceb209159d40b47bc2447071eca64675a90d assets/legemeton/models/item/bloody_butcher_knife.json
 b376279dc68d59b305bba406cd1d5a16d81c99db assets/legemeton/models/item/legemeton.json
 ed2cd64d241761f71e751996fb9ba3e8d711fec8 assets/legemeton/models/item/rope.json

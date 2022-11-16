@@ -25,6 +25,7 @@ public class LegemetonModelProvider extends FabricModelProvider {
 		itemModelGenerator.register(LegemetonObjects.CONTRACT, Models.GENERATED);
 		itemModelGenerator.register(LegemetonObjects.PACKET, Models.GENERATED);
 		itemModelGenerator.register(LegemetonObjects.BUTCHER_KNIFE, Models.HANDHELD);
+		itemModelGenerator.register(LegemetonObjects.BLOODY_BUTCHER_KNIFE, Models.HANDHELD);
 		itemModelGenerator.register(LegemetonObjects.CAGE, Models.GENERATED);
 		itemModelGenerator.register(LegemetonObjects.HOOK, Models.GENERATED);
 		itemModelGenerator.register(LegemetonObjects.FLESH, Models.GENERATED);

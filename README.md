@@ -37,7 +37,6 @@ To add butchering recipes, add entity to the butchering tag and make a recipe li
     }
   ]
 }
-
 ```
 
 

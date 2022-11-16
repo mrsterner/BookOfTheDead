@@ -128,7 +128,7 @@ public class Legemeton implements ModInitializer {
 	}
 
 	private void onButcheredEntity(LivingEntity livingEntity, BlockPos blockPos, DamageSource source) {
-		if(source.getAttacker() instanceof PlayerEntity player && (player.getMainHandStack().isOf(LegemetonObjects.BUTCHER_KNIFE) || EnchantmentHelper.getLevel(LegemetonEnchantments.BUTCHERING, player.getMainHandStack()) != 0)){
+		if(source.getAttacker() instanceof PlayerEntity player && (player.getMainHandStack().isOf(LegemetonObjects.BUTCHER_KNIFE) || player.getMainHandStack().isOf(LegemetonObjects.BLOODY_BUTCHER_KNIFE) || EnchantmentHelper.getLevel(LegemetonEnchantments.BUTCHERING, player.getMainHandStack()) != 0)){
 			if(livingEntity.getType().isIn(Constants.Tags.BUTCHERABLE)){
 				World world = player.world;
 				CorpseEntity corpse = LegemetonEntityTypes.CORPSE_ENTITY.create(world);
