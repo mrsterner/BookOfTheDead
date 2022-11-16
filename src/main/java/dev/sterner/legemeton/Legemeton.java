@@ -1,7 +1,7 @@
 package dev.sterner.legemeton;
 
 import dev.sterner.legemeton.api.event.OnEntityDeathEvent;
-import dev.sterner.legemeton.api.interfaces.Hauler;
+import dev.sterner.legemeton.api.interfaces.IHauler;
 import dev.sterner.legemeton.common.block.RopeBlock;
 import dev.sterner.legemeton.common.entity.CorpseEntity;
 import dev.sterner.legemeton.common.registry.*;
@@ -84,7 +84,7 @@ public class Legemeton implements ModInitializer {
 
 	private ActionResult placeCorpse(PlayerEntity player, World world, Hand hand, BlockHitResult blockHitResult) {
 		if(world instanceof ServerWorld serverWorld && hand == Hand.MAIN_HAND && player.getMainHandStack().isEmpty() && player.isSneaking()){
-			Hauler.of(player).ifPresent(hauler -> {
+			IHauler.of(player).ifPresent(hauler -> {
 				if(hauler.getCorpseEntity().isEmpty()){
 					NbtCompound nbtCompound = hauler.getCorpseEntity();
 					if(nbtCompound.contains(Constants.Nbt.CORPSE_ENTITY)){
@@ -116,7 +116,7 @@ public class Legemeton implements ModInitializer {
 
 	private ActionResult onPickupCorpse(PlayerEntity player, World world, Hand hand, Entity entity, @Nullable EntityHitResult entityHitResult) {
 		if(!world.isClient() && entity instanceof CorpseEntity corpse && player.isSneaking() && player.getMainHandStack().isEmpty()){
-			Hauler.of(player).ifPresent(hauler -> {
+			IHauler.of(player).ifPresent(hauler -> {
 				if(hauler.getCorpseEntity().isEmpty()){
 					hauler.setCorpseEntity(corpse);
 					corpse.remove(Entity.RemovalReason.DISCARDED);

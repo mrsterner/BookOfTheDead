@@ -105,7 +105,6 @@ public class JarBlock extends BlockWithEntity {
 				ItemEntity itemEntity = new ItemEntity(world, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.5D, itemStack);
 				itemEntity.setToDefaultPickupDelay();
 				world.spawnEntity(itemEntity);
-				System.out.println("YAAAAAAAAAAAAAa");
 			}
 		}
 		super.onBreak(world, pos, state, player);

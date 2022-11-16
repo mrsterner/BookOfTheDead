@@ -50,6 +50,10 @@ repositories {
 	maven {
 		url "<https://maven.architectury.dev/>"
 	}
+	maven {
+		name = "TerraformersMC"
+		url = "https://maven.terraformersmc.com/"
+	}
 }
 
 dependencies {
@@ -69,7 +73,10 @@ dependencies {
 	//REI
 	modLocalRuntime "dev.architectury:architectury-fabric:6.2.46"
 	modImplementation("me.shedaniel:RoughlyEnoughItems-api-fabric:${project.rei_version}")
-	modRuntimeOnly("me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}")
+	//modRuntimeOnly("me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}")
+
+	//EMI
+	modImplementation "dev.emi:emi:${project.emi_version}"
 }
 
 processResources {

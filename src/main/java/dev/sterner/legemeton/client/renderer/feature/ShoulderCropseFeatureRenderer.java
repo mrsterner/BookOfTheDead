@@ -1,6 +1,6 @@
 package dev.sterner.legemeton.client.renderer.feature;
 
-import dev.sterner.legemeton.api.interfaces.Hauler;
+import dev.sterner.legemeton.api.interfaces.IHauler;
 import dev.sterner.legemeton.client.model.BagEntityModel;
 import dev.sterner.legemeton.common.util.Constants;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
@@ -34,7 +34,7 @@ public class ShoulderCropseFeatureRenderer extends FeatureRenderer<AbstractClien
 	@Override
 	public void render(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, AbstractClientPlayerEntity entity, float limbAngle, float limbDistance, float tickDelta, float animationProgress, float headYaw, float headPitch) {
 		matrices.push();
-		Hauler.of(entity).ifPresent(hauler -> {
+		IHauler.of(entity).ifPresent(hauler -> {
 			if(!hauler.getCorpseEntity().isEmpty()){
 				NbtCompound nbtCompound2 = hauler.getCorpseEntity();
 				EntityType.getEntityFromNbt(nbtCompound2.getCompound(Constants.Nbt.CORPSE_ENTITY), entity.world).ifPresent(type -> {

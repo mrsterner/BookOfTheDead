@@ -1,6 +1,6 @@
 package dev.sterner.legemeton.client.renderer.block;
 
-import dev.sterner.legemeton.api.interfaces.Hauler;
+import dev.sterner.legemeton.api.interfaces.IHauler;
 import dev.sterner.legemeton.common.block.HookBlock;
 import dev.sterner.legemeton.common.block.entity.HookBlockEntity;
 import dev.sterner.legemeton.common.registry.LegemetonObjects;
@@ -45,7 +45,7 @@ public class HookBlockEntityRenderer implements BlockEntityRenderer<HookBlockEnt
 	@Override
 	public void render(HookBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
 		matrices.push();
-		Hauler.of(entity).ifPresent(hauler -> {
+		IHauler.of(entity).ifPresent(hauler -> {
 			NbtCompound renderedEntity = hauler.getCorpseEntity();
 			if(renderedEntity != null && renderedEntity.contains(Constants.Nbt.CORPSE_ENTITY)){
 				EntityType.getEntityFromNbt(renderedEntity.getCompound(Constants.Nbt.CORPSE_ENTITY), entity.getWorld()).ifPresent(type -> {

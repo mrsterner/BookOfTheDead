@@ -37,5 +37,6 @@ public class LegemetonLanguageProvider extends FabricLanguageProvider {
 		builder.add(LegemetonObjects.JAR, "Jar");
 		builder.add(LegemetonObjects.ROPE, "Rope");
 		builder.add("rei.legemeton.butchering_drops", "Butchering Drops");
+		builder.add("emi.category.legemeton.butchering", "Butchering Drops");
 	}
 }

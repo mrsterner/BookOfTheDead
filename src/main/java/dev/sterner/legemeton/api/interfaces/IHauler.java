@@ -5,11 +5,11 @@ import net.minecraft.nbt.NbtCompound;
 
 import java.util.Optional;
 
-public interface Hauler {
+public interface IHauler {
 
-	static Optional<Hauler> of(Object context) {
-		if (context instanceof Hauler) {
-			return Optional.of(((Hauler) context));
+	static Optional<IHauler> of(Object context) {
+		if (context instanceof IHauler) {
+			return Optional.of(((IHauler) context));
 		}
 		return Optional.empty();
 	}

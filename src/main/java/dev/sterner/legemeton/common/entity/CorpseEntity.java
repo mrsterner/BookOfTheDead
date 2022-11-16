@@ -1,6 +1,6 @@
 package dev.sterner.legemeton.common.entity;
 
-import dev.sterner.legemeton.api.interfaces.Hauler;
+import dev.sterner.legemeton.api.interfaces.IHauler;
 import dev.sterner.legemeton.common.util.Constants;
 import net.minecraft.entity.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
@@ -16,7 +16,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
 
-public class CorpseEntity extends PathAwareEntity implements Hauler {
+public class CorpseEntity extends PathAwareEntity implements IHauler {
 	public LivingEntity storedCorpseEntity;
 
 	public CorpseEntity(EntityType<? extends PathAwareEntity> entityType, World world) {

@@ -1,7 +1,7 @@
 package dev.sterner.legemeton.common.block.entity;
 
 import com.mojang.datafixers.util.Pair;
-import dev.sterner.legemeton.api.interfaces.Hauler;
+import dev.sterner.legemeton.api.interfaces.IHauler;
 import dev.sterner.legemeton.common.recipe.ButcheringRecipe;
 import dev.sterner.legemeton.common.registry.LegemetonBlockEntityTypes;
 import dev.sterner.legemeton.common.registry.LegemetonRecipeTypes;
@@ -31,7 +31,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Optional;
 
-public class HookBlockEntity extends BlockEntity implements Hauler {
+public class HookBlockEntity extends BlockEntity implements IHauler {
 	public NbtCompound storedCorpseNbt = new NbtCompound();
 	public DefaultedList<ItemStack> outputs = DefaultedList.ofSize(8, ItemStack.EMPTY);
 	public DefaultedList<Float> chances  = DefaultedList.ofSize(8, 1F);
@@ -64,7 +64,7 @@ public class HookBlockEntity extends BlockEntity implements Hauler {
 
 	public ActionResult onUse(World world, BlockState state, BlockPos pos, PlayerEntity player, Hand hand) {
 		if(hand == Hand.MAIN_HAND){
-			Hauler.of(player).ifPresent(hauler -> {
+			IHauler.of(player).ifPresent(hauler -> {
 				if(hauler.getCorpseEntity() != null){
 					NbtCompound nbtCompound = hauler.getCorpseEntity();
 					if(!nbtCompound.isEmpty()){

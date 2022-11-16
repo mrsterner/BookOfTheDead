@@ -23,7 +23,9 @@
 			"client_init": "dev.sterner.legemeton.LegemetonClient",
 			"fabric-datagen": "dev.sterner.legemeton.data.LegemetonDataGen",
 			"mm:early_risers":"dev.sterner.legemeton.common.asm.LegemetonEarlyRiser",
-			"rei_client": "dev.sterner.legemeton.client.integration.rei.LegemetonREIPlugin"
+			"rei_client": "dev.sterner.legemeton.client.integration.rei.LegemetonREIPlugin",
+			"emi": "dev.sterner.legemeton.client.integration.emi.LegemetonEMIPlugin"
+
 		},
 		"depends": [
 			{

@@ -1,6 +1,6 @@
 package dev.sterner.legemeton.mixin;
 
-import dev.sterner.legemeton.api.interfaces.Hauler;
+import dev.sterner.legemeton.api.interfaces.IHauler;
 import dev.sterner.legemeton.common.util.Constants;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(PlayerEntity.class)
-public abstract class PlayerEntityMixin extends LivingEntity implements Hauler  {
+public abstract class PlayerEntityMixin extends LivingEntity implements IHauler {
 	@Unique
 	public LivingEntity storedCorpseEntity;
 
