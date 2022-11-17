@@ -56,6 +56,10 @@ repositories {
 	}
 	jcenter()
 	maven { url "https://api.modrinth.com/maven" }
+	maven {
+		name "reach entity attributes"
+		url "https://maven.jamieswhiteshirt.com/libs-release"
+	}
 }
 
 dependencies {
@@ -81,6 +85,10 @@ dependencies {
 
 	//EMI
 	modImplementation "dev.emi:emi:${project.emi_version}"
+
+	//Reach
+	modImplementation "com.jamieswhiteshirt:reach-entity-attributes:${project.reach_entity_attributes_version}"
+	include "com.jamieswhiteshirt:reach-entity-attributes:${project.reach_entity_attributes_version}"
 }
 
 processResources {
