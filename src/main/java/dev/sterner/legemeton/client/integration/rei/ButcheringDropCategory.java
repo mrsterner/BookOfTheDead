@@ -1,7 +1,5 @@
-package dev.sterner.legemeton.client.integration.rei.category;
+package dev.sterner.legemeton.client.integration.rei;
 
-import dev.sterner.legemeton.client.integration.rei.LegemetonREIPlugin;
-import dev.sterner.legemeton.client.integration.rei.display.ButcheringDropDisplay;
 import dev.sterner.legemeton.common.registry.LegemetonObjects;
 import dev.sterner.legemeton.common.util.Constants;
 import dev.sterner.legemeton.common.util.RenderUtils;
@@ -12,27 +10,18 @@ import me.shedaniel.rei.api.client.gui.widgets.Widget;
 import me.shedaniel.rei.api.client.gui.widgets.Widgets;
 import me.shedaniel.rei.api.client.registry.display.DisplayCategory;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
-import me.shedaniel.rei.api.common.entry.EntryIngredient;
 import me.shedaniel.rei.api.common.entry.EntryStack;
 import me.shedaniel.rei.api.common.util.EntryIngredients;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawableHelper;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.entity.EntityRenderDispatcher;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Quaternion;
-import net.minecraft.util.math.Vec3f;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class ButcheringDropCategory implements DisplayCategory<ButcheringDropDisplay> {
 	public static final Text TITLE = Text.translatable("rei.legemeton.butchering_drops");

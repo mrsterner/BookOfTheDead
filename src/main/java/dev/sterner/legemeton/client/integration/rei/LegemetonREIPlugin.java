@@ -1,7 +1,5 @@
 package dev.sterner.legemeton.client.integration.rei;
 
-import dev.sterner.legemeton.client.integration.rei.category.ButcheringDropCategory;
-import dev.sterner.legemeton.client.integration.rei.display.ButcheringDropDisplay;
 import dev.sterner.legemeton.common.recipe.ButcheringRecipe;
 import dev.sterner.legemeton.common.util.Constants;
 import me.shedaniel.rei.api.client.plugins.REIClientPlugin;

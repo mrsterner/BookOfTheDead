@@ -1,0 +1,14 @@
+{
+  "parent": "item/handheld",
+  "base": {
+    "parent": "legemeton:item/all_black_handheld"
+  },
+  "perspectives": {
+    "gui": {
+      "parent": "legemeton:item/all_black_gui"
+    },
+    "fixed": {
+      "parent": "legemeton:item/all_black_gui"
+    }
+  }
+}

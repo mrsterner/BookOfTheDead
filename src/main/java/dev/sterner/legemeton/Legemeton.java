@@ -1,13 +1,16 @@
 package dev.sterner.legemeton;
 
+import dev.sterner.legemeton.api.enums.HorizontalDoubleBlockHalf;
 import dev.sterner.legemeton.api.event.OnEntityDeathEvent;
 import dev.sterner.legemeton.api.interfaces.IHauler;
+import dev.sterner.legemeton.common.block.NecroTableBlock;
 import dev.sterner.legemeton.common.block.RopeBlock;
 import dev.sterner.legemeton.common.entity.CorpseEntity;
 import dev.sterner.legemeton.common.registry.*;
 import dev.sterner.legemeton.common.util.Constants;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
+import net.minecraft.block.Blocks;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -48,6 +51,33 @@ public class Legemeton implements ModInitializer {
 		UseBlockCallback.EVENT.register(this::placeCorpse);
 		UseBlockCallback.EVENT.register(this::extendRope);
 		UseBlockCallback.EVENT.register(this::placeHook);
+		UseBlockCallback.EVENT.register(this::createNecroTable);
+	}
+
+	private ActionResult createNecroTable(PlayerEntity player, World world, Hand hand, BlockHitResult blockHitResult) {
+		if(!world.isClient() && player.getMainHandStack().isOf(LegemetonObjects.LEGEMETON) && hand == Hand.MAIN_HAND){
+			BlockPos blockPos = blockHitResult.getBlockPos();
+			if(world.getBlockState(blockPos).isOf(Blocks.DEEPSLATE_TILES)){
+				BlockPos left = blockPos.offset(player.getHorizontalFacing().rotateYCounterclockwise());
+				BlockPos right = blockPos.offset(player.getHorizontalFacing().rotateYClockwise());
+
+				if(world.getBlockState(left).isOf(Blocks.DEEPSLATE_TILES)){
+					world.setBlockState(blockPos, LegemetonObjects.NECRO_TABLE.getDefaultState().with(NecroTableBlock.HHALF, HorizontalDoubleBlockHalf.RIGHT).with(FACING, player.getHorizontalFacing()));
+					world.setBlockState(left, LegemetonObjects.NECRO_TABLE.getDefaultState().with(NecroTableBlock.HHALF, HorizontalDoubleBlockHalf.LEFT).with(FACING, player.getHorizontalFacing()));
+				}else if(world.getBlockState(right).isOf(Blocks.DEEPSLATE_TILES)){
+					world.setBlockState(blockPos, LegemetonObjects.NECRO_TABLE.getDefaultState().with(NecroTableBlock.HHALF, HorizontalDoubleBlockHalf.LEFT).with(FACING, player.getHorizontalFacing()));
+					world.setBlockState(right, LegemetonObjects.NECRO_TABLE.getDefaultState().with(NecroTableBlock.HHALF, HorizontalDoubleBlockHalf.RIGHT).with(FACING, player.getHorizontalFacing()));
+				}else {
+					return ActionResult.PASS;
+				}
+				if(!player.isCreative()){
+					player.getMainHandStack().decrement(1);
+				}
+
+				return ActionResult.CONSUME;
+			}
+		}
+		return ActionResult.PASS;
 	}
 
 	private ActionResult placeHook(PlayerEntity player, World world, Hand hand, BlockHitResult blockHitResult) {

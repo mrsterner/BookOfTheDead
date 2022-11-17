@@ -30,6 +30,7 @@ public class LegemetonLanguageProvider extends FabricLanguageProvider {
 		builder.add(LegemetonObjects.FLESH, "Flesh");
 		builder.add(LegemetonObjects.CAGE, "Cage");
 		builder.add(LegemetonObjects.HOOK, "Hook");
+		builder.add(LegemetonObjects.ALL_BLACK, "All-Black");
 
 		builder.add(LegemetonEnchantments.BUTCHERING, "Butchering");
 

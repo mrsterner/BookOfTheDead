@@ -2,10 +2,13 @@ package dev.sterner.legemeton.common.registry;
 
 import dev.sterner.legemeton.common.block.HookBlock;
 import dev.sterner.legemeton.common.block.JarBlock;
+import dev.sterner.legemeton.common.block.NecroTableBlock;
 import dev.sterner.legemeton.common.block.RopeBlock;
+import dev.sterner.legemeton.common.item.AllBlackSwordItem;
 import dev.sterner.legemeton.common.item.LegemetonItem;
 import dev.sterner.legemeton.common.util.Constants;
 import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.Material;
 import net.minecraft.item.*;
 import net.minecraft.sound.BlockSoundGroup;
@@ -29,6 +32,8 @@ public class LegemetonObjects {
 	public static final Item CAGE = register("cage", new Item(settings()));
 	public static final Item HOOK = register("hook", new Item(settings()));
 
+	public static final Item ALL_BLACK = register("all_black", new AllBlackSwordItem(ToolMaterials.NETHERITE, 8, -2, settings()));
+
 	public static final Item FLESH = register("flesh", new Item(settings().food(FoodComponents.COOKED_CHICKEN)));
 
 	public static final Item SLICED_FLESH = register("sliced_flesh", new Item(settings().food(FoodComponents.PORKCHOP)));
@@ -40,6 +45,7 @@ public class LegemetonObjects {
 	public static final Block ROPE = register("rope", new RopeBlock(QuiltBlockSettings.of(Material.WOOL).strength(0.2F)), settings(), true);
 	public static final Block HOOK_BLOCK = register("hook_block", new HookBlock(QuiltBlockSettings.of(Material.WOOL).strength(0.2F)), settings(), false);
 	public static final Block JAR = register("jar", new JarBlock(QuiltBlockSettings.of(Material.GLASS).strength(0.3F).sounds(BlockSoundGroup.GLASS)), settings(),true);
+	public static final Block NECRO_TABLE = register("necro", new NecroTableBlock(QuiltBlockSettings.copy(Blocks.DEEPSLATE)), settings(),false);
 
 	private static Item.Settings settings() {
 		return new Item.Settings().group(Constants.LEGEMETON_GROUP);

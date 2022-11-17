@@ -31,7 +31,7 @@ public class LegemetonItem extends Item {
 	@Override
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
 		Book book = getBook();
-		if (player instanceof ServerPlayerEntity) {
+		if (player instanceof ServerPlayerEntity && !player.isSneaking()) {
 			PatchouliAPI.get().openBookGUI((ServerPlayerEntity) player, book.id);
 			SoundEvent sfx = PatchouliSounds.getSound(book.openSound, PatchouliSounds.BOOK_OPEN);
 			player.playSound(sfx, 1.0F, (float) (0.7D + Math.random() * 0.4D));

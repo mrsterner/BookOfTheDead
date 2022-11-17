@@ -7,9 +7,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.util.math.Quaternion;
 import net.minecraft.util.math.Vec3f;
 import org.jetbrains.annotations.Nullable;
@@ -69,5 +67,4 @@ public class RenderUtils {
 		RenderSystem.applyModelViewMatrix();
 		DiffuseLighting.setup3DGuiLighting();
 	}
-
 }

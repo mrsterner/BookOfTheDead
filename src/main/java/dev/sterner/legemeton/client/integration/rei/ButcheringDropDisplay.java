@@ -1,4 +1,4 @@
-package dev.sterner.legemeton.client.integration.rei.display;
+package dev.sterner.legemeton.client.integration.rei;
 
 import com.mojang.datafixers.util.Pair;
 import dev.sterner.legemeton.client.integration.rei.LegemetonREIPlugin;
@@ -8,11 +8,9 @@ import me.shedaniel.rei.api.common.display.Display;
 import me.shedaniel.rei.api.common.entry.EntryIngredient;
 import me.shedaniel.rei.api.common.util.EntryIngredients;
 import net.minecraft.entity.EntityType;
-import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.collection.DefaultedList;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 

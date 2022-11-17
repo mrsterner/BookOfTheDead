@@ -54,6 +54,8 @@ repositories {
 		name = "TerraformersMC"
 		url = "https://maven.terraformersmc.com/"
 	}
+	jcenter()
+	maven { url "https://api.modrinth.com/maven" }
 }
 
 dependencies {
@@ -62,6 +64,8 @@ dependencies {
 	modImplementation libs.quilt.loader
 
 	modImplementation libs.quilted.fabric.api
+
+	modImplementation libs.satin
 
 	//Fabric ASM
 	modImplementation 'com.github.Chocohead:Fabric-ASM:v2.3'

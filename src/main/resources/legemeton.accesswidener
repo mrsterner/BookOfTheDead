@@ -5,3 +5,9 @@ accessible      field net/minecraft/client/render/entity/EntityRenderDispatcher 
 accessible      field net/minecraft/client/render/entity/EntityRenderDispatcher     modelRenderers Ljava/util/Map;
 accessible      class net/minecraft/client/particle/BlockLeakParticle
 accessible      class net/minecraft/client/particle/BlockLeakParticle$ContinuousFalling
+accessible      method  net/minecraft/client/render/RenderLayer$MultiPhase            getPhases            ()Lnet/minecraft/client/render/RenderLayer$MultiPhaseParameters;
+accessible      class   net/minecraft/client/render/RenderLayer$MultiPhase
+accessible      class   net/minecraft/client/render/RenderLayer$MultiPhaseParameters
+accessible      method  net/minecraft/client/render/RenderLayer$MultiPhase            getPhases            ()Lnet/minecraft/client/render/RenderLayer$MultiPhaseParameters;
+accessible      field   net/minecraft/client/render/RenderLayer$MultiPhaseParameters  texture              Lnet/minecraft/client/render/RenderPhase$TextureBase;
+accessible      method  net/minecraft/client/render/RenderPhase$TextureBase           getId                ()Ljava/util/Optional;

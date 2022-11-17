@@ -9,8 +9,10 @@
     "PlayerEntityMixin"
   ],
   "client": [
+    "BufferBuilderStorageMixin",
     "ContinuousFallingParticleMixin",
     "DrippingParticleMixin",
+    "ItemRendererMixin",
     "PlayerEntityRendererMixin",
     "TexturedRenderLayersMixin"
   ],

@@ -3,14 +3,12 @@ package dev.sterner.legemeton.client.integration.emi;
 import dev.emi.emi.api.EmiPlugin;
 import dev.emi.emi.api.EmiRegistry;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
-import dev.emi.emi.api.render.EmiTexture;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.sterner.legemeton.common.recipe.ButcheringRecipe;
 import dev.sterner.legemeton.common.registry.LegemetonObjects;
 import dev.sterner.legemeton.common.registry.LegemetonRecipeTypes;
 import dev.sterner.legemeton.common.util.Constants;
 import net.minecraft.recipe.RecipeManager;
-import net.minecraft.util.Identifier;
 
 public class LegemetonEMIPlugin implements EmiPlugin {
 	private static final EmiStack ICON = EmiStack.of(LegemetonObjects.BLOODY_BUTCHER_KNIFE);

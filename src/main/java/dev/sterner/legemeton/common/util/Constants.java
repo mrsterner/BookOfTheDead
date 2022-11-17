@@ -43,5 +43,6 @@ public class Constants {
 		public static final String CORPSE_ENTITY = "CorpseEntity";
         public static final String HOOKED_AGE = "HookedAge";
         public static final String BLOOD_LEVEL = "BloodLevel";
+        public static final String ALL_BLACK = "AllBlack";
     }
 }
