@@ -2,9 +2,13 @@ package dev.sterner.legemeton.common.block;
 
 import com.google.common.collect.ImmutableList;
 import dev.sterner.legemeton.api.enums.HorizontalDoubleBlockHalf;
+import dev.sterner.legemeton.common.block.entity.HookBlockEntity;
+import dev.sterner.legemeton.common.block.entity.JarBlockEntity;
 import dev.sterner.legemeton.common.block.entity.NecroTableBlockEntity;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
@@ -15,6 +19,9 @@ import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.Properties;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
@@ -70,6 +77,22 @@ public class NecroTableBlock extends Block implements BlockEntityProvider {
 				.with(FACING, Direction.NORTH)
 				.with(HHALF, HorizontalDoubleBlockHalf.RIGHT)
 				.with(LIT, Boolean.FALSE);
+	}
+
+	@Nullable
+	@Override
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+		return (tickerWorld, pos, tickerState, blockEntity) -> NecroTableBlockEntity.tick(tickerWorld, pos, tickerState, (NecroTableBlockEntity) blockEntity);
+	}
+
+	@Override
+	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+		if (!world.isClient()) {
+			if(world.getBlockEntity(pos) instanceof NecroTableBlockEntity necroTableBlockEntity){
+				return necroTableBlockEntity.onUse(world, state, pos, player, hand);
+			}
+		}
+		return super.onUse(state, world, pos, player, hand, hit);
 	}
 
 	@Override

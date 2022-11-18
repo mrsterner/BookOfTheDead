@@ -44,5 +44,9 @@ public class Constants {
         public static final String HOOKED_AGE = "HookedAge";
         public static final String BLOOD_LEVEL = "BloodLevel";
         public static final String ALL_BLACK = "AllBlack";
-    }
+        public static final String HAS_LEGEMETON = "HasLegemeton";
+		public static final String HAS_EMERALD_TABLET = "HasEmeraldTablet";
+		public static final String NECRO_RITUAL = "NecroRitual";
+		public static final String TIMER = "Timer";
+	}
 }
