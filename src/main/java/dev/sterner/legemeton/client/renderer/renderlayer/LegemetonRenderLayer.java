@@ -3,17 +3,22 @@ package dev.sterner.legemeton.client.renderer.renderlayer;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormats;
-import dev.sterner.legemeton.common.item.AllBlackSwordItem;
 import dev.sterner.legemeton.common.registry.LegemetonObjects;
 import dev.sterner.legemeton.common.util.Constants;
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
+import ladysnake.satin.mixin.client.render.RenderLayerAccessor;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.RenderPhase;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.Util;
 
-public class AllBlackRenderLayer extends RenderLayer {
+import java.util.function.BiFunction;
+import java.util.function.Function;
+
+public class LegemetonRenderLayer extends RenderLayer {
 	private static final ThreadLocal<ItemStack> targetStack = new ThreadLocal<>();
 
 	public static void setTargetStack(ItemStack stack) {
@@ -22,13 +27,13 @@ public class AllBlackRenderLayer extends RenderLayer {
 
 	public static boolean checkAllBlack() {
 		ItemStack target = targetStack.get();
-		return target != null && !target.isEmpty() && (target.isOf(LegemetonObjects.ALL_BLACK) || target.isOf(LegemetonObjects.NECROSWORD));
+		return target != null && !target.isEmpty() && (target.isOf(LegemetonObjects.ALL_BLACK));
 	}
 
-	public static RenderLayer glintColor = AllBlackRenderLayer.buildGlintRenderLayer();
-	public static RenderLayer glintDirectColor = AllBlackRenderLayer.buildGlintDirectRenderLayer();
+	public static RenderLayer glintColor = LegemetonRenderLayer.buildGlintRenderLayer();
+	public static RenderLayer glintDirectColor = LegemetonRenderLayer.buildGlintDirectRenderLayer();
 
-	public AllBlackRenderLayer(String name, VertexFormat vertexFormat, VertexFormat.DrawMode drawMode, int expectedBufferSize, boolean hasCrumbling, boolean translucent, Runnable startAction, Runnable endAction) {
+	public LegemetonRenderLayer(String name, VertexFormat vertexFormat, VertexFormat.DrawMode drawMode, int expectedBufferSize, boolean hasCrumbling, boolean translucent, Runnable startAction, Runnable endAction) {
 		super(name, vertexFormat, drawMode, expectedBufferSize, hasCrumbling, translucent, startAction, endAction);
 	}
 
@@ -42,6 +47,20 @@ public class AllBlackRenderLayer extends RenderLayer {
 				map.put(renderLayer, new BufferBuilder(renderLayer.getExpectedBufferSize()));
 			}
 	}
+
+	public static RenderLayer get(Identifier texture) {
+		RenderLayer.MultiPhaseParameters multiPhaseParameters =
+				RenderLayer.MultiPhaseParameters.builder()
+						.texture(new RenderPhase.Texture(texture, false, false))
+						.transparency(Transparency.TRANSLUCENT_TRANSPARENCY)
+						.cull(DISABLE_CULLING)
+						.lightmap(ENABLE_LIGHTMAP)
+						.overlay(DISABLE_OVERLAY_COLOR)
+						.layering(VIEW_OFFSET_Z_LAYERING)
+						.shader(ENERGY_SWIRL_SHADER).build(true);
+		return RenderLayerAccessor.satin$of("glowing", VertexFormats.POSITION_COLOR_TEXTURE_OVERLAY_LIGHT_NORMAL, VertexFormat.DrawMode.QUADS, 256, false, false, multiPhaseParameters);
+	}
+
 
 	private static RenderLayer buildGlintRenderLayer() {
 		return RenderLayer.of("glint_black", VertexFormats.POSITION_TEXTURE, VertexFormat.DrawMode.QUADS, 256, MultiPhaseParameters.builder()
@@ -69,11 +88,11 @@ public class AllBlackRenderLayer extends RenderLayer {
 
 	@Environment(EnvType.CLIENT)
 	public static RenderLayer getGlint() {
-		return checkAllBlack() ? AllBlackRenderLayer.glintColor : RenderLayer.getGlint();
+		return checkAllBlack() ? LegemetonRenderLayer.glintColor : RenderLayer.getGlint();
 	}
 
 	@Environment(EnvType.CLIENT)
 	public static RenderLayer getGlintDirect() {
-		return checkAllBlack() ? AllBlackRenderLayer.glintDirectColor : RenderLayer.getDirectGlint();
+		return checkAllBlack() ? LegemetonRenderLayer.glintDirectColor : RenderLayer.getDirectGlint();
 	}
 }

@@ -1,7 +1,11 @@
 package dev.sterner.legemeton.client.renderer.block;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import dev.sterner.legemeton.LegemetonClient;
 import dev.sterner.legemeton.api.enums.HorizontalDoubleBlockHalf;
+import dev.sterner.legemeton.client.model.JarEntityModel;
+import dev.sterner.legemeton.client.model.LargeCircleEntityModel;
+import dev.sterner.legemeton.client.renderer.renderlayer.LegemetonRenderLayer;
 import dev.sterner.legemeton.common.block.NecroTableBlock;
 import dev.sterner.legemeton.common.block.entity.NecroTableBlockEntity;
 import dev.sterner.legemeton.common.util.Constants;
@@ -16,12 +20,15 @@ import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.World;
 
 public class NecroTableBlockEntityRenderer<T extends BlockEntity> implements BlockEntityRenderer<T> {
 	public static final EntityModelLayer LAYER_LOCATION = new EntityModelLayer(Constants.id("necro_model"), "main");
 	private final Identifier TEXTURE = Constants.id("textures/entity/necro_table.png");
+	private final Identifier CIRCLE_TEXTURE = Constants.id("textures/entity/circle.png");
+	private final LargeCircleEntityModel jarEntityModel =  new LargeCircleEntityModel<>(LargeCircleEntityModel.createBodyLayer().createModel());
 	private final ModelPart base;
 	private final ModelPart book;
 	private final ModelPart candle;
@@ -51,6 +58,8 @@ public class NecroTableBlockEntityRenderer<T extends BlockEntity> implements Blo
 		if(world != null){
 			BlockState blockState = entity.getCachedState();
 			if(entity instanceof NecroTableBlockEntity necroTableBlockEntity && blockState.get(NecroTableBlock.HHALF) == HorizontalDoubleBlockHalf.RIGHT){
+
+
 				matrices.push();
 				float f = blockState.get(NecroTableBlock.FACING).asRotation();
 				Direction direction = blockState.get(NecroTableBlock.FACING);
@@ -72,11 +81,31 @@ public class NecroTableBlockEntityRenderer<T extends BlockEntity> implements Blo
 				}
 
 
-
+				if(necroTableBlockEntity.hasEmeraldTablet || true){
+					renderTablet(matrices, vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(TEXTURE)), light, overlay);
+				}
+				if(necroTableBlockEntity.hasLegemeton || true){
+					renderBook(matrices, vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(TEXTURE)), light, overlay);
+				}
 				render(matrices, vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(TEXTURE)), light, overlay);
+				matrices.pop();
+
+				matrices.push();
+				matrices.translate(1,-1.25,3.5);
+				final float rotationModifier = 4F;
+				double ticks = (LegemetonClient.ClientTickHandler.ticksInGame + tickDelta) * 0.5;
+				float deg =  (float) (ticks / rotationModifier % 360F);
+				matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(MathHelper.sin(deg) / (float) Math.PI));
+				matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(MathHelper.cos(deg) / (float) Math.PI));
+				renderCircleLarge(matrices, vertexConsumers.getBuffer(LegemetonRenderLayer.get(CIRCLE_TEXTURE)), light, overlay);
+
 				matrices.pop();
 			}
 		}
+	}
+
+	private void renderCircleLarge(MatrixStack matrices, VertexConsumer buffer, int light, int overlay) {
+		jarEntityModel.render(matrices, buffer, light, overlay, 1,1,1,1);
 	}
 
 

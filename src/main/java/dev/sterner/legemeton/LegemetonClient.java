@@ -2,6 +2,7 @@ package dev.sterner.legemeton;
 
 import dev.sterner.legemeton.client.model.BagEntityModel;
 import dev.sterner.legemeton.client.model.JarEntityModel;
+import dev.sterner.legemeton.client.model.LargeCircleEntityModel;
 import dev.sterner.legemeton.client.renderer.block.HookBlockEntityRenderer;
 import dev.sterner.legemeton.client.renderer.block.JarBlockEntityRenderer;
 import dev.sterner.legemeton.client.renderer.block.NecroTableBlockEntityRenderer;
@@ -14,6 +15,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.item.Item;
@@ -23,6 +25,7 @@ import net.minecraft.util.registry.Registry;
 import org.quiltmc.loader.api.ModContainer;
 import org.quiltmc.qsl.base.api.entrypoint.client.ClientModInitializer;
 import org.quiltmc.qsl.block.extensions.api.client.BlockRenderLayerMap;
+import org.quiltmc.qsl.lifecycle.api.client.event.ClientTickEvents;
 import org.quiltmc.qsl.resource.loader.api.ResourceLoader;
 
 public class LegemetonClient implements ClientModInitializer {
@@ -43,10 +46,11 @@ public class LegemetonClient implements ClientModInitializer {
 		EntityModelLayerRegistry.registerModelLayer(BagEntityModel.LAYER_LOCATION, BagEntityModel::createBodyLayer);
 		EntityModelLayerRegistry.registerModelLayer(JarEntityModel.LAYER_LOCATION, JarEntityModel::createBodyLayer);
 		EntityModelLayerRegistry.registerModelLayer(NecroTableBlockEntityRenderer.LAYER_LOCATION, NecroTableBlockEntityRenderer::createBodyLayer);
+		EntityModelLayerRegistry.registerModelLayer(LargeCircleEntityModel.LAYER_LOCATION, LargeCircleEntityModel::createBodyLayer);
 
 		LegemetonSpriteIdentifiers.INSTANCE.addIdentifier(LegemetonSpriteIdentifiers.BLOOD);
 
-
+		ClientTickEvents.END.register(ClientTickHandler::clientTickEnd);
 
 		for (Item item : LegemetonObjects.ITEMS.keySet()) {
 			if(item instanceof AllBlackSwordItem){
@@ -59,7 +63,33 @@ public class LegemetonClient implements ClientModInitializer {
 					out.accept(new ModelIdentifier(allBlackId + "_handheld", "inventory"));
 				});
 			}
+		}
+	}
+	public static final class ClientTickHandler {
+		private ClientTickHandler() {
+		}
 
+		public static int ticksInGame = 0;
+		public static float partialTicks = 0;
+		public static float delta = 0;
+		public static float total = 0;
+
+		public static void calcDelta() {
+			float oldTotal = total;
+			total = ticksInGame + partialTicks;
+			delta = total - oldTotal;
+		}
+
+		public static void renderTick(float renderTickTime) {
+			partialTicks = renderTickTime;
+		}
+
+		public static void clientTickEnd(MinecraftClient mc) {
+			if (!mc.isPaused()) {
+				ticksInGame++;
+				partialTicks = 0;
+			}
+			calcDelta();
 		}
 	}
 }

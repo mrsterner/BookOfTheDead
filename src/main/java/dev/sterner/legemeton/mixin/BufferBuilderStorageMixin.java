@@ -1,7 +1,7 @@
 package dev.sterner.legemeton.mixin;
 
 import com.mojang.blaze3d.vertex.BufferBuilder;
-import dev.sterner.legemeton.client.renderer.renderlayer.AllBlackRenderLayer;
+import dev.sterner.legemeton.client.renderer.renderlayer.LegemetonRenderLayer;
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -18,7 +18,7 @@ public class BufferBuilderStorageMixin {
 
 	@Inject(method = "assignBufferBuilder", at = @At("HEAD"))
 	private static void addAllBlack(Object2ObjectLinkedOpenHashMap<RenderLayer, BufferBuilder> mapBuildersIn, RenderLayer renderTypeIn, CallbackInfo callbackInfo) {
-		AllBlackRenderLayer.addGlintTypes(mapBuildersIn);
+		LegemetonRenderLayer.addGlintTypes(mapBuildersIn);
 
 	}
 }

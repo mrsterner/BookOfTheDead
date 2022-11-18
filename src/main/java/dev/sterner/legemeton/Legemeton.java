@@ -115,7 +115,7 @@ public class Legemeton implements ModInitializer {
 	private ActionResult placeCorpse(PlayerEntity player, World world, Hand hand, BlockHitResult blockHitResult) {
 		if(world instanceof ServerWorld serverWorld && hand == Hand.MAIN_HAND && player.getMainHandStack().isEmpty() && player.isSneaking()){
 			IHauler.of(player).ifPresent(hauler -> {
-				if(hauler.getCorpseEntity().isEmpty()){
+				if(!hauler.getCorpseEntity().isEmpty()){
 					NbtCompound nbtCompound = hauler.getCorpseEntity();
 					if(nbtCompound.contains(Constants.Nbt.CORPSE_ENTITY)){
 						EntityType.getEntityFromNbt(nbtCompound.getCompound(Constants.Nbt.CORPSE_ENTITY), world).ifPresent(storedEntity -> {
@@ -125,7 +125,7 @@ public class Legemeton implements ModInitializer {
 							CorpseEntity corpseEntity = LegemetonEntityTypes.CORPSE_ENTITY.create(serverWorld);
 							if (corpseEntity != null && storedEntity instanceof LivingEntity storedLivingEntity) {
 								corpseEntity.setCorpseEntity(storedLivingEntity);
-								corpseEntity.refreshPositionAndAngles(player.getBlockPos(), 0, 0);
+								corpseEntity.refreshPositionAndAngles(pos, 0, 0);
 								corpseEntity.teleport(pos.getX(), pos.getY(), pos.getZ());
 								serverWorld.spawnEntity(corpseEntity);
 							}

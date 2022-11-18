@@ -48,5 +48,6 @@ public class Constants {
 		public static final String HAS_EMERALD_TABLET = "HasEmeraldTablet";
 		public static final String NECRO_RITUAL = "NecroRitual";
 		public static final String TIMER = "Timer";
+		public static final String AGE = "Age";
 	}
 }

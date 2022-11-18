@@ -26,7 +26,6 @@ public class LegemetonObjects {
 	public static final Item BUTCHER_KNIFE = register("butcher_knife", new AxeItem(ToolMaterials.NETHERITE, 6, -2, settings()));
 	public static final Item BLOODY_BUTCHER_KNIFE = register("bloody_butcher_knife", new AxeItem(ToolMaterials.NETHERITE, 6, -2, new Item.Settings()));
 	public static final Item LEGEMETON = register("legemeton", new LegemetonItem(Constants.id("legemeton"), settings()));
-	public static final Item NECROSWORD = register("necrosword", new AllBlackSwordItem(ToolMaterials.NETHERITE, 6, -2, settings(), false));
 	public static final Item ALL_BLACK = register("all_black", new AllBlackSwordItem(ToolMaterials.NETHERITE, 8, -2, settings(), true));
 
 	public static final Item CONTRACT = register("contract", new Item(settings()));
@@ -34,11 +33,10 @@ public class LegemetonObjects {
 	public static final Item PACKET = register("packet", new Item(settings()));
 	public static final Item CAGE = register("cage", new Item(settings()));
 	public static final Item HOOK = register("hook", new Item(settings()));
-
-
+	public static final Item METAL_HOOK = register("metal_hook", new Item(settings()));
+	public static final Block ROPE = register("rope", new RopeBlock(QuiltBlockSettings.of(Material.WOOL).strength(0.2F)), settings(), true);
 
 	public static final Item FLESH = register("flesh", new Item(settings().food(FoodComponents.COOKED_CHICKEN)));
-
 	public static final Item SLICED_FLESH = register("sliced_flesh", new Item(settings().food(FoodComponents.PORKCHOP)));
 	public static final Item COOKED_SLICED_FLESH = register("cooked_sliced_flesh", new Item(settings().food(FoodComponents.COOKED_PORKCHOP)));
 	public static final Item FAT = register("fat", new Item(settings()));
@@ -47,9 +45,9 @@ public class LegemetonObjects {
 
 	public static final Item QUICKSILVER = register("quicksilver", new Item(settings()));
 	public static final Item SOUL_STONE = register("soul_stone", new Item(settings()));
+	public static final Item CINNABAR = register("cinnabar", new Item(settings()));
 	public static final Item EMERALD_TABLET = register("emerald_tablet", new Item(settings()));
 
-	public static final Block ROPE = register("rope", new RopeBlock(QuiltBlockSettings.of(Material.WOOL).strength(0.2F)), settings(), true);
 	public static final Block HOOK_BLOCK = register("hook_block", new HookBlock(QuiltBlockSettings.of(Material.WOOL).strength(0.2F)), settings(), false);
 	public static final Block JAR = register("jar", new JarBlock(QuiltBlockSettings.of(Material.GLASS).strength(0.3F).sounds(BlockSoundGroup.GLASS)), settings(),true);
 	public static final Block NECRO_TABLE = register("necro", new NecroTableBlock(QuiltBlockSettings.copy(Blocks.DEEPSLATE)), settings(),false);

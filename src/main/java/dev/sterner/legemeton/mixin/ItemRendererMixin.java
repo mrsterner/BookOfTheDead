@@ -1,6 +1,6 @@
 package dev.sterner.legemeton.mixin;
 
-import dev.sterner.legemeton.client.renderer.renderlayer.AllBlackRenderLayer;
+import dev.sterner.legemeton.client.renderer.renderlayer.LegemetonRenderLayer;
 import dev.sterner.legemeton.common.item.AllBlackSwordItem;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -41,17 +41,17 @@ final class ItemRendererMixin {
 
 	@Inject(method = "renderItem(Lnet/minecraft/item/ItemStack;Lnet/minecraft/client/render/model/json/ModelTransformation$Mode;ZLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;IILnet/minecraft/client/render/model/BakedModel;)V", at = @At("HEAD"))
 	private void setAllBlack(ItemStack stack, ModelTransformation.Mode renderMode, boolean leftHanded, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, BakedModel model, CallbackInfo callbackInfo) {
-		AllBlackRenderLayer.setTargetStack(stack);
+		LegemetonRenderLayer.setTargetStack(stack);
 	}
 
 	@Redirect(method = "getItemGlintConsumer", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/RenderLayer;getGlint()Lnet/minecraft/client/render/RenderLayer;"))
 	private static RenderLayer getGlint() {
-		return AllBlackRenderLayer.getGlint();
+		return LegemetonRenderLayer.getGlint();
 	}
 
 
 	@Redirect(method = "getDirectItemGlintConsumer", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/RenderLayer;getDirectGlint()Lnet/minecraft/client/render/RenderLayer;"))
 	private static RenderLayer getGlintDirect() {
-		return AllBlackRenderLayer.getGlintDirect();
+		return LegemetonRenderLayer.getGlintDirect();
 	}
 }

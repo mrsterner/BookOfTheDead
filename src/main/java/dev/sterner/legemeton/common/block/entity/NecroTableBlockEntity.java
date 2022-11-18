@@ -31,6 +31,7 @@ public class NecroTableBlockEntity extends BlockEntity {
 	public NecrotableRitual necrotableRitual = null;
 	private boolean loaded = false;
 	private int timer = 0;
+	public long age = 0;
 	public NecroTableBlockEntity(BlockPos pos, BlockState state) {
 		super(LegemetonBlockEntityTypes.NECRO, pos, state);
 	}
@@ -41,6 +42,7 @@ public class NecroTableBlockEntity extends BlockEntity {
 				blockEntity.markDirty();
 				blockEntity.loaded = true;
 			}
+			blockEntity.age++;
 			if (blockEntity.necrotableRitual != null) {
 				blockEntity.timer++;
 				if (blockEntity.timer >= 0) {
@@ -82,6 +84,7 @@ public class NecroTableBlockEntity extends BlockEntity {
 		this.hasLegemeton = nbt.getBoolean(Constants.Nbt.HAS_LEGEMETON);
 		this.hasEmeraldTablet = nbt.getBoolean(Constants.Nbt.HAS_EMERALD_TABLET);
 		this.timer = nbt.getInt(Constants.Nbt.TIMER);
+		this.age = nbt.getLong(Constants.Nbt.AGE);
 		markDirty();
 	}
 
@@ -94,6 +97,7 @@ public class NecroTableBlockEntity extends BlockEntity {
 		nbt.putBoolean(Constants.Nbt.HAS_LEGEMETON, this.hasLegemeton);
 		nbt.putBoolean(Constants.Nbt.HAS_EMERALD_TABLET, this.hasEmeraldTablet);
 		nbt.putInt(Constants.Nbt.TIMER, this.timer);
+		nbt.putLong(Constants.Nbt.AGE, this.age);
 	}
 
 

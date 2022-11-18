@@ -28,6 +28,7 @@ public class LegemetonModelProvider extends FabricModelProvider {
 		itemModelGenerator.register(LegemetonObjects.BLOODY_BUTCHER_KNIFE, Models.HANDHELD);
 		itemModelGenerator.register(LegemetonObjects.CAGE, Models.GENERATED);
 		itemModelGenerator.register(LegemetonObjects.HOOK, Models.GENERATED);
+		itemModelGenerator.register(LegemetonObjects.METAL_HOOK, Models.GENERATED);
 		itemModelGenerator.register(LegemetonObjects.FLESH, Models.GENERATED);
 		itemModelGenerator.register(LegemetonObjects.SLICED_FLESH, Models.GENERATED);
 		itemModelGenerator.register(LegemetonObjects.COOKED_SLICED_FLESH, Models.GENERATED);
@@ -37,5 +38,6 @@ public class LegemetonModelProvider extends FabricModelProvider {
 		itemModelGenerator.register(LegemetonObjects.ROPE.asItem(), Models.GENERATED);
 		itemModelGenerator.register(LegemetonObjects.QUICKSILVER, Models.GENERATED);
 		itemModelGenerator.register(LegemetonObjects.SOUL_STONE, Models.GENERATED);
+		itemModelGenerator.register(LegemetonObjects.CINNABAR, Models.GENERATED);
 	}
 }

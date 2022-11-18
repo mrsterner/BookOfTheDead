@@ -13,6 +13,7 @@
     "ContinuousFallingParticleMixin",
     "DrippingParticleMixin",
     "ItemRendererMixin",
+    "MinecraftClientMixin",
     "PlayerEntityRendererMixin",
     "TexturedRenderLayersMixin"
   ],
