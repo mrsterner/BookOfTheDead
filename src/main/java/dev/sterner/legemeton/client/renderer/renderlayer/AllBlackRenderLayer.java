@@ -22,7 +22,7 @@ public class AllBlackRenderLayer extends RenderLayer {
 
 	public static boolean checkAllBlack() {
 		ItemStack target = targetStack.get();
-		return target != null && !target.isEmpty() && target.isOf(LegemetonObjects.ALL_BLACK);
+		return target != null && !target.isEmpty() && (target.isOf(LegemetonObjects.ALL_BLACK) || target.isOf(LegemetonObjects.NECROSWORD));
 	}
 
 	public static RenderLayer glintColor = AllBlackRenderLayer.buildGlintRenderLayer();

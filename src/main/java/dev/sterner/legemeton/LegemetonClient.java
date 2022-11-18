@@ -7,6 +7,7 @@ import dev.sterner.legemeton.client.renderer.block.JarBlockEntityRenderer;
 import dev.sterner.legemeton.client.renderer.block.NecroTableBlockEntityRenderer;
 import dev.sterner.legemeton.client.renderer.entity.CorpseEntityRenderer;
 import dev.sterner.legemeton.client.renderer.item.AllBlackSwordItemRenderer;
+import dev.sterner.legemeton.common.item.AllBlackSwordItem;
 import dev.sterner.legemeton.common.registry.*;
 import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
@@ -15,6 +16,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.util.ModelIdentifier;
+import net.minecraft.item.Item;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -44,13 +46,20 @@ public class LegemetonClient implements ClientModInitializer {
 
 		LegemetonSpriteIdentifiers.INSTANCE.addIdentifier(LegemetonSpriteIdentifiers.BLOOD);
 
-		Identifier allBlackId = Registry.ITEM.getId(LegemetonObjects.ALL_BLACK);
-		AllBlackSwordItemRenderer allBlackItemRenderer = new AllBlackSwordItemRenderer(allBlackId);
-		ResourceLoader.get(ResourceType.CLIENT_RESOURCES).registerReloader(allBlackItemRenderer);
-		BuiltinItemRendererRegistry.INSTANCE.register(LegemetonObjects.ALL_BLACK, allBlackItemRenderer);
-		ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> {
-			out.accept(new ModelIdentifier(allBlackId + "_gui", "inventory"));
-			out.accept(new ModelIdentifier(allBlackId + "_handheld", "inventory"));
-		});
+
+
+		for (Item item : LegemetonObjects.ITEMS.keySet()) {
+			if(item instanceof AllBlackSwordItem){
+				Identifier allBlackId = Registry.ITEM.getId(item);
+				AllBlackSwordItemRenderer allBlackItemRenderer = new AllBlackSwordItemRenderer(allBlackId);
+				ResourceLoader.get(ResourceType.CLIENT_RESOURCES).registerReloader(allBlackItemRenderer);
+				BuiltinItemRendererRegistry.INSTANCE.register(item, allBlackItemRenderer);
+				ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> {
+					out.accept(new ModelIdentifier(allBlackId + "_gui", "inventory"));
+					out.accept(new ModelIdentifier(allBlackId + "_handheld", "inventory"));
+				});
+			}
+
+		}
 	}
 }

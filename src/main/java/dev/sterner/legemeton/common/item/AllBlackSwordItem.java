@@ -17,11 +17,17 @@ import net.minecraft.world.World;
 
 public class AllBlackSwordItem extends SwordItem {
 	public final Multimap<EntityAttribute, EntityAttributeModifier> attributeModifiers;
-	public AllBlackSwordItem(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, Settings settings) {
+	public AllBlackSwordItem(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, Settings settings, boolean allBlack) {
 		super(toolMaterial, attackDamage, attackSpeed, settings);
 		ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.builder();
-		builder.put(ReachEntityAttributes.REACH, new EntityAttributeModifier("Attack range", 1.1D, EntityAttributeModifier.Operation.ADDITION));
-		builder.put(ReachEntityAttributes.ATTACK_RANGE, new EntityAttributeModifier("Attack range", 1.1D, EntityAttributeModifier.Operation.ADDITION));
+		if(allBlack){
+			builder.put(ReachEntityAttributes.REACH, new EntityAttributeModifier("Attack range", 1.1D, EntityAttributeModifier.Operation.ADDITION));
+			builder.put(ReachEntityAttributes.ATTACK_RANGE, new EntityAttributeModifier("Attack range", 1.1D, EntityAttributeModifier.Operation.ADDITION));
+		}else{
+			builder.put(ReachEntityAttributes.REACH, new EntityAttributeModifier("Attack range", 0.5D, EntityAttributeModifier.Operation.ADDITION));
+			builder.put(ReachEntityAttributes.ATTACK_RANGE, new EntityAttributeModifier("Attack range", 0.5D, EntityAttributeModifier.Operation.ADDITION));
+		}
+
 		this.attributeModifiers = builder.build();
 	}
 
