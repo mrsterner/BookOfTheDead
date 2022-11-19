@@ -49,5 +49,6 @@ public class Constants {
 		public static final String NECRO_RITUAL = "NecroRitual";
 		public static final String TIMER = "Timer";
 		public static final String AGE = "Age";
-	}
+        public static final String PLAYER_UUID = "PlayerUuid";
+    }
 }

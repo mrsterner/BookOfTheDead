@@ -8,6 +8,7 @@
   "entity.legemeton.corpse": "Corpse",
   "entity.legemeton.old_man": "Old Man",
   "entity.legemeton.old_man.nitwit": "Old Man",
+  "info.legemeton.door_locked": "Door Locked",
   "item.legemeton.all_black": "All-Black",
   "item.legemeton.bottle_of_blood": "Bottle of Blood",
   "item.legemeton.butcher_knife": "Butcher Knife",
@@ -28,9 +29,9 @@
   "item.legemeton.retort_flask": "Retort Flask",
   "item.legemeton.signed_contract": "Signed Contract",
   "item.legemeton.skin": "Skin",
-  "item.legemeton.soul_stone": "Soul Stone",
+  "item.legemeton.soul_gem": "Soul Gem",
   "itemGroup.legemeton.items": "The Legemeton",
   "rei.legemeton.butchering_drops": "Butchering Drops",
   "tooltip.legemeton.from_archive": "From Library Archive",
-  "tooltip.legemeton.old_friend": "Letter from an old friend"
+  "tooltip.legemeton.old_friend": "Letter to an old friend"
 }

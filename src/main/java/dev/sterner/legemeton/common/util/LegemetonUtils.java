@@ -4,11 +4,15 @@ import com.mojang.datafixers.util.Pair;
 import dev.sterner.legemeton.mixin.StructurePoolAccessor;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.recipe.Ingredient;
 import net.minecraft.structure.pool.StructurePool;
 import net.minecraft.structure.pool.StructurePoolElement;
 import net.minecraft.structure.processor.StructureProcessorLists;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class LegemetonUtils {
 	public static void addItemToInventoryAndConsume(PlayerEntity player, Hand hand, ItemStack toAdd) {
@@ -39,5 +43,20 @@ public class LegemetonUtils {
 			}
 			((StructurePoolAccessor)pool).legemeton$getElementCounts().add(Pair.of(element, weight));
 		}
+	}
+
+	public static boolean containsAllIngredients(List<Ingredient> ingredients, List<ItemStack> items) {
+		List<Integer> checkedIndexes = new ArrayList<>();
+		for (Ingredient ingredient : ingredients) {
+			for (int i = 0; i < items.size(); i++) {
+				if (!checkedIndexes.contains(i)) {
+					if (ingredient.test(items.get(i))) {
+						checkedIndexes.add(i);
+						break;
+					}
+				}
+			}
+		}
+		return checkedIndexes.size() == ingredients.size();
 	}
 }

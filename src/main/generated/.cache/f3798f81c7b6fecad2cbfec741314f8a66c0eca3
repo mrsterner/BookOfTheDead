@@ -1,9 +1,8 @@
-// 1.19.2	2022-11-19T19:16:37.676067918	Models
+// 1.19.2	2022-11-19T20:53:52.873215611	Models
 046f525c0fa20b54f7486c2cdf4954b018fde843 assets/legemeton/models/item/cellar_key.json
 41277488444212995f2ab9f02608a791eb85b01b assets/legemeton/models/block/reinforced_door_bottom_right_open.json
 000f37f17932c4d9e60fbb04d311c7bdcf685111 assets/legemeton/models/item/reinforced_door.json
 9c703f58c5fd902c870c554cd14ea71e7b4b7811 assets/legemeton/models/item/cooked_flesh.json
-b7077430f79c6e9afeb136b489d6669866512ab4 assets/legemeton/models/item/soul_stone.json
 1e50c86b2d843574c5eaf6c94a796205b20c0b2b assets/legemeton/models/item/fat.json
 54e4a63e2d84f8fb9b9bb73290eb443effaeb7e3 assets/legemeton/models/item/emerald_tablet.json
 6bfc3b411bb73accab86a3266682f3d9c28fdb4b assets/legemeton/models/block/reinforced_door_top_left_open.json
@@ -27,6 +26,7 @@ c77c00f3795fff97bcb1224c3a5d45ae5c4c6d47 assets/legemeton/models/block/reinforce
 c03719c940931404642137527af1ff7e51c8c2ff assets/legemeton/models/item/packet.json
 c72d3d304e2b0d63cb2cec9b994e1f2bddc1527e assets/legemeton/models/item/skin.json
 2e5fda9220b79f8dbd6bab56f059070ba227299c assets/legemeton/models/item/hook.json
+5d01de096846bea5b98b6cb75a3ed9b3546d0ddf assets/legemeton/models/item/soul_gem.json
 0d82ceb209159d40b47bc2447071eca64675a90d assets/legemeton/models/item/bloody_butcher_knife.json
 0a56f98482fa399f73a6db0e944930d009d3d85d assets/legemeton/models/item/quicksilver.json
 b376279dc68d59b305bba406cd1d5a16d81c99db assets/legemeton/models/item/legemeton.json

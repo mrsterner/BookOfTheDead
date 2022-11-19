@@ -37,7 +37,7 @@ public class LegemetonModelProvider extends FabricModelProvider {
 		itemModelGenerator.register(LegemetonObjects.BOTTLE_OF_BLOOD, Models.GENERATED);
 		itemModelGenerator.register(LegemetonObjects.ROPE.asItem(), Models.GENERATED);
 		itemModelGenerator.register(LegemetonObjects.QUICKSILVER, Models.GENERATED);
-		itemModelGenerator.register(LegemetonObjects.SOUL_STONE, Models.GENERATED);
+		itemModelGenerator.register(LegemetonObjects.SOUL_GEM, Models.GENERATED);
 		itemModelGenerator.register(LegemetonObjects.CINNABAR, Models.GENERATED);
 		itemModelGenerator.register(LegemetonObjects.CELLAR_KEY, Models.GENERATED);
 		itemModelGenerator.register(LegemetonObjects.OLD_LETTER, Models.GENERATED);

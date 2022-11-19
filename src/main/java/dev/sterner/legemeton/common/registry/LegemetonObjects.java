@@ -57,7 +57,7 @@ public class LegemetonObjects {
 
 	public static final Item RETORT_FLASK = register("retort_flask", new Item(settings()));
 	public static final Item QUICKSILVER = register("quicksilver", new Item(settings()));
-	public static final Item SOUL_STONE = register("soul_stone", new Item(settings()));
+	public static final Item SOUL_GEM = register("soul_gem", new Item(settings()));
 	public static final Item CINNABAR = register("cinnabar", new Item(settings()));
 	public static final Item EMERALD_TABLET = register("emerald_tablet", new Item(settings()));
 

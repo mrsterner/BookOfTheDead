@@ -32,7 +32,7 @@ public class LegemetonLanguageProvider extends FabricLanguageProvider {
 		builder.add(LegemetonObjects.METAL_HOOK, "Metal Hook");
 		builder.add(LegemetonObjects.ALL_BLACK, "All-Black");
 		builder.add(LegemetonObjects.QUICKSILVER, "Quicksilver");
-		builder.add(LegemetonObjects.SOUL_STONE, "Soul Stone");
+		builder.add(LegemetonObjects.SOUL_GEM, "Soul Gem");
 		builder.add(LegemetonObjects.CINNABAR, "Cinnabar");
 		builder.add(LegemetonObjects.CELLAR_KEY, "Cellar Key");
 		builder.add(LegemetonObjects.REINFORCED_DOOR, "Reinforced Door");
@@ -51,7 +51,8 @@ public class LegemetonLanguageProvider extends FabricLanguageProvider {
 		builder.add(LegemetonObjects.ROPE, "Rope");
 		builder.add("rei.legemeton.butchering_drops", "Butchering Drops");
 		builder.add("emi.category.legemeton.butchering", "Butchering Drops");
-		builder.add("tooltip.legemeton.old_friend", "Letter from an old friend");
+		builder.add("tooltip.legemeton.old_friend", "Letter to an old friend");
 		builder.add("tooltip.legemeton.from_archive", "From Library Archive");
+		builder.add("info.legemeton.door_locked", "Door Locked");
 	}
 }
