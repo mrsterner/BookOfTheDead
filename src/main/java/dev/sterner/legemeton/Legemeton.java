@@ -45,6 +45,7 @@ public class Legemeton implements ModInitializer {
 		LegemetonBlockEntityTypes.init();
 		LegemetonEnchantments.init();
 		LegemetonRecipeTypes.init();
+		LegemetonWorldGenerators.init();
 
 		OnEntityDeathEvent.START.register(this::onButcheredEntity);
 		UseEntityCallback.EVENT.register(this::onPickupCorpse);

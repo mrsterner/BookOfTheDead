@@ -36,7 +36,12 @@ public class LegemetonClient implements ClientModInitializer {
 		LegemetonPrticleTypes.init();
 
 
-		BlockRenderLayerMap.put(RenderLayer.getCutout(), LegemetonObjects.ROPE, LegemetonObjects.HOOK_BLOCK, LegemetonObjects.JAR, LegemetonObjects.NECRO_TABLE);
+		BlockRenderLayerMap.put(RenderLayer.getCutout(),
+				LegemetonObjects.ROPE,
+				LegemetonObjects.HOOK_BLOCK,
+				LegemetonObjects.JAR,
+				LegemetonObjects.NECRO_TABLE,
+				LegemetonObjects.REINFORCED_DOOR);
 		BlockEntityRendererRegistry.register(LegemetonBlockEntityTypes.HOOK, HookBlockEntityRenderer::new);
 		BlockEntityRendererRegistry.register(LegemetonBlockEntityTypes.JAR, ctx -> new JarBlockEntityRenderer());
 		BlockEntityRendererRegistry.register(LegemetonBlockEntityTypes.NECRO, NecroTableBlockEntityRenderer::new);

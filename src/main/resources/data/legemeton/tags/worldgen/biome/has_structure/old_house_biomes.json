@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:swamp",
+    "minecraft:dark_forest",
+    "minecraft:grove"
+  ]
+}

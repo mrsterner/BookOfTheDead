@@ -1,5 +1,6 @@
 {
   "block.legemeton.jar": "Jar",
+  "block.legemeton.reinforced_door": "Reinforced Door",
   "block.legemeton.rope": "Rope",
   "emi.category.legemeton.butchering": "Butchering Drops",
   "enchantment.legemeton.butchering": "Butchering",
@@ -8,6 +9,7 @@
   "item.legemeton.bottle_of_blood": "Bottle of Blood",
   "item.legemeton.butcher_knife": "Butcher Knife",
   "item.legemeton.cage": "Cage",
+  "item.legemeton.cellar_key": "Cellar Key",
   "item.legemeton.cinnabar": "Cinnabar",
   "item.legemeton.contract": "Contract",
   "item.legemeton.cooked_sliced_flesh": "Cooked Sliced Flesh",

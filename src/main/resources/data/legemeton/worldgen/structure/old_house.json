@@ -1,0 +1,15 @@
+{
+  "type": "legemeton:old_house",
+  "start_pool": "legemeton:old_house",
+  "size": 1,
+  "max_distance_from_center": 80,
+  "biomes": "#legemeton:has_structure/old_house_biomes",
+  "step": "surface_structures",
+  "start_height": {
+    "absolute": 0
+  },
+  "project_start_to_heightmap": "WORLD_SURFACE_WG",
+  "spawn_overrides": {
+
+  }
+}

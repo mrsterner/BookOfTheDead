@@ -35,6 +35,8 @@ public class LegemetonLanguageProvider extends FabricLanguageProvider {
 		builder.add(LegemetonObjects.QUICKSILVER, "Quicksilver");
 		builder.add(LegemetonObjects.SOUL_STONE, "Soul Stone");
 		builder.add(LegemetonObjects.CINNABAR, "Cinnabar");
+		builder.add(LegemetonObjects.CELLAR_KEY, "Cellar Key");
+		builder.add(LegemetonObjects.REINFORCED_DOOR, "Reinforced Door");
 
 		builder.add(LegemetonEnchantments.BUTCHERING, "Butchering");
 

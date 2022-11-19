@@ -6,7 +6,9 @@
   "mixins": [
     "EnchantmentTargetMixin",
     "LivingEntityMixin",
-    "PlayerEntityMixin"
+    "PlayerEntityMixin",
+    "StructurePoolAccessor",
+    "StructurePoolsMixin"
   ],
   "client": [
     "BufferBuilderStorageMixin",

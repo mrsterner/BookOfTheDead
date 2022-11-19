@@ -15,7 +15,7 @@ public class LegemetonModelProvider extends FabricModelProvider {
 
 	@Override
 	public void generateBlockStateModels(BlockStateModelGenerator blockStateModelGenerator) {
-
+		blockStateModelGenerator.registerDoor(LegemetonObjects.REINFORCED_DOOR);
 	}
 
 	@Override
@@ -39,5 +39,6 @@ public class LegemetonModelProvider extends FabricModelProvider {
 		itemModelGenerator.register(LegemetonObjects.QUICKSILVER, Models.GENERATED);
 		itemModelGenerator.register(LegemetonObjects.SOUL_STONE, Models.GENERATED);
 		itemModelGenerator.register(LegemetonObjects.CINNABAR, Models.GENERATED);
+		itemModelGenerator.register(LegemetonObjects.CELLAR_KEY, Models.GENERATED);
 	}
 }
