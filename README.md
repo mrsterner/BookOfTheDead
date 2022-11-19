@@ -2,7 +2,7 @@
 
 <img alt="The BotD Icon" src="src/main/resources/assets/book_of_the_dead/icon.png" width="128">
 
-# The BotD
+# The Book of the Dead
 
 <!-- todo: replace 494721 with your CurseForge project id -->
 [![Release](https://img.shields.io/github/v/release/mrsterner/TheBotD?style=for-the-badge&include_prereleases&sort=semver)][releases]
