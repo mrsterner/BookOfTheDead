@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "book_of_the_dead:item/bloody_butcher_knife"
+  }
+}

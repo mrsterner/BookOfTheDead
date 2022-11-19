@@ -2,29 +2,29 @@
 	"schema_version": 1,
 	"quilt_loader": {
 		"group": "dev.sterner",
-		"id": "legemeton",
+		"id": "book_of_the_dead",
 		"version": "${version}",
 		"metadata": {
-			"name": "The Legemeton",
+			"name": "Book of the Dead",
 			"description": "Necromancy and stuff",
 			"contributors": {
 				"MrSterner": "Owner"
 			},
 			"contact": {
 				"homepage": "https://example.com/",
-				"issues": "https://github.com/mrsterner/TheLegemeton/issues",
-				"sources": "https://github.com/mrsterner/TheLegemeton"
+				"issues": "https://github.com/mrsterner/TheBotD/issues",
+				"sources": "https://github.com/mrsterner/TheBotD"
 			},
-			"icon": "assets/legemeton/icon.png"
+			"icon": "assets/book_of_the_dead/icon.png"
 		},
 		"intermediate_mappings": "net.fabricmc:intermediary",
 		"entrypoints": {
-			"init": "dev.sterner.legemeton.Legemeton",
-			"client_init": "dev.sterner.legemeton.LegemetonClient",
-			"fabric-datagen": "dev.sterner.legemeton.data.LegemetonDataGen",
-			"mm:early_risers":"dev.sterner.legemeton.common.asm.LegemetonEarlyRiser",
-			"rei_client": "dev.sterner.legemeton.client.integration.rei.LegemetonREIPlugin",
-			"emi": "dev.sterner.legemeton.client.integration.emi.LegemetonEMIPlugin"
+			"init": "dev.sterner.book_of_the_dead.BotD",
+			"client_init": "dev.sterner.book_of_the_dead.BotDClient",
+			"fabric-datagen": "dev.sterner.book_of_the_dead.data.BotDDataGen",
+			"mm:early_risers":"dev.sterner.book_of_the_dead.common.asm.BotDEarlyRiser",
+			"rei_client": "dev.sterner.book_of_the_dead.client.integration.rei.BotDREIPlugin",
+			"emi": "dev.sterner.book_of_the_dead.client.integration.emi.BotDEMIPlugin"
 
 		},
 		"depends": [
@@ -42,6 +42,6 @@
 			}
 		]
 	},
-	"access_widener": "legemeton.accesswidener",
-	"mixin": "legemeton.mixins.json"
+	"access_widener": "book_of_the_dead.accesswidener",
+	"mixin": "book_of_the_dead.mixins.json"
 }

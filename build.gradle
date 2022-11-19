@@ -8,7 +8,7 @@ version = "${project.version}+${libs.versions.minecraft.get()}"
 group = project.maven_group
 
 loom {
-	accessWidenerPath = file("src/main/resources/legemeton.accesswidener")
+	accessWidenerPath = file("src/main/resources/book_of_the_dead.accesswidener")
 	runs {
 		datagen {
 			server()

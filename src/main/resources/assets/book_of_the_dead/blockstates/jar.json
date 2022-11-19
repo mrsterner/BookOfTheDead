@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "open=true": {
+      "model": "book_of_the_dead:block/jar_open"
+    },
+    "open=false": {
+      "model": "book_of_the_dead:block/jar_closed"
+    }
+  }
+}

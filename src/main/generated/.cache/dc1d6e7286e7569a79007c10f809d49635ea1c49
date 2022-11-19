@@ -1,1 +1,4 @@
-// 1.19.2	2022-11-19T20:53:52.879987622	Block Loot Tables
+// 1.19.2	2022-11-19T22:51:26.444253427	Block Loot Tables
+ea179230c5769a989ef8e43cff2bc483d0e1cdd5 data/minecraft/loot_tables/blocks/redstone_block.json
+9017fcfc8eca642ec8e68a7d58d938da1aef82d2 data/book_of_the_dead/loot_tables/blocks/hook_block.json
+3bf6765e2a653e757bbdfad2ce4c0de6e89024fb data/book_of_the_dead/loot_tables/blocks/rope.json

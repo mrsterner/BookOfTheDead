@@ -1,0 +1,17 @@
+{
+  "name": "item.book_of_the_dead.book_of_the_dead",
+  "subtitle": "book_of_the_dead.book_of_the_dead.subtitle",
+  "landing_text": "book_of_the_dead.book_of_the_dead.landing",
+  "book_texture": "book_of_the_dead:textures/gui/book_of_the_dead.png",
+  "progress_bar_background": "533f36",
+  "progress_bar_color": "c9b88f",
+  "dont_generate_book": true,
+  "show_progress": false,
+  "custom_book_item": "book_of_the_dead:book_of_the_dead",
+  "macros": {
+    "$(marked)": "$(#EE0000)",
+    "$(item)": "$(#EE0000)",
+    "$(ml:": "$(marked)$(l:"
+  },
+  "advancements_tab": "book_of_the_dead:root"
+}

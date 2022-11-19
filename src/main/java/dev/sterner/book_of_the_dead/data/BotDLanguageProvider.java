@@ -1,0 +1,58 @@
+package dev.sterner.book_of_the_dead.data;
+
+import dev.sterner.book_of_the_dead.common.registry.BotDEnchantments;
+import dev.sterner.book_of_the_dead.common.registry.BotDEntityTypes;
+import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
+import dev.sterner.book_of_the_dead.common.util.Constants;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
+
+public class BotDLanguageProvider extends FabricLanguageProvider {
+
+	protected BotDLanguageProvider(FabricDataGenerator dataGenerator) {
+		super(dataGenerator);
+	}
+
+	@Override
+	public void generateTranslations(TranslationBuilder builder) {
+		builder.add(Constants.BOTD_GROUP, "The Book of the Dead");
+
+		builder.add(BotDObjects.BOOK_OF_THE_DEAD, "The Book of the Dead");
+		builder.add(BotDObjects.BUTCHER_KNIFE, "Butcher Knife");
+		builder.add(BotDObjects.CONTRACT, "Contract");
+		builder.add(BotDObjects.SIGNED_CONTRACT, "Signed Contract");
+		builder.add(BotDObjects.PACKET, "Packet");
+		builder.add(BotDObjects.FAT, "Fat");
+		builder.add(BotDObjects.SKIN, "Skin");
+		builder.add(BotDObjects.BOTTLE_OF_BLOOD, "Bottle of Blood");
+		builder.add(BotDObjects.COOKED_FLESH, "Cooked Flesh");
+		builder.add(BotDObjects.FLESH, "Flesh");
+		builder.add(BotDObjects.CAGE, "Cage");
+		builder.add(BotDObjects.HOOK, "Hook");
+		builder.add(BotDObjects.METAL_HOOK, "Metal Hook");
+		builder.add(BotDObjects.ALL_BLACK, "All-Black");
+		builder.add(BotDObjects.QUICKSILVER, "Quicksilver");
+		builder.add(BotDObjects.SOUL_GEM, "Soul Gem");
+		builder.add(BotDObjects.CINNABAR, "Cinnabar");
+		builder.add(BotDObjects.CELLAR_KEY, "Cellar Key");
+		builder.add(BotDObjects.REINFORCED_DOOR, "Reinforced Door");
+		builder.add(BotDObjects.REINFORCED_BLOCK, "Reinforced Block");
+		builder.add(BotDObjects.OLD_LETTER, "Old Letter");
+		builder.add(BotDObjects.EMERALD_TABLET, "Emerald Tablet");
+		builder.add(BotDObjects.RETORT_FLASK, "Retort Flask");
+
+		builder.add(BotDEnchantments.BUTCHERING, "Butchering");
+
+		builder.add(BotDEntityTypes.CORPSE_ENTITY, "Corpse");
+		builder.add(BotDEntityTypes.OLD_MAN_ENTITY, "Old Man");
+		builder.add("entity.book_of_the_dead.old_man.nitwit", "Old Man");
+
+		builder.add(BotDObjects.JAR, "Jar");
+		builder.add(BotDObjects.ROPE, "Rope");
+		builder.add("rei.book_of_the_dead.butchering_drops", "Butchering Drops");
+		builder.add("emi.category.book_of_the_dead.butchering", "Butchering Drops");
+		builder.add("tooltip.book_of_the_dead.old_friend", "Letter to an old friend");
+		builder.add("tooltip.book_of_the_dead.from_archive", "From Library Archive");
+		builder.add("info.book_of_the_dead.door_locked", "Door Locked");
+	}
+}

@@ -1,0 +1,14 @@
+{
+  "parent": "item/handheld",
+  "base": {
+    "parent": "book_of_the_dead:item/all_black_handheld"
+  },
+  "perspectives": {
+    "gui": {
+      "parent": "book_of_the_dead:item/all_black_gui"
+    },
+    "fixed": {
+      "parent": "book_of_the_dead:item/all_black_gui"
+    }
+  }
+}

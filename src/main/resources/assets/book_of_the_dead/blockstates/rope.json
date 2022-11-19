@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "rope=middle": {
+      "model": "book_of_the_dead:block/rope"
+    },
+    "rope=bottom": {
+      "model": "book_of_the_dead:block/rope_bottom"
+    }
+  }
+}

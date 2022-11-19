@@ -11,7 +11,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "legemeton:cinnabar"
+          "name": "book_of_the_dead:cinnabar"
         }
       ],
       "rolls": 1.0

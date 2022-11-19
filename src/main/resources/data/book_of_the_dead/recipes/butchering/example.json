@@ -1,0 +1,19 @@
+{
+  "type": "book_of_the_dead:butchering",
+  "entity_type": "minecraft:sheep",
+  "results": [
+    {
+      "item": "minecraft:stick",
+      "count": 1,
+      "chance": 1
+    },
+    {
+      "item": "minecraft:iron_sword",
+      "count": 1,
+      "nbt": {
+        "Damage": 240
+      },
+      "chance": 1
+    }
+  ]
+}
