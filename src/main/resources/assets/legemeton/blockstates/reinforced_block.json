@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "reinforced_type=deepslate_tiles": {
+      "model": "minecraft:block/deepslate_tiles"
+    },
+    "reinforced_type=spruce_planks": {
+      "model": "minecraft:block/spruce_planks"
+    }
+  }
+}
