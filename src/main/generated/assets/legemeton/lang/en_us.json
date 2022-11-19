@@ -1,5 +1,6 @@
 {
   "block.legemeton.jar": "Jar",
+  "block.legemeton.reinforced_block": "Reinforced Block",
   "block.legemeton.reinforced_door": "Reinforced Door",
   "block.legemeton.rope": "Rope",
   "emi.category.legemeton.butchering": "Butchering Drops",
@@ -13,6 +14,7 @@
   "item.legemeton.cinnabar": "Cinnabar",
   "item.legemeton.contract": "Contract",
   "item.legemeton.cooked_sliced_flesh": "Cooked Sliced Flesh",
+  "item.legemeton.diary_entry": "Diary Entry",
   "item.legemeton.fat": "Fat",
   "item.legemeton.flesh": "Flesh",
   "item.legemeton.hook": "Hook",

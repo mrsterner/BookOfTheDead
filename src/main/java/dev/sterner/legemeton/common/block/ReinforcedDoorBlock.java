@@ -22,7 +22,7 @@ import net.minecraft.world.event.GameEvent;
 public class ReinforcedDoorBlock extends DoorBlock {
 	public static final BooleanProperty LOCKED =  BooleanProperty.of("locked");
 	public ReinforcedDoorBlock(Settings settings) {
-		super(settings.requiresTool().strength(5.0F));
+		super(settings.requiresTool().strength(55.0F, 1200.0F));
 		this.stateManager
 				.getDefaultState().with(LOCKED, true);
 	}

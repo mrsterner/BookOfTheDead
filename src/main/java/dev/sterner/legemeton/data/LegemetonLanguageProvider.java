@@ -37,6 +37,8 @@ public class LegemetonLanguageProvider extends FabricLanguageProvider {
 		builder.add(LegemetonObjects.CINNABAR, "Cinnabar");
 		builder.add(LegemetonObjects.CELLAR_KEY, "Cellar Key");
 		builder.add(LegemetonObjects.REINFORCED_DOOR, "Reinforced Door");
+		builder.add(LegemetonObjects.REINFORCED_BLOCK, "Reinforced Block");
+		builder.add(LegemetonObjects.DIARY_ENTRY, "Diary Entry");
 
 		builder.add(LegemetonEnchantments.BUTCHERING, "Butchering");
 
