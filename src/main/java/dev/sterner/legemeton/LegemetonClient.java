@@ -3,10 +3,12 @@ package dev.sterner.legemeton;
 import dev.sterner.legemeton.client.model.BagEntityModel;
 import dev.sterner.legemeton.client.model.JarEntityModel;
 import dev.sterner.legemeton.client.model.LargeCircleEntityModel;
+import dev.sterner.legemeton.client.model.OldManEntityModel;
 import dev.sterner.legemeton.client.renderer.block.HookBlockEntityRenderer;
 import dev.sterner.legemeton.client.renderer.block.JarBlockEntityRenderer;
 import dev.sterner.legemeton.client.renderer.block.NecroTableBlockEntityRenderer;
 import dev.sterner.legemeton.client.renderer.entity.CorpseEntityRenderer;
+import dev.sterner.legemeton.client.renderer.entity.OldManEntityRenderer;
 import dev.sterner.legemeton.client.renderer.item.AllBlackSwordItemRenderer;
 import dev.sterner.legemeton.common.item.AllBlackSwordItem;
 import dev.sterner.legemeton.common.registry.*;
@@ -47,11 +49,13 @@ public class LegemetonClient implements ClientModInitializer {
 		BlockEntityRendererRegistry.register(LegemetonBlockEntityTypes.NECRO, NecroTableBlockEntityRenderer::new);
 		BuiltinItemRendererRegistry.INSTANCE.register(LegemetonObjects.JAR, new JarBlockEntityRenderer());
 		EntityRendererRegistry.register(LegemetonEntityTypes.CORPSE_ENTITY, CorpseEntityRenderer::new);
+		EntityRendererRegistry.register(LegemetonEntityTypes.OLD_MAN_ENTITY, OldManEntityRenderer::new);
 
 		EntityModelLayerRegistry.registerModelLayer(BagEntityModel.LAYER_LOCATION, BagEntityModel::createBodyLayer);
 		EntityModelLayerRegistry.registerModelLayer(JarEntityModel.LAYER_LOCATION, JarEntityModel::createBodyLayer);
 		EntityModelLayerRegistry.registerModelLayer(NecroTableBlockEntityRenderer.LAYER_LOCATION, NecroTableBlockEntityRenderer::createBodyLayer);
 		EntityModelLayerRegistry.registerModelLayer(LargeCircleEntityModel.LAYER_LOCATION, LargeCircleEntityModel::createBodyLayer);
+		EntityModelLayerRegistry.registerModelLayer(OldManEntityModel.LAYER_LOCATION, OldManEntityModel::createBodyLayer);
 
 		LegemetonSpriteIdentifiers.INSTANCE.addIdentifier(LegemetonSpriteIdentifiers.BLOOD);
 

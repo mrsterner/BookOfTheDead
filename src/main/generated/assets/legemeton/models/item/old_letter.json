@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "legemeton:item/diary_entry"
+    "layer0": "legemeton:item/old_letter"
   }
 }

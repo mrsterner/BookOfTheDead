@@ -38,14 +38,19 @@ public class LegemetonLanguageProvider extends FabricLanguageProvider {
 		builder.add(LegemetonObjects.CELLAR_KEY, "Cellar Key");
 		builder.add(LegemetonObjects.REINFORCED_DOOR, "Reinforced Door");
 		builder.add(LegemetonObjects.REINFORCED_BLOCK, "Reinforced Block");
-		builder.add(LegemetonObjects.DIARY_ENTRY, "Diary Entry");
+		builder.add(LegemetonObjects.OLD_LETTER, "Old Letter");
 
 		builder.add(LegemetonEnchantments.BUTCHERING, "Butchering");
 
 		builder.add(LegemetonEntityTypes.CORPSE_ENTITY, "Corpse");
+		builder.add(LegemetonEntityTypes.OLD_MAN_ENTITY, "Old Man");
+		builder.add("entity.legemeton.old_man.nitwit", "Old Man");
+
 		builder.add(LegemetonObjects.JAR, "Jar");
 		builder.add(LegemetonObjects.ROPE, "Rope");
 		builder.add("rei.legemeton.butchering_drops", "Butchering Drops");
 		builder.add("emi.category.legemeton.butchering", "Butchering Drops");
+		builder.add("tooltip.legemeton.old_friend", "Letter from an old friend");
+		builder.add("tooltip.legemeton.from_archive", "From Library Archive");
 	}
 }

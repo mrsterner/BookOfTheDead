@@ -7,13 +7,20 @@ import dev.sterner.legemeton.common.util.Constants;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.Material;
+import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.*;
 import net.minecraft.sound.BlockSoundGroup;
+import net.minecraft.text.Style;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 import org.quiltmc.qsl.block.extensions.api.QuiltBlockSettings;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 public class LegemetonObjects {
@@ -32,7 +39,14 @@ public class LegemetonObjects {
 	public static final Item CAGE = register("cage", new Item(settings()));
 	public static final Item HOOK = register("hook", new Item(settings()));
 	public static final Item METAL_HOOK = register("metal_hook", new Item(settings()));
-	public static final Item DIARY_ENTRY = register("diary_entry", new Item(settings()));
+	public static final Item OLD_LETTER = register("old_letter", new Item(settings()){
+		@Override
+		public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+			tooltip.add(Text.translatable("tooltip.legemeton.from_archive"));
+			tooltip.add(Text.translatable("tooltip.legemeton.old_friend").formatted(Formatting.ITALIC));
+			super.appendTooltip(stack, world, tooltip, context);
+		}
+	});
 	public static final Block ROPE = register("rope", new RopeBlock(QuiltBlockSettings.of(Material.WOOL).strength(0.2F)), settings(), true);
 
 	public static final Item FLESH = register("flesh", new Item(settings().food(FoodComponents.COOKED_CHICKEN)));

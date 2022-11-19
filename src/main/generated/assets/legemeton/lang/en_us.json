@@ -6,6 +6,8 @@
   "emi.category.legemeton.butchering": "Butchering Drops",
   "enchantment.legemeton.butchering": "Butchering",
   "entity.legemeton.corpse": "Corpse",
+  "entity.legemeton.old_man": "Old Man",
+  "entity.legemeton.old_man.nitwit": "Old Man",
   "item.legemeton.all_black": "All-Black",
   "item.legemeton.bottle_of_blood": "Bottle of Blood",
   "item.legemeton.butcher_knife": "Butcher Knife",
@@ -14,12 +16,12 @@
   "item.legemeton.cinnabar": "Cinnabar",
   "item.legemeton.contract": "Contract",
   "item.legemeton.cooked_sliced_flesh": "Cooked Sliced Flesh",
-  "item.legemeton.diary_entry": "Diary Entry",
   "item.legemeton.fat": "Fat",
   "item.legemeton.flesh": "Flesh",
   "item.legemeton.hook": "Hook",
   "item.legemeton.legemeton": "The Legemeton",
   "item.legemeton.metal_hook": "Metal Hook",
+  "item.legemeton.old_letter": "Old Letter",
   "item.legemeton.packet": "Packet",
   "item.legemeton.quicksilver": "Quicksilver",
   "item.legemeton.signed_contract": "Signed Contract",
@@ -27,5 +29,7 @@
   "item.legemeton.sliced_flesh": "The Legemeton",
   "item.legemeton.soul_stone": "Soul Stone",
   "itemGroup.legemeton.items": "The Legemeton",
-  "rei.legemeton.butchering_drops": "Butchering Drops"
+  "rei.legemeton.butchering_drops": "Butchering Drops",
+  "tooltip.legemeton.from_archive": "From Library Archive",
+  "tooltip.legemeton.old_friend": "Letter from an old friend"
 }

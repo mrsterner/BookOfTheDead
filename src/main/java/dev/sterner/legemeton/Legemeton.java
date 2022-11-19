@@ -8,7 +8,7 @@ import dev.sterner.legemeton.common.block.RopeBlock;
 import dev.sterner.legemeton.common.entity.CorpseEntity;
 import dev.sterner.legemeton.common.registry.*;
 import dev.sterner.legemeton.common.util.Constants;
-import dev.sterner.legemeton.common.registry.LegemetonVillagers;
+import dev.sterner.legemeton.common.registry.LegemetonTrades;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.minecraft.block.Blocks;
@@ -47,7 +47,7 @@ public class Legemeton implements ModInitializer {
 		LegemetonEnchantments.init();
 		LegemetonRecipeTypes.init();
 		LegemetonWorldGenerators.init();
-		LegemetonVillagers.init();
+		LegemetonTrades.init();
 
 		OnEntityDeathEvent.START.register(this::onButcheredEntity);
 		UseEntityCallback.EVENT.register(this::onPickupCorpse);
