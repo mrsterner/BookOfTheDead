@@ -39,6 +39,7 @@ public class LegemetonLanguageProvider extends FabricLanguageProvider {
 		builder.add(LegemetonObjects.REINFORCED_BLOCK, "Reinforced Block");
 		builder.add(LegemetonObjects.OLD_LETTER, "Old Letter");
 		builder.add(LegemetonObjects.EMERALD_TABLET, "Emerald Tablet");
+		builder.add(LegemetonObjects.RETORT_FLASK, "Retort Flask");
 
 		builder.add(LegemetonEnchantments.BUTCHERING, "Butchering");
 

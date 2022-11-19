@@ -55,6 +55,7 @@ public class LegemetonObjects {
 	public static final Item SKIN = register("skin", new Item(settings()));
 	public static final Item BOTTLE_OF_BLOOD = register("bottle_of_blood", new Item(settings()));
 
+	public static final Item RETORT_FLASK = register("retort_flask", new Item(settings()));
 	public static final Item QUICKSILVER = register("quicksilver", new Item(settings()));
 	public static final Item SOUL_STONE = register("soul_stone", new Item(settings()));
 	public static final Item CINNABAR = register("cinnabar", new Item(settings()));

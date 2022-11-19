@@ -1,4 +1,4 @@
-// 1.19.2	2022-11-19T18:23:08.730404061	Models
+// 1.19.2	2022-11-19T19:16:37.676067918	Models
 046f525c0fa20b54f7486c2cdf4954b018fde843 assets/legemeton/models/item/cellar_key.json
 41277488444212995f2ab9f02608a791eb85b01b assets/legemeton/models/block/reinforced_door_bottom_right_open.json
 000f37f17932c4d9e60fbb04d311c7bdcf685111 assets/legemeton/models/item/reinforced_door.json
@@ -19,6 +19,7 @@ e87b3948598939067bacdf721c5ed967188cfdb8 assets/legemeton/models/block/reinforce
 988ea943a3a101bca685818440ce4143a4df8784 assets/legemeton/models/item/flesh.json
 341d0a3059491df11d42d7014875ad790b5f30c2 assets/legemeton/models/item/metal_hook.json
 370863e3779f681259759df786085b340a0f0aed assets/legemeton/models/block/reinforced_door_top_right_open.json
+b0fc2981d3312e7de2e6bc35d676d0fafe0947dc assets/legemeton/models/item/retort_flask.json
 6f461d0fd6f1d2165204421a7e91d20fae995e92 assets/legemeton/models/item/contract.json
 d2edf836093d3302e449ce4ac91c956d6c6b0362 assets/legemeton/models/item/cage.json
 c0198deb5d7d39e16719d3cf760cea2aadba0f84 assets/legemeton/models/item/butcher_knife.json
