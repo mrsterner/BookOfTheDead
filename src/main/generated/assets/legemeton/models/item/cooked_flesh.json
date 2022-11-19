@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "legemeton:item/sliced_flesh"
+    "layer0": "legemeton:item/cooked_flesh"
   }
 }

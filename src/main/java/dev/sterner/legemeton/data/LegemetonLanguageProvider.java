@@ -25,8 +25,7 @@ public class LegemetonLanguageProvider extends FabricLanguageProvider {
 		builder.add(LegemetonObjects.FAT, "Fat");
 		builder.add(LegemetonObjects.SKIN, "Skin");
 		builder.add(LegemetonObjects.BOTTLE_OF_BLOOD, "Bottle of Blood");
-		builder.add(LegemetonObjects.SLICED_FLESH, "The Legemeton");
-		builder.add(LegemetonObjects.COOKED_SLICED_FLESH, "Cooked Sliced Flesh");
+		builder.add(LegemetonObjects.COOKED_FLESH, "Cooked Flesh");
 		builder.add(LegemetonObjects.FLESH, "Flesh");
 		builder.add(LegemetonObjects.CAGE, "Cage");
 		builder.add(LegemetonObjects.HOOK, "Hook");
@@ -39,6 +38,7 @@ public class LegemetonLanguageProvider extends FabricLanguageProvider {
 		builder.add(LegemetonObjects.REINFORCED_DOOR, "Reinforced Door");
 		builder.add(LegemetonObjects.REINFORCED_BLOCK, "Reinforced Block");
 		builder.add(LegemetonObjects.OLD_LETTER, "Old Letter");
+		builder.add(LegemetonObjects.EMERALD_TABLET, "Emerald Tablet");
 
 		builder.add(LegemetonEnchantments.BUTCHERING, "Butchering");
 

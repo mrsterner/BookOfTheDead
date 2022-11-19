@@ -17,15 +17,13 @@ import org.quiltmc.qsl.villager.api.TradeOfferHelper;
 public class LegemetonTrades {
 	public static final Int2ObjectMap<TradeOffers.Factory[]> OLD_MAN_TRADES = new Int2ObjectArrayMap<>();
 
-	public static final TradeOffers.Factory LEGEMETON_OFFER = new ItemToItemOffer(new ItemStack(LegemetonObjects.LEGEMETON), LegemetonObjects.OLD_LETTER, 1,5, 0.2F);
+	public static final TradeOffers.Factory LEGEMETON_OFFER = new ItemToItemOffer(new ItemStack(LegemetonObjects.LEGEMETON), LegemetonObjects.OLD_LETTER, 1,10, 0.2F);
+	public static final TradeOffers.Factory CELLAR_KEY_OFFER = new ItemToItemOffer(new ItemStack(LegemetonObjects.CELLAR_KEY), LegemetonObjects.SOUL_STONE, 1,10, 0.2F);
 
-	static {
-		OLD_MAN_TRADES.put(1, new TradeOffers.Factory[]{LEGEMETON_OFFER});
-	}
 
 	public static void init() {
 		TradeOfferHelper.registerVillagerOffers(VillagerProfession.LIBRARIAN, 1, factories -> {
-			factories.add(new EmeraldToItemOffer(new ItemStack(LegemetonObjects.OLD_LETTER, 1), 1, 20 ,5, 0.2F));
+			factories.add(new EmeraldToItemOffer(new ItemStack(LegemetonObjects.OLD_LETTER, 1), 10, 10 ,5, 0.2F));
 		});
 	}
 

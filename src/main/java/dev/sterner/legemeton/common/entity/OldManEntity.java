@@ -36,6 +36,8 @@ public class OldManEntity extends VillagerEntity {
 		TradeOfferList tradeOfferList = this.getOffers();
 		if (villagerData.getLevel() == 1) {
 			tradeOfferList.add(LegemetonTrades.LEGEMETON_OFFER.create(this, getRandom()));
+		} else if(villagerData.getLevel() == 2){
+			tradeOfferList.add(LegemetonTrades.CELLAR_KEY_OFFER.create(this, getRandom()));
 		}
 
 		Int2ObjectMap<TradeOffers.Factory[]> extraTrades = LegemetonTrades.OLD_MAN_TRADES;

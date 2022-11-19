@@ -30,8 +30,8 @@ public class LegemetonModelProvider extends FabricModelProvider {
 		itemModelGenerator.register(LegemetonObjects.HOOK, Models.GENERATED);
 		itemModelGenerator.register(LegemetonObjects.METAL_HOOK, Models.GENERATED);
 		itemModelGenerator.register(LegemetonObjects.FLESH, Models.GENERATED);
-		itemModelGenerator.register(LegemetonObjects.SLICED_FLESH, Models.GENERATED);
-		itemModelGenerator.register(LegemetonObjects.COOKED_SLICED_FLESH, Models.GENERATED);
+		itemModelGenerator.register(LegemetonObjects.COOKED_FLESH, Models.GENERATED);
+		itemModelGenerator.register(LegemetonObjects.EMERALD_TABLET, Models.GENERATED);
 		itemModelGenerator.register(LegemetonObjects.FAT, Models.GENERATED);
 		itemModelGenerator.register(LegemetonObjects.SKIN, Models.GENERATED);
 		itemModelGenerator.register(LegemetonObjects.BOTTLE_OF_BLOOD, Models.GENERATED);
