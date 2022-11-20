@@ -1,5 +1,6 @@
 package dev.sterner.book_of_the_dead.common.registry;
 
+import dev.sterner.book_of_the_dead.common.block.entity.ButcherTableBlockEntity;
 import dev.sterner.book_of_the_dead.common.block.entity.HookBlockEntity;
 import dev.sterner.book_of_the_dead.common.block.entity.JarBlockEntity;
 import dev.sterner.book_of_the_dead.common.block.entity.NecroTableBlockEntity;
@@ -24,6 +25,9 @@ public class BotDBlockEntityTypes {
 
 	public static final BlockEntityType<NecroTableBlockEntity> NECRO = register("necro",
 			QuiltBlockEntityTypeBuilder.create(NecroTableBlockEntity::new, BotDObjects.NECRO_TABLE).build(null));
+
+	public static final BlockEntityType<ButcherTableBlockEntity> BUTCHER = register("butcher",
+			QuiltBlockEntityTypeBuilder.create(ButcherTableBlockEntity::new, BotDObjects.BUTCHER_TABLE).build(null));
 
 
 

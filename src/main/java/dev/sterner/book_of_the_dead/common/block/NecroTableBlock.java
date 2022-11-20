@@ -33,7 +33,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.ToIntFunction;
 
-public class NecroTableBlock extends Block implements BlockEntityProvider {
+public class NecroTableBlock extends HorizontalFacingBlock implements BlockEntityProvider {
 	protected static final VoxelShape WEST_SHAPE = VoxelShapes.union(
 			createCuboidShape(0,0,4,16,3,16),
 			createCuboidShape(2,0,6,14,10,16),

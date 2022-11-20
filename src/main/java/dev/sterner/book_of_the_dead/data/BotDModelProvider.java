@@ -42,5 +42,6 @@ public class BotDModelProvider extends FabricModelProvider {
 		itemModelGenerator.register(BotDObjects.CELLAR_KEY, Models.GENERATED);
 		itemModelGenerator.register(BotDObjects.OLD_LETTER, Models.GENERATED);
 		itemModelGenerator.register(BotDObjects.RETORT_FLASK, Models.GENERATED);
+		itemModelGenerator.register(BotDObjects.REINFORCED_BLOCK.asItem(), Models.GENERATED);
 	}
 }

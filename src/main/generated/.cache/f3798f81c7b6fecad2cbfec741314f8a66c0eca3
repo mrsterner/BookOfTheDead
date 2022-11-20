@@ -1,4 +1,4 @@
-// 1.19.2	2022-11-19T22:51:26.442562327	Models
+// 1.19.2	2022-11-20T01:10:17.133514492	Models
 ead30fb7c0067a3672a7a23293b5a1176232fd0c assets/book_of_the_dead/models/block/reinforced_door_bottom_right.json
 e2cc585423151873069868abb46c32aadcc01b1b assets/book_of_the_dead/models/item/contract.json
 0c76bfd391878723caae652e677615db31ab06e1 assets/book_of_the_dead/models/item/fat.json
@@ -9,6 +9,7 @@ c17ed06c93c34dfc916ed83911d4441979a5ff54 assets/book_of_the_dead/models/item/qui
 1fd46fa1f3a37aea22244a22ad6fa54186ab7589 assets/book_of_the_dead/models/item/metal_hook.json
 6761e32ea091ac250b056652d959e6a80753ed69 assets/book_of_the_dead/blockstates/reinforced_door.json
 d50b3e4c7c4e86eb30ec07b8b51a804912b8a17a assets/book_of_the_dead/models/block/reinforced_door_top_left.json
+ce6cac54001bb7738399f9e66936c78a3eb39daa assets/book_of_the_dead/models/item/reinforced_block.json
 a4f4c9ab0eabfe79392d7c9e47b2fee5f74fc97e assets/book_of_the_dead/models/item/reinforced_door.json
 2eba5aa01d2f8df05fc80b6f6e49b1811707d7bb assets/book_of_the_dead/models/block/reinforced_door_top_left_open.json
 9aa7f3e463d9407f0ea4557d276dc0510479dba8 assets/book_of_the_dead/models/block/reinforced_door_bottom_left_open.json

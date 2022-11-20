@@ -54,6 +54,7 @@ public class BotD implements ModInitializer {
 		UseBlockCallback.EVENT.register(this::extendRope);
 		UseBlockCallback.EVENT.register(this::placeHook);
 		UseBlockCallback.EVENT.register(this::createNecroTable);
+		UseBlockCallback.EVENT.register(this::createButcherTable);
 	}
 
 	private ActionResult createNecroTable(PlayerEntity player, World world, Hand hand, BlockHitResult blockHitResult) {
@@ -72,11 +73,31 @@ public class BotD implements ModInitializer {
 				}else {
 					return ActionResult.PASS;
 				}
+				return ActionResult.CONSUME;
+			}
+		}
+		return ActionResult.PASS;
+	}
+
+	private ActionResult createButcherTable(PlayerEntity player, World world, Hand hand, BlockHitResult blockHitResult) {
+		if(!world.isClient() && player.getMainHandStack().isOf(BotDObjects.BUTCHER_KNIFE) && hand == Hand.MAIN_HAND){
+			BlockPos blockPos = blockHitResult.getBlockPos();
+			if(world.getBlockState(blockPos).isOf(Blocks.DARK_OAK_PLANKS)){
+				BlockPos left = blockPos.offset(player.getHorizontalFacing().rotateYCounterclockwise());
+				BlockPos right = blockPos.offset(player.getHorizontalFacing().rotateYClockwise());
+
+				if(world.getBlockState(left).isOf(Blocks.DARK_OAK_PLANKS)){
+					world.setBlockState(blockPos, BotDObjects.BUTCHER_TABLE.getDefaultState().with(NecroTableBlock.HHALF, HorizontalDoubleBlockHalf.RIGHT).with(FACING, player.getHorizontalFacing()));
+					world.setBlockState(left, BotDObjects.BUTCHER_TABLE.getDefaultState().with(NecroTableBlock.HHALF, HorizontalDoubleBlockHalf.LEFT).with(FACING, player.getHorizontalFacing()));
+				}else if(world.getBlockState(right).isOf(Blocks.DARK_OAK_PLANKS)){
+					world.setBlockState(blockPos, BotDObjects.BUTCHER_TABLE.getDefaultState().with(NecroTableBlock.HHALF, HorizontalDoubleBlockHalf.LEFT).with(FACING, player.getHorizontalFacing()));
+					world.setBlockState(right, BotDObjects.BUTCHER_TABLE.getDefaultState().with(NecroTableBlock.HHALF, HorizontalDoubleBlockHalf.RIGHT).with(FACING, player.getHorizontalFacing()));
+				}else {
+					return ActionResult.PASS;
+				}
 				if(!player.isCreative()){
 					player.getMainHandStack().decrement(1);
 				}
-
-				return ActionResult.CONSUME;
 			}
 		}
 		return ActionResult.PASS;

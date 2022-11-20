@@ -4,6 +4,7 @@ import dev.sterner.book_of_the_dead.client.model.BagEntityModel;
 import dev.sterner.book_of_the_dead.client.model.JarEntityModel;
 import dev.sterner.book_of_the_dead.client.model.LargeCircleEntityModel;
 import dev.sterner.book_of_the_dead.client.model.OldManEntityModel;
+import dev.sterner.book_of_the_dead.client.renderer.block.ButcherTableBlockEntityRenderer;
 import dev.sterner.book_of_the_dead.client.renderer.block.HookBlockEntityRenderer;
 import dev.sterner.book_of_the_dead.client.renderer.block.JarBlockEntityRenderer;
 import dev.sterner.book_of_the_dead.client.renderer.block.NecroTableBlockEntityRenderer;
@@ -43,10 +44,12 @@ public class BotDClient implements ClientModInitializer {
 				BotDObjects.HOOK_BLOCK,
 				BotDObjects.JAR,
 				BotDObjects.NECRO_TABLE,
+				BotDObjects.BUTCHER_TABLE,
 				BotDObjects.REINFORCED_DOOR);
 		BlockEntityRendererRegistry.register(BotDBlockEntityTypes.HOOK, HookBlockEntityRenderer::new);
 		BlockEntityRendererRegistry.register(BotDBlockEntityTypes.JAR, ctx -> new JarBlockEntityRenderer());
 		BlockEntityRendererRegistry.register(BotDBlockEntityTypes.NECRO, NecroTableBlockEntityRenderer::new);
+		BlockEntityRendererRegistry.register(BotDBlockEntityTypes.BUTCHER, ButcherTableBlockEntityRenderer::new);
 		BuiltinItemRendererRegistry.INSTANCE.register(BotDObjects.JAR, new JarBlockEntityRenderer());
 		EntityRendererRegistry.register(BotDEntityTypes.CORPSE_ENTITY, CorpseEntityRenderer::new);
 		EntityRendererRegistry.register(BotDEntityTypes.OLD_MAN_ENTITY, OldManEntityRenderer::new);
@@ -54,6 +57,7 @@ public class BotDClient implements ClientModInitializer {
 		EntityModelLayerRegistry.registerModelLayer(BagEntityModel.LAYER_LOCATION, BagEntityModel::createBodyLayer);
 		EntityModelLayerRegistry.registerModelLayer(JarEntityModel.LAYER_LOCATION, JarEntityModel::createBodyLayer);
 		EntityModelLayerRegistry.registerModelLayer(NecroTableBlockEntityRenderer.LAYER_LOCATION, NecroTableBlockEntityRenderer::createBodyLayer);
+		EntityModelLayerRegistry.registerModelLayer(ButcherTableBlockEntityRenderer.LAYER_LOCATION, ButcherTableBlockEntityRenderer::createBodyLayer);
 		EntityModelLayerRegistry.registerModelLayer(LargeCircleEntityModel.LAYER_LOCATION, LargeCircleEntityModel::createBodyLayer);
 		EntityModelLayerRegistry.registerModelLayer(OldManEntityModel.LAYER_LOCATION, OldManEntityModel::createBodyLayer);
 
