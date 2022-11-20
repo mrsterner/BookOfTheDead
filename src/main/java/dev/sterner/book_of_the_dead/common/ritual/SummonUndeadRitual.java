@@ -7,10 +7,8 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import java.util.ArrayList;
 
-public class SummonUndeadRitual extends NecrotableRitual {
-	public World world = null;
+public class SummonUndeadRitual extends SummonRitual {
 	public SummonUndeadRitual(Identifier id, Identifier largeCircleSprite, Identifier smallCircleSprite, int duration) {
 		super(id, largeCircleSprite, smallCircleSprite, duration);
 
@@ -19,9 +17,10 @@ public class SummonUndeadRitual extends NecrotableRitual {
 
 	@Override
 	public void tick(World world, BlockPos blockPos, NecroTableBlockEntity blockEntity) {
-		this.world = world;
 		if(summons.isEmpty()){
 			this.summons.add(0, EntityType.ZOMBIE.create(world));
+			this.summons.add(1, EntityType.ZOMBIE.create(world));
+			this.summons.add(2, EntityType.SKELETON.create(world));
 		}
 	}
 

@@ -22,6 +22,7 @@ public class NecrotableRitual {
 	public final int duration;
 	public BlockPos ritualCenter = null;
 	public List<Entity> summons = new ArrayList<>();
+	public World world = null;
 
 	public NecrotableRitual(Identifier id, Identifier largeCircleSprite, Identifier smallCircleSprite, int duration) {
 		this.id = id;
@@ -39,6 +40,9 @@ public class NecrotableRitual {
 
 	public void onStart(World world, BlockPos blockPos, NecroTableBlockEntity blockEntity){
 		if(world.getBlockState(blockPos).isOf(BotDObjects.NECRO_TABLE)){
+			if(this.world == null){
+				this.world = world;
+			}
 			Direction direction = world.getBlockState(blockPos).get(HorizontalFacingBlock.FACING);
 			ritualCenter = blockPos.offset(direction, 2).add(0.5,0.5,0.5);
 		}

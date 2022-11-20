@@ -1,32 +1,45 @@
 package dev.sterner.book_of_the_dead.common.block.entity;
 
+import com.mojang.datafixers.util.Pair;
 import dev.sterner.book_of_the_dead.api.NecrotableRitual;
 import dev.sterner.book_of_the_dead.api.enums.HorizontalDoubleBlockHalf;
 import dev.sterner.book_of_the_dead.api.interfaces.IBlockEntityInventory;
 import dev.sterner.book_of_the_dead.api.block.HorizontalDoubleBlock;
 import dev.sterner.book_of_the_dead.common.recipe.RitualRecipe;
 import dev.sterner.book_of_the_dead.common.registry.*;
+import dev.sterner.book_of_the_dead.common.ritual.SummonRitual;
 import dev.sterner.book_of_the_dead.common.ritual.SummonUndeadRitual;
+import dev.sterner.book_of_the_dead.common.util.BotDUtils;
 import dev.sterner.book_of_the_dead.common.util.Constants;
+import net.fabricmc.fabric.api.util.NbtType;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtHelper;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.network.Packet;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
+import net.minecraft.particle.BlockStateParticleEffect;
+import net.minecraft.particle.ParticleEffect;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.Random;
 import java.util.UUID;
 
 public class NecroTableBlockEntity extends BlockEntity implements IBlockEntityInventory {
@@ -35,9 +48,11 @@ public class NecroTableBlockEntity extends BlockEntity implements IBlockEntityIn
 	public boolean hasEmeraldTablet = false;
 	public NecrotableRitual currentNecrotableRitual = BotDRituals.SUMMON_ZOMBIE;
 	private boolean loaded = false;
-	private int timer = 0;
+	public int timer = 0;
 	public long age = 0;
 	public UUID user = null;
+	public ArrayList<Vec3d> posList;
+	public ArrayList<Float> yawList;
 
 	public Entity targetedEntity = null;
 	public NecroTableBlockEntity(BlockPos pos, BlockState state) {
@@ -51,11 +66,27 @@ public class NecroTableBlockEntity extends BlockEntity implements IBlockEntityIn
 				blockEntity.loaded = true;
 			}
 			blockEntity.age++;
-			if (blockEntity.currentNecrotableRitual != null) {
+			NecrotableRitual ritual = blockEntity.currentNecrotableRitual;
+			if (ritual != null) {
 				blockEntity.timer++;
 				if (blockEntity.timer >= 0) {
-					blockEntity.currentNecrotableRitual.tick(world, pos, blockEntity);
+					ritual.tick(world, pos, blockEntity);
 				}
+				if(ritual instanceof SummonRitual summonRitual){
+					for(Entity entity : summonRitual.summons){
+						int index = summonRitual.summons.indexOf(entity);
+						if(blockEntity.posList != null && blockEntity.timer < 20 * 2){
+							Vec3d vec3d = blockEntity.posList.get(index);
+							for (int i = 0; i < 12; i++) {
+								world.addParticle(new BlockStateParticleEffect(ParticleTypes.BLOCK, Blocks.GRASS_BLOCK.getDefaultState()),
+										blockEntity.getPos().getX() + vec3d.getX() + 1,
+										blockEntity.getPos().getY(),
+										blockEntity.getPos().getZ() + vec3d.getZ() + 4, 0, 0, 0);
+							}
+						}
+					}
+				}
+
 				if(blockEntity.timer >= blockEntity.currentNecrotableRitual.duration){
 					blockEntity.currentNecrotableRitual.onStopped(world, pos, blockEntity);
 					blockEntity.currentNecrotableRitual = null;
@@ -123,6 +154,7 @@ public class NecroTableBlockEntity extends BlockEntity implements IBlockEntityIn
 	}
 
 
+
 	@Override
 	public void readNbt(NbtCompound nbt) {
 		super.readNbt(nbt);
@@ -138,12 +170,45 @@ public class NecroTableBlockEntity extends BlockEntity implements IBlockEntityIn
 		} else {
 			user = null;
 		}
+		if(nbt.contains(Constants.Nbt.POS_LIST)){
+			NbtList posListNbt = nbt.getList(Constants.Nbt.POS_LIST, NbtType.COMPOUND);
+			for (int i = 0; i < posList.size(); i++) {
+				NbtCompound posListNbtCompound = posListNbt.getCompound(i);
+				posList.add(i, BotDUtils.toVec3d(posListNbtCompound));
+			}
+		}
+		if(nbt.contains(Constants.Nbt.YAW_LIST)){
+			NbtList yawListNbt = nbt.getList(Constants.Nbt.YAW_LIST, NbtType.COMPOUND);
+			for (int i = 0; i < yawList.size(); i++) {
+				NbtCompound yawListNbtCompound = yawListNbt.getCompound(i);
+				yawList.add(i, yawListNbtCompound.getFloat(Constants.Nbt.YAW));
+			}
+		}
+
+
 		markDirty();
 	}
 
 	@Override
 	protected void writeNbt(NbtCompound nbt) {
 		super.writeNbt(nbt);
+		if(posList != null){
+			NbtList lines = nbt.getList(Constants.Nbt.POS_LIST,  NbtType.COMPOUND);
+			for (Vec3d vec3d : posList) {
+				lines.add(BotDUtils.fromVec3d(vec3d));
+			}
+			nbt.put(Constants.Nbt.POS_LIST, lines);
+		}
+		if(yawList != null){
+			NbtList nbtList = nbt.getList(Constants.Nbt.YAW_LIST,  NbtType.COMPOUND);
+			for (Float f : yawList) {
+				NbtCompound nbtCompound = new NbtCompound();
+				nbtCompound.putFloat(Constants.Nbt.YAW, f);
+				nbtList.add(nbtCompound);
+			}
+			nbt.put(Constants.Nbt.YAW_LIST, nbtList);
+		}
+
 		Inventories.writeNbt(nbt, ITEMS);
 		if (currentNecrotableRitual != null) {
 			nbt.putString(Constants.Nbt.NECRO_RITUAL, BotDRegistries.NECROTABLE_RITUALS.getId(currentNecrotableRitual).toString());
@@ -157,6 +222,17 @@ public class NecroTableBlockEntity extends BlockEntity implements IBlockEntityIn
 		}
 	}
 
+	public static Pair<ArrayList<Vec3d>, ArrayList<Float>> genRandomPos(){
+		ArrayList<Vec3d> list = new ArrayList<>();
+		ArrayList<Float> yawList = new ArrayList<>();
+		for(int i = 0; i < 10; i++) {
+			Random randomX = new Random();
+			Random randomZ = new Random();
+			list.add(i, new Vec3d(randomX.nextDouble() * 2 - 1, 0, randomZ.nextDouble() * 2 - 1));
+			yawList.add(i, randomX.nextFloat());
+		}
+		return Pair.of(list, yawList);
+	}
 
 	@Override
 	public void markDirty() {

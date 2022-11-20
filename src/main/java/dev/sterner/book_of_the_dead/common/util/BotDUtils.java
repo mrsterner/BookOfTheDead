@@ -4,12 +4,14 @@ import com.mojang.datafixers.util.Pair;
 import dev.sterner.book_of_the_dead.mixin.StructurePoolAccessor;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.structure.pool.StructurePool;
 import net.minecraft.structure.pool.StructurePoolElement;
 import net.minecraft.structure.processor.StructureProcessorLists;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Vec3d;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,5 +60,17 @@ public class BotDUtils {
 			}
 		}
 		return checkedIndexes.size() == ingredients.size();
+	}
+
+	public static NbtCompound fromVec3d(Vec3d pos) {
+		NbtCompound nbtCompound = new NbtCompound();
+		nbtCompound.putDouble("X", pos.getX());
+		nbtCompound.putDouble("Y", pos.getY());
+		nbtCompound.putDouble("Z", pos.getZ());
+		return nbtCompound;
+	}
+
+	public static Vec3d toVec3d(NbtCompound compound) {
+		return new Vec3d(compound.getDouble("X"), compound.getDouble("Y"), compound.getDouble("Z"));
 	}
 }

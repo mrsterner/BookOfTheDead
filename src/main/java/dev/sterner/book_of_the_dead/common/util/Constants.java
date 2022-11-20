@@ -50,5 +50,8 @@ public class Constants {
 		public static final String TIMER = "Timer";
 		public static final String AGE = "Age";
         public static final String PLAYER_UUID = "PlayerUuid";
-    }
+        public static final String POS_LIST = "PosList";
+		public static final String YAW_LIST = "YawList";
+		public static final String YAW = "Yaw";
+	}
 }
