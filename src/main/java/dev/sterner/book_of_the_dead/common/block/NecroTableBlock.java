@@ -1,5 +1,6 @@
 package dev.sterner.book_of_the_dead.common.block;
 
+import dev.sterner.book_of_the_dead.api.block.HorizontalDoubleBlock;
 import dev.sterner.book_of_the_dead.api.enums.HorizontalDoubleBlockHalf;
 import dev.sterner.book_of_the_dead.common.block.entity.NecroTableBlockEntity;
 import net.minecraft.block.*;
@@ -8,13 +9,10 @@ import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
-import net.minecraft.state.property.DirectionProperty;
-import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -27,13 +25,11 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldEvents;
-import net.minecraft.world.WorldView;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.ToIntFunction;
 
-public class NecroTableBlock extends HorizontalFacingBlock implements BlockEntityProvider {
+public class NecroTableBlock extends HorizontalDoubleBlock implements BlockEntityProvider {
 	protected static final VoxelShape WEST_SHAPE = VoxelShapes.union(
 			createCuboidShape(0,0,4,16,3,16),
 			createCuboidShape(2,0,6,14,10,16),
@@ -63,16 +59,12 @@ public class NecroTableBlock extends HorizontalFacingBlock implements BlockEntit
 	);
 
 	public static final BooleanProperty LIT = Properties.LIT;
-	public static final DirectionProperty FACING = HorizontalFacingBlock.FACING;
-	public static final EnumProperty<HorizontalDoubleBlockHalf> HHALF = EnumProperty.of("half", HorizontalDoubleBlockHalf.class);
 	public static final ToIntFunction<BlockState> STATE_TO_LUMINANCE = state -> state.get(LIT) ? 14 : 0;
 
 	public NecroTableBlock(Settings settings) {
 		super(settings.nonOpaque().luminance(STATE_TO_LUMINANCE));
 		this.stateManager
 				.getDefaultState()
-				.with(FACING, Direction.NORTH)
-				.with(HHALF, HorizontalDoubleBlockHalf.RIGHT)
 				.with(LIT, Boolean.FALSE);
 	}
 
@@ -94,8 +86,8 @@ public class NecroTableBlock extends HorizontalFacingBlock implements BlockEntit
 
 	@Override
 	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-		Direction direction = state.get(FACING);
-		boolean bl = state.get(HHALF) == HorizontalDoubleBlockHalf.RIGHT;
+		Direction direction = state.get(HorizontalFacingBlock.FACING);
+		boolean bl = state.get(HorizontalDoubleBlock.HHALF) == HorizontalDoubleBlockHalf.RIGHT;
 		return switch (direction) {
 			case NORTH -> bl ? NORTH_SHAPE : SOUTH_SHAPE;
 			case SOUTH -> bl ? SOUTH_SHAPE : NORTH_SHAPE;
@@ -103,50 +95,13 @@ public class NecroTableBlock extends HorizontalFacingBlock implements BlockEntit
 			case WEST -> bl ? WEST_SHAPE : EAST_SHAPE;
 			default -> NORTH_SHAPE;
 		};
-
-
 	}
 
-	@Override
-	public boolean canPlaceAt(BlockState state, WorldView world, BlockPos pos) {
-		if(state.get(HHALF) == HorizontalDoubleBlockHalf.LEFT){
-			Direction targetDirection = state.get(FACING).rotateClockwise(Direction.Axis.Y);
-			BlockPos targetPos = pos.offset(targetDirection);
-			return world.getBlockState(targetPos).isOf(this);
-		}else{
-			Direction targetDirection = state.get(FACING).rotateCounterclockwise(Direction.Axis.Y);
-			BlockPos targetPos = pos.offset(targetDirection);
-			return world.getBlockState(targetPos).isOf(this);
-		}
-	}
-
-	@Override
-	public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-		BlockPos targetPos;
-		if(state.get(HHALF) == HorizontalDoubleBlockHalf.LEFT){
-			Direction targetDirection = state.get(FACING).rotateClockwise(Direction.Axis.Y);
-			targetPos = pos.offset(targetDirection);
-		}else{
-			Direction targetDirection = state.get(FACING).rotateCounterclockwise(Direction.Axis.Y);
-			targetPos = pos.offset(targetDirection);
-		}
-		world.breakBlock(targetPos, false);
-		world.syncWorldEvent(player, WorldEvents.BLOCK_BROKEN, targetPos, Block.getRawIdFromState(world.getBlockState(targetPos)));
-		super.onBreak(world, pos, state, player);
-	}
-
-	@Override
-	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, RandomGenerator random) {
-		if (!state.canPlaceAt(world, pos)) {
-			world.breakBlock(pos, true);
-		}
-	}
 
 	@Override
 	public void randomDisplayTick(BlockState state, World world, BlockPos pos, RandomGenerator random) {
 		if (state.get(LIT)) {
-
-			if(state.get(HHALF) == HorizontalDoubleBlockHalf.RIGHT){
+			if(state.get(HorizontalDoubleBlock.HHALF) == HorizontalDoubleBlockHalf.RIGHT){
 				var offset1 = new Vec3d(0.45, 1.33, 0.65);
 				var offset2 = new Vec3d(0.25, 1.2, 0.55);
 				var offset3 = new Vec3d(0.3, 1.45, 0.75);
@@ -155,7 +110,6 @@ public class NecroTableBlock extends HorizontalFacingBlock implements BlockEntit
 				spawnCandleParticles(world, offset2.add(pos.getX(), pos.getY(), pos.getZ()), random);
 				spawnCandleParticles(world, offset3.add(pos.getX(), pos.getY(), pos.getZ()), random);
 			}
-
 		}
 	}
 
@@ -176,16 +130,14 @@ public class NecroTableBlock extends HorizontalFacingBlock implements BlockEntit
 				);
 			}
 		}
-
 		world.addParticle(ParticleTypes.SMALL_FLAME, vec3d.x, vec3d.y, vec3d.z, 0.0, 0.0, 0.0);
 	}
 
 	@Override
 	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-		builder.add(HHALF, FACING, LIT);
+		builder.add(LIT);
+		super.appendProperties(builder);
 	}
-
-
 
 	@Nullable
 	@Override

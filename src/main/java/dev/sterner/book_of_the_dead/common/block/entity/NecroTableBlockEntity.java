@@ -3,7 +3,7 @@ package dev.sterner.book_of_the_dead.common.block.entity;
 import dev.sterner.book_of_the_dead.api.NecrotableRitual;
 import dev.sterner.book_of_the_dead.api.enums.HorizontalDoubleBlockHalf;
 import dev.sterner.book_of_the_dead.api.interfaces.IBlockEntityInventory;
-import dev.sterner.book_of_the_dead.common.block.NecroTableBlock;
+import dev.sterner.book_of_the_dead.api.block.HorizontalDoubleBlock;
 import dev.sterner.book_of_the_dead.common.recipe.RitualRecipe;
 import dev.sterner.book_of_the_dead.common.registry.BotDBlockEntityTypes;
 import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
@@ -47,7 +47,7 @@ public class NecroTableBlockEntity extends BlockEntity implements IBlockEntityIn
 	}
 
 	public static void tick(World world, BlockPos pos, BlockState blockState, NecroTableBlockEntity blockEntity) {
-		if (world != null && blockState.isOf(BotDObjects.NECRO_TABLE) && blockState.get(NecroTableBlock.HHALF) == HorizontalDoubleBlockHalf.RIGHT) {
+		if (world != null && blockState.isOf(BotDObjects.NECRO_TABLE) && blockState.get(HorizontalDoubleBlock.HHALF) == HorizontalDoubleBlockHalf.RIGHT) {
 			if (!blockEntity.loaded) {
 				blockEntity.markDirty();
 				blockEntity.loaded = true;

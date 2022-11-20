@@ -3,13 +3,15 @@ package dev.sterner.book_of_the_dead;
 import dev.sterner.book_of_the_dead.api.enums.HorizontalDoubleBlockHalf;
 import dev.sterner.book_of_the_dead.api.event.OnEntityDeathEvent;
 import dev.sterner.book_of_the_dead.api.interfaces.IHauler;
-import dev.sterner.book_of_the_dead.common.block.NecroTableBlock;
+import dev.sterner.book_of_the_dead.api.block.HorizontalDoubleBlock;
 import dev.sterner.book_of_the_dead.common.block.RopeBlock;
 import dev.sterner.book_of_the_dead.common.entity.CorpseEntity;
 import dev.sterner.book_of_the_dead.common.registry.*;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -17,6 +19,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
@@ -30,13 +33,10 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import org.quiltmc.loader.api.ModContainer;
 import org.quiltmc.qsl.base.api.entrypoint.ModInitializer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import static dev.sterner.book_of_the_dead.common.block.HookBlock.FACING;
 
 public class BotD implements ModInitializer {
-	public static final Logger LOGGER = LoggerFactory.getLogger("The BotD");
 
 	@Override
 	public void onInitialize(ModContainer mod) {
@@ -57,19 +57,19 @@ public class BotD implements ModInitializer {
 		UseBlockCallback.EVENT.register(this::createButcherTable);
 	}
 
-	private ActionResult createNecroTable(PlayerEntity player, World world, Hand hand, BlockHitResult blockHitResult) {
-		if(!world.isClient() && player.getMainHandStack().isOf(BotDObjects.BOOK_OF_THE_DEAD) && hand == Hand.MAIN_HAND){
+	private ActionResult createDoubleBlock(Item useItem, Block targetBlock, BlockState resultState, PlayerEntity player, World world, Hand hand, BlockHitResult blockHitResult){
+		if(!world.isClient() && player.getMainHandStack().isOf(useItem) && hand == Hand.MAIN_HAND){
 			BlockPos blockPos = blockHitResult.getBlockPos();
-			if(world.getBlockState(blockPos).isOf(Blocks.DEEPSLATE_TILES)){
+			if(world.getBlockState(blockPos).isOf(targetBlock)){
 				BlockPos left = blockPos.offset(player.getHorizontalFacing().rotateYCounterclockwise());
 				BlockPos right = blockPos.offset(player.getHorizontalFacing().rotateYClockwise());
 
-				if(world.getBlockState(left).isOf(Blocks.DEEPSLATE_TILES)){
-					world.setBlockState(blockPos, BotDObjects.NECRO_TABLE.getDefaultState().with(NecroTableBlock.HHALF, HorizontalDoubleBlockHalf.RIGHT).with(FACING, player.getHorizontalFacing()));
-					world.setBlockState(left, BotDObjects.NECRO_TABLE.getDefaultState().with(NecroTableBlock.HHALF, HorizontalDoubleBlockHalf.LEFT).with(FACING, player.getHorizontalFacing()));
-				}else if(world.getBlockState(right).isOf(Blocks.DEEPSLATE_TILES)){
-					world.setBlockState(blockPos, BotDObjects.NECRO_TABLE.getDefaultState().with(NecroTableBlock.HHALF, HorizontalDoubleBlockHalf.LEFT).with(FACING, player.getHorizontalFacing()));
-					world.setBlockState(right, BotDObjects.NECRO_TABLE.getDefaultState().with(NecroTableBlock.HHALF, HorizontalDoubleBlockHalf.RIGHT).with(FACING, player.getHorizontalFacing()));
+				if(world.getBlockState(left).isOf(targetBlock)){
+					world.setBlockState(blockPos, resultState.with(HorizontalDoubleBlock.HHALF, HorizontalDoubleBlockHalf.RIGHT).with(FACING, player.getHorizontalFacing()));
+					world.setBlockState(left, resultState.with(HorizontalDoubleBlock.HHALF, HorizontalDoubleBlockHalf.LEFT).with(FACING, player.getHorizontalFacing()));
+				}else if(world.getBlockState(right).isOf(targetBlock)){
+					world.setBlockState(blockPos, resultState.with(HorizontalDoubleBlock.HHALF, HorizontalDoubleBlockHalf.LEFT).with(FACING, player.getHorizontalFacing()));
+					world.setBlockState(right, resultState.with(HorizontalDoubleBlock.HHALF, HorizontalDoubleBlockHalf.RIGHT).with(FACING, player.getHorizontalFacing()));
 				}else {
 					return ActionResult.PASS;
 				}
@@ -79,28 +79,12 @@ public class BotD implements ModInitializer {
 		return ActionResult.PASS;
 	}
 
-	private ActionResult createButcherTable(PlayerEntity player, World world, Hand hand, BlockHitResult blockHitResult) {
-		if(!world.isClient() && player.getMainHandStack().isOf(BotDObjects.BUTCHER_KNIFE) && hand == Hand.MAIN_HAND){
-			BlockPos blockPos = blockHitResult.getBlockPos();
-			if(world.getBlockState(blockPos).isOf(Blocks.DARK_OAK_PLANKS)){
-				BlockPos left = blockPos.offset(player.getHorizontalFacing().rotateYCounterclockwise());
-				BlockPos right = blockPos.offset(player.getHorizontalFacing().rotateYClockwise());
+	private ActionResult createNecroTable(PlayerEntity player, World world, Hand hand, BlockHitResult blockHitResult) {
+		return createDoubleBlock(BotDObjects.BOOK_OF_THE_DEAD, Blocks.DEEPSLATE_TILES, BotDObjects.NECRO_TABLE.getDefaultState(), player, world, hand, blockHitResult);
+	}
 
-				if(world.getBlockState(left).isOf(Blocks.DARK_OAK_PLANKS)){
-					world.setBlockState(blockPos, BotDObjects.BUTCHER_TABLE.getDefaultState().with(NecroTableBlock.HHALF, HorizontalDoubleBlockHalf.RIGHT).with(FACING, player.getHorizontalFacing()));
-					world.setBlockState(left, BotDObjects.BUTCHER_TABLE.getDefaultState().with(NecroTableBlock.HHALF, HorizontalDoubleBlockHalf.LEFT).with(FACING, player.getHorizontalFacing()));
-				}else if(world.getBlockState(right).isOf(Blocks.DARK_OAK_PLANKS)){
-					world.setBlockState(blockPos, BotDObjects.BUTCHER_TABLE.getDefaultState().with(NecroTableBlock.HHALF, HorizontalDoubleBlockHalf.LEFT).with(FACING, player.getHorizontalFacing()));
-					world.setBlockState(right, BotDObjects.BUTCHER_TABLE.getDefaultState().with(NecroTableBlock.HHALF, HorizontalDoubleBlockHalf.RIGHT).with(FACING, player.getHorizontalFacing()));
-				}else {
-					return ActionResult.PASS;
-				}
-				if(!player.isCreative()){
-					player.getMainHandStack().decrement(1);
-				}
-			}
-		}
-		return ActionResult.PASS;
+	private ActionResult createButcherTable(PlayerEntity player, World world, Hand hand, BlockHitResult blockHitResult) {
+		return createDoubleBlock(BotDObjects.BUTCHER_KNIFE, Blocks.DARK_OAK_PLANKS, BotDObjects.BUTCHER_TABLE.getDefaultState(), player, world, hand, blockHitResult);
 	}
 
 	private ActionResult placeHook(PlayerEntity player, World world, Hand hand, BlockHitResult blockHitResult) {

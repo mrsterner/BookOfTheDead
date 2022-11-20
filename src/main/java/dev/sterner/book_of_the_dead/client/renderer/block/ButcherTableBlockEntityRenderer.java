@@ -1,12 +1,10 @@
 package dev.sterner.book_of_the_dead.client.renderer.block;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import dev.sterner.book_of_the_dead.BotDClient;
 import dev.sterner.book_of_the_dead.api.enums.HorizontalDoubleBlockHalf;
-import dev.sterner.book_of_the_dead.client.renderer.renderlayer.BotDRenderLayer;
+import dev.sterner.book_of_the_dead.api.block.HorizontalDoubleBlock;
 import dev.sterner.book_of_the_dead.common.block.NecroTableBlock;
 import dev.sterner.book_of_the_dead.common.block.entity.ButcherTableBlockEntity;
-import dev.sterner.book_of_the_dead.common.block.entity.NecroTableBlockEntity;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -19,7 +17,6 @@ import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.World;
 
@@ -43,7 +40,7 @@ public class ButcherTableBlockEntityRenderer<T extends BlockEntity> implements B
 		World world = entity.getWorld();
 		if(world != null){
 			BlockState blockState = entity.getCachedState();
-			if(entity instanceof ButcherTableBlockEntity butcherTableBlockEntity && blockState.get(NecroTableBlock.HHALF) == HorizontalDoubleBlockHalf.RIGHT){
+			if(entity instanceof ButcherTableBlockEntity butcherTableBlockEntity && blockState.get(HorizontalDoubleBlock.HHALF) == HorizontalDoubleBlockHalf.RIGHT){
 				matrices.push();
 				float f = blockState.get(NecroTableBlock.FACING).asRotation();
 				Direction direction = blockState.get(NecroTableBlock.FACING);

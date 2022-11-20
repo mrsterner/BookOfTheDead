@@ -5,6 +5,7 @@ import dev.sterner.book_of_the_dead.BotDClient;
 import dev.sterner.book_of_the_dead.api.enums.HorizontalDoubleBlockHalf;
 import dev.sterner.book_of_the_dead.client.model.LargeCircleEntityModel;
 import dev.sterner.book_of_the_dead.client.renderer.renderlayer.BotDRenderLayer;
+import dev.sterner.book_of_the_dead.api.block.HorizontalDoubleBlock;
 import dev.sterner.book_of_the_dead.common.block.NecroTableBlock;
 import dev.sterner.book_of_the_dead.common.block.entity.NecroTableBlockEntity;
 import dev.sterner.book_of_the_dead.common.util.Constants;
@@ -56,7 +57,7 @@ public class NecroTableBlockEntityRenderer<T extends BlockEntity> implements Blo
 		World world = entity.getWorld();
 		if(world != null){
 			BlockState blockState = entity.getCachedState();
-			if(entity instanceof NecroTableBlockEntity necroTableBlockEntity && blockState.get(NecroTableBlock.HHALF) == HorizontalDoubleBlockHalf.RIGHT){
+			if(entity instanceof NecroTableBlockEntity necroTableBlockEntity && blockState.get(HorizontalDoubleBlock.HHALF) == HorizontalDoubleBlockHalf.RIGHT){
 
 
 				matrices.push();
