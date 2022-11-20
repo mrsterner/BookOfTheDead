@@ -15,6 +15,7 @@ import net.minecraft.util.math.Vec3d;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class BotDUtils {
 	public static void addItemToInventoryAndConsume(PlayerEntity player, Hand hand, ItemStack toAdd) {
@@ -72,5 +73,22 @@ public class BotDUtils {
 
 	public static Vec3d toVec3d(NbtCompound compound) {
 		return new Vec3d(compound.getDouble("X"), compound.getDouble("Y"), compound.getDouble("Z"));
+	}
+
+	public static Pair<ArrayList<Vec3d>, ArrayList<Float>> genRandomPos(double interval){
+		ArrayList<Vec3d> list = new ArrayList<>();
+		ArrayList<Float> yawList = new ArrayList<>();
+		for(int i = 0; i < 10; i++) {
+			Random randomX = new Random();
+			Random randomZ = new Random();
+
+			list.add(i, new Vec3d(nextDouble(randomX, -interval, interval), 0, nextDouble(randomZ, -interval, interval)));
+			yawList.add(i, randomX.nextFloat());
+		}
+		return Pair.of(list, yawList);
+	}
+
+	public static double nextDouble(Random random, double min, double max) {
+		return min >= max ? min : random.nextDouble() * (max - min) + min;
 	}
 }

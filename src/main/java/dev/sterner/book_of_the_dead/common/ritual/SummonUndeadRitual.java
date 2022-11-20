@@ -11,8 +11,6 @@ import net.minecraft.world.World;
 public class SummonUndeadRitual extends SummonRitual {
 	public SummonUndeadRitual(Identifier id, Identifier largeCircleSprite, Identifier smallCircleSprite, int duration) {
 		super(id, largeCircleSprite, smallCircleSprite, duration);
-
-
 	}
 
 	@Override
@@ -22,11 +20,7 @@ public class SummonUndeadRitual extends SummonRitual {
 			this.summons.add(1, EntityType.ZOMBIE.create(world));
 			this.summons.add(2, EntityType.SKELETON.create(world));
 		}
+		super.tick(world, blockPos, blockEntity);
 	}
 
-	@Override
-	public void onStart(World world, BlockPos blockPos, NecroTableBlockEntity blockEntity) {
-
-		super.onStart(world, blockPos, blockEntity);
-	}
 }

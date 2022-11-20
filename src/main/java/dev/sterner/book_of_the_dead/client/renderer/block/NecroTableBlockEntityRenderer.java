@@ -10,6 +10,8 @@ import dev.sterner.book_of_the_dead.client.renderer.renderlayer.BotDRenderLayer;
 import dev.sterner.book_of_the_dead.api.block.HorizontalDoubleBlock;
 import dev.sterner.book_of_the_dead.common.block.NecroTableBlock;
 import dev.sterner.book_of_the_dead.common.block.entity.NecroTableBlockEntity;
+import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
+import dev.sterner.book_of_the_dead.common.util.BotDUtils;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
@@ -72,9 +74,7 @@ public class NecroTableBlockEntityRenderer<T extends BlockEntity> implements Blo
 		if(world != null){
 			BlockState blockState = entity.getCachedState();
 			if(entity instanceof NecroTableBlockEntity necroTableBlockEntity && blockState.get(HorizontalDoubleBlock.HHALF) == HorizontalDoubleBlockHalf.RIGHT){
-				matrices.push();
-				renderSummonEntity(necroTableBlockEntity, blockState, tickDelta, matrices, vertexConsumers, light, overlay);
-				matrices.pop();
+
 
 				matrices.push();
 				float f = blockState.get(NecroTableBlock.FACING).asRotation();
@@ -107,7 +107,21 @@ public class NecroTableBlockEntityRenderer<T extends BlockEntity> implements Blo
 				matrices.pop();
 
 				matrices.push();
-				matrices.translate(1,-1.25,3.5);
+
+				if(direction == Direction.SOUTH){
+					matrices.translate(1,-1.25,3.5);
+				}else if(direction == Direction.WEST){
+					matrices.translate(-2.5,-1.25,1);
+				}else if(direction == Direction.NORTH){
+					matrices.translate(0,-1.25,-2.5);
+				}else if(direction == Direction.EAST){
+					matrices.translate(3.5,-1.25,0);
+				}
+				matrices.push();
+				matrices.translate(0,1.25,0);
+				renderSummonEntity(necroTableBlockEntity, blockState, tickDelta, matrices, vertexConsumers, light, overlay);
+				matrices.pop();
+
 				final float rotationModifier = 4F;
 				double ticks = (BotDClient.ClientTickHandler.ticksInGame + tickDelta) * 0.5;
 				float deg =  (float) (ticks / rotationModifier % 360F);
@@ -124,10 +138,10 @@ public class NecroTableBlockEntityRenderer<T extends BlockEntity> implements Blo
 		if(necroTableBlockEntity.currentNecrotableRitual != null && !necroTableBlockEntity.currentNecrotableRitual.summons.isEmpty()){
 			if(necroTableBlockEntity.getWorld() != null){
 				if(necroTableBlockEntity.posList == null){
-					necroTableBlockEntity.posList = NecroTableBlockEntity.genRandomPos().getFirst();
+					necroTableBlockEntity.posList = BotDUtils.genRandomPos(1).getFirst();
 				}
 				if(necroTableBlockEntity.yawList == null){
-					necroTableBlockEntity.yawList = NecroTableBlockEntity.genRandomPos().getSecond();
+					necroTableBlockEntity.yawList =  BotDUtils.genRandomPos(1).getSecond();
 				}
 				NecrotableRitual ritual = necroTableBlockEntity.currentNecrotableRitual;
 				List<Entity> entityList = ritual.summons;
@@ -145,8 +159,8 @@ public class NecroTableBlockEntityRenderer<T extends BlockEntity> implements Blo
 								f = 1.0F;
 							}
 							livingEntity.headYaw = 0;
-							matrices.translate(1,f * offsetInGround - offsetInGround   ,4);
-							matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(necroTableBlockEntity.yawList.get(index) * 317));
+							matrices.translate(0,f * offsetInGround - offsetInGround   ,0);
+							matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(necroTableBlockEntity.yawList.get(index) * 360));
 							dispatcher.render(livingEntity, necroTableBlockEntity.posList.get(index).getX(), 0, necroTableBlockEntity.posList.get(index).getZ(), 0 ,tickDelta, matrices, vertexConsumers, light);
 						    matrices.pop();
 						}

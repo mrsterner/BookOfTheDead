@@ -34,7 +34,9 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.random.RandomGenerator;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
@@ -72,21 +74,6 @@ public class NecroTableBlockEntity extends BlockEntity implements IBlockEntityIn
 				if (blockEntity.timer >= 0) {
 					ritual.tick(world, pos, blockEntity);
 				}
-				if(ritual instanceof SummonRitual summonRitual){
-					for(Entity entity : summonRitual.summons){
-						int index = summonRitual.summons.indexOf(entity);
-						if(blockEntity.posList != null && blockEntity.timer < 20 * 2){
-							Vec3d vec3d = blockEntity.posList.get(index);
-							for (int i = 0; i < 12; i++) {
-								world.addParticle(new BlockStateParticleEffect(ParticleTypes.BLOCK, Blocks.GRASS_BLOCK.getDefaultState()),
-										blockEntity.getPos().getX() + vec3d.getX() + 1,
-										blockEntity.getPos().getY(),
-										blockEntity.getPos().getZ() + vec3d.getZ() + 4, 0, 0, 0);
-							}
-						}
-					}
-				}
-
 				if(blockEntity.timer >= blockEntity.currentNecrotableRitual.duration){
 					blockEntity.currentNecrotableRitual.onStopped(world, pos, blockEntity);
 					blockEntity.currentNecrotableRitual = null;
@@ -222,17 +209,7 @@ public class NecroTableBlockEntity extends BlockEntity implements IBlockEntityIn
 		}
 	}
 
-	public static Pair<ArrayList<Vec3d>, ArrayList<Float>> genRandomPos(){
-		ArrayList<Vec3d> list = new ArrayList<>();
-		ArrayList<Float> yawList = new ArrayList<>();
-		for(int i = 0; i < 10; i++) {
-			Random randomX = new Random();
-			Random randomZ = new Random();
-			list.add(i, new Vec3d(randomX.nextDouble() * 2 - 1, 0, randomZ.nextDouble() * 2 - 1));
-			yawList.add(i, randomX.nextFloat());
-		}
-		return Pair.of(list, yawList);
-	}
+
 
 	@Override
 	public void markDirty() {

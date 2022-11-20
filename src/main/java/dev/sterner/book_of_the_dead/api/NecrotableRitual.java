@@ -32,9 +32,12 @@ public class NecrotableRitual {
 	}
 
 	public void tick(World world, BlockPos blockPos, NecroTableBlockEntity blockEntity) {
+		Direction direction = world.getBlockState(blockPos).get(HorizontalFacingBlock.FACING);//TODO remove when not testing anymore
+		ritualCenter = blockPos.offset(direction, 2).add(0.5,0.5,0.5);
 	}
 
 	public void onStopped(World world, BlockPos blockPos, NecroTableBlockEntity blockEntity){
+
 
 	}
 
