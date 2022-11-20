@@ -24,28 +24,21 @@ public class SummonRitual extends NecrotableRitual {
 	public void tick(World world, BlockPos blockPos, NecroTableBlockEntity blockEntity) {
 		super.tick(world, blockPos, blockEntity);
 		for(Entity entity : summons){
-
-
 			int index = summons.indexOf(entity);
 			if(blockEntity.posList != null && blockEntity.timer < 20 * 2){
 				Vec3d vec3d = blockEntity.posList.get(index);
 				Direction direction = world.getBlockState(blockPos).get(HorizontalFacingBlock.FACING);
-				double xOffset = 0;
-				double zOffset = 0;
+				double xOffset;
+				double zOffset;
 				if(direction == Direction.NORTH){
-					xOffset = 1;
-					zOffset = -1;
+					xOffset = 1; zOffset = -1;
 				}else if(direction == Direction.SOUTH){
-					xOffset = 1;
-					zOffset = 2.5;
+					xOffset = 1; zOffset = 2.5;
 				}else if(direction == Direction.EAST){
-					xOffset = 1.5;
-					zOffset = 0;
+					xOffset = 1.5; zOffset = 0;
 				}else{
-					xOffset = -0.5;
-					zOffset = 1;
+					xOffset = -0.5; zOffset = 1;
 				}
-
 				for (int i = 0; i < 12; i++) {
 					world.addParticle(new BlockStateParticleEffect(ParticleTypes.BLOCK, Blocks.GRASS_BLOCK.getDefaultState()),
 							ritualCenter.getX() + vec3d.getX() + xOffset + MathHelper.nextDouble(world.getRandom(), -1, 1),
@@ -59,7 +52,7 @@ public class SummonRitual extends NecrotableRitual {
 
 	@Override
 	public void onStopped(World world, BlockPos blockPos, NecroTableBlockEntity blockEntity) {
-
 		super.onStopped(world, blockPos, blockEntity);
+
 	}
 }

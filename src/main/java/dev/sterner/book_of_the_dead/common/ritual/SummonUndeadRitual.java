@@ -1,6 +1,5 @@
 package dev.sterner.book_of_the_dead.common.ritual;
 
-import dev.sterner.book_of_the_dead.api.NecrotableRitual;
 import dev.sterner.book_of_the_dead.common.block.entity.NecroTableBlockEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.util.Identifier;
