@@ -47,6 +47,7 @@ public class BotD implements ModInitializer {
 		BotDRecipeTypes.init();
 		BotDWorldGenerators.init();
 		BotDTrades.init();
+		BotDRituals.init();
 
 		OnEntityDeathEvent.START.register(this::onButcheredEntity);
 		UseEntityCallback.EVENT.register(this::onPickupCorpse);

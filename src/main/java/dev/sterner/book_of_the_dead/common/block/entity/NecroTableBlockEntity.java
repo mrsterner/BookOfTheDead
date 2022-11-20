@@ -5,10 +5,8 @@ import dev.sterner.book_of_the_dead.api.enums.HorizontalDoubleBlockHalf;
 import dev.sterner.book_of_the_dead.api.interfaces.IBlockEntityInventory;
 import dev.sterner.book_of_the_dead.api.block.HorizontalDoubleBlock;
 import dev.sterner.book_of_the_dead.common.recipe.RitualRecipe;
-import dev.sterner.book_of_the_dead.common.registry.BotDBlockEntityTypes;
-import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
-import dev.sterner.book_of_the_dead.common.registry.BotDRecipeTypes;
-import dev.sterner.book_of_the_dead.common.registry.BotDRegistries;
+import dev.sterner.book_of_the_dead.common.registry.*;
+import dev.sterner.book_of_the_dead.common.ritual.SummonUndeadRitual;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -35,7 +33,7 @@ public class NecroTableBlockEntity extends BlockEntity implements IBlockEntityIn
 	private final DefaultedList<ItemStack> ITEMS = DefaultedList.ofSize(8, ItemStack.EMPTY);
 	public boolean hasBotD = false;
 	public boolean hasEmeraldTablet = false;
-	public NecrotableRitual currentNecrotableRitual = null;
+	public NecrotableRitual currentNecrotableRitual = BotDRituals.SUMMON_ZOMBIE;
 	private boolean loaded = false;
 	private int timer = 0;
 	public long age = 0;
@@ -74,7 +72,7 @@ public class NecroTableBlockEntity extends BlockEntity implements IBlockEntityIn
 			if (necroTableBlockEntity.currentNecrotableRitual != null) {
 				return ActionResult.PASS;
 			}
-			if (!world.isClient) {
+			if (!world.isClient && state.isOf(BotDObjects.NECRO_TABLE) && state.get(HorizontalDoubleBlock.HHALF) == HorizontalDoubleBlockHalf.RIGHT) {
 				necroTableBlockEntity.setUser(player);
 				necroTableBlockEntity.sync(world, pos);
 				RitualRecipe ritualRecipe = BotDRecipeTypes.getRiteRecipe(necroTableBlockEntity);

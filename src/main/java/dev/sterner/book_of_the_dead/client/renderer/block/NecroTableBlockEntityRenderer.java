@@ -2,6 +2,7 @@ package dev.sterner.book_of_the_dead.client.renderer.block;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import dev.sterner.book_of_the_dead.BotDClient;
+import dev.sterner.book_of_the_dead.api.NecrotableRitual;
 import dev.sterner.book_of_the_dead.api.enums.HorizontalDoubleBlockHalf;
 import dev.sterner.book_of_the_dead.client.model.LargeCircleEntityModel;
 import dev.sterner.book_of_the_dead.client.renderer.renderlayer.BotDRenderLayer;
@@ -16,19 +17,28 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
+import net.minecraft.client.render.entity.EntityRenderDispatcher;
+import net.minecraft.client.render.entity.LivingEntityRenderer;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.World;
+
+import java.util.List;
 
 public class NecroTableBlockEntityRenderer<T extends BlockEntity> implements BlockEntityRenderer<T> {
 	public static final EntityModelLayer LAYER_LOCATION = new EntityModelLayer(Constants.id("necro_model"), "main");
 	private final Identifier TEXTURE = Constants.id("textures/entity/necro_table.png");
 	private final Identifier CIRCLE_TEXTURE = Constants.id("textures/entity/circle.png");
 	private final LargeCircleEntityModel jarEntityModel =  new LargeCircleEntityModel<>(LargeCircleEntityModel.createBodyLayer().createModel());
+	private final EntityRenderDispatcher dispatcher;
 	private final ModelPart base;
 	private final ModelPart book;
 	private final ModelPart candle;
@@ -41,6 +51,7 @@ public class NecroTableBlockEntityRenderer<T extends BlockEntity> implements Blo
 
 	public NecroTableBlockEntityRenderer(BlockEntityRendererFactory.Context ctx) {
 		ModelPart modelPart = ctx.getLayerModelPart(LAYER_LOCATION);
+		this.dispatcher = ctx.getEntityRendererDispatcher();
 		this.base = modelPart.getChild("base");
 		this.book = modelPart.getChild("book");
 		this.candle = modelPart.getChild("candle");
@@ -58,7 +69,9 @@ public class NecroTableBlockEntityRenderer<T extends BlockEntity> implements Blo
 		if(world != null){
 			BlockState blockState = entity.getCachedState();
 			if(entity instanceof NecroTableBlockEntity necroTableBlockEntity && blockState.get(HorizontalDoubleBlock.HHALF) == HorizontalDoubleBlockHalf.RIGHT){
-
+				matrices.push();
+				renderSummonEntity(necroTableBlockEntity, blockState, tickDelta, matrices, vertexConsumers, light, overlay);
+				matrices.pop();
 
 				matrices.push();
 				float f = blockState.get(NecroTableBlock.FACING).asRotation();
@@ -101,6 +114,43 @@ public class NecroTableBlockEntityRenderer<T extends BlockEntity> implements Blo
 
 				matrices.pop();
 			}
+		}
+	}
+
+	private void renderSummonEntity(NecroTableBlockEntity necroTableBlockEntity, BlockState blockState, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
+		if(necroTableBlockEntity.currentNecrotableRitual != null && !necroTableBlockEntity.currentNecrotableRitual.summons.isEmpty()){
+			if(necroTableBlockEntity.getWorld() != null){
+				NecrotableRitual ritual = necroTableBlockEntity.currentNecrotableRitual;
+				//BlockPos ritualCenter = ritual.ritualCenter;
+				BlockPos ritualCenter = necroTableBlockEntity.getPos();
+				List<Entity> entityList = ritual.summons;
+				if(!entityList.isEmpty()){
+					World world = necroTableBlockEntity.getWorld();
+					double ticks = (BotDClient.ClientTickHandler.ticksInGame + tickDelta) * 0.5;
+					for(Entity entity : entityList){
+						if(entity instanceof LivingEntity livingEntity){
+							double offsetInCircle = world.getRandom().nextDouble();
+							float offsetInGround = livingEntity.getHeight();
+							float f = ((float)ticks + tickDelta - 1.0F) / 20.0F * 5F;
+							f = MathHelper.sqrt(f);
+							if (f > 1.0F) {
+								f = 1.0F;
+							}
+
+							System.out.println(offsetInGround +" : " + f);
+							livingEntity.headYaw = 0;
+							matrices.translate(0,MathHelper.sin((float)ticks),0);
+							matrices.translate(0,offsetInGround - f * offsetInGround ,0);
+							dispatcher.render(livingEntity, 0, 0, 0, 0 ,tickDelta, matrices, vertexConsumers, light);
+						}
+
+					}
+
+				}
+
+
+			}
+
 		}
 	}
 
