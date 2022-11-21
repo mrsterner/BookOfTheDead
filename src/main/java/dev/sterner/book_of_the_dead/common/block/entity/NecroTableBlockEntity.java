@@ -44,8 +44,8 @@ public class NecroTableBlockEntity extends BlockEntity implements IBlockEntityIn
 	public UUID user = null;
 	public ArrayList<Vec3d> posList;
 	public ArrayList<Float> yawList;
-
 	public Entity targetedEntity = null;
+
 	public NecroTableBlockEntity(BlockPos pos, BlockState state) {
 		super(BotDBlockEntityTypes.NECRO, pos, state);
 	}

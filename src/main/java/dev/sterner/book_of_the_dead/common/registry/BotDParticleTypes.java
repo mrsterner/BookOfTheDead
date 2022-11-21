@@ -15,7 +15,6 @@ public class BotDParticleTypes {
 	public static final DefaultParticleType FALLING_BLOOD = Registry.register(Registry.PARTICLE_TYPE, Constants.id("falling_blood"), FabricParticleTypes.simple());
 	public static final DefaultParticleType LANDING_BLOOD = Registry.register(Registry.PARTICLE_TYPE,  Constants.id("landing_blood"), FabricParticleTypes.simple());
 
-
 	public static void init() {
 		ParticleFactoryRegistry.getInstance().register(LANDING_BLOOD, s -> new BlockLeakParticle.LandingHoneyFactory(s) {
 			@Override

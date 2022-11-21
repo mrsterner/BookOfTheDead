@@ -1,5 +1,6 @@
 package dev.sterner.book_of_the_dead.common.registry;
 
+import dev.sterner.book_of_the_dead.common.entity.BloodSlimeEntity;
 import dev.sterner.book_of_the_dead.common.entity.CorpseEntity;
 import dev.sterner.book_of_the_dead.common.entity.OldManEntity;
 import dev.sterner.book_of_the_dead.common.util.Constants;
@@ -8,6 +9,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
+import net.minecraft.entity.mob.SlimeEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import org.quiltmc.qsl.entity.api.QuiltEntityTypeBuilder;
@@ -37,6 +39,17 @@ public class BotDEntityTypes {
 							.setDimensions(EntityDimensions.fixed(0.6F, 1.95F))
 							.build());
 
+	public static final EntityType<BloodSlimeEntity> BLOOD_SLIME_ENTITY =
+			register(
+					"blood_slime",
+					QuiltEntityTypeBuilder.<BloodSlimeEntity>create()
+							.spawnGroup(SpawnGroup.MONSTER)
+							.spawnableFarFromPlayer()
+							.entityFactory(BloodSlimeEntity::new)
+							.setDimensions(EntityDimensions.fixed(0.8F, 0.8F))
+							.build());
+
+
 
 	private static <T extends Entity> EntityType<T> register(String name, EntityType<T> type) {
 		ENTITY_TYPES.put(type, Constants.id(name));
@@ -46,6 +59,7 @@ public class BotDEntityTypes {
 	public static void init() {
 		FabricDefaultAttributeRegistry.register(CORPSE_ENTITY, CorpseEntity.createAttributes());
 		FabricDefaultAttributeRegistry.register(OLD_MAN_ENTITY, OldManEntity.createMobAttributes());
+		FabricDefaultAttributeRegistry.register(BLOOD_SLIME_ENTITY, BloodSlimeEntity.createMobAttributes());
 
 		ENTITY_TYPES.keySet().forEach(entityType -> Registry.register(Registry.ENTITY_TYPE, ENTITY_TYPES.get(entityType), entityType));
 	}

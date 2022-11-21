@@ -1,13 +1,11 @@
 package dev.sterner.book_of_the_dead;
 
-import dev.sterner.book_of_the_dead.client.model.BagEntityModel;
-import dev.sterner.book_of_the_dead.client.model.JarEntityModel;
-import dev.sterner.book_of_the_dead.client.model.LargeCircleEntityModel;
-import dev.sterner.book_of_the_dead.client.model.OldManEntityModel;
+import dev.sterner.book_of_the_dead.client.model.*;
 import dev.sterner.book_of_the_dead.client.renderer.block.ButcherTableBlockEntityRenderer;
 import dev.sterner.book_of_the_dead.client.renderer.block.HookBlockEntityRenderer;
 import dev.sterner.book_of_the_dead.client.renderer.block.JarBlockEntityRenderer;
 import dev.sterner.book_of_the_dead.client.renderer.block.NecroTableBlockEntityRenderer;
+import dev.sterner.book_of_the_dead.client.renderer.entity.BloodSlimeEntityRenderer;
 import dev.sterner.book_of_the_dead.client.renderer.entity.CorpseEntityRenderer;
 import dev.sterner.book_of_the_dead.client.renderer.entity.OldManEntityRenderer;
 import dev.sterner.book_of_the_dead.client.renderer.item.AllBlackSwordItemRenderer;
@@ -53,6 +51,7 @@ public class BotDClient implements ClientModInitializer {
 		BuiltinItemRendererRegistry.INSTANCE.register(BotDObjects.JAR, new JarBlockEntityRenderer());
 		EntityRendererRegistry.register(BotDEntityTypes.CORPSE_ENTITY, CorpseEntityRenderer::new);
 		EntityRendererRegistry.register(BotDEntityTypes.OLD_MAN_ENTITY, OldManEntityRenderer::new);
+		EntityRendererRegistry.register(BotDEntityTypes.BLOOD_SLIME_ENTITY, BloodSlimeEntityRenderer::new);
 
 		EntityModelLayerRegistry.registerModelLayer(BagEntityModel.LAYER_LOCATION, BagEntityModel::createBodyLayer);
 		EntityModelLayerRegistry.registerModelLayer(JarEntityModel.LAYER_LOCATION, JarEntityModel::createBodyLayer);
@@ -60,6 +59,8 @@ public class BotDClient implements ClientModInitializer {
 		EntityModelLayerRegistry.registerModelLayer(ButcherTableBlockEntityRenderer.LAYER_LOCATION, ButcherTableBlockEntityRenderer::createBodyLayer);
 		EntityModelLayerRegistry.registerModelLayer(LargeCircleEntityModel.LAYER_LOCATION, LargeCircleEntityModel::createBodyLayer);
 		EntityModelLayerRegistry.registerModelLayer(OldManEntityModel.LAYER_LOCATION, OldManEntityModel::createBodyLayer);
+		EntityModelLayerRegistry.registerModelLayer(BloodSlimeEntityModel.LAYER_LOCATION, BloodSlimeEntityModel::createBodyLayer);
+		EntityModelLayerRegistry.registerModelLayer(BloodSlimeEntityModel.OUTER_LAYER_LOCATION, BloodSlimeEntityModel::createOverylayBodyLayer);
 
 		BotDSpriteIdentifiers.INSTANCE.addIdentifier(BotDSpriteIdentifiers.BLOOD);
 
