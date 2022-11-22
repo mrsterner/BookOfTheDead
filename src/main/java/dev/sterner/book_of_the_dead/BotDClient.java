@@ -43,7 +43,8 @@ public class BotDClient implements ClientModInitializer {
 				BotDObjects.JAR,
 				BotDObjects.NECRO_TABLE,
 				BotDObjects.BUTCHER_TABLE,
-				BotDObjects.REINFORCED_DOOR);
+				BotDObjects.REINFORCED_DOOR,
+				BotDObjects.POPPY_CROP);
 		BlockEntityRendererRegistry.register(BotDBlockEntityTypes.HOOK, HookBlockEntityRenderer::new);
 		BlockEntityRendererRegistry.register(BotDBlockEntityTypes.JAR, ctx -> new JarBlockEntityRenderer());
 		BlockEntityRendererRegistry.register(BotDBlockEntityTypes.NECRO, NecroTableBlockEntityRenderer::new);

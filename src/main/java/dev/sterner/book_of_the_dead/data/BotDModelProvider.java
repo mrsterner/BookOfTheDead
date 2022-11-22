@@ -1,11 +1,13 @@
 package dev.sterner.book_of_the_dead.data;
 
+import dev.sterner.book_of_the_dead.BotD;
 import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.minecraft.data.client.ItemModelGenerator;
 import net.minecraft.data.client.model.BlockStateModelGenerator;
 import net.minecraft.data.client.model.Models;
+import net.minecraft.state.property.Properties;
 
 public class BotDModelProvider extends FabricModelProvider {
 
@@ -16,6 +18,7 @@ public class BotDModelProvider extends FabricModelProvider {
 	@Override
 	public void generateBlockStateModels(BlockStateModelGenerator blockStateModelGenerator) {
 		blockStateModelGenerator.registerDoor(BotDObjects.REINFORCED_DOOR);
+		blockStateModelGenerator.registerCrop(BotDObjects.POPPY_CROP, Properties.AGE_7, 0, 1, 2, 2, 3, 3, 3, 5);
 	}
 
 	@Override
@@ -43,5 +46,6 @@ public class BotDModelProvider extends FabricModelProvider {
 		itemModelGenerator.register(BotDObjects.OLD_LETTER, Models.GENERATED);
 		itemModelGenerator.register(BotDObjects.RETORT_FLASK, Models.GENERATED);
 		itemModelGenerator.register(BotDObjects.REINFORCED_BLOCK.asItem(), Models.GENERATED);
+		itemModelGenerator.register(BotDObjects.POPPY_POD, Models.GENERATED);
 	}
 }

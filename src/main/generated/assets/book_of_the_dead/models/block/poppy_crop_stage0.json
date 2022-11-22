@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/crop",
+  "textures": {
+    "crop": "book_of_the_dead:block/poppy_crop_stage0"
+  }
+}

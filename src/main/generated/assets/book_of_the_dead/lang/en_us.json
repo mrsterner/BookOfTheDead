@@ -1,5 +1,6 @@
 {
   "block.book_of_the_dead.jar": "Jar",
+  "block.book_of_the_dead.poppy_crop": "Poppy Crop",
   "block.book_of_the_dead.reinforced_block": "Reinforced Block",
   "block.book_of_the_dead.reinforced_door": "Reinforced Door",
   "block.book_of_the_dead.rope": "Rope",
@@ -25,6 +26,8 @@
   "item.book_of_the_dead.metal_hook": "Metal Hook",
   "item.book_of_the_dead.old_letter": "Old Letter",
   "item.book_of_the_dead.packet": "Packet",
+  "item.book_of_the_dead.poppy_pod": "Poppy Pod",
+  "item.book_of_the_dead.poppy_seeds": "Poppy Seeds",
   "item.book_of_the_dead.quicksilver": "Quicksilver",
   "item.book_of_the_dead.retort_flask": "Retort Flask",
   "item.book_of_the_dead.signed_contract": "Signed Contract",

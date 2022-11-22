@@ -60,6 +60,11 @@ public class BotDObjects {
 	public static final Item CINNABAR = register("cinnabar", new Item(settings()));
 	public static final Item EMERALD_TABLET = register("emerald_tablet", new Item(settings()));
 
+
+	public static final Item POPPY_POD = register("poppy_pod", new Item(settings()));
+	public static final Block POPPY_CROP = register("poppy_crop", new PoppyCropBlock(QuiltBlockSettings.copy(Blocks.WHEAT)), settings(), false);
+	public static final Item POPPY_SEEDS = register("poppy_seeds", new AliasedBlockItem(POPPY_CROP, settings()));
+
 	public static final Block HOOK_BLOCK = register("hook_block", new HookBlock(QuiltBlockSettings.of(Material.WOOL).strength(0.2F)), settings(), false);
 	public static final Block JAR = register("jar", new JarBlock(QuiltBlockSettings.of(Material.GLASS).strength(0.3F).sounds(BlockSoundGroup.GLASS)), settings(),true);
 	public static final Block NECRO_TABLE = register("necro", new NecroTableBlock(QuiltBlockSettings.copy(Blocks.DEEPSLATE)), settings(),false);

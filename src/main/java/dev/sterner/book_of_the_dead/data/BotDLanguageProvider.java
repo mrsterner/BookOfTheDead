@@ -40,6 +40,8 @@ public class BotDLanguageProvider extends FabricLanguageProvider {
 		builder.add(BotDObjects.OLD_LETTER, "Old Letter");
 		builder.add(BotDObjects.EMERALD_TABLET, "Emerald Tablet");
 		builder.add(BotDObjects.RETORT_FLASK, "Retort Flask");
+		builder.add(BotDObjects.POPPY_POD, "Poppy Pod");
+		builder.add(BotDObjects.POPPY_SEEDS, "Poppy Seeds");
 
 		builder.add(BotDEnchantments.BUTCHERING, "Butchering");
 
@@ -49,6 +51,7 @@ public class BotDLanguageProvider extends FabricLanguageProvider {
 
 		builder.add(BotDObjects.JAR, "Jar");
 		builder.add(BotDObjects.ROPE, "Rope");
+		builder.add(BotDObjects.POPPY_CROP, "Poppy Crop");
 		builder.add("rei.book_of_the_dead.butchering_drops", "Butchering Drops");
 		builder.add("emi.category.book_of_the_dead.butchering", "Butchering Drops");
 		builder.add("tooltip.book_of_the_dead.old_friend", "Letter to an old friend");
