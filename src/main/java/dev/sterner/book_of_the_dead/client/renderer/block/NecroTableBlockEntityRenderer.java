@@ -45,28 +45,12 @@ public class NecroTableBlockEntityRenderer<T extends BlockEntity> implements Blo
 	private final ModelPart ink;
 	private final ModelPart tablet;
 
-	public NecroTableBlockEntityRenderer(BlockEntityRendererFactory.Context ctx) {
-		ModelPart modelPart = ctx.getLayerModelPart(LAYER_LOCATION);
-		this.dispatcher = ctx.getEntityRendererDispatcher();
-		this.base = modelPart.getChild("base");
-		this.book = modelPart.getChild("book");
-		this.candle = modelPart.getChild("candle");
-		this.slate = modelPart.getChild("slate");
-		this.cruse = modelPart.getChild("cruse");
-		this.paper = modelPart.getChild("paper");
-		this.cicle = modelPart.getChild("cicle");
-		this.ink = modelPart.getChild("ink");
-		this.tablet = modelPart.getChild("tablet");
-	}
-
-
-
 	@Override
 	public void render(T entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
 		World world = entity.getWorld();
 		if(world != null){
 			BlockState blockState = entity.getCachedState();
-			if(entity instanceof NecroTableBlockEntity necroTableBlockEntity && blockState.get(HorizontalDoubleBlock.HHALF) == HorizontalDoubleBlockHalf.RIGHT){
+			if(entity instanceof NecroTableBlockEntity necroTableBlockEntity){
 
 
 				matrices.push();
@@ -78,17 +62,16 @@ public class NecroTableBlockEntityRenderer<T extends BlockEntity> implements Blo
 				matrices.translate(-0.5, -0.5, -0.5);
 
 				if(direction == Direction.SOUTH){
-					matrices.translate(-0.5,-1.5,0.5);
+					matrices.translate(0,-1.5,0.5);
 				}else if(direction == Direction.WEST){
+					matrices.translate(0,-1.5,1.5);
 					matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(180));
-					matrices.translate(-0.5,-1.5,-1.5);
 				}else if(direction == Direction.NORTH){
-					matrices.translate(1.5,-1.5,0.5);
+					matrices.translate(2,-1.5,0.5);
 				}else if(direction == Direction.EAST){
+					matrices.translate(0,-1.5,-0.5);
 					matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(180));
-					matrices.translate(-0.5,-1.5,0.5);
 				}
-
 
 				if(necroTableBlockEntity.hasEmeraldTablet || true){
 					renderTablet(matrices, vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(TEXTURE)), light, overlay);
@@ -97,31 +80,6 @@ public class NecroTableBlockEntityRenderer<T extends BlockEntity> implements Blo
 					renderBook(matrices, vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(TEXTURE)), light, overlay);
 				}
 				render(matrices, vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(TEXTURE)), light, overlay);
-				matrices.pop();
-
-				matrices.push();
-
-				if(direction == Direction.SOUTH){
-					matrices.translate(1,-1.25,3.5);
-				}else if(direction == Direction.WEST){
-					matrices.translate(-2.5,-1.25,1);
-				}else if(direction == Direction.NORTH){
-					matrices.translate(0,-1.25,-2.5);
-				}else if(direction == Direction.EAST){
-					matrices.translate(3.5,-1.25,0);
-				}
-				matrices.push();
-				matrices.translate(0,1.25,0);
-				renderSummonEntity(necroTableBlockEntity, blockState, tickDelta, matrices, vertexConsumers, light, overlay);
-				matrices.pop();
-
-				final float rotationModifier = 4F;
-				double ticks = (BotDClient.ClientTickHandler.ticksInGame + tickDelta) * 0.5;
-				float deg =  (float) (ticks / rotationModifier % 360F);
-				matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(MathHelper.sin(deg) / (float) Math.PI));
-				matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(MathHelper.cos(deg) / (float) Math.PI));
-				renderCircleLarge(matrices, vertexConsumers.getBuffer(BotDRenderLayer.get(CIRCLE_TEXTURE)), light, overlay);
-
 				matrices.pop();
 			}
 		}
@@ -139,7 +97,6 @@ public class NecroTableBlockEntityRenderer<T extends BlockEntity> implements Blo
 				NecrotableRitual ritual = necroTableBlockEntity.currentNecrotableRitual;
 				List<Entity> entityList = ritual.summons;
 				if(!entityList.isEmpty()){
-					World world = necroTableBlockEntity.getWorld();
 					for(Entity entity : entityList){
 						int index = entityList.indexOf(entity);
 						if(entity instanceof LivingEntity livingEntity){
@@ -168,10 +125,6 @@ public class NecroTableBlockEntityRenderer<T extends BlockEntity> implements Blo
 		}
 	}
 
-	private void renderCircleLarge(MatrixStack matrices, VertexConsumer buffer, int light, int overlay) {
-		jarEntityModel.render(matrices, buffer, light, overlay, 1,1,1,1);
-	}
-
 
 	public void render(MatrixStack matrixStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay) {
 		base.render(matrixStack, vertexConsumer, packedLight, packedOverlay, 1, 1, 1, 1);
@@ -186,15 +139,24 @@ public class NecroTableBlockEntityRenderer<T extends BlockEntity> implements Blo
 		tablet.render(matrixStack, vertexConsumer, packedLight, packedOverlay, 1, 1, 1, 1);
 	}
 
-	public void renderCircle(MatrixStack matrixStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay) {
-		cicle.render(matrixStack, vertexConsumer, packedLight, packedOverlay, 1, 1, 1, 1);
-	}
-
 	public void renderBook(MatrixStack matrixStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay) {
 		book.render(matrixStack, vertexConsumer, packedLight, packedOverlay, 1, 1, 1, 1);
 	}
 
 
+	public NecroTableBlockEntityRenderer(BlockEntityRendererFactory.Context ctx) {
+		ModelPart modelPart = ctx.getLayerModelPart(LAYER_LOCATION);
+		this.dispatcher = ctx.getEntityRendererDispatcher();
+		this.base = modelPart.getChild("base");
+		this.book = modelPart.getChild("book");
+		this.candle = modelPart.getChild("candle");
+		this.slate = modelPart.getChild("slate");
+		this.cruse = modelPart.getChild("cruse");
+		this.paper = modelPart.getChild("paper");
+		this.cicle = modelPart.getChild("cicle");
+		this.ink = modelPart.getChild("ink");
+		this.tablet = modelPart.getChild("tablet");
+	}
 
 	public static TexturedModelData createBodyLayer() {
 		ModelData meshdefinition = new ModelData();

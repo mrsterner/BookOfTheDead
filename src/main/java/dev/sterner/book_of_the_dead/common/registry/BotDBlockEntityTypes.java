@@ -1,9 +1,6 @@
 package dev.sterner.book_of_the_dead.common.registry;
 
-import dev.sterner.book_of_the_dead.common.block.entity.ButcherTableBlockEntity;
-import dev.sterner.book_of_the_dead.common.block.entity.HookBlockEntity;
-import dev.sterner.book_of_the_dead.common.block.entity.JarBlockEntity;
-import dev.sterner.book_of_the_dead.common.block.entity.NecroTableBlockEntity;
+import dev.sterner.book_of_the_dead.common.block.entity.*;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
@@ -29,7 +26,11 @@ public class BotDBlockEntityTypes {
 	public static final BlockEntityType<ButcherTableBlockEntity> BUTCHER = register("butcher",
 			QuiltBlockEntityTypeBuilder.create(ButcherTableBlockEntity::new, BotDObjects.BUTCHER_TABLE).build(null));
 
+	public static final BlockEntityType<RitualBlockEntity> RITUAL = register("ritual",
+			QuiltBlockEntityTypeBuilder.create(RitualBlockEntity::new, BotDObjects.RITUAL).build(null));
 
+	public static final BlockEntityType<PedestalBlockEntity> PEDESTAL = register("pedestal",
+			QuiltBlockEntityTypeBuilder.create(PedestalBlockEntity::new, BotDObjects.PEDESTAL).build());
 
 
 	private static <T extends BlockEntity> BlockEntityType<T> register(String name, BlockEntityType<T> type) {

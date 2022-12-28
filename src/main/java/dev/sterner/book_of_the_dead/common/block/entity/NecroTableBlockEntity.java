@@ -51,30 +51,11 @@ public class NecroTableBlockEntity extends BlockEntity implements IBlockEntityIn
 	}
 
 	public static void tick(World world, BlockPos pos, BlockState blockState, NecroTableBlockEntity blockEntity) {
-		if (world != null && blockState.isOf(BotDObjects.NECRO_TABLE) && blockState.get(HorizontalDoubleBlock.HHALF) == HorizontalDoubleBlockHalf.RIGHT) {
-			if (!blockEntity.loaded) {
-				blockEntity.markDirty();
-				blockEntity.loaded = true;
-			}
-			blockEntity.age++;
-			NecrotableRitual ritual = blockEntity.currentNecrotableRitual;
-			if (ritual != null) {
-				blockEntity.timer++;
-				if (blockEntity.timer >= 0) {
-					ritual.tick(world, pos, blockEntity);
-				}
-				if(blockEntity.timer >= blockEntity.currentNecrotableRitual.duration){
-					blockEntity.currentNecrotableRitual.onStopped(world, pos, blockEntity);
-					blockEntity.currentNecrotableRitual = null;
-					blockEntity.timer = 0;
-					blockEntity.markDirty();
-				}
-			}
-		}
 
 	}
 
 	public ActionResult onUse(World world, BlockState state, BlockPos pos, PlayerEntity player, Hand hand) {
+		/*
 		if (world.getBlockEntity(pos) instanceof NecroTableBlockEntity necroTableBlockEntity) {
 			if (necroTableBlockEntity.currentNecrotableRitual != null) {
 				return ActionResult.PASS;
@@ -96,6 +77,8 @@ public class NecroTableBlockEntity extends BlockEntity implements IBlockEntityIn
 			}
 
 		}
+
+		 */
 		return ActionResult.PASS;
 	}
 
@@ -112,7 +95,6 @@ public class NecroTableBlockEntity extends BlockEntity implements IBlockEntityIn
 	public void sync(World world, BlockPos pos) {
 		if (world != null && !world.isClient) {
 			world.updateListeners(pos, getCachedState(), getCachedState(), Block.NOTIFY_LISTENERS);
-
 		}
 	}
 
@@ -146,45 +128,12 @@ public class NecroTableBlockEntity extends BlockEntity implements IBlockEntityIn
 		} else {
 			user = null;
 		}
-		if(nbt.contains(Constants.Nbt.POS_LIST)){
-			NbtList posListNbt = nbt.getList(Constants.Nbt.POS_LIST, NbtType.COMPOUND);
-			for (int i = 0; i < posList.size(); i++) {
-				NbtCompound posListNbtCompound = posListNbt.getCompound(i);
-				posList.add(i, BotDUtils.toVec3d(posListNbtCompound));
-			}
-		}
-		if(nbt.contains(Constants.Nbt.YAW_LIST)){
-			NbtList yawListNbt = nbt.getList(Constants.Nbt.YAW_LIST, NbtType.COMPOUND);
-			for (int i = 0; i < yawList.size(); i++) {
-				NbtCompound yawListNbtCompound = yawListNbt.getCompound(i);
-				yawList.add(i, yawListNbtCompound.getFloat(Constants.Nbt.YAW));
-			}
-		}
-
-
 		markDirty();
 	}
 
 	@Override
 	protected void writeNbt(NbtCompound nbt) {
 		super.writeNbt(nbt);
-		if(posList != null){
-			NbtList lines = nbt.getList(Constants.Nbt.POS_LIST,  NbtType.COMPOUND);
-			for (Vec3d vec3d : posList) {
-				lines.add(BotDUtils.fromVec3d(vec3d));
-			}
-			nbt.put(Constants.Nbt.POS_LIST, lines);
-		}
-		if(yawList != null){
-			NbtList nbtList = nbt.getList(Constants.Nbt.YAW_LIST,  NbtType.COMPOUND);
-			for (Float f : yawList) {
-				NbtCompound nbtCompound = new NbtCompound();
-				nbtCompound.putFloat(Constants.Nbt.YAW, f);
-				nbtList.add(nbtCompound);
-			}
-			nbt.put(Constants.Nbt.YAW_LIST, nbtList);
-		}
-
 		Inventories.writeNbt(nbt, ITEMS);
 		if (currentNecrotableRitual != null) {
 			nbt.putString(Constants.Nbt.NECRO_RITUAL, BotDRegistries.NECROTABLE_RITUALS.getId(currentNecrotableRitual).toString());

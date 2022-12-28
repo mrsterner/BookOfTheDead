@@ -3,7 +3,6 @@ package dev.sterner.book_of_the_dead.common.block;
 import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
 import net.minecraft.block.*;
 import net.minecraft.item.ItemConvertible;
-import net.minecraft.item.Items;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;

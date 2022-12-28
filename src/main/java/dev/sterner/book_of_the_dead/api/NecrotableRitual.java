@@ -1,9 +1,13 @@
 package dev.sterner.book_of_the_dead.api;
 
+import dev.sterner.book_of_the_dead.common.block.RitualBlock;
 import dev.sterner.book_of_the_dead.common.block.entity.NecroTableBlockEntity;
+import dev.sterner.book_of_the_dead.common.block.entity.RitualBlockEntity;
 import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.entity.Entity;
+import net.minecraft.particle.ParticleTypes;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -29,23 +33,23 @@ public class NecrotableRitual {
 		this.duration = duration;
 	}
 
-	public void tick(World world, BlockPos blockPos, NecroTableBlockEntity blockEntity) {
-		Direction direction = world.getBlockState(blockPos).get(HorizontalFacingBlock.FACING);//TODO remove when not testing anymore
-		ritualCenter = blockPos.offset(direction, 2).add(0.5,0.5,0.5);
+	public void tick(World world, BlockPos blockPos, RitualBlockEntity blockEntity) {
+		BlockPos blockPos1 = blockPos.add(0.5,0.5,0.5);
+		ritualCenter = blockPos1;
+		world.addParticle(ParticleTypes.SMALL_FLAME, blockPos1.getX(), blockPos1.getY(), blockPos1.getZ(), 0,0,0);
 	}
 
-	public void onStopped(World world, BlockPos blockPos, NecroTableBlockEntity blockEntity){
+	public void onStopped(World world, BlockPos blockPos, RitualBlockEntity blockEntity){
 
 
 	}
 
-	public void onStart(World world, BlockPos blockPos, NecroTableBlockEntity blockEntity){
+	public void onStart(World world, BlockPos blockPos, RitualBlockEntity blockEntity){
 		if(world.getBlockState(blockPos).isOf(BotDObjects.NECRO_TABLE)){
 			if(this.world == null){
 				this.world = world;
 			}
-			Direction direction = world.getBlockState(blockPos).get(HorizontalFacingBlock.FACING);
-			ritualCenter = blockPos.offset(direction, 2).add(0.5,0.5,0.5);
+			ritualCenter = blockPos.add(0.5,0.5,0.5);
 		}
 	}
 

@@ -12,7 +12,7 @@ import java.util.Map;
 public class BotDRituals {
 	private static final Map<NecrotableRitual, Identifier> NECROTABLE_RITUAL = new LinkedHashMap<>();
 
-	public static final NecrotableRitual SUMMON_ZOMBIE = register("summon_zombie", new SummonUndeadRitual(new Identifier("summon_zombie"), new Identifier(""), new Identifier(""), 20 *100));
+	public static final NecrotableRitual SUMMON_ZOMBIE = register("summon_zombie", new SummonUndeadRitual(new Identifier("summon_zombie"), new Identifier(""), new Identifier(""), 20 * 4));
 
 	private static <T extends NecrotableRitual> T register(String name, T necroRitual) {
 		NECROTABLE_RITUAL.put(necroRitual, Constants.id(name));

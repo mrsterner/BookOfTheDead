@@ -12,14 +12,4 @@ public class SummonUndeadRitual extends SummonRitual {
 		super(id, largeCircleSprite, smallCircleSprite, duration);
 	}
 
-	@Override
-	public void tick(World world, BlockPos blockPos, NecroTableBlockEntity blockEntity) {
-		if(summons.isEmpty()){
-			this.summons.add(0, EntityType.ZOMBIE.create(world));
-			this.summons.add(1, EntityType.ZOMBIE.create(world));
-			this.summons.add(2, EntityType.SKELETON.create(world));
-		}
-		super.tick(world, blockPos, blockEntity);
-	}
-
 }

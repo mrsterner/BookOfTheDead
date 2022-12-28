@@ -1,10 +1,7 @@
 package dev.sterner.book_of_the_dead;
 
 import dev.sterner.book_of_the_dead.client.model.*;
-import dev.sterner.book_of_the_dead.client.renderer.block.ButcherTableBlockEntityRenderer;
-import dev.sterner.book_of_the_dead.client.renderer.block.HookBlockEntityRenderer;
-import dev.sterner.book_of_the_dead.client.renderer.block.JarBlockEntityRenderer;
-import dev.sterner.book_of_the_dead.client.renderer.block.NecroTableBlockEntityRenderer;
+import dev.sterner.book_of_the_dead.client.renderer.block.*;
 import dev.sterner.book_of_the_dead.client.renderer.entity.BloodSlimeEntityRenderer;
 import dev.sterner.book_of_the_dead.client.renderer.entity.CorpseEntityRenderer;
 import dev.sterner.book_of_the_dead.client.renderer.entity.OldManEntityRenderer;
@@ -44,11 +41,18 @@ public class BotDClient implements ClientModInitializer {
 				BotDObjects.NECRO_TABLE,
 				BotDObjects.BUTCHER_TABLE,
 				BotDObjects.REINFORCED_DOOR,
-				BotDObjects.POPPY_CROP);
+				BotDObjects.POPPY_CROP,
+				BotDObjects.PEDESTAL,
+				BotDObjects.RITUAL
+		);
+
 		BlockEntityRendererRegistry.register(BotDBlockEntityTypes.HOOK, HookBlockEntityRenderer::new);
 		BlockEntityRendererRegistry.register(BotDBlockEntityTypes.JAR, ctx -> new JarBlockEntityRenderer());
 		BlockEntityRendererRegistry.register(BotDBlockEntityTypes.NECRO, NecroTableBlockEntityRenderer::new);
 		BlockEntityRendererRegistry.register(BotDBlockEntityTypes.BUTCHER, ButcherTableBlockEntityRenderer::new);
+		BlockEntityRendererRegistry.register(BotDBlockEntityTypes.PEDESTAL, PedestalBlockEntityRenderer::new);
+		BlockEntityRendererRegistry.register(BotDBlockEntityTypes.RITUAL, RitualBlockEntityRenderer::new);
+
 		BuiltinItemRendererRegistry.INSTANCE.register(BotDObjects.JAR, new JarBlockEntityRenderer());
 		EntityRendererRegistry.register(BotDEntityTypes.CORPSE_ENTITY, CorpseEntityRenderer::new);
 		EntityRendererRegistry.register(BotDEntityTypes.OLD_MAN_ENTITY, OldManEntityRenderer::new);

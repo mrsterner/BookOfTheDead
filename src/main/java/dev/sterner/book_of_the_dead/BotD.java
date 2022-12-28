@@ -32,11 +32,17 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import org.quiltmc.loader.api.ModContainer;
+import org.quiltmc.loader.api.QuiltLoader;
 import org.quiltmc.qsl.base.api.entrypoint.ModInitializer;
 
 import static dev.sterner.book_of_the_dead.common.block.HookBlock.FACING;
 
 public class BotD implements ModInitializer {
+
+	static final boolean DEBUG_MODE = true;
+	public static boolean isDebugMode() {
+		return DEBUG_MODE && QuiltLoader.isDevelopmentEnvironment();
+	}
 
 	@Override
 	public void onInitialize(ModContainer mod) {
@@ -56,7 +62,10 @@ public class BotD implements ModInitializer {
 		UseBlockCallback.EVENT.register(this::placeHook);
 		UseBlockCallback.EVENT.register(this::createNecroTable);
 		UseBlockCallback.EVENT.register(this::createButcherTable);
+
 	}
+
+
 
 	private ActionResult createDoubleBlock(Item useItem, Block targetBlock, BlockState resultState, PlayerEntity player, World world, Hand hand, BlockHitResult blockHitResult){
 		if(!world.isClient() && player.getMainHandStack().isOf(useItem) && hand == Hand.MAIN_HAND){
@@ -81,7 +90,15 @@ public class BotD implements ModInitializer {
 	}
 
 	private ActionResult createNecroTable(PlayerEntity player, World world, Hand hand, BlockHitResult blockHitResult) {
-		return createDoubleBlock(BotDObjects.BOOK_OF_THE_DEAD, Blocks.DEEPSLATE_TILES, BotDObjects.NECRO_TABLE.getDefaultState(), player, world, hand, blockHitResult);
+		if(!world.isClient() && player.getMainHandStack().isOf(BotDObjects.BOOK_OF_THE_DEAD) && hand == Hand.MAIN_HAND){
+			BlockPos blockPos = blockHitResult.getBlockPos();
+			if(world.getBlockState(blockPos).isOf( Blocks.DEEPSLATE_TILES)){
+				world.setBlockState(blockPos, BotDObjects.NECRO_TABLE.getDefaultState().with(FACING, player.getHorizontalFacing()));
+				return ActionResult.CONSUME;
+			}
+		}
+		return ActionResult.PASS;
+		//return createDoubleBlock(BotDObjects.BOOK_OF_THE_DEAD, Blocks.DEEPSLATE_TILES, BotDObjects.NECRO_TABLE.getDefaultState(), player, world, hand, blockHitResult);
 	}
 
 	private ActionResult createButcherTable(PlayerEntity player, World world, Hand hand, BlockHitResult blockHitResult) {
