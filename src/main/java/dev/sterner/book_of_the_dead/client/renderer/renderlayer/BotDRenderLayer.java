@@ -13,6 +13,9 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.RenderPhase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Util;
+
+import java.util.function.Function;
 
 public class BotDRenderLayer extends RenderLayer {
 	private static final ThreadLocal<ItemStack> targetStack = new ThreadLocal<>();
@@ -44,18 +47,17 @@ public class BotDRenderLayer extends RenderLayer {
 			}
 	}
 
-	public static RenderLayer get(Identifier texture) {
-		RenderLayer.MultiPhaseParameters multiPhaseParameters =
-				RenderLayer.MultiPhaseParameters.builder()
-						.texture(new RenderPhase.Texture(texture, false, false))
-						.transparency(Transparency.TRANSLUCENT_TRANSPARENCY)
-						.cull(DISABLE_CULLING)
-						.lightmap(ENABLE_LIGHTMAP)
-						.overlay(DISABLE_OVERLAY_COLOR)
-						.layering(VIEW_OFFSET_Z_LAYERING)
-						.shader(ENERGY_SWIRL_SHADER).build(true);
-		return RenderLayerAccessor.satin$of("glowing", VertexFormats.POSITION_COLOR_TEXTURE_OVERLAY_LIGHT_NORMAL, VertexFormat.DrawMode.QUADS, 256, false, false, multiPhaseParameters);
-	}
+	public static final Function<Identifier, RenderLayer> GLOWING_LAYER = Util.memoize(texture -> {
+		MultiPhaseParameters multiPhaseParameters = MultiPhaseParameters.builder()
+				.texture(new RenderPhase.Texture(texture, false, false))
+				.transparency(Transparency.TRANSLUCENT_TRANSPARENCY)
+				.cull(DISABLE_CULLING).lightmap(ENABLE_LIGHTMAP)
+				.overlay(DISABLE_OVERLAY_COLOR)
+				.layering(VIEW_OFFSET_Z_LAYERING)
+				.shader(ENERGY_SWIRL_SHADER)
+				.build(true);
+		return RenderLayer.of("glowing_layer", VertexFormats.POSITION_COLOR_TEXTURE_OVERLAY_LIGHT_NORMAL, VertexFormat.DrawMode.QUADS, 256, false, false, multiPhaseParameters);
+	});
 
 
 	private static RenderLayer buildGlintRenderLayer() {
@@ -70,6 +72,7 @@ public class BotDRenderLayer extends RenderLayer {
 				.build(false));
 	}
 
+
 	private static RenderLayer buildGlintDirectRenderLayer() {
 		return RenderLayer.of("glint_direct_black", VertexFormats.POSITION_TEXTURE, VertexFormat.DrawMode.QUADS, 256, MultiPhaseParameters.builder()
 				.shader(RenderPhase.DIRECT_GLINT_SHADER)
@@ -81,6 +84,7 @@ public class BotDRenderLayer extends RenderLayer {
 				.texturing(GLINT_TEXTURING)
 				.build(false));
 	}
+
 
 	@Environment(EnvType.CLIENT)
 	public static RenderLayer getGlint() {

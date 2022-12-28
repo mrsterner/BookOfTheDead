@@ -32,7 +32,7 @@ public class RitualBlockEntityRenderer implements BlockEntityRenderer<RitualBloc
 		float deg =  (float) (ticks / rotationModifier % 360F);
 		matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(MathHelper.sin(deg) / (float) Math.PI));
 		matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(MathHelper.cos(deg) / (float) Math.PI));
-		renderCircleLarge(matrices, vertexConsumers.getBuffer(BotDRenderLayer.get(CIRCLE_TEXTURE)), light, overlay);
+		renderCircleLarge(matrices, vertexConsumers.getBuffer(BotDRenderLayer.GLOWING_LAYER.apply(CIRCLE_TEXTURE)), light, overlay);
 
 		matrices.pop();
 	}
