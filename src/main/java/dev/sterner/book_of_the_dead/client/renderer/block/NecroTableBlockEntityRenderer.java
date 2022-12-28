@@ -85,6 +85,7 @@ public class NecroTableBlockEntityRenderer<T extends BlockEntity> implements Blo
 		}
 	}
 
+	/*
 	private void renderSummonEntity(NecroTableBlockEntity necroTableBlockEntity, BlockState blockState, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
 		if(necroTableBlockEntity.currentNecrotableRitual != null && !necroTableBlockEntity.currentNecrotableRitual.summons.isEmpty()){
 			if(necroTableBlockEntity.getWorld() != null){
@@ -124,6 +125,8 @@ public class NecroTableBlockEntityRenderer<T extends BlockEntity> implements Blo
 
 		}
 	}
+
+	 */
 
 
 	public void render(MatrixStack matrixStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay) {

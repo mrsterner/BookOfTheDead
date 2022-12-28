@@ -31,30 +31,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.function.ToIntFunction;
 
 public class NecroTableBlock extends HorizontalFacingBlock implements BlockEntityProvider {
-	protected static final VoxelShape WEST_SHAPE;
-	protected static final VoxelShape NORTH_SHAPE;
-	protected static final VoxelShape EAST_SHAPE;
-	protected static final VoxelShape SOUTH_SHAPE;
-	protected static final Vec3d NORTH_PARTICLES[] = {
-			new Vec3d(1.25, 1.2, 0.45),//SHORT
-			new Vec3d(1.05, 1.33, 0.35),
-			new Vec3d(1.2, 1.45, 0.25)//TALL
-	};
-	protected static final Vec3d SOUTH_PARTICLES[] = {
-			new Vec3d(-0.25, 1.2,  0.55),//75 45
-			new Vec3d(-0.05, 1.33, 0.65),
-			new Vec3d(-0.2, 1.45,  0.75)
-	};
-	protected static final Vec3d EAST_PARTICLES[] = {
-			new Vec3d(0.55, 1.2, 1.25),
-			new Vec3d(0.65, 1.33, 1.05),
-			new Vec3d(0.75, 1.45, 1.2)
-	};
-	protected static final Vec3d WEST_PARTICLES[] = {
-			new Vec3d(0.45, 1.2, -0.25),
-			new Vec3d(0.35, 1.33, -0.05),
-			new Vec3d(0.25, 1.45, -0.2)
-	};
+	protected static final VoxelShape WEST_SHAPE, NORTH_SHAPE, EAST_SHAPE, SOUTH_SHAPE;
+	protected static final Vec3d[] NORTH_PARTICLES, SOUTH_PARTICLES, WEST_PARTICLES, EAST_PARTICLES;
 
 	public static final BooleanProperty LIT = Properties.LIT;
 	public static final ToIntFunction<BlockState> STATE_TO_LUMINANCE = state -> state.get(LIT) ? 14 : 0;
@@ -132,9 +110,14 @@ public class NecroTableBlock extends HorizontalFacingBlock implements BlockEntit
 	}
 
 	static {
-		WEST_SHAPE = VoxelShapes.union(createCuboidShape(0,0,4,16,3,16), createCuboidShape(2,0,6,14,10,16), createCuboidShape(1,10,5,15,13,16), createCuboidShape(-2,13,2,18,16,16));
-		NORTH_SHAPE = VoxelShapes.union(createCuboidShape(0,0,0,12,3,16), createCuboidShape(0,0,2,10,10,14), createCuboidShape(0,10,1,11,13,15), createCuboidShape(0,13,-2,14,16,18));
-		EAST_SHAPE = VoxelShapes.union(createCuboidShape(0,0,0,16,3,12), createCuboidShape(2,0,0,14,10,10), createCuboidShape(1,10,0,15,13,11), createCuboidShape(-2,13,0,18,16,14));
-		SOUTH_SHAPE = VoxelShapes.union(createCuboidShape(4,0,0,16,3,16), createCuboidShape(6,0,2,16,10,14), createCuboidShape(5,10,1,16,13,15), createCuboidShape(2,13,-2,16,16,18));
+		WEST_SHAPE = VoxelShapes.union(createCuboidShape(0, 0, 4, 16, 3, 16), createCuboidShape(2, 0, 6, 14, 10, 16), createCuboidShape(1, 10, 5, 15, 13, 16), createCuboidShape(-2, 13, 2, 18, 16, 16));
+		NORTH_SHAPE = VoxelShapes.union(createCuboidShape(0, 0, 0, 12, 3, 16), createCuboidShape(0, 0, 2, 10, 10, 14), createCuboidShape(0, 10, 1, 11, 13, 15), createCuboidShape(0, 13, -2, 14, 16, 18));
+		EAST_SHAPE = VoxelShapes.union(createCuboidShape(0, 0, 0, 16, 3, 12), createCuboidShape(2, 0, 0, 14, 10, 10), createCuboidShape(1, 10, 0, 15, 13, 11), createCuboidShape(-2, 13, 0, 18, 16, 14));
+		SOUTH_SHAPE = VoxelShapes.union(createCuboidShape(4, 0, 0, 16, 3, 16), createCuboidShape(6, 0, 2, 16, 10, 14), createCuboidShape(5, 10, 1, 16, 13, 15), createCuboidShape(2, 13, -2, 16, 16, 18));
+
+		NORTH_PARTICLES = new Vec3d[]{new Vec3d(1.25, 1.2, 0.45), new Vec3d(1.05, 1.33, 0.35), new Vec3d(1.2, 1.45, 0.25)};
+		SOUTH_PARTICLES = new Vec3d[]{new Vec3d(-0.25, 1.2, 0.55), new Vec3d(-0.05, 1.33, 0.65), new Vec3d(-0.2, 1.45, 0.75)};
+		EAST_PARTICLES = new Vec3d[]{new Vec3d(0.55, 1.2, 1.25), new Vec3d(0.65, 1.33, 1.05), new Vec3d(0.75, 1.45, 1.2)};
+		WEST_PARTICLES = new Vec3d[]{new Vec3d(0.45, 1.2, -0.25), new Vec3d(0.35, 1.33, -0.05), new Vec3d(0.25, 1.45, -0.2)};
 	}
 }

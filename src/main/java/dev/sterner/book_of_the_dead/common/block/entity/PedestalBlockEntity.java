@@ -1,24 +1,35 @@
 package dev.sterner.book_of_the_dead.common.block.entity;
 
 import dev.sterner.book_of_the_dead.common.registry.BotDBlockEntityTypes;
+import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.SculkSensorBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.item.BowItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.SnowballItem;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtHelper;
 import net.minecraft.network.Packet;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
+import net.minecraft.particle.ItemStackParticleEffect;
+import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 public class PedestalBlockEntity extends BlockEntity {
 	private ItemStack stack;
+	private boolean loaded = false;
 	private boolean crafting;
 	private boolean craftingFinished;
+	public BlockPos ritualCenter;
 
 	public PedestalBlockEntity(BlockPos pos, BlockState state) {
 		super(BotDBlockEntityTypes.PEDESTAL, pos, state);
@@ -26,26 +37,52 @@ public class PedestalBlockEntity extends BlockEntity {
 		craftingFinished = false;
 	}
 
-	public static void tick(World tickerWorld, BlockPos pos, BlockState tickerState, PedestalBlockEntity blockEntity) {
+	public static void tick(World world, BlockPos blockPos, BlockState blockState, PedestalBlockEntity blockEntity) {
+		if (world != null && blockEntity.isCrafting()) {
+			if(!blockEntity.getStack().isEmpty() && blockEntity.hasRitualPos()){
+				BlockPos b = blockEntity.ritualCenter.subtract(blockPos.add(-0.5,1.25,-0.5));
+				Vec3d directionVector = new Vec3d(b.getX(), b.getY(), b.getZ());
+
+				double x = blockPos.getX() + (world.random.nextDouble() * 0.2D) + 0.4D;
+				double y = blockPos.getY() + (world.random.nextDouble() * 0.2D) + 1.2D;
+				double z = blockPos.getZ() + (world.random.nextDouble() * 0.2D) + 0.4D;
+				if(world instanceof ServerWorld serverWorld){
+					serverWorld.spawnParticles(new ItemStackParticleEffect(ParticleTypes.ITEM, blockEntity.getStack()), x, y, z, 0, directionVector.x, directionVector.y, directionVector.z, 0.10D);
+				}
+				if(blockEntity.craftingFinished){
+					blockEntity.getStack().decrement(1);
+					blockEntity.setCrafting(false);
+					blockEntity.setCraftingFinished(false);
+				}
+			}
+		}
 	}
 
 
 	@Override
-	public void readNbt(NbtCompound tag) {
-		super.readNbt(tag);
-		this.setStack(ItemStack.fromNbt(tag.getCompound("pedestal_item")));
-		this.crafting = tag.getBoolean("crafting");
-		this.craftingFinished = tag.getBoolean("crafting_finished");
-
+	public void readNbt(NbtCompound nbt) {
+		super.readNbt(nbt);
+		this.setStack(ItemStack.fromNbt(nbt.getCompound(Constants.Nbt.PEDESTAL_ITEM)));
+		this.setCrafting(nbt.getBoolean(Constants.Nbt.CRAFTING));
+		this.setCraftingFinished(nbt.getBoolean(Constants.Nbt.CRAFTING_FINISHED));
+		if (nbt.contains(Constants.Nbt.RITUAL_POS)) {
+			this.ritualCenter = NbtHelper.toBlockPos(nbt.getCompound(Constants.Nbt.RITUAL_POS));
+		}
 	}
 
 	@Override
-	public void writeNbt(NbtCompound tag) {
-		super.writeNbt(tag);
-		tag.put("pedestal_item", this.stack.writeNbt(new NbtCompound()));
-		tag.putBoolean("crafting", crafting);
-		tag.putBoolean("crafting_finished", craftingFinished);
+	public void writeNbt(NbtCompound nbt) {
+		super.writeNbt(nbt);
+		nbt.put(Constants.Nbt.PEDESTAL_ITEM, this.stack.writeNbt(new NbtCompound()));
+		nbt.putBoolean(Constants.Nbt.CRAFTING, this.isCrafting());
+		nbt.putBoolean(Constants.Nbt.CRAFTING_FINISHED, craftingFinished);
+		if(hasRitualPos()){
+			nbt.put(Constants.Nbt.RITUAL_POS, NbtHelper.fromBlockPos(this.ritualCenter));
+		}
+	}
 
+	private boolean hasRitualPos() {
+		return this.ritualCenter != null;
 	}
 
 	public ItemStack getStack() {

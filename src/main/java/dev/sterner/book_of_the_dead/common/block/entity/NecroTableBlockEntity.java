@@ -37,14 +37,10 @@ public class NecroTableBlockEntity extends BlockEntity implements IBlockEntityIn
 	private final DefaultedList<ItemStack> ITEMS = DefaultedList.ofSize(8, ItemStack.EMPTY);
 	public boolean hasBotD = false;
 	public boolean hasEmeraldTablet = false;
-	public NecrotableRitual currentNecrotableRitual = BotDRituals.SUMMON_ZOMBIE;
 	private boolean loaded = false;
 	public int timer = 0;
 	public long age = 0;
 	public UUID user = null;
-	public ArrayList<Vec3d> posList;
-	public ArrayList<Float> yawList;
-	public Entity targetedEntity = null;
 
 	public NecroTableBlockEntity(BlockPos pos, BlockState state) {
 		super(BotDBlockEntityTypes.NECRO, pos, state);
@@ -55,6 +51,12 @@ public class NecroTableBlockEntity extends BlockEntity implements IBlockEntityIn
 	}
 
 	public ActionResult onUse(World world, BlockState state, BlockPos pos, PlayerEntity player, Hand hand) {
+		if (world.getBlockEntity(pos) instanceof NecroTableBlockEntity necroTableBlockEntity) {
+			if(player.getMainHandStack().isEmpty()){
+
+			}
+		}
+
 		/*
 		if (world.getBlockEntity(pos) instanceof NecroTableBlockEntity necroTableBlockEntity) {
 			if (necroTableBlockEntity.currentNecrotableRitual != null) {
@@ -86,11 +88,7 @@ public class NecroTableBlockEntity extends BlockEntity implements IBlockEntityIn
 		return world != null && user != null ? world.getPlayerByUuid(user) : null;
 	}
 
-	public void setUser(PlayerEntity player) {
-		if (currentNecrotableRitual == null || user == null) {
-			this.user = player.getUuid();
-		}
-	}
+
 
 	public void sync(World world, BlockPos pos) {
 		if (world != null && !world.isClient) {
@@ -118,7 +116,7 @@ public class NecroTableBlockEntity extends BlockEntity implements IBlockEntityIn
 		super.readNbt(nbt);
 		ITEMS.clear();
 		Inventories.readNbt(nbt, ITEMS);
-		currentNecrotableRitual = BotDRegistries.NECROTABLE_RITUALS.get(new Identifier(nbt.getString(Constants.Nbt.NECRO_RITUAL)));
+		//currentNecrotableRitual = BotDRegistries.NECROTABLE_RITUALS.get(new Identifier(nbt.getString(Constants.Nbt.NECRO_RITUAL)));
 		this.hasBotD = nbt.getBoolean(Constants.Nbt.HAS_LEGEMETON);
 		this.hasEmeraldTablet = nbt.getBoolean(Constants.Nbt.HAS_EMERALD_TABLET);
 		this.timer = nbt.getInt(Constants.Nbt.TIMER);
@@ -135,9 +133,12 @@ public class NecroTableBlockEntity extends BlockEntity implements IBlockEntityIn
 	protected void writeNbt(NbtCompound nbt) {
 		super.writeNbt(nbt);
 		Inventories.writeNbt(nbt, ITEMS);
+		/*
 		if (currentNecrotableRitual != null) {
 			nbt.putString(Constants.Nbt.NECRO_RITUAL, BotDRegistries.NECROTABLE_RITUALS.getId(currentNecrotableRitual).toString());
 		}
+
+		 */
 		nbt.putBoolean(Constants.Nbt.HAS_LEGEMETON, this.hasBotD);
 		nbt.putBoolean(Constants.Nbt.HAS_EMERALD_TABLET, this.hasEmeraldTablet);
 		nbt.putInt(Constants.Nbt.TIMER, this.timer);

@@ -53,5 +53,9 @@ public class Constants {
         public static final String POS_LIST = "PosList";
 		public static final String YAW_LIST = "YawList";
 		public static final String YAW = "Yaw";
+        public static final String RITUAL_POS = "RitualPos";
+		public static final String PEDESTAL_ITEM = "PedestalItem";
+		public static final String CRAFTING_FINISHED = "CraftingFinished";
+		public static final String CRAFTING = "Crafting";
 	}
 }
