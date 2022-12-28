@@ -1,16 +1,14 @@
 package dev.sterner.book_of_the_dead.common.block.entity;
 
+import dev.sterner.book_of_the_dead.client.particle.ItemStackBeamParticle;
+import dev.sterner.book_of_the_dead.client.particle.ItemStackBeamParticleEffect;
 import dev.sterner.book_of_the_dead.common.registry.BotDBlockEntityTypes;
+import dev.sterner.book_of_the_dead.common.registry.BotDParticleTypes;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.SculkSensorBlock;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.item.BowItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.SnowballItem;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.network.Packet;
@@ -20,6 +18,7 @@ import net.minecraft.particle.ItemStackParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
@@ -38,16 +37,22 @@ public class PedestalBlockEntity extends BlockEntity {
 	}
 
 	public static void tick(World world, BlockPos blockPos, BlockState blockState, PedestalBlockEntity blockEntity) {
-		if (world != null && blockEntity.isCrafting()) {
+		if (world != null ) {//&& blockEntity.isCrafting()) {
 			if(!blockEntity.getStack().isEmpty() && blockEntity.hasRitualPos()){
-				BlockPos b = blockEntity.ritualCenter.subtract(blockPos.add(-0.5,1.25,-0.5));
+				double yOffset = MathHelper.sin((world.getTime()) / 10F);
+				BlockPos b = blockEntity.ritualCenter.subtract(blockPos.add(0.5,0.5,0.5));
 				Vec3d directionVector = new Vec3d(b.getX(), b.getY(), b.getZ());
 
 				double x = blockPos.getX() + (world.random.nextDouble() * 0.2D) + 0.4D;
 				double y = blockPos.getY() + (world.random.nextDouble() * 0.2D) + 1.2D;
 				double z = blockPos.getZ() + (world.random.nextDouble() * 0.2D) + 0.4D;
 				if(world instanceof ServerWorld serverWorld){
-					serverWorld.spawnParticles(new ItemStackParticleEffect(ParticleTypes.ITEM, blockEntity.getStack()), x, y, z, 0, directionVector.x, directionVector.y, directionVector.z, 0.10D);
+					serverWorld.spawnParticles(
+							new ItemStackBeamParticleEffect(
+									BotDParticleTypes.ITEM_BEAM_PARTICLE,
+									blockEntity.getStack(),
+									10),
+							x, y, z, 0, directionVector.x, directionVector.y, directionVector.z, 0.10D);
 				}
 				if(blockEntity.craftingFinished){
 					blockEntity.getStack().decrement(1);

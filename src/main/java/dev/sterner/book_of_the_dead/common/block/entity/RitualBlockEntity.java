@@ -9,9 +9,12 @@ import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.BlockPos;
@@ -33,6 +36,15 @@ public class RitualBlockEntity extends BlockEntity {
 
 	public RitualBlockEntity(BlockPos pos, BlockState state) {
 		super(BotDBlockEntityTypes.RITUAL, pos, state);
+	}
+
+	@Deprecated(forRemoval = true)
+	public ActionResult onUse(World world, BlockState state, BlockPos pos, PlayerEntity player, Hand hand) {
+		if (world != null) {
+			sendRitualPosition(world);
+			return ActionResult.CONSUME;
+		}
+		return ActionResult.PASS;
 	}
 
 	public void sendRitualPosition(World world){
@@ -136,4 +148,6 @@ public class RitualBlockEntity extends BlockEntity {
 				new BlockPos(-2, 0, 2)
 		);
 	}
+
+
 }
