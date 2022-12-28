@@ -1,34 +1,26 @@
 package dev.sterner.book_of_the_dead.common.block.entity;
 
-import dev.sterner.book_of_the_dead.client.particle.ItemStackBeamParticle;
+import dev.sterner.book_of_the_dead.api.block.entity.BaseBlockEntity;
 import dev.sterner.book_of_the_dead.client.particle.ItemStackBeamParticleEffect;
 import dev.sterner.book_of_the_dead.common.registry.BotDBlockEntityTypes;
 import dev.sterner.book_of_the_dead.common.registry.BotDParticleTypes;
 import dev.sterner.book_of_the_dead.common.util.Constants;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtHelper;
-import net.minecraft.network.Packet;
-import net.minecraft.network.listener.ClientPlayPacketListener;
-import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
-import net.minecraft.particle.ItemStackParticleEffect;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
 
-public class PedestalBlockEntity extends BlockEntity {
+public class PedestalBlockEntity extends BaseBlockEntity {
 	private ItemStack stack;
 	private boolean loaded = false;
 	private boolean crafting;
 	private boolean craftingFinished;
 	public BlockPos ritualCenter;
+	public int duration = 0;
 
 	public PedestalBlockEntity(BlockPos pos, BlockState state) {
 		super(BotDBlockEntityTypes.PEDESTAL, pos, state);
@@ -37,9 +29,12 @@ public class PedestalBlockEntity extends BlockEntity {
 	}
 
 	public static void tick(World world, BlockPos blockPos, BlockState blockState, PedestalBlockEntity blockEntity) {
-		if (world != null ) {//&& blockEntity.isCrafting()) {
-			if(!blockEntity.getStack().isEmpty() && blockEntity.hasRitualPos()){
-				double yOffset = MathHelper.sin((world.getTime()) / 10F);
+		if (world != null && blockEntity.isCrafting()) {
+			if(!blockEntity.getStack().isEmpty() && blockEntity.hasRitualPos() && blockEntity.duration > 0){
+				blockEntity.duration--;
+				if(blockEntity.duration == 0){
+					blockEntity.craftingFinished = true;
+				}
 				BlockPos b = blockEntity.ritualCenter.subtract(blockPos.add(0.5,0.5,0.5));
 				Vec3d directionVector = new Vec3d(b.getX(), b.getY(), b.getZ());
 
@@ -73,6 +68,7 @@ public class PedestalBlockEntity extends BlockEntity {
 		if (nbt.contains(Constants.Nbt.RITUAL_POS)) {
 			this.ritualCenter = NbtHelper.toBlockPos(nbt.getCompound(Constants.Nbt.RITUAL_POS));
 		}
+		this.duration = nbt.getInt("duration");
 	}
 
 	@Override
@@ -84,6 +80,7 @@ public class PedestalBlockEntity extends BlockEntity {
 		if(hasRitualPos()){
 			nbt.put(Constants.Nbt.RITUAL_POS, NbtHelper.fromBlockPos(this.ritualCenter));
 		}
+		nbt.putInt("curation", this.duration);
 	}
 
 	private boolean hasRitualPos() {
@@ -112,25 +109,5 @@ public class PedestalBlockEntity extends BlockEntity {
 	public void setCraftingFinished(boolean finished) {
 		this.craftingFinished = finished;
 	}
-
-	public void sync(World world, BlockPos pos) {
-		if (world != null && !world.isClient) {
-			world.updateListeners(pos, getCachedState(), getCachedState(), Block.NOTIFY_LISTENERS);
-		}
-	}
-
-	@Override
-	public NbtCompound toInitialChunkDataNbt() {
-		NbtCompound nbt = super.toInitialChunkDataNbt();
-		writeNbt(nbt);
-		return nbt;
-	}
-
-	@Nullable
-	@Override
-	public Packet<ClientPlayPacketListener> toUpdatePacket() {
-		return BlockEntityUpdateS2CPacket.of(this);
-	}
-
 
 }

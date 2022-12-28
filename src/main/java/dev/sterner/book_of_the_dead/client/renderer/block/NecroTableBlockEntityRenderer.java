@@ -73,10 +73,10 @@ public class NecroTableBlockEntityRenderer<T extends BlockEntity> implements Blo
 					matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(180));
 				}
 
-				if(necroTableBlockEntity.hasEmeraldTablet || true){
+				if(necroTableBlockEntity.hasEmeraldTablet){
 					renderTablet(matrices, vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(TEXTURE)), light, overlay);
 				}
-				if(necroTableBlockEntity.hasBotD || true){
+				if(necroTableBlockEntity.hasBotD){
 					renderBook(matrices, vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(TEXTURE)), light, overlay);
 				}
 				render(matrices, vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(TEXTURE)), light, overlay);

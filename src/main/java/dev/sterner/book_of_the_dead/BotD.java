@@ -90,15 +90,14 @@ public class BotD implements ModInitializer {
 	}
 
 	private ActionResult createNecroTable(PlayerEntity player, World world, Hand hand, BlockHitResult blockHitResult) {
-		if(!world.isClient() && player.getMainHandStack().isOf(BotDObjects.BOOK_OF_THE_DEAD) && hand == Hand.MAIN_HAND){
+		if(!world.isClient() && player.getMainHandStack().isOf(BotDObjects.PAPER_AND_QUILL) && hand == Hand.MAIN_HAND){
 			BlockPos blockPos = blockHitResult.getBlockPos();
-			if(world.getBlockState(blockPos).isOf( Blocks.DEEPSLATE_TILES)){
+			if(world.getBlockState(blockPos).isOf(Blocks.DEEPSLATE_TILES)){
 				world.setBlockState(blockPos, BotDObjects.NECRO_TABLE.getDefaultState().with(FACING, player.getHorizontalFacing()));
 				return ActionResult.CONSUME;
 			}
 		}
 		return ActionResult.PASS;
-		//return createDoubleBlock(BotDObjects.BOOK_OF_THE_DEAD, Blocks.DEEPSLATE_TILES, BotDObjects.NECRO_TABLE.getDefaultState(), player, world, hand, blockHitResult);
 	}
 
 	private ActionResult createButcherTable(PlayerEntity player, World world, Hand hand, BlockHitResult blockHitResult) {

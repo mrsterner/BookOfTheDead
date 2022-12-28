@@ -1,13 +1,16 @@
 package dev.sterner.book_of_the_dead.common.registry;
 
 import dev.sterner.book_of_the_dead.common.block.entity.NecroTableBlockEntity;
+import dev.sterner.book_of_the_dead.common.block.entity.RitualBlockEntity;
 import dev.sterner.book_of_the_dead.common.recipe.ButcheringRecipe;
 import dev.sterner.book_of_the_dead.common.recipe.RitualRecipe;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import dev.sterner.book_of_the_dead.common.util.BotDUtils;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
+import net.minecraft.util.Pair;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.world.World;
 
 import java.util.stream.Collectors;
 
@@ -37,9 +40,14 @@ public class BotDRecipeTypes {
 		Registry.register(Registry.RECIPE_TYPE,Constants.id("ritual"), RITUAL_RECIPE_RECIPE_TYPE);
 	}
 
-	public static RitualRecipe getRiteRecipe(NecroTableBlockEntity necroTableBlockEntity) {
-		return necroTableBlockEntity.getWorld().getRecipeManager().listAllOfType(RITUAL_RECIPE_RECIPE_TYPE).stream()
-				.filter(r -> BotDUtils.containsAllIngredients(r.ingredients.stream().filter(ingredient -> !ingredient.isEmpty()).collect(Collectors.toList()), necroTableBlockEntity.getItems()))
+
+	public static RitualRecipe getRiteRecipe(RitualBlockEntity ritualBlockEntity) {
+		World world = ritualBlockEntity.getWorld();
+		return world.getRecipeManager().listAllOfType(RITUAL_RECIPE_RECIPE_TYPE).stream()
+				.filter(r -> BotDUtils.containsAllIngredients(r.ingredients.stream()
+						.filter(ingredient -> !ingredient.isEmpty()).collect(Collectors.toList()), ritualBlockEntity.getPedestalInfo(world).stream().map(Pair::getLeft).toList()))
 				.findFirst().orElse(null);
 	}
+
+
 }

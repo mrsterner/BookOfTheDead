@@ -89,6 +89,9 @@ dependencies {
 	//Reach
 	modImplementation "com.jamieswhiteshirt:reach-entity-attributes:${project.reach_entity_attributes_version}"
 	include "com.jamieswhiteshirt:reach-entity-attributes:${project.reach_entity_attributes_version}"
+
+	//Revelationary
+	modImplementation "com.github.DaFuqs:Revelationary:${project.revelationary_version}"
 }
 
 processResources {

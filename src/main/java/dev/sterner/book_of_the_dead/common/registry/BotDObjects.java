@@ -27,6 +27,8 @@ public class BotDObjects {
 	public static final Map<Block, Identifier> BLOCKS = new LinkedHashMap<>();
 	public static final Map<Item, Identifier> ITEMS = new LinkedHashMap<>();
 
+	public static final Item PAPER_AND_QUILL = register("paper_and_quill", new Item(settings()));
+
 	public static final Item BUTCHER_KNIFE = register("butcher_knife", new AxeItem(ToolMaterials.NETHERITE, 6, -2, settings()));
 	public static final Item BLOODY_BUTCHER_KNIFE = register("bloody_butcher_knife", new AxeItem(ToolMaterials.NETHERITE, 6, -2, new Item.Settings()));
 	public static final Item BOOK_OF_THE_DEAD = register("book_of_the_dead", new BotDItem(Constants.id("book_of_the_dead"), settings()));

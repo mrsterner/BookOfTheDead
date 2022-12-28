@@ -1,0 +1,15 @@
+{
+  "type": "book_of_the_dead:ritual",
+  "ingredients": [
+    {
+      "item": "stick"
+    },
+    {
+      "item": "apple"
+    }
+  ],
+  "ritual": "book_of_the_dead:create_item",
+  "result": {
+    "item": "diamond"
+  }
+}

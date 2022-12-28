@@ -30,7 +30,6 @@ public class PedestalBlockEntityRenderer implements BlockEntityRenderer<Pedestal
 			matrices.translate(0.5D, 1.15D + yOffset, 0.5D);
 			float angle = (float)((entity.getWorld().getTime() + tickDelta) / 20F + yOffset);
 			matrices.multiply(Vec3f.POSITIVE_Y.getRadialQuaternion(angle));
-			//matrices.scale(0.8F, 0.8F, 0.625F);
 			MinecraftClient.getInstance().getItemRenderer().renderItem(entity.getStack(), ModelTransformation.Mode.GROUND, light, overlay, matrices, vertexConsumers, 0);
 			matrices.pop();
 		}

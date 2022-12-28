@@ -1,16 +1,18 @@
 package dev.sterner.book_of_the_dead.common.block.entity;
 
+import dev.sterner.book_of_the_dead.BotD;
 import dev.sterner.book_of_the_dead.api.NecrotableRitual;
-import dev.sterner.book_of_the_dead.common.registry.BotDBlockEntityTypes;
-import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
-import dev.sterner.book_of_the_dead.common.registry.BotDRegistries;
-import dev.sterner.book_of_the_dead.common.registry.BotDRituals;
+import dev.sterner.book_of_the_dead.api.block.entity.BaseBlockEntity;
+import dev.sterner.book_of_the_dead.common.recipe.RitualRecipe;
+import dev.sterner.book_of_the_dead.common.registry.*;
+import dev.sterner.book_of_the_dead.common.ritual.CreateItemRitual;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
+import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.ActionResult;
@@ -22,17 +24,25 @@ import net.minecraft.world.World;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
-public class RitualBlockEntity extends BlockEntity {
+public class RitualBlockEntity extends BaseBlockEntity {
 	public static final List<BlockPos> PEDESTAL_POS_LIST;
+	public NecrotableRitual currentNecrotableRitual = null;
 
-	public NecrotableRitual currentNecrotableRitual = BotDRituals.SUMMON_ZOMBIE;
+	//NecroTableInfo
+	public boolean hasBotD = false;
+	public boolean hasEmeraldTablet = false;
+	public UUID user = null;
+
+	//Logic
 	private boolean loaded = false;
 	public int timer = 0;
 	public long age = 0;
-	public UUID user = null;
 	public boolean startGate = true;
+	public boolean shouldRun = false;
+	public boolean ignoreRemovedItems = false;
 
 	public RitualBlockEntity(BlockPos pos, BlockState state) {
 		super(BotDBlockEntityTypes.RITUAL, pos, state);
@@ -41,8 +51,12 @@ public class RitualBlockEntity extends BlockEntity {
 	@Deprecated(forRemoval = true)
 	public ActionResult onUse(World world, BlockState state, BlockPos pos, PlayerEntity player, Hand hand) {
 		if (world != null) {
-			sendRitualPosition(world);
-			return ActionResult.CONSUME;
+			if(BotD.isDebugMode()){
+				//sendRitualPosition(world);
+				System.out.println("Should" + shouldRun);
+				return ActionResult.CONSUME;
+			}
+
 		}
 		return ActionResult.PASS;
 	}
@@ -69,32 +83,61 @@ public class RitualBlockEntity extends BlockEntity {
 	}
 
 	public static void tick(World world, BlockPos pos, BlockState blockState, RitualBlockEntity blockEntity) {
-		if (world != null) {
+		if (world != null && !world.isClient()) {
 			if (!blockEntity.loaded) {
 				blockEntity.markDirty();
 				blockEntity.loaded = true;
 			}
 			blockEntity.age++;
-			NecrotableRitual ritual = blockEntity.currentNecrotableRitual;
-			if (ritual != null) {
-				if(blockEntity.startGate){
-					ritual.onStart(world, pos, blockEntity);
-					blockEntity.sendRitualPosition(world);
-					blockEntity.startGate = false;
+			if(blockEntity.shouldRun){
+				blockEntity.sendRitualPosition(world);
+				SimpleInventory tempInv = new SimpleInventory(8);
+				List<ItemStack> pedestalItemList = blockEntity.getPedestalInfo(world).stream().map(Pair::getLeft).toList();
+				for(ItemStack itemStack : pedestalItemList){
+					if(!itemStack.isEmpty()){
+						tempInv.addStack(itemStack.copy());
+					}
 				}
-				blockEntity.timer++;
-				if (blockEntity.timer >= 0) {
-					ritual.tick(world, pos, blockEntity);
-				}
-				if(blockEntity.timer >= blockEntity.currentNecrotableRitual.duration){
-					blockEntity.currentNecrotableRitual.onStopped(world, pos, blockEntity);
-					blockEntity.currentNecrotableRitual = null;
-					blockEntity.timer = 0;
-					blockEntity.startGate = true;
+
+				RitualRecipe recipe = BotDRecipeTypes.getRiteRecipe(blockEntity);
+
+				if (recipe != null || blockEntity.ignoreRemovedItems) {
+					NecrotableRitual ritual = recipe.ritual;
+
+
+					blockEntity.ignoreRemovedItems = true;
+
+					blockEntity.currentNecrotableRitual = ritual;
+					if(ritual instanceof CreateItemRitual c){
+						c.recipe = recipe;
+					}
+					if(blockEntity.startGate){
+						ritual.onStart(world, pos, blockEntity);
+						blockEntity.startGate = false;
+					}
+					blockEntity.timer++;
+					if (blockEntity.timer >= 0) {
+						ritual.tick(world, pos, blockEntity);
+					}
+					if(blockEntity.timer >= blockEntity.currentNecrotableRitual.duration){
+						blockEntity.reset(blockEntity);
+					}
+				}else{
+					blockEntity.shouldRun = false;
 					blockEntity.markDirty();
 				}
 			}
 		}
+	}
+
+	public void reset(RitualBlockEntity blockEntity){
+		blockEntity.currentNecrotableRitual.onStopped(world, pos, blockEntity);
+		blockEntity.currentNecrotableRitual = null;
+		blockEntity.timer = 0;
+		blockEntity.startGate = true;
+		blockEntity.shouldRun = false;
+		blockEntity.ignoreRemovedItems = false;
+		blockEntity.markDirty();
 	}
 
 	@Override
@@ -109,6 +152,9 @@ public class RitualBlockEntity extends BlockEntity {
 			user = null;
 		}
 		this.startGate = nbt.getBoolean("Start");
+		this.shouldRun = nbt.getBoolean("ShouldRun");
+		this.hasBotD = nbt.getBoolean(Constants.Nbt.HAS_LEGEMETON);
+		this.hasEmeraldTablet = nbt.getBoolean(Constants.Nbt.HAS_EMERALD_TABLET);
 		markDirty();
 	}
 
@@ -124,6 +170,9 @@ public class RitualBlockEntity extends BlockEntity {
 			nbt.putUuid(Constants.Nbt.PLAYER_UUID, user);
 		}
 		nbt.putBoolean("Start", this.startGate);
+		nbt.putBoolean("ShouldRun", this.shouldRun);
+		nbt.putBoolean(Constants.Nbt.HAS_LEGEMETON, this.hasBotD);
+		nbt.putBoolean(Constants.Nbt.HAS_EMERALD_TABLET, this.hasEmeraldTablet);
 	}
 
 	@Override
