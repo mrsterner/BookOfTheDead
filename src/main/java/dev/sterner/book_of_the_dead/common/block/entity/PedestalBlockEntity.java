@@ -41,7 +41,7 @@ public class PedestalBlockEntity extends BaseBlockEntity {
 				double x = blockPos.getX() + (world.random.nextDouble() * 0.2D) + 0.4D;
 				double y = blockPos.getY() + (world.random.nextDouble() * 0.2D) + 1.2D;
 				double z = blockPos.getZ() + (world.random.nextDouble() * 0.2D) + 0.4D;
-				if(world instanceof ServerWorld serverWorld){
+				if(world instanceof ServerWorld serverWorld && !blockEntity.getStack().isEmpty()){
 					serverWorld.spawnParticles(
 							new ItemStackBeamParticleEffect(
 									BotDParticleTypes.ITEM_BEAM_PARTICLE,

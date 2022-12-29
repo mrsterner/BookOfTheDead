@@ -1,0 +1,8 @@
+{
+  "misc.item.item_beam": {
+    "sounds": [
+      "book_of_the_dead:misc/item_beam"
+    ],
+    "subtitle": "book_of_the_dead.subtitles.misc.item.item_beam"
+  }
+}

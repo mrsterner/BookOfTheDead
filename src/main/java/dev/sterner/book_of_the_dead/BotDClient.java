@@ -34,6 +34,7 @@ public class BotDClient implements ClientModInitializer {
 		BotDParticleTypes.init();
 
 
+
 		BlockRenderLayerMap.put(RenderLayer.getCutout(),
 				BotDObjects.ROPE,
 				BotDObjects.HOOK_BLOCK,

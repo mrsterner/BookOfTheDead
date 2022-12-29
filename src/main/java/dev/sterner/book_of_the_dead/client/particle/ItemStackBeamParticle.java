@@ -34,6 +34,26 @@ public class ItemStackBeamParticle extends SpriteBillboardParticle {
 	}
 
 	@Override
+	protected float getMinU() {
+		return this.sprite.getFrameU((double)((this.sampleU + 1.0F) / 4.0F * 16.0F));
+	}
+
+	@Override
+	protected float getMaxU() {
+		return this.sprite.getFrameU((double)(this.sampleU / 4.0F * 16.0F));
+	}
+
+	@Override
+	protected float getMinV() {
+		return this.sprite.getFrameV((double)(this.sampleV / 4.0F * 16.0F));
+	}
+
+	@Override
+	protected float getMaxV() {
+		return this.sprite.getFrameV((double)((this.sampleV + 1.0F) / 4.0F * 16.0F));
+	}
+
+	@Override
 	public void tick() {
 		super.tick();
 	}

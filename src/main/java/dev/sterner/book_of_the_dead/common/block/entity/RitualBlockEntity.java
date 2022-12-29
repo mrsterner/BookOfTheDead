@@ -105,9 +105,12 @@ public class RitualBlockEntity extends BaseBlockEntity {
 					}
 				}
 
-				if(blockEntity.ritualRecipe == null){
+				if(blockEntity.ritualRecipe == null || blockEntity.currentNecrotableRitual == null){
 					blockEntity.ritualRecipe = BotDRecipeTypes.getRiteRecipe(blockEntity);
-					blockEntity.currentNecrotableRitual = blockEntity.ritualRecipe.ritual;
+					if(blockEntity.ritualRecipe != null){
+						blockEntity.currentNecrotableRitual = blockEntity.ritualRecipe.ritual;
+					}
+
 				}else {
 					blockEntity.currentNecrotableRitual.recipe = blockEntity.ritualRecipe;
 					if (blockEntity.startGate) {
