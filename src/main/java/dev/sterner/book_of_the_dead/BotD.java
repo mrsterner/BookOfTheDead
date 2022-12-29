@@ -22,6 +22,8 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.particle.BlockStateParticleEffect;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
@@ -68,16 +70,33 @@ public class BotD implements ModInitializer {
 		UseBlockCallback.EVENT.register(this::createPedestalAndRitual);
 	}
 
+	private void addParticle(World world, BlockPos blockPos, BlockState blockState){
+		world.addParticle(new BlockStateParticleEffect(ParticleTypes.BLOCK, blockState),
+				blockPos.getX() + ((double)world.random.nextFloat() - 0.5D),
+				blockPos.getY() + 0.1D,
+				blockPos.getZ() + ((double)world.random.nextFloat() - 0.5D),
+				4.0D * ((double)world.random.nextFloat() - 0.5D),
+				0.5D,
+				((double)world.random.nextFloat() - 0.5D) * 4.0D);
+	}
+
 	private ActionResult createPedestalAndRitual(PlayerEntity player, World world, Hand hand, BlockHitResult blockHitResult) {
 		if(!world.isClient() && hand == Hand.MAIN_HAND && player instanceof ServerPlayerEntity serverPlayerEntity){
 			BlockPos blockPos = blockHitResult.getBlockPos();
 			if(player.getMainHandStack().isOf(BotDObjects.CARPENTER_TOOLS)){
 				if(world.getBlockState(blockPos).isOf(Blocks.DEEPSLATE_TILE_WALL)){
+					BlockState state = BotDObjects.PEDESTAL.getDefaultState();
 					player.getMainHandStack().damage(1, world.random, serverPlayerEntity);
-					world.setBlockState(blockPos, BotDObjects.PEDESTAL.getDefaultState());
+					world.breakBlock(blockPos, false);
+					addParticle(world, blockPos, state);
+
+					world.setBlockState(blockPos, state);
 					return ActionResult.CONSUME;
 				}else if(world.getBlockState(blockPos).isOf(Blocks.DEEPSLATE_TILE_SLAB)){
-					world.setBlockState(blockPos, BotDObjects.RITUAL.getDefaultState());
+					BlockState state = BotDObjects.RITUAL.getDefaultState();
+					world.breakBlock(blockPos, false);
+					addParticle(world, blockPos, state);
+					world.setBlockState(blockPos, state);
 					player.getMainHandStack().damage(1, world.random, serverPlayerEntity);
 					return ActionResult.CONSUME;
 				}
@@ -113,7 +132,11 @@ public class BotD implements ModInitializer {
 		if(!world.isClient() && player.getMainHandStack().isOf(BotDObjects.PAPER_AND_QUILL) && hand == Hand.MAIN_HAND){
 			BlockPos blockPos = blockHitResult.getBlockPos();
 			if(world.getBlockState(blockPos).isOf(Blocks.DEEPSLATE_TILES)){
-				world.setBlockState(blockPos, BotDObjects.NECRO_TABLE.getDefaultState().with(FACING, player.getHorizontalFacing()));
+				BlockState state = BotDObjects.NECRO_TABLE.getDefaultState();
+				world.breakBlock(blockPos, false);
+				addParticle(world, blockPos, state);
+
+				world.setBlockState(blockPos, state.with(FACING, player.getHorizontalFacing()));
 				return ActionResult.CONSUME;
 			}
 		}

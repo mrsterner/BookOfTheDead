@@ -3,6 +3,7 @@ package dev.sterner.book_of_the_dead.common.block;
 import dev.sterner.book_of_the_dead.api.block.HorizontalDoubleBlock;
 import dev.sterner.book_of_the_dead.api.enums.HorizontalDoubleBlockHalf;
 import dev.sterner.book_of_the_dead.common.block.entity.NecroTableBlockEntity;
+import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
@@ -16,6 +17,7 @@ import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.function.BooleanBiFunction;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
@@ -69,6 +71,18 @@ public class NecroTableBlock extends HorizontalFacingBlock implements BlockEntit
 		};
 	}
 
+	@Override
+	public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
+		if(world.getBlockEntity(pos) instanceof NecroTableBlockEntity be){
+			if(be.hasBotD){
+				ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), BotDObjects.BOOK_OF_THE_DEAD.getDefaultStack());
+			}
+			if(be.hasEmeraldTablet){
+				ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), BotDObjects.EMERALD_TABLET.getDefaultStack());
+			}
+		}
+		super.onBreak(world, pos, state, player);
+	}
 
 	@Override
 	public void randomDisplayTick(BlockState state, World world, BlockPos pos, RandomGenerator random) {

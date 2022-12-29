@@ -15,6 +15,7 @@ public class BotDBlockLootTableProvider extends FabricBlockLootTableProvider {
 		addDrop(BotDObjects.HOOK_BLOCK, () -> BotDObjects.HOOK);
 		addDrop(BotDObjects.ROPE);
 		addDrop(Blocks.REDSTONE_BLOCK, () -> BotDObjects.CINNABAR);
-
+		addDrop(BotDObjects.PEDESTAL, Blocks.DEEPSLATE_TILE_WALL);
+		addDrop(BotDObjects.RITUAL, Blocks.DEEPSLATE_TILE_SLAB);
 	}
 }
