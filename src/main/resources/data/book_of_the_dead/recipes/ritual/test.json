@@ -11,5 +11,6 @@
   "ritual": "book_of_the_dead:create_item",
   "result": {
     "item": "diamond"
-  }
+  },
+  "duration": 80
 }

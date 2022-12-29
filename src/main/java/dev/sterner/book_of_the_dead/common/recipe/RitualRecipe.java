@@ -23,14 +23,16 @@ public class RitualRecipe implements Recipe<Inventory> {
 	public final ItemStack output;
 	public final NecrotableRitual ritual;
 	public final Identifier id;
+	public final int duration;
 
-	public RitualRecipe(Identifier id, Ingredient[] ingredients, ItemStack output, NecrotableRitual ritual) {
+	public RitualRecipe(Identifier id, Ingredient[] ingredients, ItemStack output, NecrotableRitual ritual, int duration) {
 		this.id = id;
 		for (int i = 0; i < ingredients.length; i++) {
 			this.ingredients.set(i, ingredients[i]);
 		}
 		this.ritual = ritual;
 		this.output = output;
+		this.duration = duration;
 	}
 
 	@Override
@@ -107,7 +109,8 @@ public class RitualRecipe implements Recipe<Inventory> {
 			Ingredient[] ingredients = readIngredients(JsonHelper.getArray(json, "ingredients"));
 			NecrotableRitual ritual = BotDRegistries.NECROTABLE_RITUALS.get(new Identifier(JsonHelper.getString(json, "ritual")));
 			ItemStack itemStack = ShapedRecipe.outputFromJson(JsonHelper.getObject(json, "result"));
-			return new RitualRecipe(id, ingredients, itemStack, ritual);
+			int duration = JsonHelper.getInt(json, "duration", 20 * 8);
+			return new RitualRecipe(id, ingredients, itemStack, ritual, duration);
 		}
 
 		private Ingredient[] readIngredients(JsonArray json) {
@@ -125,7 +128,8 @@ public class RitualRecipe implements Recipe<Inventory> {
 			}
 			ItemStack itemStack = buf.readItemStack();
 			NecrotableRitual rite = BotDRegistries.NECROTABLE_RITUALS.get(buf.readIdentifier());
-			return new RitualRecipe(id, ingredients.toArray(new Ingredient[ingredients.size()]), itemStack, rite);
+			int duration = buf.readInt();
+			return new RitualRecipe(id, ingredients.toArray(new Ingredient[ingredients.size()]), itemStack, rite, duration);
 		}
 
 		@Override
@@ -134,6 +138,7 @@ public class RitualRecipe implements Recipe<Inventory> {
 			buf.writeItemStack(recipe.output);
 			recipe.ingredients.forEach(i -> i.write(buf));
 			buf.writeIdentifier(recipe.ritual.getId());
+			buf.writeInt(recipe.duration);
 		}
 	}
 }

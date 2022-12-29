@@ -14,8 +14,8 @@ import java.util.Map;
 public class BotDRituals {
 	private static final Map<NecrotableRitual, Identifier> NECROTABLE_RITUAL = new LinkedHashMap<>();
 
-	public static final NecrotableRitual SUMMON_ZOMBIE = register("summon_zombie", new SummonUndeadRitual(new Identifier("summon_zombie"), new Identifier(""), new Identifier(""), 20 * 4));
-	public static final NecrotableRitual CREATE_ITEM = register("create_item", new CreateItemRitual(new Identifier("create_item"), new Identifier(""), new Identifier(""), 20 * 4));
+	public static final NecrotableRitual SUMMON_ZOMBIE = register("summon_zombie", new SummonUndeadRitual(new Identifier("summon_zombie"), new Identifier(""), new Identifier("")));
+	public static final NecrotableRitual CREATE_ITEM = register("create_item", new CreateItemRitual(new Identifier("create_item"), new Identifier(""), new Identifier("")));
 
 
 	private static <T extends NecrotableRitual> T register(String name, T necroRitual) {

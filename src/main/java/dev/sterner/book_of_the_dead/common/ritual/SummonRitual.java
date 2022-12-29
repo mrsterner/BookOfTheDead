@@ -21,8 +21,8 @@ import java.util.ArrayList;
 
 public class SummonRitual extends NecrotableRitual {
 
-	public SummonRitual(Identifier id, Identifier largeCircleSprite, Identifier smallCircleSprite, int duration) {
-		super(id, largeCircleSprite, smallCircleSprite, duration);
+	public SummonRitual(Identifier id, Identifier largeCircleSprite, Identifier smallCircleSprite) {
+		super(id, largeCircleSprite, smallCircleSprite);
 	}
 
 	@Override

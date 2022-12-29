@@ -24,8 +24,8 @@ import java.util.List;
 
 public class CreateItemRitual extends NecrotableRitual {
 	int index = 0;
-	public CreateItemRitual(Identifier id, Identifier largeCircleSprite, Identifier smallCircleSprite, int duration) {
-		super(id, largeCircleSprite, smallCircleSprite, duration);
+	public CreateItemRitual(Identifier id, Identifier largeCircleSprite, Identifier smallCircleSprite) {
+		super(id, largeCircleSprite, smallCircleSprite);
 	}
 
 	@Override
@@ -35,9 +35,9 @@ public class CreateItemRitual extends NecrotableRitual {
 		double z = blockPos.getZ() + 0.5;
 		List<BlockPos> pedestalToActivate = new ArrayList<>();
 		List<Pair<ItemStack, BlockPos>> stream = blockEntity.getPedestalInfo(world).stream().filter(itemStackBlockPosPair -> !itemStackBlockPosPair.getLeft().isEmpty()).toList();
-		int dividedTime = duration;
+		int dividedTime = recipe.duration;
 		if(stream.size() > 0){
-			dividedTime = (duration / (stream.size() + 1));
+			dividedTime = (recipe.duration / (stream.size() + 1));
 		}
 
 		for (Pair<ItemStack, BlockPos> itemStackBlockPosPair : stream) {

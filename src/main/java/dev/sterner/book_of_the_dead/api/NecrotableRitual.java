@@ -22,18 +22,16 @@ public class NecrotableRitual {
 	private final Identifier id;
 	public final Identifier smallCircleSprite;
 	public final Identifier largeCircleSprite;
-	public final int duration;
 	public BlockPos ritualCenter = null;
 	public RitualRecipe recipe;
 	public List<Entity> summons = new ArrayList<>();
 	public World world = null;
 	public int ticker = 0;
 
-	public NecrotableRitual(Identifier id, Identifier largeCircleSprite, Identifier smallCircleSprite, int duration) {
+	public NecrotableRitual(Identifier id, Identifier largeCircleSprite, Identifier smallCircleSprite) {
 		this.id = id;
 		this.smallCircleSprite = smallCircleSprite;
 		this.largeCircleSprite = largeCircleSprite;
-		this.duration = duration;
 	}
 
 	public void tick(World world, BlockPos blockPos, RitualBlockEntity blockEntity) {

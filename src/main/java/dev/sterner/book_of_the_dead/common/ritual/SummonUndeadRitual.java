@@ -8,8 +8,8 @@ import net.minecraft.world.World;
 
 
 public class SummonUndeadRitual extends SummonRitual {
-	public SummonUndeadRitual(Identifier id, Identifier largeCircleSprite, Identifier smallCircleSprite, int duration) {
-		super(id, largeCircleSprite, smallCircleSprite, duration);
+	public SummonUndeadRitual(Identifier id, Identifier largeCircleSprite, Identifier smallCircleSprite) {
+		super(id, largeCircleSprite, smallCircleSprite);
 	}
 
 }

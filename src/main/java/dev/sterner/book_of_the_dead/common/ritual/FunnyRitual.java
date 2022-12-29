@@ -7,7 +7,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class FunnyRitual extends NecrotableRitual {
-	public FunnyRitual(Identifier id, Identifier largeCircleSprite, Identifier smallCircleSprite, int duration) {
-		super(id, largeCircleSprite, smallCircleSprite, duration);
+	public FunnyRitual(Identifier id, Identifier largeCircleSprite, Identifier smallCircleSprite) {
+		super(id, largeCircleSprite, smallCircleSprite);
 	}
 }
