@@ -3,10 +3,7 @@ package dev.sterner.book_of_the_dead.common.block;
 import dev.sterner.book_of_the_dead.common.block.entity.NecroTableBlockEntity;
 import dev.sterner.book_of_the_dead.common.block.entity.PedestalBlockEntity;
 import dev.sterner.book_of_the_dead.common.block.entity.RitualBlockEntity;
-import net.minecraft.block.BlockRenderType;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.BlockWithEntity;
-import net.minecraft.block.ShapeContext;
+import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
@@ -68,11 +65,13 @@ public class RitualBlock extends BlockWithEntity {
 			for(BlockPos pedestalPos : RitualBlockEntity.PEDESTAL_POS_LIST){
 				if(!blockPosList.contains(pedestalPos)){
 					BlockPos specificPos = pedestalPos.add(pos);
-					for(int i = 0; i  < 4; i++) {
-						double x = (double)specificPos.getX() + 0.5D;
-						double y = (double)specificPos.getY() + 0.0625D;
-						double z = (double)specificPos.getZ() + 0.5D;
-						world.addParticle(ParticleTypes.WITCH, x, y, z, 0,0.1,0);
+					if(world.getBlockState(specificPos).isOf(Blocks.AIR)){
+						for(int i = 0; i  < 4; i++) {
+							double x = (double)specificPos.getX() + 0.5D;
+							double y = (double)specificPos.getY() + 0.0625D;
+							double z = (double)specificPos.getZ() + 0.5D;
+							world.addParticle(ParticleTypes.WITCH, x, y, z, 0,0.1,0);
+						}
 					}
 				}
 			}

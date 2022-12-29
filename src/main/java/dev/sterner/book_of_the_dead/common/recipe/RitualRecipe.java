@@ -7,12 +7,17 @@ import dev.sterner.book_of_the_dead.api.NecrotableRitual;
 import dev.sterner.book_of_the_dead.api.interfaces.IRecipe;
 import dev.sterner.book_of_the_dead.common.registry.BotDRecipeTypes;
 import dev.sterner.book_of_the_dead.common.registry.BotDRegistries;
+import net.minecraft.block.EnchantingTableBlock;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.*;
+import net.minecraft.server.command.EnchantCommand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 import net.minecraft.util.collection.DefaultedList;
@@ -25,6 +30,8 @@ import java.util.List;
 public class RitualRecipe implements Recipe<Inventory> {
 	public final DefaultedList<Ingredient> ingredients = DefaultedList.ofSize(8, Ingredient.EMPTY);
 	public final ItemStack output;
+	public final Enchantment enchantment;
+	public final int enchantmentLevel;
 	public final NecrotableRitual ritual;
 	public final Identifier id;
 	public final int duration;
@@ -37,6 +44,7 @@ public class RitualRecipe implements Recipe<Inventory> {
 
 	public final boolean requireBotD;
 	public final boolean requireEmeraldTablet;
+	public final StatusEffectInstance statusEffectInstance;
 
 	public RitualRecipe(
 			Identifier id,
@@ -44,12 +52,15 @@ public class RitualRecipe implements Recipe<Inventory> {
 			EntityType<?> inputEntityType,
 			int inputEntityCount,
 			ItemStack output,
+			Enchantment enchantment,
+			int enchantmentLevel,
 			EntityType<?> outputEntityType,
 			int outputEntityCount,
 			NecrotableRitual ritual,
 			int duration,
 			boolean requireBotD,
-			boolean requireEmeraldTablet
+			boolean requireEmeraldTablet,
+			StatusEffectInstance statusEffectInstance
 	) {
 		this.id = id;
 		for (int i = 0; i < ingredients.length; i++) {
@@ -64,6 +75,9 @@ public class RitualRecipe implements Recipe<Inventory> {
 		this.inputEntityType = inputEntityType;
 		this.requireBotD = requireBotD;
 		this.requireEmeraldTablet = requireEmeraldTablet;
+		this.enchantment = enchantment;
+		this.enchantmentLevel = enchantmentLevel;
+		this.statusEffectInstance = statusEffectInstance;
 	}
 
 	public int getDuration(){
@@ -158,7 +172,14 @@ public class RitualRecipe implements Recipe<Inventory> {
 
 			int duration = JsonHelper.getInt(json, "duration", 20 * 8);
 
-			return new RitualRecipe(id, ingredients, inputEntityType, inputEntityCount, output, outputEntityType, outputEntityCount, ritual, duration, requireBotD, requireEmeraldTablet);
+			Enchantment enchantment = Registry.ENCHANTMENT.get(new Identifier(JsonHelper.getString(json, "enchantment", "unbreaking")));
+			int enchantmentLevel = JsonHelper.getInt(json, "enchantmentLevel", 1);
+
+			StatusEffectInstance statusEffectInstance = new StatusEffectInstance(
+					Registry.STATUS_EFFECT.getOrEmpty(new Identifier(JsonHelper.getString(json, "statusEffect", "speed"))).orElseThrow(() -> new JsonSyntaxException("No such statusEffect")),
+					JsonHelper.getInt(json, "statusEffectDuration", 0),
+					JsonHelper.getInt(json, "statusEffectAmplifier", 0));
+			return new RitualRecipe(id, ingredients, inputEntityType, inputEntityCount, output, enchantment, enchantmentLevel, outputEntityType, outputEntityCount, ritual, duration, requireBotD, requireEmeraldTablet, statusEffectInstance);
 		}
 
 		private Ingredient[] readIngredients(JsonArray json) {
@@ -174,6 +195,8 @@ public class RitualRecipe implements Recipe<Inventory> {
 			boolean requireEmeraldTablet = buf.readBoolean();
 			int sizeIngredients = buf.readInt();
 			ItemStack itemStack = buf.readItemStack();
+			Enchantment enchantment = Registry.ENCHANTMENT.get(new Identifier(buf.readString()));
+			int enchantmentLevel = buf.readInt();
 			List<Ingredient> ingredients = new ArrayList<>();
 			for (int i = 0; i < sizeIngredients; i++) {
 				ingredients.add(Ingredient.fromPacket(buf));
@@ -184,7 +207,10 @@ public class RitualRecipe implements Recipe<Inventory> {
 			final EntityType<?> outputEntityType = Registry.ENTITY_TYPE.get(new Identifier(buf.readString()));
 			int outputEntityCount = buf.readInt();
 			int duration = buf.readInt();
-			return new RitualRecipe(id, ingredients.toArray(new Ingredient[ingredients.size()]), inputEntityType, inputEntityCount, itemStack, outputEntityType, outputEntityCount, rite, duration, requireBotD, requireEmeraldTablet);
+
+			final StatusEffectInstance statusEffectInstance = new StatusEffectInstance(
+					Registry.STATUS_EFFECT.getOrEmpty(new Identifier(buf.readString())).orElseThrow(() -> new JsonSyntaxException("No such statusEffect")), buf.readInt(), buf.readInt());
+			return new RitualRecipe(id, ingredients.toArray(new Ingredient[ingredients.size()]), inputEntityType, inputEntityCount, itemStack,enchantment, enchantmentLevel, outputEntityType, outputEntityCount, rite, duration, requireBotD, requireEmeraldTablet, statusEffectInstance);
 		}
 
 		@Override
@@ -194,12 +220,17 @@ public class RitualRecipe implements Recipe<Inventory> {
 			buf.writeBoolean(recipe.requireEmeraldTablet);
 			buf.writeInt(recipe.ingredients.size());
 			buf.writeItemStack(recipe.output);
+			buf.writeString(Registry.ENCHANTMENT.getId(recipe.enchantment).toString());
+			buf.writeInt(recipe.enchantmentLevel);
 			recipe.ingredients.forEach(i -> i.write(buf));
 			buf.writeString(Registry.ENTITY_TYPE.getId(recipe.inputEntityType).toString());
 			buf.writeInt(recipe.inputEntityCount);
 			buf.writeString(Registry.ENTITY_TYPE.getId(recipe.outputEntityType).toString());
 			buf.writeInt(recipe.outputEntityCount);
 			buf.writeInt(recipe.duration);
+			buf.writeString(Registry.STATUS_EFFECT.getId(recipe.statusEffectInstance.getEffectType()).toString());
+			buf.writeInt(recipe.statusEffectInstance.getDuration());
+			buf.writeInt(recipe.statusEffectInstance.getAmplifier());
 		}
 	}
 }

@@ -107,6 +107,9 @@ public class RitualBlockEntity extends BaseBlockEntity {
 
 				}else if(blockEntity.checkTier(blockEntity)){
 					blockEntity.currentNecrotableRitual.recipe = blockEntity.ritualRecipe;
+					if(blockEntity.user != null){
+						blockEntity.currentNecrotableRitual.user = blockEntity.user;
+					}
 					if (blockEntity.startGate) {
 						blockEntity.currentNecrotableRitual.onStart(world, pos, blockEntity);
 						blockEntity.startGate = false;
@@ -144,6 +147,7 @@ public class RitualBlockEntity extends BaseBlockEntity {
 
 	public void reset(RitualBlockEntity blockEntity){
 		blockEntity.currentNecrotableRitual = null;
+		blockEntity.user = null;
 		blockEntity.timer = 0;
 		blockEntity.startGate = true;
 		blockEntity.shouldRun = false;
@@ -166,8 +170,8 @@ public class RitualBlockEntity extends BaseBlockEntity {
 		} else {
 			user = null;
 		}
-		this.startGate = nbt.getBoolean("Start");
-		this.shouldRun = nbt.getBoolean("ShouldRun");
+		this.startGate = nbt.getBoolean(Constants.Nbt.START);
+		this.shouldRun = nbt.getBoolean(Constants.Nbt.SHOULD_RUN);
 		this.hasBotD = nbt.getBoolean(Constants.Nbt.HAS_LEGEMETON);
 		this.hasEmeraldTablet = nbt.getBoolean(Constants.Nbt.HAS_EMERALD_TABLET);
 		markDirty();
@@ -187,8 +191,8 @@ public class RitualBlockEntity extends BaseBlockEntity {
 		if (user != null) {
 			nbt.putUuid(Constants.Nbt.PLAYER_UUID, user);
 		}
-		nbt.putBoolean("Start", this.startGate);
-		nbt.putBoolean("ShouldRun", this.shouldRun);
+		nbt.putBoolean(Constants.Nbt.START, this.startGate);
+		nbt.putBoolean(Constants.Nbt.SHOULD_RUN, this.shouldRun);
 		nbt.putBoolean(Constants.Nbt.HAS_LEGEMETON, this.hasBotD);
 		nbt.putBoolean(Constants.Nbt.HAS_EMERALD_TABLET, this.hasEmeraldTablet);
 	}

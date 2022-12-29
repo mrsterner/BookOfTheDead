@@ -77,7 +77,6 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 
 		if(ritualPos != null){
 			if (world.getBlockEntity(ritualPos) instanceof RitualBlockEntity ritualBlockEntity) {
-				System.out.println("FoundPos: " +ritualPos);
 				ritualBlockEntity.shouldRun = true;
 				ritualBlockEntity.hasBotD = hasBotD;
 				ritualBlockEntity.hasEmeraldTablet = hasEmeraldTablet;

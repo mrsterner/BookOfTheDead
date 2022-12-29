@@ -1,11 +1,11 @@
 {
   "type": "book_of_the_dead:ritual",
-  "ritual": "book_of_the_dead:create_item",
+  "ritual": "book_of_the_dead:enchant_item",
   "requireBotD": false,
-  "requireEmeraldTablet": true,
+  "requireEmeraldTablet": false,
   "ingredients": [
     {
-      "item": "stick"
+      "item": "diamond"
     },
     {
       "item": "apple"
@@ -17,14 +17,10 @@
   "outputEntityType": "",
   "outputEntityCount": 1,
 
-  "outputItem": "minecraft:diamond",
+  "outputItem": "minecraft:air",
   "outputAmount": 1,
-  "enchantment": "",
+  "enchantment": "unbreaking",
   "enchantmentLevel": 1,
-
-  "statusEffect": "speed",
-  "statusEffectDuration": 1,
-  "statusEffectAmplifier": 0,
 
   "duration": 160
 }

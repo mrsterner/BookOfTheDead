@@ -16,6 +16,7 @@ import net.minecraft.world.World;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 
 public class NecrotableRitual {
@@ -27,6 +28,7 @@ public class NecrotableRitual {
 	public List<Entity> summons = new ArrayList<>();
 	public World world = null;
 	public int ticker = 0;
+	public UUID user = null;
 
 	public NecrotableRitual(Identifier id, Identifier largeCircleSprite, Identifier smallCircleSprite) {
 		this.id = id;

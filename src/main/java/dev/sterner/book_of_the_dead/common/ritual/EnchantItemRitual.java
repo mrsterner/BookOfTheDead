@@ -1,6 +1,9 @@
 package dev.sterner.book_of_the_dead.common.ritual;
 
+import dev.sterner.book_of_the_dead.api.NecrotableRitual;
 import dev.sterner.book_of_the_dead.common.block.entity.RitualBlockEntity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.ItemEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
@@ -8,11 +11,14 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
 
+import java.util.List;
+import java.util.Optional;
 
-public class CreateItemRitual extends ConsumeItemsRitual {
-	public CreateItemRitual(Identifier id, Identifier largeCircleSprite, Identifier smallCircleSprite) {
+public class EnchantItemRitual extends ConsumeItemsRitual {
+	public EnchantItemRitual(Identifier id, Identifier largeCircleSprite, Identifier smallCircleSprite) {
 		super(id, largeCircleSprite, smallCircleSprite);
 	}
 
@@ -27,9 +33,11 @@ public class CreateItemRitual extends ConsumeItemsRitual {
 				if(world instanceof ServerWorld serverWorld){
 					serverWorld.playSound(null, x, y, z, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, 1F,1F);
 				}
-				ItemStack out = recipe.output.copy();
-				//out.addEnchantment(recipe.enchantment, recipe.enchantmentLevel);
-				ItemScatterer.spawn(world, x, y, z, out);
+				Optional<ItemEntity> items = world.getEntitiesByType(EntityType.ITEM, new Box(new BlockPos(x,y,z)).expand(2, 0, 2), entity -> true).stream().findFirst();
+				if(items.isPresent()){
+					ItemStack out = items.get().getStack();
+					out.addEnchantment(recipe.enchantment, recipe.enchantmentLevel);
+				}
 			}
 		}
 		super.onStopped(world, blockPos, blockEntity);
