@@ -58,5 +58,8 @@ public class Constants {
         public static final String START = "Start";
 		public static final String SHOULD_RUN = "ShouldRun";
         public static final String CLIENT_TIMER = "ClientTimer";
+        public static final String DURATION = "Duration";
+		public static final String TARGET_Y = "TargetY";
+
     }
 }

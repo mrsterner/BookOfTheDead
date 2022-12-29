@@ -14,6 +14,7 @@ import net.minecraft.world.World;
 public class CreateItemRitual extends ConsumeItemsRitual {
 	public CreateItemRitual(Identifier id, Identifier largeCircleSprite, Identifier smallCircleSprite) {
 		super(id, largeCircleSprite, smallCircleSprite);
+		height = 1;
 	}
 
 	@Override

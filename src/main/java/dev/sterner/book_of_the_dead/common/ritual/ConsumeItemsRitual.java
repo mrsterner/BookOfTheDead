@@ -54,6 +54,7 @@ public class ConsumeItemsRitual extends NecrotableRitual {
 				world.playSound(null, pedestalToActivate.get(index).getX(), pedestalToActivate.get(index).getY(), pedestalToActivate.get(index).getZ(), BotDSoundEvents.MISC_ITEM_BEAM, SoundCategory.BLOCKS, 0.75f, 0.75f * world.random.nextFloat() / 2);
 				pedestalBlockEntity.setCrafting(true);
 				pedestalBlockEntity.duration = dividedTime;
+				pedestalBlockEntity.targetY = height;
 			}
 			index++;
 		}

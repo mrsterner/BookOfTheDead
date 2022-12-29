@@ -22,6 +22,7 @@ public class PedestalBlockEntity extends BaseBlockEntity {
 	private boolean craftingFinished;
 	public BlockPos ritualCenter;
 	public int duration = 0;
+	public double targetY = 0;
 
 	public PedestalBlockEntity(BlockPos pos, BlockState state) {
 		super(BotDBlockEntityTypes.PEDESTAL, pos, state);
@@ -36,7 +37,7 @@ public class PedestalBlockEntity extends BaseBlockEntity {
 				if(blockEntity.duration == 0){
 					blockEntity.craftingFinished = true;
 				}
-				BlockPos b = blockEntity.ritualCenter.subtract(blockPos.add(0.5,1.5,0.5));
+				BlockPos b = blockEntity.ritualCenter.subtract(blockPos.add(0.5,1.5 - blockEntity.targetY,0.5));
 				Vec3d directionVector = new Vec3d(b.getX(), b.getY(), b.getZ());
 
 				double x = blockPos.getX() + (world.random.nextDouble() * 0.2D) + 0.4D;
@@ -69,7 +70,8 @@ public class PedestalBlockEntity extends BaseBlockEntity {
 		if (nbt.contains(Constants.Nbt.RITUAL_POS)) {
 			this.ritualCenter = NbtHelper.toBlockPos(nbt.getCompound(Constants.Nbt.RITUAL_POS));
 		}
-		this.duration = nbt.getInt("duration");
+		this.duration = nbt.getInt(Constants.Nbt.DURATION);
+		this.targetY = nbt.getDouble(Constants.Nbt.TARGET_Y);
 	}
 
 	@Override
@@ -81,7 +83,8 @@ public class PedestalBlockEntity extends BaseBlockEntity {
 		if(hasRitualPos()){
 			nbt.put(Constants.Nbt.RITUAL_POS, NbtHelper.fromBlockPos(this.ritualCenter));
 		}
-		nbt.putInt("curation", this.duration);
+		nbt.putInt(Constants.Nbt.DURATION, this.duration);
+		nbt.putDouble(Constants.Nbt.TARGET_Y, this.targetY);
 	}
 
 	private boolean hasRitualPos() {
