@@ -28,7 +28,6 @@ public class CreateItemRitual extends ConsumeItemsRitual {
 					serverWorld.playSound(null, x, y, z, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, 1F,1F);
 				}
 				ItemStack out = recipe.output.copy();
-				//out.addEnchantment(recipe.enchantment, recipe.enchantmentLevel);
 				ItemScatterer.spawn(world, x, y, z, out);
 			}
 		}

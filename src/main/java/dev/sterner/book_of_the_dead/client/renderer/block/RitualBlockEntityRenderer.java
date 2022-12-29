@@ -17,6 +17,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3f;
 
 public class RitualBlockEntityRenderer implements BlockEntityRenderer<RitualBlockEntity> {
+	private float alpha = 0;
 	private final Identifier CIRCLE_TEXTURE = Constants.id("textures/entity/circle.png");
 	private final LargeCircleEntityModel<Entity> circleEntityModel =  new LargeCircleEntityModel<>(LargeCircleEntityModel.createBodyLayer().createModel());
 
@@ -25,6 +26,19 @@ public class RitualBlockEntityRenderer implements BlockEntityRenderer<RitualBloc
 
 	@Override
 	public void render(RitualBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
+		if(entity.shouldRun){
+			alpha = ((float)entity.clientTime + tickDelta - 1.0F) / 20.0F * 1.6F;
+			alpha = MathHelper.sqrt(alpha);
+			if (alpha > 1.0F) {
+				alpha = 1.0F;
+			}
+		}else{
+			if(alpha < 0.02){
+				alpha = 0;
+			}else {
+				alpha = alpha - 0.01f;
+			}
+		}
 		matrices.push();
 		matrices.translate(0.5,-1.25,0.5);
 		final float rotationModifier = 4F;
@@ -33,11 +47,11 @@ public class RitualBlockEntityRenderer implements BlockEntityRenderer<RitualBloc
 		matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(MathHelper.sin(deg) / (float) Math.PI));
 		matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(MathHelper.cos(deg) / (float) Math.PI));
 		renderCircleLarge(matrices, vertexConsumers.getBuffer(BotDRenderLayer.GLOWING_LAYER.apply(CIRCLE_TEXTURE)), light, overlay);
-
 		matrices.pop();
+
 	}
 
 	private void renderCircleLarge(MatrixStack matrices, VertexConsumer buffer, int light, int overlay) {
-		circleEntityModel.render(matrices, buffer, light, overlay, 1,1,1,1);
+		circleEntityModel.render(matrices, buffer, light, overlay, 1,1,1, alpha);
 	}
 }

@@ -57,5 +57,6 @@ public class Constants {
         public static final String RITUAL_RECIPE = "RitualRecipe";
         public static final String START = "Start";
 		public static final String SHOULD_RUN = "ShouldRun";
+        public static final String CLIENT_TIMER = "ClientTimer";
     }
 }

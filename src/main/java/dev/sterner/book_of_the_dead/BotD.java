@@ -8,6 +8,7 @@ import dev.sterner.book_of_the_dead.common.block.RopeBlock;
 import dev.sterner.book_of_the_dead.common.entity.CorpseEntity;
 import dev.sterner.book_of_the_dead.common.registry.*;
 import dev.sterner.book_of_the_dead.common.util.Constants;
+import net.fabricmc.fabric.api.event.player.AttackBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.minecraft.block.Block;
@@ -21,6 +22,7 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -63,9 +65,26 @@ public class BotD implements ModInitializer {
 		UseBlockCallback.EVENT.register(this::placeHook);
 		UseBlockCallback.EVENT.register(this::createNecroTable);
 		UseBlockCallback.EVENT.register(this::createButcherTable);
-
+		UseBlockCallback.EVENT.register(this::createPedestalAndRitual);
 	}
 
+	private ActionResult createPedestalAndRitual(PlayerEntity player, World world, Hand hand, BlockHitResult blockHitResult) {
+		if(!world.isClient() && hand == Hand.MAIN_HAND && player instanceof ServerPlayerEntity serverPlayerEntity){
+			BlockPos blockPos = blockHitResult.getBlockPos();
+			if(player.getMainHandStack().isOf(BotDObjects.CARPENTER_TOOLS)){
+				if(world.getBlockState(blockPos).isOf(Blocks.DEEPSLATE_TILE_WALL)){
+					player.getMainHandStack().damage(1, world.random, serverPlayerEntity);
+					world.setBlockState(blockPos, BotDObjects.PEDESTAL.getDefaultState());
+					return ActionResult.CONSUME;
+				}else if(world.getBlockState(blockPos).isOf(Blocks.DEEPSLATE_TILE_SLAB)){
+					world.setBlockState(blockPos, BotDObjects.RITUAL.getDefaultState());
+					player.getMainHandStack().damage(1, world.random, serverPlayerEntity);
+					return ActionResult.CONSUME;
+				}
+			}
+		}
+		return ActionResult.PASS;
+	}
 
 
 	private ActionResult createDoubleBlock(Item useItem, Block targetBlock, BlockState resultState, PlayerEntity player, World world, Hand hand, BlockHitResult blockHitResult){

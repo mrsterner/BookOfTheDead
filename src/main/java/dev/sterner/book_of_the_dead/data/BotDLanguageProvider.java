@@ -43,6 +43,9 @@ public class BotDLanguageProvider extends FabricLanguageProvider {
 		builder.add(BotDObjects.POPPY_POD, "Poppy Pod");
 		builder.add(BotDObjects.POPPY_SEEDS, "Poppy Seeds");
 		builder.add(BotDObjects.PAPER_AND_QUILL, "Paper And Quill");
+		builder.add(BotDObjects.CARPENTER_TOOLS, "Carpenter's Tools");
+		builder.add(BotDObjects.PEDESTAL, "Pedestal");
+		builder.add(BotDObjects.RITUAL, "Ritual Plate");
 
 		builder.add(BotDEnchantments.BUTCHERING, "Butchering");
 

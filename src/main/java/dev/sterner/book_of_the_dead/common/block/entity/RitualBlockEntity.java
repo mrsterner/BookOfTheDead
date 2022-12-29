@@ -49,6 +49,7 @@ public class RitualBlockEntity extends BaseBlockEntity {
 	public long age = 0;
 	public boolean startGate = true;
 	public boolean shouldRun = false;
+	public int clientTime = 0;
 
 	public RitualBlockEntity(BlockPos pos, BlockState state) {
 		super(BotDBlockEntityTypes.RITUAL, pos, state);
@@ -127,6 +128,13 @@ public class RitualBlockEntity extends BaseBlockEntity {
 				}
 			}
 		}
+		if(world != null){
+			if(blockEntity.shouldRun){
+				if(world.isClient()){
+					blockEntity.clientTime++;
+				}
+			}
+		}
 	}
 
 	public boolean checkTier(RitualBlockEntity blockEntity){
@@ -164,6 +172,7 @@ public class RitualBlockEntity extends BaseBlockEntity {
 			optional.ifPresent(recipe -> ritualRecipe = recipe);
 		}
 		this.timer = nbt.getInt(Constants.Nbt.TIMER);
+		this.clientTime = nbt.getInt(Constants.Nbt.CLIENT_TIMER);
 		this.age = nbt.getLong(Constants.Nbt.AGE);
 		if (nbt.contains(Constants.Nbt.PLAYER_UUID)) {
 			user = nbt.getUuid(Constants.Nbt.PLAYER_UUID);
@@ -187,6 +196,7 @@ public class RitualBlockEntity extends BaseBlockEntity {
 			nbt.putString(Constants.Nbt.RITUAL_RECIPE, this.ritualRecipe.id.toString());
 		}
 		nbt.putInt(Constants.Nbt.TIMER, this.timer);
+		nbt.putInt(Constants.Nbt.CLIENT_TIMER, this.clientTime);
 		nbt.putLong(Constants.Nbt.AGE, this.age);
 		if (user != null) {
 			nbt.putUuid(Constants.Nbt.PLAYER_UUID, user);

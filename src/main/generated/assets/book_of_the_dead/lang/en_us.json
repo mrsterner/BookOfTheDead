@@ -1,8 +1,10 @@
 {
   "block.book_of_the_dead.jar": "Jar",
+  "block.book_of_the_dead.pedestal": "Pedestal",
   "block.book_of_the_dead.poppy_crop": "Poppy Crop",
   "block.book_of_the_dead.reinforced_block": "Reinforced Block",
   "block.book_of_the_dead.reinforced_door": "Reinforced Door",
+  "block.book_of_the_dead.ritual": "Ritual Plate",
   "block.book_of_the_dead.rope": "Rope",
   "emi.category.book_of_the_dead.butchering": "Butchering Drops",
   "enchantment.book_of_the_dead.butchering": "Butchering",
@@ -15,6 +17,7 @@
   "item.book_of_the_dead.bottle_of_blood": "Bottle of Blood",
   "item.book_of_the_dead.butcher_knife": "Butcher Knife",
   "item.book_of_the_dead.cage": "Cage",
+  "item.book_of_the_dead.carpenter_tools": "Carpenter's Tools",
   "item.book_of_the_dead.cellar_key": "Cellar Key",
   "item.book_of_the_dead.cinnabar": "Cinnabar",
   "item.book_of_the_dead.contract": "Contract",

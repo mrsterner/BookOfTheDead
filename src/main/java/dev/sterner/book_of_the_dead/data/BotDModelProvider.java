@@ -48,5 +48,6 @@ public class BotDModelProvider extends FabricModelProvider {
 		itemModelGenerator.register(BotDObjects.REINFORCED_BLOCK.asItem(), Models.GENERATED);
 		itemModelGenerator.register(BotDObjects.POPPY_POD, Models.GENERATED);
 		itemModelGenerator.register(BotDObjects.PAPER_AND_QUILL, Models.GENERATED);
+		itemModelGenerator.register(BotDObjects.CARPENTER_TOOLS, Models.GENERATED);
 	}
 }

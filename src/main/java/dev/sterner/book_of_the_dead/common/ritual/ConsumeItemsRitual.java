@@ -5,6 +5,7 @@ import dev.sterner.book_of_the_dead.common.block.entity.PedestalBlockEntity;
 import dev.sterner.book_of_the_dead.common.block.entity.RitualBlockEntity;
 import dev.sterner.book_of_the_dead.common.registry.BotDSoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.particle.ItemStackParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.recipe.Ingredient;
@@ -59,17 +60,20 @@ public class ConsumeItemsRitual extends NecrotableRitual {
 			if(ticker % 5 == 0 && ticker < recipe.getDuration() - 40){
 				serverWorld.playSound(null, x,y,z, SoundEvents.BLOCK_CAMPFIRE_CRACKLE, SoundCategory.BLOCKS, 10,0.5f);
 			}
-			for (int i = 0; i < 8; i++) {
-				serverWorld.spawnParticles(new ItemStackParticleEffect(ParticleTypes.ITEM, recipe.output),
-						x + ((world.random.nextDouble() / 2) - 0.25),
-						y + ((world.random.nextDouble() / 2) - 0.25),
-						z + ((world.random.nextDouble() / 2) - 0.25),
-						0,
-						1 * ((world.random.nextDouble() / 2) - 0.25),
-						1 * ((world.random.nextDouble() / 2) - 0.25),
-						1 * ((world.random.nextDouble() / 2) - 0.25),
-						0);
+			if(!recipe.output.isOf(Items.AIR)){
+				for (int i = 0; i < 8; i++) {
+					serverWorld.spawnParticles(new ItemStackParticleEffect(ParticleTypes.ITEM, recipe.output),
+							x + ((world.random.nextDouble() / 2) - 0.25),
+							y + ((world.random.nextDouble() / 2) - 0.25),
+							z + ((world.random.nextDouble() / 2) - 0.25),
+							0,
+							1 * ((world.random.nextDouble() / 2) - 0.25),
+							1 * ((world.random.nextDouble() / 2) - 0.25),
+							1 * ((world.random.nextDouble() / 2) - 0.25),
+							0);
+				}
 			}
+
 		}
 
 		super.tick(world, blockPos, blockEntity);
