@@ -7,6 +7,7 @@ import dev.sterner.book_of_the_dead.common.registry.BotDParticleTypes;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.server.world.ServerWorld;
@@ -50,7 +51,7 @@ public class PedestalBlockEntity extends BaseBlockEntity {
 							x, y, z, 0, directionVector.x, directionVector.y, directionVector.z, 0.10D);
 				}
 				if(blockEntity.craftingFinished){
-					blockEntity.getStack().decrement(1);
+					blockEntity.setStack(Items.AIR.getDefaultStack());
 					blockEntity.setCrafting(false);
 					blockEntity.setCraftingFinished(false);
 				}

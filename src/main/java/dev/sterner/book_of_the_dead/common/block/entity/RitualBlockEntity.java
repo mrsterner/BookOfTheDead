@@ -118,10 +118,10 @@ public class RitualBlockEntity extends BaseBlockEntity {
 						blockEntity.startGate = false;
 					}
 					blockEntity.timer++;
-					if (blockEntity.timer >= 0) {
+					if (blockEntity.timer >= 20) {
 						blockEntity.currentNecrotableRitual.tick(world, pos, blockEntity);
 					}
-					if (blockEntity.timer >= blockEntity.currentNecrotableRitual.recipe.duration) {
+					if (blockEntity.timer >= blockEntity.currentNecrotableRitual.recipe.getDuration() + 20) {
 						blockEntity.reset(blockEntity);
 					}
 				}

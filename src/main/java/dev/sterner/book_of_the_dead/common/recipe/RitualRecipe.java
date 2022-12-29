@@ -38,6 +38,10 @@ public class RitualRecipe implements Recipe<Inventory> {
 		this.duration = duration;
 	}
 
+	public int getDuration(){
+		return this.duration;
+	}
+
 	@Override
 	public Identifier getId() {
 		return id;

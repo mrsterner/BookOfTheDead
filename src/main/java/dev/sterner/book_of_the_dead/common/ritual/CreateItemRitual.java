@@ -35,9 +35,9 @@ public class CreateItemRitual extends NecrotableRitual {
 		double z = blockPos.getZ() + 0.5;
 		List<BlockPos> pedestalToActivate = new ArrayList<>();
 		List<Pair<ItemStack, BlockPos>> stream = blockEntity.getPedestalInfo(world).stream().filter(itemStackBlockPosPair -> !itemStackBlockPosPair.getLeft().isEmpty()).toList();
-		int dividedTime = recipe.duration;
+		int dividedTime = recipe.getDuration();
 		if(stream.size() > 0){
-			dividedTime = (recipe.duration / (stream.size() + 1));
+			dividedTime = (dividedTime / (stream.size() + 1));
 		}
 
 		for (Pair<ItemStack, BlockPos> itemStackBlockPosPair : stream) {
@@ -52,13 +52,16 @@ public class CreateItemRitual extends NecrotableRitual {
 		}
 		if(ticker == 1 || (ticker + 1) % dividedTime == 0){
 			if(index < pedestalToActivate.size() && world.getBlockEntity(pedestalToActivate.get(index)) instanceof PedestalBlockEntity pedestalBlockEntity){
-				world.playSound(null, x, y, z, BotDSoundEvents.MISC_ITEM_BEAM, SoundCategory.BLOCKS, 0.75f, 0.75f * world.random.nextFloat() / 2);
+				world.playSound(null, pedestalToActivate.get(index).getX(), pedestalToActivate.get(index).getY(), pedestalToActivate.get(index).getZ(), BotDSoundEvents.MISC_ITEM_BEAM, SoundCategory.BLOCKS, 0.75f, 0.75f * world.random.nextFloat() / 2);
 				pedestalBlockEntity.setCrafting(true);
 				pedestalBlockEntity.duration = dividedTime;
 			}
 			index++;
 		}
 		if(world instanceof ServerWorld serverWorld) {
+			if(ticker % 5 == 0 && ticker < recipe.getDuration() - 40){
+				serverWorld.playSound(null, x,y,z, SoundEvents.BLOCK_CAMPFIRE_CRACKLE, SoundCategory.BLOCKS, 10,0.5f);
+			}
 			for (int i = 0; i < 8; i++) {
 				serverWorld.spawnParticles(new ItemStackParticleEffect(ParticleTypes.ITEM, recipe.output),
 						x + ((world.random.nextDouble() / 2) - 0.25),
