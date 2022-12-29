@@ -2,6 +2,7 @@ package dev.sterner.book_of_the_dead.common.registry;
 
 import dev.sterner.book_of_the_dead.api.NecrotableRitual;
 import dev.sterner.book_of_the_dead.common.ritual.CreateItemRitual;
+import dev.sterner.book_of_the_dead.common.ritual.FunnyRitual;
 import dev.sterner.book_of_the_dead.common.ritual.SummonUndeadRitual;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.util.Identifier;

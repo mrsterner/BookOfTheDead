@@ -1,5 +1,6 @@
 package dev.sterner.book_of_the_dead.common.block.entity;
 
+import dev.architectury.registry.registries.Registries;
 import dev.sterner.book_of_the_dead.BotD;
 import dev.sterner.book_of_the_dead.api.NecrotableRitual;
 import dev.sterner.book_of_the_dead.api.block.entity.BaseBlockEntity;
@@ -9,7 +10,9 @@ import dev.sterner.book_of_the_dead.common.ritual.CreateItemRitual;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.FurnaceBlock;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.FurnaceBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.SimpleInventory;
@@ -20,6 +23,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
@@ -27,9 +31,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static dev.sterner.book_of_the_dead.common.registry.BotDRecipeTypes.RITUAL_RECIPE_RECIPE_TYPE;
+
 public class RitualBlockEntity extends BaseBlockEntity {
 	public static final List<BlockPos> PEDESTAL_POS_LIST;
 	public NecrotableRitual currentNecrotableRitual = null;
+	public RitualRecipe ritualRecipe = null;
 
 	//NecroTableInfo
 	public boolean hasBotD = false;
@@ -42,7 +49,6 @@ public class RitualBlockEntity extends BaseBlockEntity {
 	public long age = 0;
 	public boolean startGate = true;
 	public boolean shouldRun = false;
-	public boolean ignoreRemovedItems = false;
 
 	public RitualBlockEntity(BlockPos pos, BlockState state) {
 		super(BotDBlockEntityTypes.RITUAL, pos, state);
@@ -99,32 +105,22 @@ public class RitualBlockEntity extends BaseBlockEntity {
 					}
 				}
 
-				RitualRecipe recipe = BotDRecipeTypes.getRiteRecipe(blockEntity);
-
-				if (recipe != null || blockEntity.ignoreRemovedItems) {
-					NecrotableRitual ritual = recipe.ritual;
-
-
-					blockEntity.ignoreRemovedItems = true;
-
-					blockEntity.currentNecrotableRitual = ritual;
-					if(ritual instanceof CreateItemRitual c){
-						c.recipe = recipe;
-					}
-					if(blockEntity.startGate){
-						ritual.onStart(world, pos, blockEntity);
+				if(blockEntity.ritualRecipe == null){
+					blockEntity.ritualRecipe = BotDRecipeTypes.getRiteRecipe(blockEntity);
+					blockEntity.currentNecrotableRitual = blockEntity.ritualRecipe.ritual;
+				}else {
+					blockEntity.currentNecrotableRitual.recipe = blockEntity.ritualRecipe;
+					if (blockEntity.startGate) {
+						blockEntity.currentNecrotableRitual.onStart(world, pos, blockEntity);
 						blockEntity.startGate = false;
 					}
 					blockEntity.timer++;
 					if (blockEntity.timer >= 0) {
-						ritual.tick(world, pos, blockEntity);
+						blockEntity.currentNecrotableRitual.tick(world, pos, blockEntity);
 					}
-					if(blockEntity.timer >= blockEntity.currentNecrotableRitual.duration){
+					if (blockEntity.timer >= blockEntity.currentNecrotableRitual.duration) {
 						blockEntity.reset(blockEntity);
 					}
-				}else{
-					blockEntity.shouldRun = false;
-					blockEntity.markDirty();
 				}
 			}
 		}
@@ -136,7 +132,6 @@ public class RitualBlockEntity extends BaseBlockEntity {
 		blockEntity.timer = 0;
 		blockEntity.startGate = true;
 		blockEntity.shouldRun = false;
-		blockEntity.ignoreRemovedItems = false;
 		blockEntity.markDirty();
 	}
 
@@ -144,6 +139,11 @@ public class RitualBlockEntity extends BaseBlockEntity {
 	public void readNbt(NbtCompound nbt) {
 		super.readNbt(nbt);
 		currentNecrotableRitual = BotDRegistries.NECROTABLE_RITUALS.get(new Identifier(nbt.getString(Constants.Nbt.NECRO_RITUAL)));
+		if(world != null){
+			Optional<RitualRecipe> optional = world.getRecipeManager().listAllOfType(RITUAL_RECIPE_RECIPE_TYPE).stream()
+					.filter(ritualRecipe1 -> ritualRecipe1.id.equals(new Identifier(nbt.getString(Constants.Nbt.RITUAL_RECIPE)))).findFirst();
+			optional.ifPresent(recipe -> ritualRecipe = recipe);
+		}
 		this.timer = nbt.getInt(Constants.Nbt.TIMER);
 		this.age = nbt.getLong(Constants.Nbt.AGE);
 		if (nbt.contains(Constants.Nbt.PLAYER_UUID)) {
@@ -163,6 +163,9 @@ public class RitualBlockEntity extends BaseBlockEntity {
 		super.writeNbt(nbt);
 		if (currentNecrotableRitual != null) {
 			nbt.putString(Constants.Nbt.NECRO_RITUAL, BotDRegistries.NECROTABLE_RITUALS.getId(currentNecrotableRitual).toString());
+		}
+		if(ritualRecipe != null){
+			nbt.putString(Constants.Nbt.RITUAL_RECIPE, this.ritualRecipe.id.toString());
 		}
 		nbt.putInt(Constants.Nbt.TIMER, this.timer);
 		nbt.putLong(Constants.Nbt.AGE, this.age);

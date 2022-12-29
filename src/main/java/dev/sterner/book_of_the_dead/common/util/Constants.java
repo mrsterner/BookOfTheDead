@@ -57,5 +57,6 @@ public class Constants {
 		public static final String PEDESTAL_ITEM = "PedestalItem";
 		public static final String CRAFTING_FINISHED = "CraftingFinished";
 		public static final String CRAFTING = "Crafting";
-	}
+        public static final String RITUAL_RECIPE = "RitualRecipe";
+    }
 }

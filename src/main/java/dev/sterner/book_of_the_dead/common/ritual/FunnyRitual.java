@@ -10,9 +10,4 @@ public class FunnyRitual extends NecrotableRitual {
 	public FunnyRitual(Identifier id, Identifier largeCircleSprite, Identifier smallCircleSprite, int duration) {
 		super(id, largeCircleSprite, smallCircleSprite, duration);
 	}
-
-	@Override
-	public void tick(World world, BlockPos blockPos, RitualBlockEntity blockEntity) {
-		super.tick(world, blockPos, blockEntity);
-	}
 }

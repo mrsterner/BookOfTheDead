@@ -16,8 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CreateItemRitual extends NecrotableRitual {
-	public RitualRecipe recipe;
-	public int ticker = 0;
 	int index = 0;
 	public CreateItemRitual(Identifier id, Identifier largeCircleSprite, Identifier smallCircleSprite, int duration) {
 		super(id, largeCircleSprite, smallCircleSprite, duration);
@@ -27,7 +25,6 @@ public class CreateItemRitual extends NecrotableRitual {
 	public void tick(World world, BlockPos blockPos, RitualBlockEntity blockEntity) {
 		List<BlockPos> pedestalToActivate = new ArrayList<>();
 		List<Pair<ItemStack, BlockPos>> stream = blockEntity.getPedestalInfo(world).stream().filter(itemStackBlockPosPair -> !itemStackBlockPosPair.getLeft().isEmpty()).toList();
-		ticker++;
 		int dividedTime = (duration / stream.size());
 
 		for (Pair<ItemStack, BlockPos> itemStackBlockPosPair : stream) {
@@ -42,7 +39,7 @@ public class CreateItemRitual extends NecrotableRitual {
 		}
 
 		if(ticker % dividedTime == 0){
-			if(index <= pedestalToActivate.size() && world.getBlockEntity(pedestalToActivate.get(index)) instanceof PedestalBlockEntity pedestalBlockEntity){
+			if(index < pedestalToActivate.size() && world.getBlockEntity(pedestalToActivate.get(index)) instanceof PedestalBlockEntity pedestalBlockEntity){
 				pedestalBlockEntity.setCrafting(true);
 				pedestalBlockEntity.duration = dividedTime;
 			}
