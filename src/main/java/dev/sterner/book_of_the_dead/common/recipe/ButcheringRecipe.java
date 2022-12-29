@@ -23,12 +23,12 @@ import org.quiltmc.qsl.recipe.api.serializer.QuiltRecipeSerializer;
 
 public class ButcheringRecipe implements Recipe<Inventory> {
 	private final Identifier identifier;
-	public final EntityType<?> entity_type;
+	public final EntityType<?> entityType;
 	private final DefaultedList<Pair<ItemStack, Float>> output;
 
-	public ButcheringRecipe(Identifier id, EntityType<?> entity_type, DefaultedList<Pair<ItemStack, Float>> output) {
+	public ButcheringRecipe(Identifier id, EntityType<?> entityType, DefaultedList<Pair<ItemStack, Float>> output) {
 		this.identifier = id;
-		this.entity_type = entity_type;
+		this.entityType = entityType;
 		this.output = output;
 	}
 
@@ -75,7 +75,7 @@ public class ButcheringRecipe implements Recipe<Inventory> {
 
 		@Override
 		public ButcheringRecipe read(Identifier id, JsonObject json) {
-			final EntityType<?> entityType = Registry.ENTITY_TYPE.get(new Identifier(JsonHelper.getString(json, "entity_type")));
+			final EntityType<?> entityType = Registry.ENTITY_TYPE.get(new Identifier(JsonHelper.getString(json, "entityType")));
 			JsonArray array = JsonHelper.getArray(json, "results");
 			final DefaultedList<Pair<ItemStack, Float>> outputs = RecipeUtils.deserializeStacks(array);
 			if (outputs.isEmpty()) {
@@ -96,7 +96,7 @@ public class ButcheringRecipe implements Recipe<Inventory> {
 
 		@Override
 		public void write(PacketByteBuf buf, ButcheringRecipe recipe) {
-			buf.writeString(Registry.ENTITY_TYPE.getId(recipe.entity_type).toString());
+			buf.writeString(Registry.ENTITY_TYPE.getId(recipe.entityType).toString());
 			buf.writeVarInt(recipe.output.size());
 			for (var stack : recipe.output) {
 				buf.writeItemStack(stack.getFirst());

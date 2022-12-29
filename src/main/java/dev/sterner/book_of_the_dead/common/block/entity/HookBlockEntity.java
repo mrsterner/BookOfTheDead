@@ -77,7 +77,7 @@ public class HookBlockEntity extends BlockEntity implements IHauler {
 				Optional<Entity> entity = EntityType.getEntityFromNbt(getCorpseEntity().getCompound(Constants.Nbt.CORPSE_ENTITY), world);
 				if(entity.isPresent()){
 					Optional<ButcheringRecipe> optionalButcheringRecipe = world.getRecipeManager().listAllOfType(BotDRecipeTypes.BUTCHERING_RECIPE_RECIPE_TYPE)
-							.stream().filter(type -> type.entity_type == entity.get().getType()).findFirst();
+							.stream().filter(type -> type.entityType == entity.get().getType()).findFirst();
 					if(optionalButcheringRecipe.isPresent()){
 						ButcheringRecipe butcheringRecipe = optionalButcheringRecipe.get();
 						DefaultedList<Pair<ItemStack, Float>> outputsWithChance = butcheringRecipe.getOutputs();

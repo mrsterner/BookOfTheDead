@@ -88,6 +88,7 @@ public class PedestalBlock extends Block implements BlockEntityProvider {
 
 	@Override
 	public void randomDisplayTick(BlockState state, World world, BlockPos pos, net.minecraft.util.random.RandomGenerator random) {
+		/*
 		double x = (double)pos.getX() + 0.5D;
 		double y = (double)pos.getY() + 1.0625D;
 		double z = (double)pos.getZ() + 0.5D;
@@ -99,6 +100,8 @@ public class PedestalBlock extends Block implements BlockEntityProvider {
 				}
 			}
 		}
+
+		 */
 	}
 
 	@Nullable

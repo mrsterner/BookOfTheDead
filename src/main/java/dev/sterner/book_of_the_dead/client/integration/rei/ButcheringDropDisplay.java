@@ -19,7 +19,7 @@ public class ButcheringDropDisplay implements Display {
 	public final DefaultedList<ItemStack> outputList;
 
 	public ButcheringDropDisplay(ButcheringRecipe recipe) {
-		entityType = recipe.entity_type;
+		entityType = recipe.entityType;
 		List<ItemStack> itemStackList = recipe.getOutputs().stream().map(Pair::getFirst).toList();
 		DefaultedList<ItemStack> defaultedList = DefaultedList.copyOf(ItemStack.EMPTY, itemStackList.toArray(new ItemStack[0]));
 		this.outputs = Collections.singletonList(EntryIngredients.ofItemStacks(defaultedList));

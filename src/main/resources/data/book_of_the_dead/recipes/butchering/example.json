@@ -1,6 +1,6 @@
 {
   "type": "book_of_the_dead:butchering",
-  "entity_type": "minecraft:sheep",
+  "entityType": "minecraft:sheep",
   "results": [
     {
       "item": "minecraft:stick",

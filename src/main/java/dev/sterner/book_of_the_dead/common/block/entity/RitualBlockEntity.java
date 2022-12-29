@@ -54,15 +54,9 @@ public class RitualBlockEntity extends BaseBlockEntity {
 		super(BotDBlockEntityTypes.RITUAL, pos, state);
 	}
 
-	@Deprecated(forRemoval = true)
 	public ActionResult onUse(World world, BlockState state, BlockPos pos, PlayerEntity player, Hand hand) {
 		if (world != null) {
-			if(BotD.isDebugMode()){
-				//sendRitualPosition(world);
-				System.out.println("Should" + shouldRun);
-				return ActionResult.CONSUME;
-			}
-
+			return ActionResult.CONSUME;
 		}
 		return ActionResult.PASS;
 	}
@@ -111,7 +105,7 @@ public class RitualBlockEntity extends BaseBlockEntity {
 						blockEntity.currentNecrotableRitual = blockEntity.ritualRecipe.ritual;
 					}
 
-				}else {
+				}else if(blockEntity.checkTier(blockEntity)){
 					blockEntity.currentNecrotableRitual.recipe = blockEntity.ritualRecipe;
 					if (blockEntity.startGate) {
 						blockEntity.currentNecrotableRitual.onStart(world, pos, blockEntity);
@@ -122,15 +116,33 @@ public class RitualBlockEntity extends BaseBlockEntity {
 						blockEntity.currentNecrotableRitual.tick(world, pos, blockEntity);
 					}
 					if (blockEntity.timer >= blockEntity.currentNecrotableRitual.recipe.getDuration() + 20) {
+						blockEntity.currentNecrotableRitual.onStopped(world, pos, blockEntity);
 						blockEntity.reset(blockEntity);
 					}
+				}else{
+					blockEntity.reset(blockEntity);
 				}
 			}
 		}
 	}
 
+	public boolean checkTier(RitualBlockEntity blockEntity){
+		if(!blockEntity.ritualRecipe.requireEmeraldTablet && !blockEntity.ritualRecipe.requireBotD){
+			return true;
+		}
+		if(blockEntity.ritualRecipe.requireBotD && blockEntity.hasBotD && blockEntity.ritualRecipe.requireEmeraldTablet && blockEntity.hasEmeraldTablet){
+			return true;
+		}
+		if(blockEntity.ritualRecipe.requireBotD && blockEntity.hasBotD){
+			return true;
+		}
+		if(blockEntity.ritualRecipe.requireEmeraldTablet && blockEntity.hasEmeraldTablet){
+			return true;
+		}
+		return false;
+	}
+
 	public void reset(RitualBlockEntity blockEntity){
-		blockEntity.currentNecrotableRitual.onStopped(world, pos, blockEntity);
 		blockEntity.currentNecrotableRitual = null;
 		blockEntity.timer = 0;
 		blockEntity.startGate = true;
