@@ -9,8 +9,7 @@
     }
   ],
   "ritual": "book_of_the_dead:create_item",
-  "result": {
-    "item": "diamond"
-  },
+  "outputItem": "minecraft:diamond",
+  "outputAmount": 1,
   "duration": 80
 }

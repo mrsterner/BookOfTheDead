@@ -2,17 +2,20 @@ package dev.sterner.book_of_the_dead.common.recipe;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
 import dev.sterner.book_of_the_dead.api.NecrotableRitual;
 import dev.sterner.book_of_the_dead.api.interfaces.IRecipe;
 import dev.sterner.book_of_the_dead.common.registry.BotDRecipeTypes;
 import dev.sterner.book_of_the_dead.common.registry.BotDRegistries;
 import net.minecraft.inventory.Inventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.*;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
@@ -108,9 +111,11 @@ public class RitualRecipe implements Recipe<Inventory> {
 		public RitualRecipe read(Identifier id, JsonObject json) {
 			Ingredient[] ingredients = readIngredients(JsonHelper.getArray(json, "ingredients"));
 			NecrotableRitual ritual = BotDRegistries.NECROTABLE_RITUALS.get(new Identifier(JsonHelper.getString(json, "ritual")));
-			ItemStack itemStack = ShapedRecipe.outputFromJson(JsonHelper.getObject(json, "result"));
+			Item outputItem = Registry.ITEM.getOrEmpty(new Identifier(JsonHelper.getString(json, "outputItem")))
+					.orElseThrow(() -> new JsonSyntaxException("No such item " + JsonHelper.getString(json, "outputItem")));
+			ItemStack output = new ItemStack(outputItem, JsonHelper.getInt(json,"outputAmount", 1));
 			int duration = JsonHelper.getInt(json, "duration", 20 * 8);
-			return new RitualRecipe(id, ingredients, itemStack, ritual, duration);
+			return new RitualRecipe(id, ingredients, output, ritual, duration);
 		}
 
 		private Ingredient[] readIngredients(JsonArray json) {
