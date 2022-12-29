@@ -36,7 +36,7 @@ public class PedestalBlockEntity extends BaseBlockEntity {
 				if(blockEntity.duration == 0){
 					blockEntity.craftingFinished = true;
 				}
-				BlockPos b = blockEntity.ritualCenter.subtract(blockPos.add(0.5,0.5,0.5));
+				BlockPos b = blockEntity.ritualCenter.subtract(blockPos.add(0.5,1.5,0.5));
 				Vec3d directionVector = new Vec3d(b.getX(), b.getY(), b.getZ());
 
 				double x = blockPos.getX() + (world.random.nextDouble() * 0.2D) + 0.4D;

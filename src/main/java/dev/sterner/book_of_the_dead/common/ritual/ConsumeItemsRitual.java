@@ -22,6 +22,7 @@ import java.util.List;
 
 public class ConsumeItemsRitual extends NecrotableRitual {
 	int index = 0;
+	int height = 0;
 	public ConsumeItemsRitual(Identifier id, Identifier largeCircleSprite, Identifier smallCircleSprite) {
 		super(id, largeCircleSprite, smallCircleSprite);
 	}
@@ -29,7 +30,7 @@ public class ConsumeItemsRitual extends NecrotableRitual {
 	@Override
 	public void tick(World world, BlockPos blockPos, RitualBlockEntity blockEntity) {
 		double x = blockPos.getX() + 0.5;
-		double y = blockPos.getY() + 1.5;
+		double y = blockPos.getY() + 0.5 + height;
 		double z = blockPos.getZ() + 0.5;
 		List<BlockPos> pedestalToActivate = new ArrayList<>();
 		List<Pair<ItemStack, BlockPos>> stream = blockEntity.getPedestalInfo(world).stream().filter(itemStackBlockPosPair -> !itemStackBlockPosPair.getLeft().isEmpty()).toList();
