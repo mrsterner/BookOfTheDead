@@ -65,6 +65,7 @@ public class BotD implements ModInitializer {
 		UseBlockCallback.EVENT.register(this::placeCorpse);
 		UseBlockCallback.EVENT.register(this::extendRope);
 		UseBlockCallback.EVENT.register(this::placeHook);
+		UseBlockCallback.EVENT.register(this::placeMetalHook);
 		UseBlockCallback.EVENT.register(this::createNecroTable);
 		UseBlockCallback.EVENT.register(this::createButcherTable);
 		UseBlockCallback.EVENT.register(this::createPedestalAndRitual);
@@ -151,6 +152,20 @@ public class BotD implements ModInitializer {
 		if(!world.isClient() && player.getMainHandStack().isOf(BotDObjects.HOOK) && hand == Hand.MAIN_HAND && world.getBlockState(blockHitResult.getBlockPos()).isOf(BotDObjects.ROPE)) {
 			if(world.getBlockState(blockHitResult.getBlockPos()).get(RopeBlock.ROPE) == RopeBlock.Rope.BOTTOM){
 				world.setBlockState(blockHitResult.getBlockPos(), BotDObjects.HOOK_BLOCK.getDefaultState().with(FACING, player.getHorizontalFacing()));
+				if(!player.isCreative()){
+					player.getMainHandStack().decrement(1);
+				}
+				return ActionResult.CONSUME;
+			}
+
+		}
+		return ActionResult.PASS;
+	}
+
+	private ActionResult placeMetalHook(PlayerEntity player, World world, Hand hand, BlockHitResult blockHitResult) {
+		if(!world.isClient() && player.getMainHandStack().isOf(BotDObjects.METAL_HOOK) && hand == Hand.MAIN_HAND && world.getBlockState(blockHitResult.getBlockPos()).isOf(Blocks.CHAIN)) {
+			if(world.getBlockState(blockHitResult.getBlockPos().down()).isOf(Blocks.AIR)){
+				world.setBlockState(blockHitResult.getBlockPos(), BotDObjects.METAL_HOOK_BLOCK.getDefaultState().with(FACING, player.getHorizontalFacing()));
 				if(!player.isCreative()){
 					player.getMainHandStack().decrement(1);
 				}

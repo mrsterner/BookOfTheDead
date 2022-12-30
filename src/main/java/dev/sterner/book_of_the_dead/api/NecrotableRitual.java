@@ -41,7 +41,7 @@ public class NecrotableRitual {
 		ticker++;
 		BlockPos blockPos1 = blockPos.add(0.5,0.5,0.5);
 		ritualCenter = blockPos1;
-		world.addParticle(ParticleTypes.SMALL_FLAME, blockPos1.getX(), blockPos1.getY(), blockPos1.getZ(), 0,0,0);
+		world.addParticle(ParticleTypes.SMALL_FLAME, ritualCenter.getX(), ritualCenter.getY(), ritualCenter.getZ(), 0,0,0);
 	}
 
 	public void onStopped(World world, BlockPos blockPos, RitualBlockEntity blockEntity){
