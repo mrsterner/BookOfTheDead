@@ -21,8 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ConsumeItemsRitual extends NecrotableRitual {
-	int index = 0;
-	int height = 0;
+	private int index = 0;
 	public ConsumeItemsRitual(Identifier id, Identifier largeCircleSprite, Identifier smallCircleSprite) {
 		super(id, largeCircleSprite, smallCircleSprite);
 	}
@@ -75,9 +74,7 @@ public class ConsumeItemsRitual extends NecrotableRitual {
 							0);
 				}
 			}
-
 		}
-
 		super.tick(world, blockPos, blockEntity);
 	}
 

@@ -1,10 +1,11 @@
 plugins {
 	id 'maven-publish'
-	alias libs.plugins.quilt.loom
+	id 'io.github.juuxel.loom-quiltflower' version '1.8.+' // For loom 0.8-0.9, 0.11+
+	id 'org.quiltmc.loom' version '1.+'
 }
 
 archivesBaseName = project.archives_base_name
-version = "${project.version}+${libs.versions.minecraft.get()}"
+version = "${project.mod_version}+${project.minecraft_version}"
 group = project.maven_group
 
 loom {
@@ -35,41 +36,59 @@ sourceSets {
 }
 
 repositories {
+	jcenter()
 	maven {
-		name "jitpack"
-		url "https://jitpack.io"
+		name = "Quilt"
+		url  = "https://maven.quiltmc.org/repository/release"
 	}
 	maven {
-		name =  "Patchouli"
-		url = "https://maven.blamejared.com"
+		name = "Jitpack"
+		url  = "https://jitpack.io"
 	}
 	maven {
-		name "rei"
-		url "https://maven.shedaniel.me"
+		name = "Patchouli"
+		url  = "https://maven.blamejared.com"
 	}
 	maven {
-		url "<https://maven.architectury.dev/>"
+		name = "REI"
+		url = "https://maven.shedaniel.me"
+	}
+	maven {
+		name = "Architectury"
+		url  = "https://maven.architectury.dev/"
 	}
 	maven {
 		name = "TerraformersMC"
-		url = "https://maven.terraformersmc.com/"
+		url  = "https://maven.terraformersmc.com/"
 	}
-	jcenter()
-	maven { url "https://api.modrinth.com/maven" }
 	maven {
-		name "reach entity attributes"
-		url "https://maven.jamieswhiteshirt.com/libs-release"
+		name = "Modrinth"
+		url  = "https://api.modrinth.com/maven"
+	}
+	maven {
+		name = "Reach Entity Attributes"
+		url  = "https://maven.jamieswhiteshirt.com/libs-release"
+	}
+	maven {
+		name = "Ladysnake Mods"
+		url = "https://ladysnake.jfrog.io/artifactory/mods"
+		content {
+			includeGroup "io.github.ladysnake"
+			includeGroupByRegex "io\\.github\\.onyxstudios.*"
+		}
 	}
 }
 
 dependencies {
-	minecraft libs.minecraft
-	mappings variantOf(libs.quilt.mappings) { classifier 'intermediary-v2' }
-	modImplementation libs.quilt.loader
+	minecraft "com.mojang:minecraft:${minecraft_version}"
+	mappings "org.quiltmc:quilt-mappings:${minecraft_version}+build.${quilt_mappings}:intermediary-v2"
+	modImplementation "org.quiltmc:quilt-loader:${project.loader_version}"
+	modImplementation "org.quiltmc:qsl:${qsl_version}+${minecraft_version}"
+	modImplementation "org.quiltmc.quilted-fabric-api:quilted-fabric-api:${quilted_fabric_api_version}-${minecraft_version}"
 
-	modImplementation libs.quilted.fabric.api
-
-	modImplementation libs.satin
+	//Satin
+	modImplementation "io.github.ladysnake:satin:${satin_version}"
+	include "io.github.ladysnake:satin:${satin_version}"
 
 	//Fabric ASM
 	modImplementation 'com.github.Chocohead:Fabric-ASM:v2.3'

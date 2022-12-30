@@ -29,6 +29,7 @@ public class NecrotableRitual {
 	public World world = null;
 	public int ticker = 0;
 	public UUID user = null;
+	public int height = 0;
 
 	public NecrotableRitual(Identifier id, Identifier largeCircleSprite, Identifier smallCircleSprite) {
 		this.id = id;
