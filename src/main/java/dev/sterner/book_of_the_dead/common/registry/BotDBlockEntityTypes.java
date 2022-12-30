@@ -1,5 +1,6 @@
 package dev.sterner.book_of_the_dead.common.registry;
 
+import dev.sterner.book_of_the_dead.common.block.RetortFlaskBlock;
 import dev.sterner.book_of_the_dead.common.block.entity.*;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.block.entity.BlockEntity;
@@ -31,6 +32,9 @@ public class BotDBlockEntityTypes {
 
 	public static final BlockEntityType<PedestalBlockEntity> PEDESTAL = register("pedestal",
 			QuiltBlockEntityTypeBuilder.create(PedestalBlockEntity::new, BotDObjects.PEDESTAL).build());
+
+	public static final BlockEntityType<RetortFlaskBlockEntity> RETORT = register("retort",
+			QuiltBlockEntityTypeBuilder.create(RetortFlaskBlockEntity::new, BotDObjects.RETORT_FLASK_BLOCK).build());
 
 
 	private static <T extends BlockEntity> BlockEntityType<T> register(String name, BlockEntityType<T> type) {

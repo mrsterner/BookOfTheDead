@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "book_of_the_dead:block/retort_flask_block",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "book_of_the_dead:block/retort_flask_block"
+    },
+    "facing=south": {
+      "model": "book_of_the_dead:block/retort_flask_block",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "book_of_the_dead:block/retort_flask_block",
+      "y": 270
+    }
+  }
+}

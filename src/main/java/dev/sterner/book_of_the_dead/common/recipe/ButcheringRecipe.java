@@ -63,12 +63,12 @@ public class ButcheringRecipe implements Recipe<Inventory> {
 
 	@Override
 	public RecipeSerializer<?> getSerializer() {
-		return BotDRecipeTypes.BUTCHERING_RECIPE_RECIPE_SERIALIZER;
+		return BotDRecipeTypes.BUTCHERING_RECIPE_SERIALIZER;
 	}
 
 	@Override
 	public RecipeType<?> getType() {
-		return BotDRecipeTypes.BUTCHERING_RECIPE_RECIPE_TYPE;
+		return BotDRecipeTypes.BUTCHERING_RECIPE_TYPE;
 	}
 
 	public static class Serializer implements QuiltRecipeSerializer<ButcheringRecipe> {

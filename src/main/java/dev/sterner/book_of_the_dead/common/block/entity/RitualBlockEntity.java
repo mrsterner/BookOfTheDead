@@ -31,7 +31,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static dev.sterner.book_of_the_dead.common.registry.BotDRecipeTypes.RITUAL_RECIPE_RECIPE_TYPE;
 
 public class RitualBlockEntity extends BaseBlockEntity {
 	public static final List<BlockPos> PEDESTAL_POS_LIST;
@@ -167,7 +166,7 @@ public class RitualBlockEntity extends BaseBlockEntity {
 		super.readNbt(nbt);
 		currentNecrotableRitual = BotDRegistries.NECROTABLE_RITUALS.get(new Identifier(nbt.getString(Constants.Nbt.NECRO_RITUAL)));
 		if(world != null){
-			Optional<RitualRecipe> optional = world.getRecipeManager().listAllOfType(RITUAL_RECIPE_RECIPE_TYPE).stream()
+			Optional<RitualRecipe> optional = world.getRecipeManager().listAllOfType(BotDRecipeTypes.RITUAL_RECIPE_TYPE).stream()
 					.filter(ritualRecipe1 -> ritualRecipe1.id.equals(new Identifier(nbt.getString(Constants.Nbt.RITUAL_RECIPE)))).findFirst();
 			optional.ifPresent(recipe -> ritualRecipe = recipe);
 		}

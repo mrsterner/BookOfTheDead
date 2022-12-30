@@ -21,7 +21,7 @@ public class BotDEMIPlugin implements EmiPlugin {
 	public void register(EmiRegistry emiRegistry) {
 		emiRegistry.addCategory(BUTCHERING_CATEGORY);
 		RecipeManager manager = emiRegistry.getRecipeManager();
-		for (ButcheringRecipe recipe : manager.listAllOfType(BotDRecipeTypes.BUTCHERING_RECIPE_RECIPE_TYPE)) {
+		for (ButcheringRecipe recipe : manager.listAllOfType(BotDRecipeTypes.BUTCHERING_RECIPE_TYPE)) {
 			emiRegistry.addRecipe(new ButcheringEMIRecipe(recipe));
 		}
 	}

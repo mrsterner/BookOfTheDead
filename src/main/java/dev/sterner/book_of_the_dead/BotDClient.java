@@ -15,6 +15,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.item.Item;
 import net.minecraft.resource.ResourceType;
@@ -44,15 +45,17 @@ public class BotDClient implements ClientModInitializer {
 				BotDObjects.REINFORCED_DOOR,
 				BotDObjects.POPPY_CROP,
 				BotDObjects.PEDESTAL,
-				BotDObjects.RITUAL
+				BotDObjects.RITUAL,
+				BotDObjects.RETORT_FLASK_BLOCK
 		);
 
-		BlockEntityRendererRegistry.register(BotDBlockEntityTypes.HOOK, HookBlockEntityRenderer::new);
-		BlockEntityRendererRegistry.register(BotDBlockEntityTypes.JAR, ctx -> new JarBlockEntityRenderer());
-		BlockEntityRendererRegistry.register(BotDBlockEntityTypes.NECRO, NecroTableBlockEntityRenderer::new);
-		BlockEntityRendererRegistry.register(BotDBlockEntityTypes.BUTCHER, ButcherTableBlockEntityRenderer::new);
-		BlockEntityRendererRegistry.register(BotDBlockEntityTypes.PEDESTAL, PedestalBlockEntityRenderer::new);
-		BlockEntityRendererRegistry.register(BotDBlockEntityTypes.RITUAL, RitualBlockEntityRenderer::new);
+		BlockEntityRendererFactories.register(BotDBlockEntityTypes.HOOK, HookBlockEntityRenderer::new);
+		BlockEntityRendererFactories.register(BotDBlockEntityTypes.JAR, ctx -> new JarBlockEntityRenderer());
+		BlockEntityRendererFactories.register(BotDBlockEntityTypes.NECRO, NecroTableBlockEntityRenderer::new);
+		BlockEntityRendererFactories.register(BotDBlockEntityTypes.BUTCHER, ButcherTableBlockEntityRenderer::new);
+		BlockEntityRendererFactories.register(BotDBlockEntityTypes.PEDESTAL, PedestalBlockEntityRenderer::new);
+		BlockEntityRendererFactories.register(BotDBlockEntityTypes.RITUAL, RitualBlockEntityRenderer::new);
+		BlockEntityRendererFactories.register(BotDBlockEntityTypes.RETORT, RetortFlaskBlockEntityRenderer::new);
 
 		BuiltinItemRendererRegistry.INSTANCE.register(BotDObjects.JAR, new JarBlockEntityRenderer());
 		EntityRendererRegistry.register(BotDEntityTypes.CORPSE_ENTITY, CorpseEntityRenderer::new);
@@ -68,6 +71,7 @@ public class BotDClient implements ClientModInitializer {
 		EntityModelLayerRegistry.registerModelLayer(BloodSlimeEntityModel.LAYER_LOCATION, BloodSlimeEntityModel::createBodyLayer);
 		EntityModelLayerRegistry.registerModelLayer(BloodSlimeEntityModel.OUTER_LAYER_LOCATION, BloodSlimeEntityModel::createOverylayBodyLayer);
 		EntityModelLayerRegistry.registerModelLayer(BrainEntityModel.LAYER_LOCATION, BrainEntityModel::createBodyLayer);
+		EntityModelLayerRegistry.registerModelLayer(RetortFlaskBlockEntityRenderer.LAYER_LOCATION, RetortFlaskBlockEntityRenderer::createBodyLayer);
 
 		BotDSpriteIdentifiers.INSTANCE.addIdentifier(BotDSpriteIdentifiers.BLOOD);
 

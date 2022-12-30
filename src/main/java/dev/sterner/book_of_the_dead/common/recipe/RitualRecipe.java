@@ -91,12 +91,12 @@ public class RitualRecipe implements Recipe<Inventory> {
 
 	@Override
 	public RecipeSerializer<?> getSerializer() {
-		return BotDRecipeTypes.RITUAL_RECIPE_RECIPE_SERIALIZER;
+		return BotDRecipeTypes.RITUAL_RECIPE_SERIALIZER;
 	}
 
 	@Override
 	public RecipeType<?> getType() {
-		return BotDRecipeTypes.RITUAL_RECIPE_RECIPE_TYPE;
+		return BotDRecipeTypes.RITUAL_RECIPE_TYPE;
 	}
 
 	@Override

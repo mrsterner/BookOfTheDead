@@ -1,0 +1,13 @@
+{
+  "type": "book_of_the_dead:retort",
+  "ingredients": [
+    {
+      "item": "stick"
+    },
+    {
+      "item": "apple"
+    }
+  ],
+  "outputItem": "minecraft:diamond",
+  "outputCount": 1
+}

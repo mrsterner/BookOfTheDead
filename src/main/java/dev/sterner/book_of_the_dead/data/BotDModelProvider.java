@@ -19,6 +19,7 @@ public class BotDModelProvider extends FabricModelProvider {
 	public void generateBlockStateModels(BlockStateModelGenerator blockStateModelGenerator) {
 		blockStateModelGenerator.registerDoor(BotDObjects.REINFORCED_DOOR);
 		blockStateModelGenerator.registerCrop(BotDObjects.POPPY_CROP, Properties.AGE_7, 0, 1, 2, 2, 3, 3, 3, 5);
+		blockStateModelGenerator.registerNorthDefaultHorizontalRotation(BotDObjects.RETORT_FLASK_BLOCK);
 	}
 
 	@Override

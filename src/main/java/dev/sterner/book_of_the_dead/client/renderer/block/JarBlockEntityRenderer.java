@@ -7,6 +7,7 @@ import dev.sterner.book_of_the_dead.common.block.entity.JarBlockEntity;
 import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
 import dev.sterner.book_of_the_dead.common.registry.BotDSpriteIdentifiers;
 import dev.sterner.book_of_the_dead.common.util.Constants;
+import dev.sterner.book_of_the_dead.common.util.RenderUtils;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 import net.fabricmc.fabric.api.renderer.v1.mesh.Mesh;
 import net.fabricmc.fabric.api.renderer.v1.mesh.MeshBuilder;
@@ -73,7 +74,7 @@ public class JarBlockEntityRenderer implements BlockEntityRenderer<JarBlockEntit
 		if(stack.getNbt() != null) {
 			nbtCompound = stack.getNbt().getCompound("BlockEntityTag");
 		}
-		if(nbtCompound.contains(Constants.Nbt.BLOOD_LEVEL)){
+		if(nbtCompound.contains(Constants.Nbt.BLOOD_LEVEL) && nbtCompound.getInt(Constants.Nbt.BLOOD_LEVEL) > 0){
 			float g = 0.5F;
 			matrices.scale(g,g,g);
 			matrices.translate(-0.5, -1, -0.5);
@@ -98,35 +99,18 @@ public class JarBlockEntityRenderer implements BlockEntityRenderer<JarBlockEntit
 			if (entity != null || itemStack != null) {
 				newColor = ColorHelper.swapRedBlueIfNeeded(BLOOD_COLOR);
 				sprite = BotDSpriteIdentifiers.BLOOD.getSprite();
-					emitFluidFace(builder.getEmitter(), sprite, newColor, Direction.UP, 1f, (1f - percent), EDGE_SIZE, INNER_SIZE);
-					emitFluidFace(builder.getEmitter(), sprite, newColor, Direction.DOWN, 1f, 0f, EDGE_SIZE, INNER_SIZE);
-					emitFluidFace(builder.getEmitter(), sprite, newColor, Direction.NORTH, percent, 0f, EDGE_SIZE, INNER_SIZE);
-					emitFluidFace(builder.getEmitter(), sprite, newColor, Direction.EAST, percent, 0f, EDGE_SIZE, INNER_SIZE);
-					emitFluidFace(builder.getEmitter(), sprite, newColor, Direction.SOUTH, percent, 0f, EDGE_SIZE, INNER_SIZE);
-					emitFluidFace(builder.getEmitter(), sprite, newColor, Direction.WEST, percent, 0f, EDGE_SIZE, INNER_SIZE);
+				RenderUtils.emitFluidFace(builder.getEmitter(), sprite, newColor, Direction.UP, 1f, (1f - percent), EDGE_SIZE, INNER_SIZE);
+				RenderUtils.emitFluidFace(builder.getEmitter(), sprite, newColor, Direction.DOWN, 1f, 0f, EDGE_SIZE, INNER_SIZE);
+				RenderUtils.emitFluidFace(builder.getEmitter(), sprite, newColor, Direction.NORTH, percent, 0f, EDGE_SIZE, INNER_SIZE);
+				RenderUtils.emitFluidFace(builder.getEmitter(), sprite, newColor, Direction.EAST, percent, 0f, EDGE_SIZE, INNER_SIZE);
+				RenderUtils.emitFluidFace(builder.getEmitter(), sprite, newColor, Direction.SOUTH, percent, 0f, EDGE_SIZE, INNER_SIZE);
+				RenderUtils.emitFluidFace(builder.getEmitter(), sprite, newColor, Direction.WEST, percent, 0f, EDGE_SIZE, INNER_SIZE);
 
-				renderMesh(builder.build(), matrices, vertexConsumers.getBuffer(RenderLayer.getTranslucent()), light, overlay);
+				RenderUtils.renderMesh(builder.build(), matrices, vertexConsumers.getBuffer(RenderLayer.getTranslucent()), light, overlay);
 			}
 			matrices.pop();
 		}
 	}
 
-	public static void renderMesh(Mesh mesh, MatrixStack matrices, VertexConsumer consumer, int light, int overlay) {
-		for (List<BakedQuad> bakedQuads : ModelHelper.toQuadLists(mesh)) {
-			for (BakedQuad bq : bakedQuads) {
-				consumer.complexBakedQuad(matrices.peek(), bq, new float[]{1f, 1f, 1f, 1f}, 1f, 1f, 1f, new int[]{light, light, light, light}, overlay, true);
-			}
-		}
-	}
 
-	public static void emitFluidFace(QuadEmitter emitter, Sprite sprite, int color, Direction direction, float height, float depth, float EDGE_SIZE, float INNER_SIZE) {
-		emitter.square(direction, EDGE_SIZE, EDGE_SIZE, (1f - EDGE_SIZE), (EDGE_SIZE + (height * INNER_SIZE)), EDGE_SIZE + (depth * INNER_SIZE));
-		emitter.spriteBake(0, sprite, MutableQuadView.BAKE_ROTATE_NONE);
-		emitter.spriteColor(0, color, color, color, color);
-		emitter.sprite(0, 0, sprite.getMinU() + EDGE_SIZE * (sprite.getMaxU() - sprite.getMinU()), sprite.getMinV() + (1f - (EDGE_SIZE + (height * INNER_SIZE))) * (sprite.getMaxV() - sprite.getMinV()));
-		emitter.sprite(1, 0, sprite.getMinU() + EDGE_SIZE * (sprite.getMaxU() - sprite.getMinU()), sprite.getMinV() + (1f - EDGE_SIZE) * (sprite.getMaxV() - sprite.getMinV()));
-		emitter.sprite(2, 0, sprite.getMinU() + (1f - EDGE_SIZE) * (sprite.getMaxU() - sprite.getMinU()), sprite.getMinV() + (1f - EDGE_SIZE) * (sprite.getMaxV() - sprite.getMinV()));
-		emitter.sprite(3, 0, sprite.getMinU() + (1f - EDGE_SIZE) * (sprite.getMaxU() - sprite.getMinU()), sprite.getMinV() + (1f - (EDGE_SIZE + (height * INNER_SIZE))) * (sprite.getMaxV() - sprite.getMinV()));
-		emitter.emit();
-	}
 }
