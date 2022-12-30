@@ -77,7 +77,7 @@ public class JarBlockEntityRenderer implements BlockEntityRenderer<JarBlockEntit
 		if(nbtCompound.contains(Constants.Nbt.BLOOD_LEVEL) && nbtCompound.getInt(Constants.Nbt.BLOOD_LEVEL) > 0){
 			float g = 0.5F;
 			matrices.scale(g,g,g);
-			matrices.translate(-0.5, -1, -0.5);
+			matrices.translate(-0.5, -1.2, -0.5);
 			renderFluid(matrices, vertexConsumers, light, overlay, null, stack, nbtCompound.getInt(Constants.Nbt.BLOOD_LEVEL) / 100F);
 		}
 		matrices.pop();

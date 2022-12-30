@@ -50,7 +50,7 @@ public class RetortFlaskBlockEntityRenderer<T extends BlockEntity> implements Bl
 					matrices.push();
 					float g = 0.5F;
 					matrices.scale(g,g,g);
-					matrices.translate(0.5, 0.55, 0.5);
+					matrices.translate(0.5, 0.3, 0.5);
 					renderFluid(matrices, vertexConsumers, light, overlay, 0.75f, retortFlaskBlockEntity.color);
 					matrices.pop();
 				}
@@ -92,12 +92,12 @@ public class RetortFlaskBlockEntityRenderer<T extends BlockEntity> implements Bl
 		ModelData meshdefinition = new ModelData();
 		ModelPartData modelPartData = meshdefinition.getRoot();
 
-		ModelPartData main = modelPartData.addChild("main", ModelPartBuilder.create().uv(0, 14).cuboid(-4.0F, -3.0F, -4.0F, 8.0F, 1.0F, 8.0F, new Dilation(0.0F)).uv(0, 0).cuboid(-3.5F, -10.01F, -3.5F, 7.0F, 7.0F, 7.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, 22.0F, 0.0F));
+		ModelPartData main = modelPartData.addChild("main", ModelPartBuilder.create().uv(7, 21).cuboid(-4.0F, -3.0F, -4.0F, 8.0F, 1.0F, 1.0F, new Dilation(0.0F)).uv(8, 16).cuboid(3.0F, -3.0F, -3.0F, 1.0F, 1.0F, 6.0F, new Dilation(0.0F)).uv(8, 16).cuboid(-4.0F, -3.0F, -3.0F, 1.0F, 1.0F, 6.0F, new Dilation(0.0F)).uv(7, 21).cuboid(-4.0F, -3.0F, 3.0F, 8.0F, 1.0F, 1.0F, new Dilation(0.0F)).uv(0, 0).cuboid(-3.5F, -8.01F, -3.5F, 7.0F, 7.0F, 7.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, 22.0F, 0.0F));
 		main.addChild("cube_r1", ModelPartBuilder.create().uv(0, 0).mirrored().cuboid(-0.5F, 0.0F, -0.5F, 1.0F, 4.0F, 1.0F, new Dilation(0.0F)).mirrored(false), ModelTransform.of(-3.0F, -2.0F, 3.0F, 0.1309F, 0.0F, 0.1309F));
 		main.addChild("cube_r2", ModelPartBuilder.create().uv(0, 0).mirrored().cuboid(-0.5F, 0.0F, -0.5F, 1.0F, 4.0F, 1.0F, new Dilation(0.0F)).mirrored(false), ModelTransform.of(-3.0F, -2.0F, -3.0F, -0.1309F, 0.0F, 0.1309F));
 		main.addChild("cube_r3", ModelPartBuilder.create().uv(0, 0).cuboid(-0.5F, 0.0F, -0.5F, 1.0F, 4.0F, 1.0F, new Dilation(0.0F)), ModelTransform.of(3.0F, -2.0F, 3.0F, 0.1309F, 0.0F, -0.1309F));
 		main.addChild("cube_r4", ModelPartBuilder.create().uv(0, 0).cuboid(-0.5F, 0.0F, -0.5F, 1.0F, 4.0F, 1.0F, new Dilation(0.0F)), ModelTransform.of(3.0F, -2.0F, -3.0F, -0.1309F, 0.0F, -0.1309F));
-		main.addChild("cube_r5", ModelPartBuilder.create().uv(7, 5).cuboid(-1.0F, -1.0F, -5.0F, 2.0F, 2.0F, 5.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, -8.0F, -3.0F, 0.48F, 0.0F, 0.0F));
+		main.addChild("cube_r5", ModelPartBuilder.create().uv(4, 5).cuboid(-1.0F, -1.0F, -5.0F, 2.0F, 2.0F, 5.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, -7.0F, -3.0F, 0.48F, 0.0F, 0.0F));
 		return TexturedModelData.of(meshdefinition, 32, 32);
 	}
 }
