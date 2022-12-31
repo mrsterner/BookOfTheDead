@@ -30,7 +30,7 @@ public class HookBlockEntityRenderer implements BlockEntityRenderer<HookBlockEnt
 		BlockPos blockPos = entity.getPos();
 		if (world != null) {
 			BlockState blockState = world.getBlockState(blockPos);
-			if(blockState.isOf(BotDObjects.HOOK_BLOCK)){
+			if(blockState.isOf(BotDObjects.HOOK_BLOCK) || blockState.isOf(BotDObjects.METAL_HOOK_BLOCK)){
 				return switch (blockState.get(HookBlock.FACING)){
 					case EAST -> 90;
 					case NORTH ->  180;

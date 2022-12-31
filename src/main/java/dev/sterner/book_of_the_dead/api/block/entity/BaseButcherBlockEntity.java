@@ -4,11 +4,14 @@ import com.mojang.datafixers.util.Pair;
 import dev.sterner.book_of_the_dead.api.interfaces.IBlockEntityInventory;
 import dev.sterner.book_of_the_dead.api.interfaces.IHauler;
 import dev.sterner.book_of_the_dead.common.recipe.ButcheringRecipe;
+import dev.sterner.book_of_the_dead.common.registry.BotDRecipeTypes;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.item.ItemStack;
@@ -25,12 +28,14 @@ import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Optional;
 
 public class BaseButcherBlockEntity extends BlockEntity implements IHauler, IBlockEntityInventory {
 	public NbtCompound storedCorpseNbt = new NbtCompound();
 	public DefaultedList<ItemStack> outputs = DefaultedList.ofSize(8, ItemStack.EMPTY);
 	public DefaultedList<Float> chances  = DefaultedList.ofSize(8, 1F);
 	public ButcheringRecipe butcheringRecipe = null;
+	public boolean resetRecipe = true;
 
 	public BaseButcherBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
@@ -47,6 +52,26 @@ public class BaseButcherBlockEntity extends BlockEntity implements IHauler, IBlo
 		}
 	}
 
+	public void refreshButcheringRecipe(){
+		if(getCorpseEntity() != null && getCorpseEntity().contains(Constants.Nbt.CORPSE_ENTITY)){
+			if(this.outputs.size() > 0 && this.outputs.get(0).isOf(Items.AIR) && resetRecipe){
+				Optional<Entity> entity = EntityType.getEntityFromNbt(getCorpseEntity().getCompound(Constants.Nbt.CORPSE_ENTITY), world);
+				if(entity.isPresent() && !world.isClient()){
+					butcheringRecipe = world.getRecipeManager().listAllOfType(BotDRecipeTypes.BUTCHERING_RECIPE_TYPE)
+							.stream().filter(type -> type.entityType == entity.get().getType()).findFirst().orElse(null);
+					if(butcheringRecipe != null){
+						DefaultedList<Pair<ItemStack, Float>> outputsWithChance = DefaultedList.ofSize(butcheringRecipe.getOutputs().size(), Pair.of(ItemStack.EMPTY, 1f));
+						for(int i = 0; i < butcheringRecipe.getOutputs().size(); i++){
+							outputsWithChance.set(i, Pair.of(butcheringRecipe.getOutputs().get(i).getFirst().copy(), butcheringRecipe.getOutputs().get(i).getSecond()));
+						}
+						craftRecipe(outputsWithChance);
+						resetRecipe = false;
+					}
+				}
+			}
+		}
+	}
+
 	@Override
 	protected void writeNbt(NbtCompound nbt) {
 		super.writeNbt(nbt);
@@ -55,6 +80,7 @@ public class BaseButcherBlockEntity extends BlockEntity implements IHauler, IBlo
 		if(!storedCorpseNbt.isEmpty()){
 			nbt.put(Constants.Nbt.CORPSE_ENTITY, getCorpseEntity());
 		}
+		nbt.putBoolean("Refresh", this.resetRecipe);
 	}
 
 	@Override
@@ -63,6 +89,7 @@ public class BaseButcherBlockEntity extends BlockEntity implements IHauler, IBlo
 		Inventories.readNbt(nbt, outputs);
 		readChanceNbt(nbt, chances);
 		setCorpse(nbt.getCompound(Constants.Nbt.CORPSE_ENTITY));
+		this.resetRecipe = nbt.getBoolean("Refresh");
 	}
 
 	public static NbtCompound writeChancesNbt(NbtCompound nbt, DefaultedList<Float> floats) {

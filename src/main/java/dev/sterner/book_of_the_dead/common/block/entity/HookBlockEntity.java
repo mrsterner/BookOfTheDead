@@ -19,6 +19,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
@@ -76,18 +77,9 @@ public class HookBlockEntity extends BaseButcherBlockEntity {
 					}
 				}
 			});
-			if(getCorpseEntity() != null && getCorpseEntity().contains(Constants.Nbt.CORPSE_ENTITY)){
-				Optional<Entity> entity = EntityType.getEntityFromNbt(getCorpseEntity().getCompound(Constants.Nbt.CORPSE_ENTITY), world);
-				if(entity.isPresent()){
-					Optional<ButcheringRecipe> optionalButcheringRecipe = world.getRecipeManager().listAllOfType(BotDRecipeTypes.BUTCHERING_RECIPE_TYPE)
-							.stream().filter(type -> type.entityType == entity.get().getType()).findFirst();
-					if(optionalButcheringRecipe.isPresent()){
-						ButcheringRecipe butcheringRecipe = optionalButcheringRecipe.get();
-						DefaultedList<Pair<ItemStack, Float>> outputsWithChance = butcheringRecipe.getOutputs();
-						craftRecipe(outputsWithChance);
-					}
-				}
-			}
+
+			refreshButcheringRecipe();
+
 		}
 		return ActionResult.PASS;
 	}

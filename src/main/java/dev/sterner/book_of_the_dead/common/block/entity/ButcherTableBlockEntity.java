@@ -44,7 +44,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class ButcherTableBlockEntity extends BaseButcherBlockEntity implements IBlockEntityInventory, IHauler {
-	public boolean resetRecipe = true;
+
 
 	public ButcherTableBlockEntity(BlockPos pos, BlockState state) {
 		super(BotDBlockEntityTypes.BUTCHER, pos, state);
@@ -62,21 +62,9 @@ public class ButcherTableBlockEntity extends BaseButcherBlockEntity implements I
 				}
 			});
 			if(getCorpseEntity() != null && getCorpseEntity().contains(Constants.Nbt.CORPSE_ENTITY)){
-				if(this.outputs.size() > 0 && this.outputs.get(0).isOf(Items.AIR) && resetRecipe){
-					Optional<Entity> entity = EntityType.getEntityFromNbt(getCorpseEntity().getCompound(Constants.Nbt.CORPSE_ENTITY), world);
-					if(entity.isPresent() && !world.isClient()){
-						butcheringRecipe = world.getRecipeManager().listAllOfType(BotDRecipeTypes.BUTCHERING_RECIPE_TYPE)
-								.stream().filter(type -> type.entityType == entity.get().getType()).findFirst().orElse(null);
-						if(butcheringRecipe != null){
-							DefaultedList<Pair<ItemStack, Float>> outputsWithChance = DefaultedList.ofSize(butcheringRecipe.getOutputs().size(), Pair.of(Items.ACACIA_DOOR.getDefaultStack(), 1f));
-							for(int i = 0; i < butcheringRecipe.getOutputs().size(); i++){
-								outputsWithChance.set(i, Pair.of(butcheringRecipe.getOutputs().get(i).getFirst().copy(), butcheringRecipe.getOutputs().get(i).getSecond()));
-							}
-							craftRecipe(outputsWithChance);
-							resetRecipe = false;
-						}
-					}
-				}
+
+				refreshButcheringRecipe();
+
 				if(player.isSneaking() && player.getMainHandStack().isEmpty() && (this.butcheringRecipe == null || this.outputs.get(0).isOf(this.butcheringRecipe.getOutputs().stream().map(Pair::getFirst).toList().get(0).getItem()))){
 					IHauler.of(player).ifPresent(hauler ->{
 						Optional<Entity> entity = EntityType.getEntityFromNbt(getCorpseEntity().getCompound(Constants.Nbt.CORPSE_ENTITY), world);
@@ -95,8 +83,8 @@ public class ButcherTableBlockEntity extends BaseButcherBlockEntity implements I
 				} else if(player.getMainHandStack().isOf(BotDObjects.BUTCHER_KNIFE)){
 					player.swingHand(hand);
 					player.swingHand(hand, true);
+					world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.BLOCK_HONEY_BLOCK_BREAK, SoundCategory.PLAYERS, 2,1);
 					world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_PLAYER_ATTACK_CRIT, SoundCategory.PLAYERS, 1,1);
-					world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.BLOCK_HONEY_BLOCK_BREAK, SoundCategory.PLAYERS, 1,1);
 					List<ItemStack> nonEmptyOutput = this.outputs.stream().filter(item -> !item.isEmpty() || !item.isOf(Items.AIR) || item.getCount() != 0).toList();
 					List<Float> nonEmptyChance = this.chances.stream().filter(chance -> chance != 0).toList();
 					if(nonEmptyOutput.size() > 0){
@@ -131,17 +119,5 @@ public class ButcherTableBlockEntity extends BaseButcherBlockEntity implements I
 		}
 		markDirty();
 		return ActionResult.PASS;
-	}
-
-	@Override
-	protected void writeNbt(NbtCompound nbt) {
-		super.writeNbt(nbt);
-		nbt.putBoolean("Refresh", this.resetRecipe);
-	}
-
-	@Override
-	public void readNbt(NbtCompound nbt) {
-		super.readNbt(nbt);
-		this.resetRecipe = nbt.getBoolean("Refresh");
 	}
 }
