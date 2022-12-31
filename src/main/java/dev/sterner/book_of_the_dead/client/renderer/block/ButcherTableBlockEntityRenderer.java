@@ -23,6 +23,8 @@ import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.passive.AnimalEntity;
+import net.minecraft.entity.passive.PigEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -66,6 +68,13 @@ public class ButcherTableBlockEntityRenderer implements BlockEntityRenderer<Butc
 						matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(getRot(entity) + 90));
 						matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(-90));
 						matrices.translate(0,-1.4,2.2);
+						if(livingEntity instanceof PigEntity){
+							matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(-90));
+							matrices.translate(0,0,0.8);
+						}else if(livingEntity instanceof AnimalEntity){
+							matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(-90));
+							matrices.translate(0,-0.75,0.8);
+						}
 						dispatcher.render(livingEntity, 0,0,0,0, tickDelta, matrices, vertexConsumers, light);
 					}
 				});

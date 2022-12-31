@@ -61,7 +61,7 @@ public class ButcherBlock extends HorizontalDoubleBlock implements BlockEntityPr
 	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
 		if(world.getBlockEntity(pos) instanceof ButcherTableBlockEntity be){
 			if(!be.getCorpseEntity().isEmpty()){
-				return VoxelShapes.union(SHAPE, EXTRA_SHAPE);
+				//return VoxelShapes.union(SHAPE, EXTRA_SHAPE);
 			}
 		}
 		return SHAPE;

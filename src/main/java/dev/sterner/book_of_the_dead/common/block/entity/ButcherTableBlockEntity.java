@@ -89,12 +89,13 @@ public class ButcherTableBlockEntity extends BlockEntity implements IBlockEntity
 							clearCorpseData();
 							markDirty();
 							this.outputs = DefaultedList.ofSize(8, ItemStack.EMPTY);
-							this.chances = DefaultedList.ofSize(8, 1.5f);
+							this.chances = DefaultedList.ofSize(8, 1.0f);
 						}
 					});
 					this.resetRecipe = true;
 				} else if(player.getMainHandStack().isOf(BotDObjects.BUTCHER_KNIFE)){
-					player.swingHand(Hand.MAIN_HAND);
+					player.swingHand(hand);
+					player.swingHand(hand, true);
 					var nonEmptyOutput = this.outputs.stream().filter(item -> !item.isEmpty() || !item.isOf(Items.AIR) || item.getCount() != 0).toList();
 					var nonEmptyChance = this.chances.stream().filter(chance -> chance != 0).toList();
 					if(nonEmptyOutput.size() > 0){
