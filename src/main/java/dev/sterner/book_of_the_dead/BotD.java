@@ -11,6 +11,8 @@ import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.fabricmc.fabric.api.event.player.AttackBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
+import net.fabricmc.fabric.api.loot.v2.LootTableEvents;
+import net.fabricmc.fabric.api.loot.v2.LootTableSource;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -21,15 +23,27 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
+import net.minecraft.loot.LootManager;
+import net.minecraft.loot.LootPool;
+import net.minecraft.loot.LootTable;
+import net.minecraft.loot.condition.RandomChanceLootCondition;
+import net.minecraft.loot.condition.SurvivesExplosionLootCondition;
+import net.minecraft.loot.entry.ItemEntry;
+import net.minecraft.loot.entry.LootTableEntry;
+import net.minecraft.loot.function.SetCountLootFunction;
+import net.minecraft.loot.provider.number.ConstantLootNumberProvider;
+import net.minecraft.loot.provider.number.UniformLootNumberProvider;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.BlockStateParticleEffect;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.resource.ResourceManager;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.BlockPos;
@@ -69,6 +83,17 @@ public class BotD implements ModInitializer {
 		UseBlockCallback.EVENT.register(this::createNecroTable);
 		UseBlockCallback.EVENT.register(this::createButcherTable);
 		UseBlockCallback.EVENT.register(this::createPedestalAndRitual);
+		LootTableEvents.MODIFY.register(this::injectCinnabar);
+	}
+
+	private void injectCinnabar(ResourceManager resourceManager, LootManager lootManager, Identifier identifier, LootTable.Builder builder, LootTableSource lootTableSource) {
+		if(Blocks.DEEPSLATE_REDSTONE_ORE.getLootTableId().equals(identifier) && lootTableSource.isBuiltin()){
+			LootPool.Builder poolBuilder = LootPool.builder()
+					.conditionally(SurvivesExplosionLootCondition.builder())
+					.with(ItemEntry.builder(BotDObjects.CINNABAR)
+							.apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(-2.0F, 1.0F))));
+			builder.pool(poolBuilder);
+		}
 	}
 
 	private void addParticle(World world, BlockPos blockPos, BlockState blockState){
