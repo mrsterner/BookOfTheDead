@@ -8,6 +8,7 @@ import net.minecraft.client.render.entity.model.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.Identifier;
@@ -32,8 +33,6 @@ public class CorpseEntityRenderer extends LivingEntityRenderer<CorpseEntity, Ent
 		NbtCompound nbtCompound = corpseEntity.getCorpseEntity();
 		if(renderedEntity != null){
 			renderedEntity.hurtTime = 0;
-			//corpseEntity.calculateDimensions();
-			//corpseEntity.setBoundingBox(renderedEntity.getBoundingBox());
 
 			matrixStack.translate(-0.25F,0.25F,0.0F);
 			matrixStack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(renderedEntity.bodyYaw));
@@ -47,8 +46,6 @@ public class CorpseEntityRenderer extends LivingEntityRenderer<CorpseEntity, Ent
 			}else{
 				matrixStack.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(90));
 			}
-			//matrixStack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(renderedEntity.bodyYaw));
-			//matrixStack.translate(0.25F,-0.75F,0.0F);
 			if(renderedEntity.isBaby()){
 				float g = 0.5F;
 				matrixStack.scale(g, g, g);
@@ -69,18 +66,20 @@ public class CorpseEntityRenderer extends LivingEntityRenderer<CorpseEntity, Ent
 						corpseEntity.world.addParticle(ParticleTypes.POOF, corpseEntity.getParticleX(1.0), corpseEntity.getRandomBodyY(), corpseEntity.getParticleZ(1.0), d, e, f);
 					}
 				}
-
-				//corpseEntity.world.addParticle(ParticleTypes.SOUL_FIRE_FLAME,corpseEntity.getX(),corpseEntity.getY(),corpseEntity.getZ(),0,0,0);
 				matrixStack.translate(0,-0.65 * renderedEntity.getHeight() * g,0);
 			}
 			dispatcher.setRenderShadows(false);
-			dispatcher.render(renderedEntity, 0, 0, 0, 0, 0, matrixStack, vertexConsumerProvider, light);
+			if(renderedEntity instanceof PlayerEntity player){
+				dispatcher.render(player,0,0,0,0,0, matrixStack, vertexConsumerProvider, light);//Skins?
+			}else{
+				dispatcher.render(renderedEntity, 0, 0, 0, 0, 0, matrixStack, vertexConsumerProvider, light);
+			}
+
 		}else{
 			EntityType.getEntityFromNbt(nbtCompound, corpseEntity.world).ifPresent(type -> {
 				if(type instanceof LivingEntity livingEntity){
 					corpseEntity.storedCorpseEntity = livingEntity;
 				}
-
 			});
 		}
 		matrixStack.pop();

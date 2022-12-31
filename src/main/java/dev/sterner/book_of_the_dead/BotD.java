@@ -6,8 +6,10 @@ import dev.sterner.book_of_the_dead.api.interfaces.IHauler;
 import dev.sterner.book_of_the_dead.api.block.HorizontalDoubleBlock;
 import dev.sterner.book_of_the_dead.common.block.RopeBlock;
 import dev.sterner.book_of_the_dead.common.entity.CorpseEntity;
+import dev.sterner.book_of_the_dead.common.event.UseEvents;
 import dev.sterner.book_of_the_dead.common.registry.*;
 import dev.sterner.book_of_the_dead.common.util.Constants;
+import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.event.player.AttackBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
@@ -74,198 +76,16 @@ public class BotD implements ModInitializer {
 		BotDRituals.init();
 		BotDSoundEvents.init();
 
-		OnEntityDeathEvent.START.register(this::onButcheredEntity);
+		UseEvents.init();
+
+		ServerLivingEntityEvents.AFTER_DEATH.register(this::onButcheredEntity);
 		UseEntityCallback.EVENT.register(this::onPickupCorpse);
-		UseBlockCallback.EVENT.register(this::placeCorpse);
-		UseBlockCallback.EVENT.register(this::extendRope);
-		UseBlockCallback.EVENT.register(this::placeHook);
-		UseBlockCallback.EVENT.register(this::placeMetalHook);
-		UseBlockCallback.EVENT.register(this::createNecroTable);
-		UseBlockCallback.EVENT.register(this::createButcherTable);
-		UseBlockCallback.EVENT.register(this::createPedestalAndRitual);
+
 		LootTableEvents.MODIFY.register(this::injectCinnabar);
 	}
 
-	private void injectCinnabar(ResourceManager resourceManager, LootManager lootManager, Identifier identifier, LootTable.Builder builder, LootTableSource lootTableSource) {
-		if(Blocks.DEEPSLATE_REDSTONE_ORE.getLootTableId().equals(identifier) && lootTableSource.isBuiltin()){
-			LootPool.Builder poolBuilder = LootPool.builder()
-					.conditionally(SurvivesExplosionLootCondition.builder())
-					.with(ItemEntry.builder(BotDObjects.CINNABAR)
-							.apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(-2.0F, 1.0F))));
-			builder.pool(poolBuilder);
-		}
-	}
-
-	private void addParticle(World world, BlockPos blockPos, BlockState blockState){
-		world.addParticle(new BlockStateParticleEffect(ParticleTypes.BLOCK, blockState),
-				blockPos.getX() + ((double)world.random.nextFloat() - 0.5D),
-				blockPos.getY() + 0.1D,
-				blockPos.getZ() + ((double)world.random.nextFloat() - 0.5D),
-				4.0D * ((double)world.random.nextFloat() - 0.5D),
-				0.5D,
-				((double)world.random.nextFloat() - 0.5D) * 4.0D);
-	}
-
-	private ActionResult createPedestalAndRitual(PlayerEntity player, World world, Hand hand, BlockHitResult blockHitResult) {
-		if(!world.isClient() && hand == Hand.MAIN_HAND && player instanceof ServerPlayerEntity serverPlayerEntity){
-			BlockPos blockPos = blockHitResult.getBlockPos();
-			if(player.getMainHandStack().isOf(BotDObjects.CARPENTER_TOOLS)){
-				if(world.getBlockState(blockPos).isOf(Blocks.DEEPSLATE_TILE_WALL)){
-					BlockState state = BotDObjects.PEDESTAL.getDefaultState();
-					player.getMainHandStack().damage(1, world.random, serverPlayerEntity);
-					world.breakBlock(blockPos, false);
-					addParticle(world, blockPos, state);
-
-					world.setBlockState(blockPos, state);
-					return ActionResult.CONSUME;
-				}else if(world.getBlockState(blockPos).isOf(Blocks.DEEPSLATE_TILE_SLAB)){
-					BlockState state = BotDObjects.RITUAL.getDefaultState();
-					world.breakBlock(blockPos, false);
-					addParticle(world, blockPos, state);
-					world.setBlockState(blockPos, state);
-					player.getMainHandStack().damage(1, world.random, serverPlayerEntity);
-					return ActionResult.CONSUME;
-				}
-			}
-		}
-		return ActionResult.PASS;
-	}
-
-
-	private ActionResult createDoubleBlock(Item useItem, Block targetBlock, BlockState resultState, PlayerEntity player, World world, Hand hand, BlockHitResult blockHitResult){
-		if(!world.isClient() && player.getMainHandStack().isOf(useItem) && hand == Hand.MAIN_HAND){
-			BlockPos blockPos = blockHitResult.getBlockPos();
-			if(world.getBlockState(blockPos).isOf(targetBlock)){
-				BlockPos left = blockPos.offset(player.getHorizontalFacing().rotateYCounterclockwise());
-				BlockPos right = blockPos.offset(player.getHorizontalFacing().rotateYClockwise());
-
-				if(world.getBlockState(left).isOf(targetBlock)){
-					world.setBlockState(blockPos, resultState.with(HorizontalDoubleBlock.HHALF, HorizontalDoubleBlockHalf.RIGHT).with(FACING, player.getHorizontalFacing()));
-					world.setBlockState(left, resultState.with(HorizontalDoubleBlock.HHALF, HorizontalDoubleBlockHalf.LEFT).with(FACING, player.getHorizontalFacing()));
-				}else if(world.getBlockState(right).isOf(targetBlock)){
-					world.setBlockState(blockPos, resultState.with(HorizontalDoubleBlock.HHALF, HorizontalDoubleBlockHalf.LEFT).with(FACING, player.getHorizontalFacing()));
-					world.setBlockState(right, resultState.with(HorizontalDoubleBlock.HHALF, HorizontalDoubleBlockHalf.RIGHT).with(FACING, player.getHorizontalFacing()));
-				}else {
-					return ActionResult.PASS;
-				}
-				return ActionResult.CONSUME;
-			}
-		}
-		return ActionResult.PASS;
-	}
-
-	private ActionResult createNecroTable(PlayerEntity player, World world, Hand hand, BlockHitResult blockHitResult) {
-		if(!world.isClient() && player.getMainHandStack().isOf(BotDObjects.PAPER_AND_QUILL) && hand == Hand.MAIN_HAND){
-			BlockPos blockPos = blockHitResult.getBlockPos();
-			if(world.getBlockState(blockPos).isOf(Blocks.DEEPSLATE_TILES)){
-				BlockState state = BotDObjects.NECRO_TABLE.getDefaultState();
-				world.breakBlock(blockPos, false);
-				addParticle(world, blockPos, state);
-
-				world.setBlockState(blockPos, state.with(FACING, player.getHorizontalFacing()));
-				return ActionResult.CONSUME;
-			}
-		}
-		return ActionResult.PASS;
-	}
-
-	private ActionResult createButcherTable(PlayerEntity player, World world, Hand hand, BlockHitResult blockHitResult) {
-		return createDoubleBlock(BotDObjects.BUTCHER_KNIFE, Blocks.DARK_OAK_PLANKS, BotDObjects.BUTCHER_TABLE.getDefaultState(), player, world, hand, blockHitResult);
-	}
-
-	private ActionResult placeHook(PlayerEntity player, World world, Hand hand, BlockHitResult blockHitResult) {
-		if(!world.isClient() && player.getMainHandStack().isOf(BotDObjects.HOOK) && hand == Hand.MAIN_HAND && world.getBlockState(blockHitResult.getBlockPos()).isOf(BotDObjects.ROPE)) {
-			if(world.getBlockState(blockHitResult.getBlockPos()).get(RopeBlock.ROPE) == RopeBlock.Rope.BOTTOM){
-				world.setBlockState(blockHitResult.getBlockPos(), BotDObjects.HOOK_BLOCK.getDefaultState().with(FACING, player.getHorizontalFacing()));
-				if(!player.isCreative()){
-					player.getMainHandStack().decrement(1);
-				}
-				return ActionResult.CONSUME;
-			}
-
-		}
-		return ActionResult.PASS;
-	}
-
-	private ActionResult placeMetalHook(PlayerEntity player, World world, Hand hand, BlockHitResult blockHitResult) {
-		if(!world.isClient() && player.getMainHandStack().isOf(BotDObjects.METAL_HOOK) && hand == Hand.MAIN_HAND && world.getBlockState(blockHitResult.getBlockPos()).isOf(Blocks.CHAIN)) {
-			if(world.getBlockState(blockHitResult.getBlockPos().down()).isOf(Blocks.AIR)){
-				world.setBlockState(blockHitResult.getBlockPos(), BotDObjects.METAL_HOOK_BLOCK.getDefaultState().with(FACING, player.getHorizontalFacing()));
-				if(!player.isCreative()){
-					player.getMainHandStack().decrement(1);
-				}
-				return ActionResult.CONSUME;
-			}
-
-		}
-		return ActionResult.PASS;
-	}
-
-	private ActionResult extendRope(PlayerEntity player, World world, Hand hand, BlockHitResult blockHitResult) {
-		if(!world.isClient() && player.getMainHandStack().isOf(BotDObjects.ROPE.asItem()) && hand == Hand.MAIN_HAND && world.getBlockState(blockHitResult.getBlockPos()).isOf(BotDObjects.ROPE)){
-			int y = blockHitResult.getBlockPos().getY() - 1;
-			while (world.getBlockState(new BlockPos(blockHitResult.getBlockPos().getX(), y, blockHitResult.getBlockPos().getZ())).isOf(BotDObjects.ROPE)){
-				y--;
-			}
-			BlockPos targetPos = new BlockPos(blockHitResult.getBlockPos().getX(), y, blockHitResult.getBlockPos().getZ());
-			if(world.getBlockState(targetPos).isAir()){
-				world.setBlockState(targetPos, BotDObjects.ROPE.getDefaultState().with(RopeBlock.ROPE, RopeBlock.Rope.BOTTOM));
-				if(!player.isCreative()){
-					player.getMainHandStack().decrement(1);
-				}
-				return ActionResult.CONSUME;
-			}
-		}
-		return ActionResult.PASS;
-	}
-
-	private ActionResult placeCorpse(PlayerEntity player, World world, Hand hand, BlockHitResult blockHitResult) {
-		if(world instanceof ServerWorld serverWorld && hand == Hand.MAIN_HAND && player.getMainHandStack().isEmpty() && player.isSneaking()){
-			IHauler.of(player).ifPresent(hauler -> {
-				if(!hauler.getCorpseEntity().isEmpty()){
-					NbtCompound nbtCompound = hauler.getCorpseEntity();
-					if(nbtCompound.contains(Constants.Nbt.CORPSE_ENTITY)){
-						EntityType.getEntityFromNbt(nbtCompound.getCompound(Constants.Nbt.CORPSE_ENTITY), world).ifPresent(storedEntity -> {
-							BlockPos pos = blockHitResult.getBlockPos().offset(blockHitResult.getSide());
-
-
-							CorpseEntity corpseEntity = BotDEntityTypes.CORPSE_ENTITY.create(serverWorld);
-							if (corpseEntity != null && storedEntity instanceof LivingEntity storedLivingEntity) {
-								corpseEntity.setCorpseEntity(storedLivingEntity);
-								corpseEntity.refreshPositionAndAngles(pos, 0, 0);
-								corpseEntity.teleport(pos.getX(), pos.getY(), pos.getZ());
-								serverWorld.spawnEntity(corpseEntity);
-							}
-
-							serverWorld.playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 1, 1);
-
-							//Reset Data
-							hauler.clearCorpseData();
-						});
-					}
-
-				}
-			});
-		}
-
-		return ActionResult.PASS;
-	}
-
-	private ActionResult onPickupCorpse(PlayerEntity player, World world, Hand hand, Entity entity, @Nullable EntityHitResult entityHitResult) {
-		if(!world.isClient() && entity instanceof CorpseEntity corpse && player.isSneaking() && player.getMainHandStack().isEmpty()){
-			IHauler.of(player).ifPresent(hauler -> {
-				if(hauler.getCorpseEntity().isEmpty()){
-					hauler.setCorpseEntity(corpse);
-					corpse.remove(Entity.RemovalReason.DISCARDED);
-				}
-			});
-			return ActionResult.CONSUME;
-		}
-		return ActionResult.PASS;
-	}
-
-	private void onButcheredEntity(LivingEntity livingEntity, BlockPos blockPos, DamageSource source) {
-		if(source.getAttacker() instanceof PlayerEntity player && (player.getMainHandStack().isOf(BotDObjects.BUTCHER_KNIFE) || player.getMainHandStack().isOf(BotDObjects.BLOODY_BUTCHER_KNIFE) || EnchantmentHelper.getLevel(BotDEnchantments.BUTCHERING, player.getMainHandStack()) != 0)){
+	private void onButcheredEntity(LivingEntity livingEntity, DamageSource damageSource) {
+		if(damageSource.getAttacker() instanceof PlayerEntity player && (player.getMainHandStack().isOf(BotDObjects.BUTCHER_KNIFE) || player.getMainHandStack().isOf(BotDObjects.BLOODY_BUTCHER_KNIFE) || EnchantmentHelper.getLevel(BotDEnchantments.BUTCHERING, player.getMainHandStack()) != 0)){
 			if(livingEntity.getType().isIn(Constants.Tags.BUTCHERABLE)){
 				World world = player.world;
 				CorpseEntity corpse = BotDEntityTypes.CORPSE_ENTITY.create(world);
@@ -279,5 +99,28 @@ public class BotD implements ModInitializer {
 				}
 			}
 		}
+	}
+
+	private void injectCinnabar(ResourceManager resourceManager, LootManager lootManager, Identifier identifier, LootTable.Builder builder, LootTableSource lootTableSource) {
+		if(Blocks.DEEPSLATE_REDSTONE_ORE.getLootTableId().equals(identifier) && lootTableSource.isBuiltin()){
+			LootPool.Builder poolBuilder = LootPool.builder()
+					.conditionally(SurvivesExplosionLootCondition.builder())
+					.with(ItemEntry.builder(BotDObjects.CINNABAR)
+							.apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(-2.0F, 1.0F))));
+			builder.pool(poolBuilder);
+		}
+	}
+
+	private ActionResult onPickupCorpse(PlayerEntity player, World world, Hand hand, Entity entity, @Nullable EntityHitResult entityHitResult) {
+		if(!world.isClient() && entity instanceof CorpseEntity corpse && player.isSneaking() && player.getMainHandStack().isEmpty()){
+			IHauler.of(player).ifPresent(hauler -> {
+				if(hauler.getCorpseEntity().isEmpty()){
+					hauler.setCorpseEntity(corpse);
+					corpse.remove(Entity.RemovalReason.DISCARDED);
+				}
+			});
+			return ActionResult.CONSUME;
+		}
+		return ActionResult.PASS;
 	}
 }

@@ -20,7 +20,8 @@ public class BotDEntityTagProvider extends FabricTagProvider.EntityTypeTagProvid
 				.add(EntityType.PIG)
 				.add(EntityType.PIGLIN)
 				.add(EntityType.PIGLIN_BRUTE)
-				.add(EntityType.CHICKEN);
+				.add(EntityType.CHICKEN)
+				.add(EntityType.PLAYER);
 	}
 
 }
