@@ -24,7 +24,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class ButcherBlock extends HorizontalDoubleBlock implements BlockEntityProvider {
 	protected static final VoxelShape SHAPE = Block.createCuboidShape(0, 0, 0, 16, 16, 16);
-	protected static final VoxelShape EXTRA_SHAPE = Block.createCuboidShape(5, 16.0, 5, 11, 18, 11);
+	protected static final VoxelShape EXTRA_SHAPE = Block.createCuboidShape(0, 16.0, 0, 16, 18, 16);
 
 	public ButcherBlock(Settings settings) {
 		super(settings.nonOpaque());
@@ -34,17 +34,18 @@ public class ButcherBlock extends HorizontalDoubleBlock implements BlockEntityPr
 				.with(HorizontalDoubleBlock.HHALF, HorizontalDoubleBlockHalf.RIGHT);
 	}
 
-	@Nullable
-	@Override
-	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-		return (tickerWorld, pos, tickerState, blockEntity) -> ButcherTableBlockEntity.tick(tickerWorld, pos, tickerState, (ButcherTableBlockEntity) blockEntity);
-	}
-
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		if (!world.isClient()) {
 			if(world.getBlockEntity(pos) instanceof ButcherTableBlockEntity butcherTableBlockEntity){
-				return butcherTableBlockEntity.onUse(world, state, pos, player, hand);
+				if(state.get(HorizontalDoubleBlock.HHALF) == HorizontalDoubleBlockHalf.RIGHT){
+					return butcherTableBlockEntity.onUse(world, state, pos, player, hand);
+				}else{
+					ButcherTableBlockEntity nButch = getNeighbourButcherBlockEntity(world, state, pos);
+					if(nButch != null){
+						return nButch.onUse(world, state, pos, player, hand);
+					}
+				}
 			}
 		}
 		return super.onUse(state, world, pos, player, hand, hit);
@@ -64,5 +65,14 @@ public class ButcherBlock extends HorizontalDoubleBlock implements BlockEntityPr
 			}
 		}
 		return SHAPE;
+	}
+
+	public ButcherTableBlockEntity getNeighbourButcherBlockEntity(World world, BlockState blockState, BlockPos blockPos){
+		Direction targetDirection = blockState.get(FACING).rotateClockwise(Direction.Axis.Y);
+		blockPos = blockPos.offset(targetDirection);
+		if(world.getBlockEntity(blockPos) instanceof ButcherTableBlockEntity butcherTableBlockEntity1){
+			return butcherTableBlockEntity1;
+		}
+		return null;
 	}
 }

@@ -46,12 +46,9 @@ public class ButcherTableBlockEntity extends BlockEntity implements IBlockEntity
 	public DefaultedList<Float> chances = DefaultedList.ofSize(8, 1F);
 	public ButcheringRecipe butcheringRecipe = null;
 	public boolean resetRecipe = true;
+
 	public ButcherTableBlockEntity(BlockPos pos, BlockState state) {
 		super(BotDBlockEntityTypes.BUTCHER, pos, state);
-	}
-
-	public static void tick(World world, BlockPos pos, BlockState tickerState, ButcherTableBlockEntity blockEntity) {
-
 	}
 
 	public ActionResult onUse(World world, BlockState state, BlockPos pos, PlayerEntity player, Hand hand) {
@@ -173,7 +170,6 @@ public class ButcherTableBlockEntity extends BlockEntity implements IBlockEntity
 		if(world instanceof ServerWorld serverWorld){
 			serverWorld.getChunkManager().markForUpdate(pos);
 		}
-
 	}
 
 	@Override
@@ -182,8 +178,6 @@ public class ButcherTableBlockEntity extends BlockEntity implements IBlockEntity
 		writeNbt(nbt);
 		return nbt;
 	}
-
-
 
 	@Override
 	protected void writeNbt(NbtCompound nbt) {
@@ -203,7 +197,6 @@ public class ButcherTableBlockEntity extends BlockEntity implements IBlockEntity
 		readChanceNbt(nbt, chances);
 		setCorpse(nbt.getCompound(Constants.Nbt.CORPSE_ENTITY));
 		this.resetRecipe = nbt.getBoolean("Refresh");
-
 	}
 
 	public static NbtCompound writeChancesNbt(NbtCompound nbt, DefaultedList<Float> floats) {
@@ -252,6 +245,4 @@ public class ButcherTableBlockEntity extends BlockEntity implements IBlockEntity
 	public void clearCorpseData() {
 		this.storedCorpseNbt = new NbtCompound();
 	}
-
-
 }
