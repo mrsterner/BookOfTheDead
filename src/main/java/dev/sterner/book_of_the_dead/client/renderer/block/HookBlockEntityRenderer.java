@@ -6,6 +6,8 @@ import dev.sterner.book_of_the_dead.common.block.entity.HookBlockEntity;
 import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.HorizontalFacingBlock;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
@@ -15,6 +17,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.World;
 
@@ -25,18 +28,12 @@ public class HookBlockEntityRenderer implements BlockEntityRenderer<HookBlockEnt
 		this.dispatcher = ctx.getEntityRendererDispatcher();
 	}
 
-	public int getRot(HookBlockEntity entity){
+	public float getRot(BlockEntity entity){
 		World world = entity.getWorld();
-		BlockPos blockPos = entity.getPos();
 		if (world != null) {
-			BlockState blockState = world.getBlockState(blockPos);
-			if(blockState.isOf(BotDObjects.HOOK_BLOCK) || blockState.isOf(BotDObjects.METAL_HOOK_BLOCK)){
-				return switch (blockState.get(HookBlock.FACING)){
-					case EAST -> 90;
-					case NORTH ->  180;
-					case WEST ->  270;
-					default ->  0;
-				};
+			BlockState blockState = world.getBlockState(entity.getPos());
+			if(blockState.getBlock() instanceof HorizontalFacingBlock){
+				return blockState.get(HorizontalFacingBlock.FACING).asRotation();
 			}
 		}
 		return 0;
@@ -57,7 +54,7 @@ public class HookBlockEntityRenderer implements BlockEntityRenderer<HookBlockEnt
 						livingEntity.headYaw = 0;
 						dispatcher.setRenderShadows(false);
 						matrices.translate(0.5,-livingEntity.getHeight() * 0.5,0.5);
-						matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(getRot(entity)));
+						matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(-getRot(entity)));
 						matrices.translate(0,0,0.2);
 						dispatcher.render(livingEntity, 0,0,0,0, tickDelta, matrices, vertexConsumers, light);
 					}

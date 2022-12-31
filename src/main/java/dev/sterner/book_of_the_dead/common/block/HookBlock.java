@@ -28,10 +28,9 @@ import net.minecraft.world.WorldView;
 import org.jetbrains.annotations.Nullable;
 
 
-public class HookBlock extends Block implements BlockEntityProvider {
+public class HookBlock extends HorizontalFacingBlock implements BlockEntityProvider {
 	protected static final VoxelShape SHAPE = Block.createCuboidShape(5, 2.0, 5, 11, 16.0, 11);
 	protected static final VoxelShape HOOKED_SHAPE = Block.createCuboidShape(4, 0.0, 4, 12, 16.0, 12);
-	public static final DirectionProperty FACING = HorizontalFacingBlock.FACING;
 	public boolean isMetal;
 
 	public HookBlock(Settings settings, boolean isMetal) {
