@@ -61,5 +61,10 @@ public class BotDLanguageProvider extends FabricLanguageProvider {
 		builder.add("tooltip.book_of_the_dead.old_friend", "Letter to an old friend");
 		builder.add("tooltip.book_of_the_dead.from_archive", "From Library Archive");
 		builder.add("info.book_of_the_dead.door_locked", "Door Locked");
+
+		builder.add("book_of_the_dead.book_of_the_dead.subtitle", "Death of the book");
+		builder.add("book_of_the_dead.book_of_the_dead", "Book of the Dead");
+		builder.add("book_of_the_dead.book_of_the_dead:book_of_the_dead", "Book of the Dead");
+		builder.add("book_of_the_dead.book_of_the_dead.landing", "This is a book of dead things and stuff");
 	}
 }

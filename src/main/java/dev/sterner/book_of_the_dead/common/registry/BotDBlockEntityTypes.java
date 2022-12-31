@@ -16,7 +16,7 @@ public class BotDBlockEntityTypes {
 	private static final Map<BlockEntityType<?>, Identifier> BLOCK_ENTITY_TYPES = new LinkedHashMap<>();
 
 	public static final BlockEntityType<HookBlockEntity> HOOK = register("hook",
-			QuiltBlockEntityTypeBuilder.create(HookBlockEntity::new, BotDObjects.HOOK_BLOCK).build(null));
+			QuiltBlockEntityTypeBuilder.create(HookBlockEntity::new, BotDObjects.HOOK_BLOCK, BotDObjects.METAL_HOOK_BLOCK).build(null));
 
 	public static final BlockEntityType<JarBlockEntity> JAR = register("jar",
 			QuiltBlockEntityTypeBuilder.create(JarBlockEntity::new, BotDObjects.JAR).build(null));
