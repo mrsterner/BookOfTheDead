@@ -5,10 +5,7 @@ import dev.sterner.book_of_the_dead.api.interfaces.IBlockEntityInventory;
 import dev.sterner.book_of_the_dead.api.interfaces.IHauler;
 import dev.sterner.book_of_the_dead.common.entity.CorpseEntity;
 import dev.sterner.book_of_the_dead.common.recipe.ButcheringRecipe;
-import dev.sterner.book_of_the_dead.common.registry.BotDBlockEntityTypes;
-import dev.sterner.book_of_the_dead.common.registry.BotDEntityTypes;
-import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
-import dev.sterner.book_of_the_dead.common.registry.BotDRecipeTypes;
+import dev.sterner.book_of_the_dead.common.registry.*;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -31,6 +28,7 @@ import net.minecraft.recipe.ShapedRecipe;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
@@ -53,18 +51,7 @@ public class ButcherTableBlockEntity extends BlockEntity implements IBlockEntity
 	}
 
 	public static void tick(World world, BlockPos pos, BlockState tickerState, ButcherTableBlockEntity blockEntity) {
-		boolean mark = false;
 
-		if (world != null && !world.isClient) {
-			if (world.getTime() % 20 == 0 && !blockEntity.storedCorpseNbt.isEmpty()) {
-				blockEntity.markDirty();
-				mark = true;
-
-			}
-		}
-		if(mark){
-			markDirty(world, pos, tickerState);
-		}
 	}
 
 	public ActionResult onUse(World world, BlockState state, BlockPos pos, PlayerEntity player, Hand hand) {
@@ -94,7 +81,7 @@ public class ButcherTableBlockEntity extends BlockEntity implements IBlockEntity
 						}
 					}
 				}
-				if(player.isSneaking() && player.getMainHandStack().isEmpty()){
+				if(player.isSneaking() && player.getMainHandStack().isEmpty() && (this.butcheringRecipe == null || this.outputs.get(0).isOf(this.butcheringRecipe.getOutputs().stream().map(Pair::getFirst).toList().get(0).getItem()))){
 					IHauler.of(player).ifPresent(hauler ->{
 						Optional<Entity> entity = EntityType.getEntityFromNbt(getCorpseEntity().getCompound(Constants.Nbt.CORPSE_ENTITY), world);
 
@@ -103,10 +90,12 @@ public class ButcherTableBlockEntity extends BlockEntity implements IBlockEntity
 							corpse.setCorpseEntity(livingEntity);
 							hauler.setCorpseEntity(corpse);
 							clearCorpseData();
+							markDirty();
 							this.outputs = DefaultedList.ofSize(8, ItemStack.EMPTY);
 							this.chances = DefaultedList.ofSize(8, 1.5f);
 						}
 					});
+					this.resetRecipe = true;
 				} else if(player.getMainHandStack().isOf(BotDObjects.BUTCHER_KNIFE)){
 					player.swingHand(Hand.MAIN_HAND);
 					var nonEmptyOutput = this.outputs.stream().filter(item -> !item.isEmpty() || !item.isOf(Items.AIR) || item.getCount() != 0).toList();
@@ -200,6 +189,7 @@ public class ButcherTableBlockEntity extends BlockEntity implements IBlockEntity
 	protected void writeNbt(NbtCompound nbt) {
 		super.writeNbt(nbt);
 		Inventories.writeNbt(nbt, outputs);
+		writeChancesNbt(nbt, chances);
 		if(!storedCorpseNbt.isEmpty()){
 			nbt.put(Constants.Nbt.CORPSE_ENTITY, getCorpseEntity());
 		}
@@ -210,8 +200,30 @@ public class ButcherTableBlockEntity extends BlockEntity implements IBlockEntity
 	public void readNbt(NbtCompound nbt) {
 		super.readNbt(nbt);
 		Inventories.readNbt(nbt, outputs);
+		readChanceNbt(nbt, chances);
 		setCorpse(nbt.getCompound(Constants.Nbt.CORPSE_ENTITY));
 		this.resetRecipe = nbt.getBoolean("Refresh");
+
+	}
+
+	public static NbtCompound writeChancesNbt(NbtCompound nbt, DefaultedList<Float> floats) {
+		NbtList nbtList = new NbtList();
+		for (float aFloat : floats) {
+			NbtCompound nbtCompound = new NbtCompound();
+			nbtCompound.putFloat("Float", aFloat);
+			nbtList.add(nbtCompound);
+		}
+		nbt.put("Floats", nbtList);
+		return nbt;
+	}
+
+	public static void readChanceNbt(NbtCompound nbt, DefaultedList<Float> floats) {
+		NbtList nbtList = nbt.getList("Floats", NbtElement.COMPOUND_TYPE);
+		for(int i = 0; i < nbtList.size(); ++i) {
+			NbtCompound nbtCompound = nbtList.getCompound(i);
+			float j = nbtCompound.getFloat("Float");
+			floats.set(i, j);
+		}
 	}
 
 	@Override
