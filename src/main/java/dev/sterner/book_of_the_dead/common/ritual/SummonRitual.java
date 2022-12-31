@@ -71,11 +71,9 @@ public class SummonRitual extends NecrotableRitual {
 			} else {
 				for (Entity entity : this.summons) {
 					int index = this.summons.indexOf(entity);
-					System.out.println(index);
 					Vec3d worldPos = new Vec3d(blockPos.getX(), blockPos.getY(), blockPos.getZ()).add(2, 2, 2);
 					entity.setInvulnerable(true);
 					entity.refreshPositionAndAngles(worldPos.x, worldPos.y, worldPos.z, 0, 0);
-					System.out.println(entity.getBlockPos());
 					serverWorld.spawnEntity(entity);
 				}
 			}

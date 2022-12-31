@@ -48,7 +48,7 @@ public class RecipeUtils {
 			throw new IllegalStateException("Invalid item: " + item);
 		}
 		int count = 1;
-		float chance = 1;
+		float chance = 1.2f;
 		if (object.has("count")) {
 			count = JsonHelper.getInt(object, "count");
 		}

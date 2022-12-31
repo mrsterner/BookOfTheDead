@@ -23,6 +23,7 @@ import net.minecraft.util.JsonHelper;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
+import org.quiltmc.qsl.recipe.api.serializer.QuiltRecipeSerializer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -151,7 +152,7 @@ public class RitualRecipe implements Recipe<Inventory> {
 		return ingredients;
 	}
 
-	public static class Serializer implements RecipeSerializer<RitualRecipe> {
+	public static class Serializer implements QuiltRecipeSerializer<RitualRecipe> {
 
 		@Override
 		public RitualRecipe read(Identifier id, JsonObject json) {
@@ -231,6 +232,11 @@ public class RitualRecipe implements Recipe<Inventory> {
 			buf.writeString(Registry.STATUS_EFFECT.getId(recipe.statusEffectInstance.getEffectType()).toString());
 			buf.writeInt(recipe.statusEffectInstance.getDuration());
 			buf.writeInt(recipe.statusEffectInstance.getAmplifier());
+		}
+
+		@Override
+		public JsonObject toJson(RitualRecipe recipe) {
+			return null;
 		}
 	}
 }

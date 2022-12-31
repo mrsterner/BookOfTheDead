@@ -1,9 +1,12 @@
 package dev.sterner.book_of_the_dead.common.block.entity;
 
 import com.mojang.datafixers.util.Pair;
+import dev.sterner.book_of_the_dead.api.block.HorizontalDoubleBlock;
+import dev.sterner.book_of_the_dead.api.enums.HorizontalDoubleBlockHalf;
 import dev.sterner.book_of_the_dead.api.interfaces.IHauler;
 import dev.sterner.book_of_the_dead.common.recipe.ButcheringRecipe;
 import dev.sterner.book_of_the_dead.common.registry.BotDBlockEntityTypes;
+import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
 import dev.sterner.book_of_the_dead.common.registry.BotDRecipeTypes;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.block.Block;
@@ -13,6 +16,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.Inventories;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
@@ -63,7 +67,7 @@ public class HookBlockEntity extends BlockEntity implements IHauler {
 	}
 
 	public ActionResult onUse(World world, BlockState state, BlockPos pos, PlayerEntity player, Hand hand) {
-		if(hand == Hand.MAIN_HAND){
+		if(hand == Hand.MAIN_HAND && state.isOf(BotDObjects.BUTCHER_TABLE) && state.get(HorizontalDoubleBlock.HHALF) == HorizontalDoubleBlockHalf.RIGHT){
 			IHauler.of(player).ifPresent(hauler -> {
 				if(hauler.getCorpseEntity() != null){
 					NbtCompound nbtCompound = hauler.getCorpseEntity();
@@ -149,6 +153,7 @@ public class HookBlockEntity extends BlockEntity implements IHauler {
 	protected void writeNbt(NbtCompound nbt) {
 		super.writeNbt(nbt);
 		NbtList nbtList = new NbtList();
+
 		if(outputs != null){
 			for(int i = 0; i < outputs.size(); ++i) {
 				ItemStack itemStack = outputs.get(i);

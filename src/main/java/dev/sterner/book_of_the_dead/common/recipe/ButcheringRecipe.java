@@ -10,6 +10,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
@@ -20,16 +21,19 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import org.quiltmc.qsl.recipe.api.serializer.QuiltRecipeSerializer;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class ButcheringRecipe implements Recipe<Inventory> {
 	private final Identifier identifier;
 	public final EntityType<?> entityType;
-	private final DefaultedList<Pair<ItemStack, Float>> output;
+	private final DefaultedList<Pair<ItemStack, Float>> outputs;
 
-	public ButcheringRecipe(Identifier id, EntityType<?> entityType, DefaultedList<Pair<ItemStack, Float>> output) {
+	public ButcheringRecipe(Identifier id, EntityType<?> entityType, DefaultedList<Pair<ItemStack, Float>> outputs) {
 		this.identifier = id;
 		this.entityType = entityType;
-		this.output = output;
+		this.outputs = outputs;
 	}
 
 	@Override
@@ -53,7 +57,7 @@ public class ButcheringRecipe implements Recipe<Inventory> {
 	}
 
 	public DefaultedList<Pair<ItemStack, Float>> getOutputs() {
-		return output;
+		return outputs;
 	}
 
 	@Override
@@ -75,9 +79,9 @@ public class ButcheringRecipe implements Recipe<Inventory> {
 
 		@Override
 		public ButcheringRecipe read(Identifier id, JsonObject json) {
-			final EntityType<?> entityType = Registry.ENTITY_TYPE.get(new Identifier(JsonHelper.getString(json, "entityType")));
+			EntityType<?> entityType = Registry.ENTITY_TYPE.get(new Identifier(JsonHelper.getString(json, "entityType")));
 			JsonArray array = JsonHelper.getArray(json, "results");
-			final DefaultedList<Pair<ItemStack, Float>> outputs = RecipeUtils.deserializeStacks(array);
+			DefaultedList<Pair<ItemStack, Float>> outputs = RecipeUtils.deserializeStacks(array);
 			if (outputs.isEmpty()) {
 				throw new JsonParseException("No output for Butchering");
 			} else if (outputs.size() > 8) {
@@ -88,26 +92,28 @@ public class ButcheringRecipe implements Recipe<Inventory> {
 
 		@Override
 		public ButcheringRecipe read(Identifier id, PacketByteBuf buf) {
-			final EntityType<?> entityType = Registry.ENTITY_TYPE.get(new Identifier(buf.readString()));
-			final DefaultedList<Pair<ItemStack, Float>> outputs = DefaultedList.ofSize(buf.readVarInt(), Pair.of(ItemStack.EMPTY, 1F));
+			EntityType<?> entityType = Registry.ENTITY_TYPE.get(new Identifier(buf.readString()));
+			DefaultedList<Pair<ItemStack, Float>> outputs = DefaultedList.ofSize(buf.readInt(), Pair.of(ItemStack.EMPTY, 1.1F));
 			outputs.replaceAll(ignored -> Pair.of(buf.readItemStack(), buf.readFloat()));
+
 			return new ButcheringRecipe(id, entityType, outputs);
+
 		}
 
 		@Override
 		public void write(PacketByteBuf buf, ButcheringRecipe recipe) {
 			buf.writeString(Registry.ENTITY_TYPE.getId(recipe.entityType).toString());
-			buf.writeVarInt(recipe.output.size());
-			for (var stack : recipe.output) {
-				buf.writeItemStack(stack.getFirst());
+			buf.writeInt(recipe.outputs.size());
+			for (Pair<ItemStack, Float> pair : recipe.outputs) {
+				buf.writeItemStack(pair.getFirst());
+				buf.writeFloat(pair.getSecond());
 			}
 		}
 
 		@Override
 		public JsonObject toJson(ButcheringRecipe recipe) {
-			return null;
+			var obj = new JsonObject();//TODO
+			return obj;
 		}
-
-
 	}
 }

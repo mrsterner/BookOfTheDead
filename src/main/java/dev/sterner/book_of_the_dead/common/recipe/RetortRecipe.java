@@ -17,6 +17,7 @@ import net.minecraft.util.JsonHelper;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
+import org.quiltmc.qsl.recipe.api.serializer.QuiltRecipeSerializer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -102,7 +103,7 @@ public class RetortRecipe implements Recipe<Inventory> {
 		return true;
 	}
 
-	public static class Serializer implements RecipeSerializer<RetortRecipe> {
+	public static class Serializer implements QuiltRecipeSerializer<RetortRecipe> {
 
 		@Override
 		public RetortRecipe read(Identifier id, JsonObject json) {
@@ -134,6 +135,11 @@ public class RetortRecipe implements Recipe<Inventory> {
 			buf.writeInt(recipe.ingredients.size());
 			buf.writeItemStack(recipe.output);
 			recipe.ingredients.forEach(i -> i.write(buf));
+		}
+
+		@Override
+		public JsonObject toJson(RetortRecipe recipe) {
+			return null;
 		}
 	}
 }

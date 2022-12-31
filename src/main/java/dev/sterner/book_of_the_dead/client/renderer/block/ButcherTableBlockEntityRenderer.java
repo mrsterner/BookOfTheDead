@@ -3,8 +3,13 @@ package dev.sterner.book_of_the_dead.client.renderer.block;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import dev.sterner.book_of_the_dead.api.enums.HorizontalDoubleBlockHalf;
 import dev.sterner.book_of_the_dead.api.block.HorizontalDoubleBlock;
+import dev.sterner.book_of_the_dead.api.interfaces.IHauler;
+import dev.sterner.book_of_the_dead.common.block.ButcherBlock;
+import dev.sterner.book_of_the_dead.common.block.HookBlock;
 import dev.sterner.book_of_the_dead.common.block.NecroTableBlock;
 import dev.sterner.book_of_the_dead.common.block.entity.ButcherTableBlockEntity;
+import dev.sterner.book_of_the_dead.common.block.entity.HookBlockEntity;
+import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -13,21 +18,29 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
+import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.World;
 
-public class ButcherTableBlockEntityRenderer<T extends BlockEntity> implements BlockEntityRenderer<T> {
+public class ButcherTableBlockEntityRenderer implements BlockEntityRenderer<ButcherTableBlockEntity> {
 	private final Identifier TEXTURE = Constants.id("textures/entity/butcher_table.png");
 	public static final EntityModelLayer LAYER_LOCATION = new EntityModelLayer(Constants.id("butcher_table"), "main");
 	private final ModelPart table;
 	private final ModelPart bucket;
 	private final ModelPart stol;
+	private final EntityRenderDispatcher dispatcher;
+
 
 	public ButcherTableBlockEntityRenderer(BlockEntityRendererFactory.Context ctx) {
+		this.dispatcher = ctx.getEntityRendererDispatcher();
 		ModelPart modelPart = ctx.getLayerModelPart(LAYER_LOCATION);
 		this.table = modelPart.getChild("table");
 		this.bucket = modelPart.getChild("bucket");
@@ -36,11 +49,35 @@ public class ButcherTableBlockEntityRenderer<T extends BlockEntity> implements B
 
 
 	@Override
-	public void render(T entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
+	public void render(ButcherTableBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
+		matrices.push();
+		IHauler.of(entity).ifPresent(hauler -> {
+			NbtCompound renderedEntity = hauler.getCorpseEntity();
+			if(renderedEntity != null && renderedEntity.contains(Constants.Nbt.CORPSE_ENTITY)){
+				EntityType.getEntityFromNbt(renderedEntity.getCompound(Constants.Nbt.CORPSE_ENTITY), entity.getWorld()).ifPresent(type -> {
+					if(type instanceof LivingEntity livingEntity){
+						livingEntity.hurtTime = 0;
+						livingEntity.bodyYaw = 0;
+						livingEntity.setPitch(20);
+						livingEntity.prevPitch = 20;
+						livingEntity.headYaw = 0;
+						dispatcher.setRenderShadows(false);
+						matrices.translate(0.5,-livingEntity.getHeight() * 0.5,0.5);
+						matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(getRot(entity) + 90));
+						matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(-90));
+						matrices.translate(0,-1.4,2.2);
+						dispatcher.render(livingEntity, 0,0,0,0, tickDelta, matrices, vertexConsumers, light);
+					}
+				});
+			}
+		});
+		matrices.pop();
+
+
 		World world = entity.getWorld();
 		if(world != null){
 			BlockState blockState = entity.getCachedState();
-			if(entity instanceof ButcherTableBlockEntity butcherTableBlockEntity && blockState.get(HorizontalDoubleBlock.HHALF) == HorizontalDoubleBlockHalf.RIGHT){
+			if(blockState.get(HorizontalDoubleBlock.HHALF) == HorizontalDoubleBlockHalf.RIGHT){
 				matrices.push();
 				float f = blockState.get(NecroTableBlock.FACING).asRotation();
 				Direction direction = blockState.get(NecroTableBlock.FACING);
@@ -71,7 +108,22 @@ public class ButcherTableBlockEntityRenderer<T extends BlockEntity> implements B
 		bucket.render(matrices, buffer, light, overlay, 1, 1, 1, 1);
 		stol.render(matrices, buffer, light, overlay,1, 1, 1, 1);
 	}
-
+	public int getRot(ButcherTableBlockEntity entity){
+		World world = entity.getWorld();
+		BlockPos blockPos = entity.getPos();
+		if (world != null) {
+			BlockState blockState = world.getBlockState(blockPos);
+			if(blockState.isOf(BotDObjects.BUTCHER_TABLE)){
+				return switch (blockState.get(ButcherBlock.FACING)){
+					case EAST -> 90;
+					case NORTH ->  180;
+					case WEST ->  270;
+					default ->  0;
+				};
+			}
+		}
+		return 0;
+	}
 
 	public static TexturedModelData createBodyLayer() {
 		ModelData meshdefinition = new ModelData();
