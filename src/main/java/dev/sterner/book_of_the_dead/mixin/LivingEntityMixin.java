@@ -31,11 +31,6 @@ public abstract class LivingEntityMixin extends Entity {
 		super(type, world);
 	}
 
-	@Inject(method = "<init>", at = @At("TAIL"))
-	private void book_of_the_dead$init(EntityType entityType, World world, CallbackInfo ci){
-
-	}
-
 	@Inject(method = "onDeath", at = @At("HEAD"))
 	private void book_of_the_dead$PreOnDeath(DamageSource source, CallbackInfo ci){
 		LivingEntity livingEntity = (LivingEntity) (Object) this;
@@ -68,16 +63,16 @@ public abstract class LivingEntityMixin extends Entity {
 			boolean isCorpse = component.get().isCorpse;
 			if (livingEntity instanceof MobEntity && (isCorpse || BotDApi.isButchering(livingEntity))){
 				component.get().isCorpse(true);
-				++this.deathTime;
-				if (this.deathTime == 1) {
-					if (this.isOnFire())
-						this.extinguish();
-					if (this.getVehicle() != null)
-						this.stopRiding();
+				++livingEntity.deathTime;
+				if (livingEntity.deathTime == 1) {
+					if (livingEntity.isOnFire())
+						livingEntity.extinguish();
+					if (livingEntity.getVehicle() != null)
+						livingEntity.stopRiding();
 				}
-				if (this.deathTime >= 20) {
-					Box corpseBox = new Box(this.getX() - (this.getWidth() / 2.0F), this.getY() - (this.getWidth() / 2.0F), this.getZ() - (this.getWidth() / 2.0F), this.getX() + (this.getWidth() / 2F), this.getY() + (this.getWidth() / 2F), this.getZ() + (this.getWidth() / 2F));
-					this.setBoundingBox(corpseBox.offset(this.getRotationVector(0F, this.bodyYaw).rotateY(- 30.0F)));
+				if (livingEntity.deathTime >= 20) {
+					Box corpseBox = new Box(livingEntity.getX() - (livingEntity.getWidth() / 2.0F), livingEntity.getY() - (livingEntity.getWidth() / 2.0F), livingEntity.getZ() - (livingEntity.getWidth() / 2.0F), livingEntity.getX() + (livingEntity.getWidth() / 2F), livingEntity.getY() + (livingEntity.getWidth() / 2F), livingEntity.getZ() + (livingEntity.getWidth() / 2F));
+					livingEntity.setBoundingBox(corpseBox.offset(livingEntity.getRotationVector(0F, livingEntity.bodyYaw).rotateY(- 30.0F)));
 				}
 				callbackInfo.cancel();
 			}

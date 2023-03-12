@@ -36,11 +36,11 @@ public class ButcherBlock extends HorizontalDoubleBlock implements BlockEntityPr
 		if (!world.isClient()) {
 			if(world.getBlockEntity(pos) instanceof ButcherTableBlockEntity butcherTableBlockEntity){
 				if(state.get(HorizontalDoubleBlock.HHALF) == HorizontalDoubleBlockHalf.RIGHT){
-					return butcherTableBlockEntity.onUse(world, state, pos, player, hand);
+					return butcherTableBlockEntity.onUse(world, state, pos, player, hand, false);
 				}else{
 					ButcherTableBlockEntity nButch = getNeighbourButcherBlockEntity(world, state, pos);
 					if(nButch != null){
-						return nButch.onUse(world, state, pos, player, hand);
+						return nButch.onUse(world, state, pos, player, hand, true);
 					}
 				}
 			}

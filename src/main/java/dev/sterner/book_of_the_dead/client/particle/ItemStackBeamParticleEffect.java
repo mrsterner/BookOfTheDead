@@ -1,5 +1,6 @@
 package dev.sterner.book_of_the_dead.client.particle;
 
+
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.command.argument.ItemStackArgument;

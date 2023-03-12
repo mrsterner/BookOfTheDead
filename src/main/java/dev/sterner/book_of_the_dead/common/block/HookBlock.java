@@ -88,7 +88,7 @@ public class HookBlock extends HorizontalFacingBlock implements BlockEntityProvi
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		if (!world.isClient()) {
 			if(world.getBlockEntity(pos) instanceof HookBlockEntity hookBlockEntity){
-				return hookBlockEntity.onUse(world, state, pos, player, hand);
+				return hookBlockEntity.onUse(world, state, pos, player, hand, false);
 			}
 		}
 		return super.onUse(state, world, pos, player, hand, hit);
