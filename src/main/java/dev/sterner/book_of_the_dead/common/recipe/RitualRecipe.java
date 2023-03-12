@@ -131,33 +131,6 @@ public class RitualRecipe implements Recipe<Inventory> {
 		return ItemStack.EMPTY;
 	}
 
-	public static boolean matches(Inventory inv, DefaultedList<Ingredient> input) {
-		List<ItemStack> checklist = new ArrayList<>();
-		for (int i = 0; i < inv.size(); i++) {
-			ItemStack stack = inv.getStack(i);
-			if (!stack.isEmpty()) {
-				checklist.add(stack);
-			}
-		}
-		if (input.size() != checklist.size()) {
-			return false;
-		}
-		for (Ingredient ingredient : input) {
-			boolean found = false;
-			for (ItemStack stack : checklist) {
-				if (ingredient.test(stack)) {
-					found = true;
-					checklist.remove(stack);
-					break;
-				}
-			}
-			if (!found) {
-				return false;
-			}
-		}
-		return true;
-	}
-
 	public static class Serializer implements QuiltRecipeSerializer<RitualRecipe> {
 
 		@Override

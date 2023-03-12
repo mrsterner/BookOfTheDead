@@ -65,7 +65,7 @@ public class ConsumeItemsRitual extends NecrotableRitual {
 			}
 			if (recipe.outputs != null) {
 				for(ItemStack output : recipe.outputs){
-					for (int i = 0; i < 8; i++) {
+					for (int i = 0; i < recipe.outputs.size() * 2; i++) {
 						serverWorld.spawnParticles(new ItemStackParticleEffect(ParticleTypes.ITEM, output),
 								x + ((world.random.nextDouble() / 2) - 0.25),
 								y + ((world.random.nextDouble() / 2) - 0.25),
