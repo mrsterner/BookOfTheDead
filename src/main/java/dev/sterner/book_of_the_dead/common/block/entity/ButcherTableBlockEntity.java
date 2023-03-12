@@ -4,42 +4,25 @@ import com.mojang.datafixers.util.Pair;
 import dev.sterner.book_of_the_dead.api.block.entity.BaseButcherBlockEntity;
 import dev.sterner.book_of_the_dead.api.interfaces.IBlockEntityInventory;
 import dev.sterner.book_of_the_dead.api.interfaces.IHauler;
-import dev.sterner.book_of_the_dead.common.entity.CorpseEntity;
-import dev.sterner.book_of_the_dead.common.recipe.ButcheringRecipe;
 import dev.sterner.book_of_the_dead.common.registry.*;
 import dev.sterner.book_of_the_dead.common.util.Constants;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.Inventories;
-import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
-import net.minecraft.nbt.NbtList;
-import net.minecraft.network.Packet;
-import net.minecraft.network.listener.ClientPlayPacketListener;
-import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
-import net.minecraft.recipe.ShapedRecipe;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -61,18 +44,16 @@ public class ButcherTableBlockEntity extends BaseButcherBlockEntity implements I
 					}
 				}
 			});
-			if(getCorpseEntity() != null && getCorpseEntity().contains(Constants.Nbt.CORPSE_ENTITY)){
+			if(getCorpseEntity() != null && !getCorpseEntity().isEmpty()){
 
 				refreshButcheringRecipe();
 
 				if(player.isSneaking() && player.getMainHandStack().isEmpty() && (this.butcheringRecipe == null || this.outputs.get(0).isOf(this.butcheringRecipe.getOutputs().stream().map(Pair::getFirst).toList().get(0).getItem()))){
 					IHauler.of(player).ifPresent(hauler ->{
-						Optional<Entity> entity = EntityType.getEntityFromNbt(getCorpseEntity().getCompound(Constants.Nbt.CORPSE_ENTITY), world);
+						Optional<Entity> entity = EntityType.getEntityFromNbt(getCorpseEntity(), world);
 
 						if(hauler.getCorpseEntity().isEmpty() && entity.isPresent() && entity.get() instanceof LivingEntity livingEntity){
-							CorpseEntity corpse = new CorpseEntity(BotDEntityTypes.CORPSE_ENTITY, world);
-							corpse.setCorpseEntity(livingEntity);
-							hauler.setCorpseEntity(corpse);
+							hauler.setCorpseEntity(livingEntity);
 							clearCorpseData();
 							markDirty();
 							this.outputs = DefaultedList.ofSize(8, ItemStack.EMPTY);

@@ -1,7 +1,6 @@
 package dev.sterner.book_of_the_dead.common.registry;
 
 import dev.sterner.book_of_the_dead.common.entity.BloodSlimeEntity;
-import dev.sterner.book_of_the_dead.common.entity.CorpseEntity;
 import dev.sterner.book_of_the_dead.common.entity.OldManEntity;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
@@ -9,7 +8,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
-import net.minecraft.entity.mob.SlimeEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import org.quiltmc.qsl.entity.api.QuiltEntityTypeBuilder;
@@ -21,13 +19,7 @@ public class BotDEntityTypes {
 	private static final Map<EntityType<?>, Identifier> ENTITY_TYPES = new LinkedHashMap<>();
 
 
-	public static final EntityType<CorpseEntity> CORPSE_ENTITY =
-			register(
-					"corpse",
-					QuiltEntityTypeBuilder.<CorpseEntity>create()
-							.spawnGroup(SpawnGroup.MISC)
-							.entityFactory(CorpseEntity::new)
-							.build());
+
 
 	public static final EntityType<OldManEntity> OLD_MAN_ENTITY =
 			register(
@@ -57,7 +49,6 @@ public class BotDEntityTypes {
 	}
 
 	public static void init() {
-		FabricDefaultAttributeRegistry.register(CORPSE_ENTITY, CorpseEntity.createAttributes());
 		FabricDefaultAttributeRegistry.register(OLD_MAN_ENTITY, OldManEntity.createMobAttributes());
 		FabricDefaultAttributeRegistry.register(BLOOD_SLIME_ENTITY, BloodSlimeEntity.createMobAttributes());
 

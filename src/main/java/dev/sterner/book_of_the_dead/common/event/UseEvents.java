@@ -4,7 +4,6 @@ import dev.sterner.book_of_the_dead.api.block.HorizontalDoubleBlock;
 import dev.sterner.book_of_the_dead.api.enums.HorizontalDoubleBlockHalf;
 import dev.sterner.book_of_the_dead.api.interfaces.IHauler;
 import dev.sterner.book_of_the_dead.common.block.RopeBlock;
-import dev.sterner.book_of_the_dead.common.entity.CorpseEntity;
 import dev.sterner.book_of_the_dead.common.registry.BotDEntityTypes;
 import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
 import dev.sterner.book_of_the_dead.common.util.Constants;
@@ -172,25 +171,22 @@ public class UseEvents {
 			IHauler.of(player).ifPresent(hauler -> {
 				if(!hauler.getCorpseEntity().isEmpty()){
 					NbtCompound nbtCompound = hauler.getCorpseEntity();
-					if(nbtCompound.contains(Constants.Nbt.CORPSE_ENTITY)){
-						EntityType.getEntityFromNbt(nbtCompound.getCompound(Constants.Nbt.CORPSE_ENTITY), world).ifPresent(storedEntity -> {
-							BlockPos pos = blockHitResult.getBlockPos().offset(blockHitResult.getSide());
+					System.out.println("NBT: " + nbtCompound);
+					EntityType.getEntityFromNbt(nbtCompound, world).ifPresent(storedEntity -> {
+						BlockPos pos = blockHitResult.getBlockPos().offset(blockHitResult.getSide());
+						System.out.println("isPresent");
 
+						if (storedEntity instanceof LivingEntity storedLivingEntity) {
+							storedLivingEntity.refreshPositionAndAngles(pos, 0, 0);
+							storedLivingEntity.teleport(pos.getX(), pos.getY(), pos.getZ());
+							serverWorld.spawnEntity(storedLivingEntity);
+						}
 
-							CorpseEntity corpseEntity = BotDEntityTypes.CORPSE_ENTITY.create(serverWorld);
-							if (corpseEntity != null && storedEntity instanceof LivingEntity storedLivingEntity) {
-								corpseEntity.setCorpseEntity(storedLivingEntity);
-								corpseEntity.refreshPositionAndAngles(pos, 0, 0);
-								corpseEntity.teleport(pos.getX(), pos.getY(), pos.getZ());
-								serverWorld.spawnEntity(corpseEntity);
-							}
+						serverWorld.playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 1, 1);
 
-							serverWorld.playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 1, 1);
-
-							//Reset Data
-							hauler.clearCorpseData();
-						});
-					}
+						//Reset Data
+						hauler.clearCorpseData();
+					});
 
 				}
 			});

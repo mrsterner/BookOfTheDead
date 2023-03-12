@@ -24,8 +24,8 @@
 			"fabric-datagen": "dev.sterner.book_of_the_dead.data.BotDDataGen",
 			"mm:early_risers":"dev.sterner.book_of_the_dead.common.asm.BotDEarlyRiser",
 			"rei_client": "dev.sterner.book_of_the_dead.client.integration.rei.BotDREIPlugin",
-			"emi": "dev.sterner.book_of_the_dead.client.integration.emi.BotDEMIPlugin"
-
+			"emi": "dev.sterner.book_of_the_dead.client.integration.emi.BotDEMIPlugin",
+			"cardinal-components-entity": "dev.sterner.book_of_the_dead.common.component.BotDComponents"
 		},
 		"depends": [
 			{
@@ -43,5 +43,8 @@
 		]
 	},
 	"access_widener": "book_of_the_dead.accesswidener",
-	"mixin": "book_of_the_dead.mixins.json"
+	"mixin": "book_of_the_dead.mixins.json",
+	"cardinal-components": [
+		"book_of_the_dead:corpse"
+	]
 }

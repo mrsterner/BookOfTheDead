@@ -6,6 +6,7 @@
   "mixins": [
     "EnchantmentTargetMixin",
     "LivingEntityMixin",
+    "MobEntityMixin",
     "PlayerEntityMixin",
     "StructurePoolAccessor",
     "StructurePoolsMixin"
@@ -14,7 +15,9 @@
     "BufferBuilderStorageMixin",
     "ContinuousFallingParticleMixin",
     "DrippingParticleMixin",
+    "EntityRenderDispatcherMixin",
     "ItemRendererMixin",
+    "LivingEntityRendererMixin",
     "MinecraftClientMixin",
     "PlayerEntityRendererMixin",
     "TexturedRenderLayersMixin"

@@ -55,26 +55,24 @@ public class ButcherTableBlockEntityRenderer implements BlockEntityRenderer<Butc
 		matrices.push();
 		IHauler.of(entity).ifPresent(hauler -> {
 			NbtCompound renderedEntity = hauler.getCorpseEntity();
-			if(renderedEntity != null && renderedEntity.contains(Constants.Nbt.CORPSE_ENTITY)){
-				EntityType.getEntityFromNbt(renderedEntity.getCompound(Constants.Nbt.CORPSE_ENTITY), entity.getWorld()).ifPresent(type -> {
+			if(renderedEntity != null && !renderedEntity.isEmpty()){
+				EntityType.getEntityFromNbt(renderedEntity, entity.getWorld()).ifPresent(type -> {
 					if(type instanceof LivingEntity livingEntity){
 						livingEntity.hurtTime = 0;
+						livingEntity.deathTime = 0;
 						livingEntity.bodyYaw = 0;
 						livingEntity.setPitch(20);
 						livingEntity.prevPitch = 20;
 						livingEntity.headYaw = 0;
 						dispatcher.setRenderShadows(false);
-						matrices.translate(0.5,-livingEntity.getHeight() * 0.5,0.5);
+						matrices.translate(0.5,1.15,2.0);
+						if(livingEntity instanceof AnimalEntity){
+							matrices.translate(0.75,0.1,-1.0);
+							matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(-90));
+							matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(90));
+						}
 						matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(getRot(entity) + 90));
 						matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(-90));
-						matrices.translate(0,-1.4,2.2);
-						if(livingEntity instanceof PigEntity){
-							matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(-90));
-							matrices.translate(0,0,0.8);
-						}else if(livingEntity instanceof AnimalEntity){
-							matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(-90));
-							matrices.translate(0,-0.75,0.8);
-						}
 						dispatcher.render(livingEntity, 0,0,0,0, tickDelta, matrices, vertexConsumers, light);
 					}
 				});

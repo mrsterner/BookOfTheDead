@@ -53,9 +53,9 @@ public class BaseButcherBlockEntity extends BlockEntity implements IHauler, IBlo
 	}
 
 	public void refreshButcheringRecipe(){
-		if(getCorpseEntity() != null && getCorpseEntity().contains(Constants.Nbt.CORPSE_ENTITY)){
+		if(getCorpseEntity() != null){
 			if(this.outputs.size() > 0 && this.outputs.get(0).isOf(Items.AIR) && resetRecipe){
-				Optional<Entity> entity = EntityType.getEntityFromNbt(getCorpseEntity().getCompound(Constants.Nbt.CORPSE_ENTITY), world);
+				Optional<Entity> entity = EntityType.getEntityFromNbt(getCorpseEntity(), world);
 				if(entity.isPresent() && !world.isClient()){
 					butcheringRecipe = world.getRecipeManager().listAllOfType(BotDRecipeTypes.BUTCHERING_RECIPE_TYPE)
 							.stream().filter(type -> type.entityType == entity.get().getType()).findFirst().orElse(null);

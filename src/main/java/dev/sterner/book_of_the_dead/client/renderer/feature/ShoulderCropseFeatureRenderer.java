@@ -37,9 +37,11 @@ public class ShoulderCropseFeatureRenderer extends FeatureRenderer<AbstractClien
 		IHauler.of(entity).ifPresent(hauler -> {
 			if(!hauler.getCorpseEntity().isEmpty()){
 				NbtCompound nbtCompound2 = hauler.getCorpseEntity();
-				EntityType.getEntityFromNbt(nbtCompound2.getCompound(Constants.Nbt.CORPSE_ENTITY), entity.world).ifPresent(type -> {
+				EntityType.getEntityFromNbt(nbtCompound2, entity.world).ifPresent(type -> {
 					if(type instanceof LivingEntity livingEntity && dispatcher != null){
 						livingEntity.hurtTime = 0;
+						livingEntity.deathTime = 0;
+						dispatcher.setRenderShadows(false);
 						matrices.push();
 						matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(entity.isInSneakingPose() ? 20 : 0));
 						if(livingEntity instanceof AnimalEntity){
@@ -78,11 +80,11 @@ public class ShoulderCropseFeatureRenderer extends FeatureRenderer<AbstractClien
 	public void renderHumanoid(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, LivingEntity livingEntity){
 		matrices.push();
 		if(livingEntity.isBaby()){
-			matrices.translate(0,-0.25,0.6);
+			matrices.translate(0,-0.25,0);
 		}else{
 			float f = 0.75f;
 			matrices.scale(f,f,f);
-			matrices.translate(0,-0.75,0.6);
+			matrices.translate(0,-0.75,0);
 		}
 		dispatcher.render(livingEntity, 0, 0, 0, 0, 0, matrices, vertexConsumers, light);
 		matrices.pop();

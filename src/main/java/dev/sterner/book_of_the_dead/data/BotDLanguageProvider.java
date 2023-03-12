@@ -49,7 +49,6 @@ public class BotDLanguageProvider extends FabricLanguageProvider {
 
 		builder.add(BotDEnchantments.BUTCHERING, "Butchering");
 
-		builder.add(BotDEntityTypes.CORPSE_ENTITY, "Corpse");
 		builder.add(BotDEntityTypes.OLD_MAN_ENTITY, "Old Man");
 		builder.add("entity.book_of_the_dead.old_man.nitwit", "Old Man");
 

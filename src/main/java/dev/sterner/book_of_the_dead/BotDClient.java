@@ -3,13 +3,11 @@ package dev.sterner.book_of_the_dead;
 import dev.sterner.book_of_the_dead.client.model.*;
 import dev.sterner.book_of_the_dead.client.renderer.block.*;
 import dev.sterner.book_of_the_dead.client.renderer.entity.BloodSlimeEntityRenderer;
-import dev.sterner.book_of_the_dead.client.renderer.entity.CorpseEntityRenderer;
 import dev.sterner.book_of_the_dead.client.renderer.entity.OldManEntityRenderer;
 import dev.sterner.book_of_the_dead.client.renderer.item.AllBlackSwordItemRenderer;
 import dev.sterner.book_of_the_dead.common.item.AllBlackSwordItem;
 import dev.sterner.book_of_the_dead.common.registry.*;
 import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
-import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
@@ -29,11 +27,9 @@ import org.quiltmc.qsl.resource.loader.api.ResourceLoader;
 
 public class BotDClient implements ClientModInitializer {
 
-
 	@Override
 	public void onInitializeClient(ModContainer mod) {
 		BotDParticleTypes.init();
-
 
 
 		BlockRenderLayerMap.put(RenderLayer.getCutout(),
@@ -58,7 +54,7 @@ public class BotDClient implements ClientModInitializer {
 		BlockEntityRendererFactories.register(BotDBlockEntityTypes.RETORT, RetortFlaskBlockEntityRenderer::new);
 
 		BuiltinItemRendererRegistry.INSTANCE.register(BotDObjects.JAR, new JarBlockEntityRenderer());
-		EntityRendererRegistry.register(BotDEntityTypes.CORPSE_ENTITY, CorpseEntityRenderer::new);
+		//EntityRendererRegistry.register(BotDEntityTypes.CORPSE_ENTITY, CorpseEntityRenderer::new);
 		EntityRendererRegistry.register(BotDEntityTypes.OLD_MAN_ENTITY, OldManEntityRenderer::new);
 		EntityRendererRegistry.register(BotDEntityTypes.BLOOD_SLIME_ENTITY, BloodSlimeEntityRenderer::new);
 
@@ -89,7 +85,10 @@ public class BotDClient implements ClientModInitializer {
 				});
 			}
 		}
+
+
 	}
+
 	public static final class ClientTickHandler {
 		private ClientTickHandler() {
 		}

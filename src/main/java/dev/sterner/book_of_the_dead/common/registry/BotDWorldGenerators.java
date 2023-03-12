@@ -1,7 +1,7 @@
 package dev.sterner.book_of_the_dead.common.registry;
 
 import dev.sterner.book_of_the_dead.common.util.Constants;
-import dev.sterner.book_of_the_dead.common.world.OldHouse;
+import dev.sterner.book_of_the_dead.common.world.structure.OldHouse;
 import net.minecraft.structure.StructureType;
 import net.minecraft.util.registry.Registry;
 

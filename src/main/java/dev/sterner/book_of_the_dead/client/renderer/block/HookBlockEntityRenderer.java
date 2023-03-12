@@ -44,10 +44,11 @@ public class HookBlockEntityRenderer implements BlockEntityRenderer<HookBlockEnt
 		matrices.push();
 		IHauler.of(entity).ifPresent(hauler -> {
 			NbtCompound renderedEntity = hauler.getCorpseEntity();
-			if(renderedEntity != null && renderedEntity.contains(Constants.Nbt.CORPSE_ENTITY)){
-				EntityType.getEntityFromNbt(renderedEntity.getCompound(Constants.Nbt.CORPSE_ENTITY), entity.getWorld()).ifPresent(type -> {
+			if(renderedEntity != null && !renderedEntity.isEmpty()){
+				EntityType.getEntityFromNbt(renderedEntity, entity.getWorld()).ifPresent(type -> {
 					if(type instanceof LivingEntity livingEntity){
 						livingEntity.hurtTime = 0;
+						livingEntity.deathTime = 0;
 						livingEntity.bodyYaw = 0;
 						livingEntity.setPitch(20);
 						livingEntity.prevPitch = 20;

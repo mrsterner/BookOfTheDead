@@ -1,4 +1,4 @@
-package dev.sterner.book_of_the_dead.common.world;
+package dev.sterner.book_of_the_dead.common.world.structure;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;

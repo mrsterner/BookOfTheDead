@@ -1,8 +1,8 @@
 package dev.sterner.book_of_the_dead.common.util;
 
-import dev.sterner.book_of_the_dead.common.entity.CorpseEntity;
 import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
@@ -31,9 +31,8 @@ public class Constants {
 	}
 
 	public static class DataTrackers{
-		public static final TrackedData<NbtCompound> STORED_CORPSE_ENTITY = DataTracker.registerData(CorpseEntity.class, TrackedDataHandlerRegistry.TAG_COMPOUND);
-		public static final TrackedData<NbtCompound>  PLAYER_CORPSE_ENTITY = DataTracker.registerData(PlayerEntity.class, TrackedDataHandlerRegistry.TAG_COMPOUND);
-    }
+		public static final TrackedData<NbtCompound> PLAYER_CORPSE_ENTITY = DataTracker.registerData(PlayerEntity.class, TrackedDataHandlerRegistry.TAG_COMPOUND);
+	 }
 
 	public static class Tags {
 		public static final TagKey<EntityType<?>> BUTCHERABLE = TagKey.of(Registry.ENTITY_TYPE_KEY, id("butcherable"));
