@@ -59,5 +59,7 @@ public class Constants {
         public static final String DURATION = "Duration";
 		public static final String TARGET_Y = "TargetY";
 
-    }
+        public static final String BUTCHERING_LEVEL = "ButcheringLevel";
+		public static final String IS_CORPSE = "IsCorpse";
+	}
 }

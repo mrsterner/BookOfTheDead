@@ -45,6 +45,7 @@
 	"access_widener": "book_of_the_dead.accesswidener",
 	"mixin": "book_of_the_dead.mixins.json",
 	"cardinal-components": [
-		"book_of_the_dead:corpse"
+		"book_of_the_dead:corpse",
+		"book_of_the_dead:player"
 	]
 }

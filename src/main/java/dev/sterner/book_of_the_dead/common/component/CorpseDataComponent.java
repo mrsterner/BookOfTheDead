@@ -1,6 +1,7 @@
 package dev.sterner.book_of_the_dead.common.component;
 
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
+import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.NbtCompound;
 
@@ -19,11 +20,11 @@ public class CorpseDataComponent implements AutoSyncedComponent {
 
 	@Override
 	public void writeToNbt(NbtCompound nbt) {
-		nbt.putBoolean("IsCorpse", isCorpse);
+		nbt.putBoolean(Constants.Nbt.IS_CORPSE, isCorpse);
 	}
 
 	@Override
 	public void readFromNbt(NbtCompound nbt) {
-		this.isCorpse = nbt.getBoolean("IsCorpse");
+		this.isCorpse = nbt.getBoolean(Constants.Nbt.IS_CORPSE);
 	}
 }

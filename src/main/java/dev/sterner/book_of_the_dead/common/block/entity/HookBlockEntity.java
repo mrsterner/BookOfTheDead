@@ -3,6 +3,8 @@ package dev.sterner.book_of_the_dead.common.block.entity;
 import dev.sterner.book_of_the_dead.api.BotDApi;
 import dev.sterner.book_of_the_dead.api.block.entity.BaseButcherBlockEntity;
 import dev.sterner.book_of_the_dead.api.interfaces.IHauler;
+import dev.sterner.book_of_the_dead.common.component.BotDComponents;
+import dev.sterner.book_of_the_dead.common.component.PlayerDataComponent;
 import dev.sterner.book_of_the_dead.common.registry.BotDBlockEntityTypes;
 import dev.sterner.book_of_the_dead.common.registry.BotDEnchantments;
 import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
@@ -20,6 +22,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.List;
+import java.util.Optional;
 
 public class HookBlockEntity extends BaseButcherBlockEntity {
 	public int hookedAge = 0;
@@ -56,7 +59,9 @@ public class HookBlockEntity extends BaseButcherBlockEntity {
 				List<ItemStack> nonEmptyOutput = this.outputs.stream().filter(item -> !item.isEmpty() || !item.isOf(Items.AIR) || item.getCount() != 0).toList();
 				List<Float> nonEmptyChance = this.chances.stream().filter(chance -> chance != 0).toList();
 				if(nonEmptyOutput.size() > 0){
-					if(world.getRandom().nextFloat() > 0.5f * (hookedAge > 0 ? (float)(hookedAge / Constants.Values.BLEEDING) : 1)) {
+					double butcherLevel = BotDComponents.PLAYER_COMPONENT.maybeGet(player).map(PlayerDataComponent::getButcheringModifier).orElse(1D);
+					double chance = ((0.25D + (hookedAge > 0 ? (float)(Constants.Values.BLEEDING / hookedAge) : 0))) * butcherLevel;
+					if(world.getRandom().nextDouble() < chance) {
 						if (nonEmptyChance.size() > 0) {
 							if (world.getRandom().nextFloat() < nonEmptyChance.get(0)) {
 								ItemScatterer.spawn(world, pos.getX() + 0.5, pos.getY() + 1.2, pos.getZ() + 0.5, nonEmptyOutput.get(0));

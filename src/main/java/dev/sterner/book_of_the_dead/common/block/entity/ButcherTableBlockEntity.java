@@ -4,7 +4,10 @@ import com.mojang.datafixers.util.Pair;
 import dev.sterner.book_of_the_dead.api.block.entity.BaseButcherBlockEntity;
 import dev.sterner.book_of_the_dead.api.interfaces.IBlockEntityInventory;
 import dev.sterner.book_of_the_dead.api.interfaces.IHauler;
+import dev.sterner.book_of_the_dead.common.component.BotDComponents;
+import dev.sterner.book_of_the_dead.common.component.PlayerDataComponent;
 import dev.sterner.book_of_the_dead.common.registry.*;
+import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -66,13 +69,17 @@ public class ButcherTableBlockEntity extends BaseButcherBlockEntity implements I
 					List<ItemStack> nonEmptyOutput = this.outputs.stream().filter(item -> !item.isEmpty() || !item.isOf(Items.AIR) || item.getCount() != 0).toList();
 					List<Float> nonEmptyChance = this.chances.stream().filter(chance -> chance != 0).toList();
 					if(nonEmptyOutput.size() > 0){
-						if(nonEmptyChance.size() > 0){
-							if(world.getRandom().nextFloat() < nonEmptyChance.get(0)){
+						double butcherLevel = BotDComponents.PLAYER_COMPONENT.maybeGet(player).map(PlayerDataComponent::getButcheringModifier).orElse(1D);
+						double chance = 0.5D * butcherLevel;
+						if(world.getRandom().nextDouble() < chance){
+							if(nonEmptyChance.size() > 0){
+								if(world.getRandom().nextFloat() < nonEmptyChance.get(0)){
+									ItemScatterer.spawn(world, pos.getX() + 0.5, pos.getY() + 1.2, pos.getZ() + 0.5, nonEmptyOutput.get(0));
+									this.chances.set(0, 0F);
+								}
+							}else{
 								ItemScatterer.spawn(world, pos.getX() + 0.5, pos.getY() + 1.2, pos.getZ() + 0.5, nonEmptyOutput.get(0));
-								this.chances.set(0, 0F);
 							}
-						}else{
-							ItemScatterer.spawn(world, pos.getX() + 0.5, pos.getY() + 1.2, pos.getZ() + 0.5, nonEmptyOutput.get(0));
 						}
 
 						this.outputs.set(0, ItemStack.EMPTY);
