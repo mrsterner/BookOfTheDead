@@ -50,6 +50,6 @@ public class RitualBlockEntityRenderer implements BlockEntityRenderer<RitualBloc
 	}
 
 	private void renderCircleLarge(MatrixStack matrices, VertexConsumer buffer, int light, int overlay) {
-		circleEntityModel.render(matrices, buffer, light, overlay, 1,1,1, alpha);
+		circleEntityModel.render(matrices, buffer, light, overlay, 1,1,1, 1);//alpha to alpha
 	}
 }

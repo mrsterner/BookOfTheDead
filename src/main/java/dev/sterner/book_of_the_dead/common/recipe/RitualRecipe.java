@@ -130,33 +130,53 @@ public class RitualRecipe implements Recipe<Inventory> {
 		public RitualRecipe read(Identifier id, JsonObject json) {
 			//Ritual
 			NecrotableRitual ritual = BotDRegistries.NECROTABLE_RITUALS.get(new Identifier(JsonHelper.getString(json, "ritual")));
+
 			boolean requireBotD = JsonHelper.getBoolean(json, "requireBotD", false);
 			boolean requireEmeraldTablet = JsonHelper.getBoolean(json, "requireEmeraldTablet", false);
 
 			//Inputs
-			DefaultedList<Ingredient> inputs = RecipeUtils.deserializeIngredients(JsonHelper.getArray(json, "inputs"));
+			DefaultedList<Ingredient> inputs = DefaultedList.of();
+			if(JsonHelper.hasArray(json, "inputs")) {
+				inputs = RecipeUtils.deserializeIngredients(JsonHelper.getArray(json, "inputs"));
+			}
 
 			//Outputs
-			DefaultedList<ItemStack> outputs = RecipeUtils.deserializeStacks(JsonHelper.getArray(json, "outputs"));
+			DefaultedList<ItemStack> outputs = DefaultedList.of();
+			if(JsonHelper.hasArray(json, "outputs")) {
+				outputs = RecipeUtils.deserializeStacks(JsonHelper.getArray(json, "outputs"));
+			}
 
 			//Sacrifices
-			var sacrificeArray = JsonHelper.getArray(json, "sacrifices");
-			List<EntityType<?>> sacrifices = RecipeUtils.deserializeEntityTypes(sacrificeArray);
+			List<EntityType<?>> sacrifices = List.of();
+			if(JsonHelper.hasArray(json, "summons")) {
+				var sacrificeArray = JsonHelper.getArray(json, "sacrifices");
+				sacrifices = RecipeUtils.deserializeEntityTypes(sacrificeArray);
+			}
 
 			//Summons
-			var summonArray = JsonHelper.getArray(json, "summons");
-			List<EntityType<?>> summons = RecipeUtils.deserializeEntityTypes(summonArray);
+			List<EntityType<?>> summons = List.of();
+			if(JsonHelper.hasArray(json, "summons")) {
+				var summonArray = JsonHelper.getArray(json, "summons");
+				summons = RecipeUtils.deserializeEntityTypes(summonArray);
+			}
 
 			//Duration
 			int duration = JsonHelper.getInt(json, "duration", 20 * 8);
 
 			//StatusEffect
-			var statusList = JsonHelper.getArray(json, "statusEffects");
-			List<StatusEffectInstance> statusEffectInstanceList = RecipeUtils.deserializeStatusEffects(statusList);
+			List<StatusEffectInstance> statusEffectInstanceList = List.of();
+			if(JsonHelper.hasArray(json, "statusEffects")){
+				var statusList = JsonHelper.getArray(json, "statusEffects");
+				statusEffectInstanceList = RecipeUtils.deserializeStatusEffects(statusList);
+			}
+
 
 			//Command
-			JsonArray commandArray = JsonHelper.getArray(json, "commands");
-			Set<CommandType> commands = RecipeUtils.deserializeCommands(commandArray);
+			Set<CommandType> commands = Set.of();
+			if(JsonHelper.hasArray(json, "commands")) {
+				JsonArray commandArray = JsonHelper.getArray(json, "commands");
+				commands = RecipeUtils.deserializeCommands(commandArray);
+			}
 
 			return new RitualRecipe(id, ritual, requireBotD, requireEmeraldTablet, duration, inputs, outputs, sacrifices, summons, statusEffectInstanceList, commands);
 		}

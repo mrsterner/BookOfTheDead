@@ -3,6 +3,7 @@ package dev.sterner.book_of_the_dead.client.renderer.renderlayer;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormats;
+import dev.sterner.book_of_the_dead.client.renderer.shader.BotDShaders;
 import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
@@ -13,6 +14,7 @@ import net.minecraft.client.render.RenderPhase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
+import org.quiltmc.loader.api.minecraft.ClientOnly;
 
 import java.util.function.Function;
 
@@ -49,13 +51,25 @@ public class BotDRenderLayer extends RenderLayer {
 	public static final Function<Identifier, RenderLayer> GLOWING_LAYER = Util.memoize(texture -> {
 		MultiPhaseParameters multiPhaseParameters = MultiPhaseParameters.builder()
 				.texture(new RenderPhase.Texture(texture, false, false))
-				.transparency(Transparency.TRANSLUCENT_TRANSPARENCY)
-				.cull(DISABLE_CULLING).lightmap(ENABLE_LIGHTMAP)
+				.transparency(Transparency.ADDITIVE_TRANSPARENCY)
+				.cull(DISABLE_CULLING)
+				.lightmap(ENABLE_LIGHTMAP)
 				.overlay(DISABLE_OVERLAY_COLOR)
 				.layering(VIEW_OFFSET_Z_LAYERING)
 				.shader(ENERGY_SWIRL_SHADER)
 				.build(true);
 		return RenderLayer.of("glowing_layer", VertexFormats.POSITION_COLOR_TEXTURE_OVERLAY_LIGHT_NORMAL, VertexFormat.DrawMode.QUADS, 256, false, false, multiPhaseParameters);
+	});
+
+	public static final Function<Identifier, RenderLayer> RITUAL_LAYER = Util.memoize(texture -> {
+		MultiPhaseParameters multiPhaseParameters = MultiPhaseParameters.builder()
+				.texture(new RenderPhase.Texture(texture, false, false))
+				.transparency(Transparency.TRANSLUCENT_TRANSPARENCY)
+				.cull(DISABLE_CULLING)
+				.lightmap(ENABLE_LIGHTMAP)
+				.shader(new Shader(BotDShaders::ritual))
+				.build(true);
+		return RenderLayer.of(Constants.MOD_ID + "ritual", VertexFormats.POSITION_COLOR_TEXTURE_LIGHT_NORMAL, VertexFormat.DrawMode.QUADS, 256, false, false, multiPhaseParameters);
 	});
 
 
@@ -85,12 +99,12 @@ public class BotDRenderLayer extends RenderLayer {
 	}
 
 
-	@Environment(EnvType.CLIENT)
+	@ClientOnly
 	public static RenderLayer getGlint() {
 		return checkAllBlack() ? BotDRenderLayer.glintColor : RenderLayer.getGlint();
 	}
 
-	@Environment(EnvType.CLIENT)
+	@ClientOnly
 	public static RenderLayer getGlintDirect() {
 		return checkAllBlack() ? BotDRenderLayer.glintDirectColor : RenderLayer.getDirectGlint();
 	}

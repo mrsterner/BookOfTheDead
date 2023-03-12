@@ -115,9 +115,8 @@ public class BaseButcherBlockEntity extends BlockEntity implements IHauler, IBlo
 
 						nonEmptyOutput.get(0).setCount(world.getRandom().nextDouble() < chance * nonEmptyChance.get(0) ? 1 : 0);
 						ItemScatterer.spawn(world, pos.getX() + 0.5, pos.getY() + 1.2, pos.getZ() + 0.5, nonEmptyOutput.get(0));
-						BlockPos particle2Pos = pos;
-						PlayerLookup.tracking(player).forEach(track -> BloodSplashParticlePacket.send(track, particle2Pos.getX(), particle2Pos.getY() + particleOffset, particle2Pos.getZ()));
-						BloodSplashParticlePacket.send(player, particle2Pos.getX(), particle2Pos.getY() + particleOffset, particle2Pos.getZ());
+						PlayerLookup.tracking(player).forEach(track -> BloodSplashParticlePacket.send(track, pos.getX(), pos.getY() + particleOffset, pos.getZ()));
+						BloodSplashParticlePacket.send(player, pos.getX(), pos.getY() + particleOffset, pos.getZ());
 
 						world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.BLOCK_HONEY_BLOCK_BREAK, SoundCategory.PLAYERS, 2,1);
 						world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_PLAYER_ATTACK_CRIT, SoundCategory.PLAYERS, 1,1);

@@ -16,6 +16,7 @@
     "ContinuousFallingParticleMixin",
     "DrippingParticleMixin",
     "EntityRenderDispatcherMixin",
+    "GameRenderMixin",
     "ItemRendererMixin",
     "LivingEntityRendererMixin",
     "MinecraftClientMixin",
