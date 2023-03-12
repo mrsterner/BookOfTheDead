@@ -3,10 +3,8 @@ package dev.sterner.book_of_the_dead.common.world;
 import com.mojang.authlib.GameProfile;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.fabricmc.fabric.api.util.NbtType;
-import net.minecraft.block.PlayerSkullBlock;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
-import net.minecraft.server.PlayerManager;
 import net.minecraft.world.PersistentState;
 import net.minecraft.world.World;
 

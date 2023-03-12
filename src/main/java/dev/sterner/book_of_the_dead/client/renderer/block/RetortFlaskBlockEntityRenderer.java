@@ -1,7 +1,6 @@
 package dev.sterner.book_of_the_dead.client.renderer.block;
 
 import dev.sterner.book_of_the_dead.common.block.NecroTableBlock;
-import dev.sterner.book_of_the_dead.common.block.entity.JarBlockEntity;
 import dev.sterner.book_of_the_dead.common.block.entity.RetortFlaskBlockEntity;
 import dev.sterner.book_of_the_dead.common.registry.BotDSpriteIdentifiers;
 import dev.sterner.book_of_the_dead.common.util.Constants;
@@ -19,12 +18,10 @@ import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
 
 public class RetortFlaskBlockEntityRenderer<T extends BlockEntity> implements BlockEntityRenderer<T> {
 	private static final float EDGE_SIZE = 1f / 8f;

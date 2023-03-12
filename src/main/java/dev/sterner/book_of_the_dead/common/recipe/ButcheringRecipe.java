@@ -10,7 +10,6 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
@@ -20,9 +19,6 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import org.quiltmc.qsl.recipe.api.serializer.QuiltRecipeSerializer;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class ButcheringRecipe implements Recipe<Inventory> {

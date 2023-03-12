@@ -1,10 +1,7 @@
 package dev.sterner.book_of_the_dead.client.renderer.block;
 
 import dev.sterner.book_of_the_dead.api.interfaces.IHauler;
-import dev.sterner.book_of_the_dead.common.block.HookBlock;
 import dev.sterner.book_of_the_dead.common.block.entity.HookBlockEntity;
-import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
-import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.entity.BlockEntity;
@@ -16,8 +13,6 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.World;
 

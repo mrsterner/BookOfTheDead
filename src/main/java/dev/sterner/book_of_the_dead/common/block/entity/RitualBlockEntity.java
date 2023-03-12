@@ -1,20 +1,13 @@
 package dev.sterner.book_of_the_dead.common.block.entity;
 
-import dev.architectury.registry.registries.Registries;
-import dev.sterner.book_of_the_dead.BotD;
 import dev.sterner.book_of_the_dead.api.NecrotableRitual;
 import dev.sterner.book_of_the_dead.api.block.entity.BaseBlockEntity;
 import dev.sterner.book_of_the_dead.common.recipe.RitualRecipe;
 import dev.sterner.book_of_the_dead.common.registry.*;
-import dev.sterner.book_of_the_dead.common.ritual.CreateItemRitual;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.FurnaceBlock;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.FurnaceBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -23,7 +16,6 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;

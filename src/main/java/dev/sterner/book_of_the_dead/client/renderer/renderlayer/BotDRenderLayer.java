@@ -6,7 +6,6 @@ import com.mojang.blaze3d.vertex.VertexFormats;
 import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
-import ladysnake.satin.mixin.client.render.RenderLayerAccessor;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.render.RenderLayer;

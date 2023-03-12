@@ -4,7 +4,6 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import dev.sterner.book_of_the_dead.BotDClient;
 import dev.sterner.book_of_the_dead.client.model.LargeCircleEntityModel;
 import dev.sterner.book_of_the_dead.client.renderer.renderlayer.BotDRenderLayer;
-import dev.sterner.book_of_the_dead.common.block.RitualBlock;
 import dev.sterner.book_of_the_dead.common.block.entity.RitualBlockEntity;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.client.render.VertexConsumerProvider;

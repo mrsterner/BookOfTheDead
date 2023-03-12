@@ -1,6 +1,5 @@
 package dev.sterner.book_of_the_dead.data;
 
-import dev.sterner.book_of_the_dead.BotD;
 import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;

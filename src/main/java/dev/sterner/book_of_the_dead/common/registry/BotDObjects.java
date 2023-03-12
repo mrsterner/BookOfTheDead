@@ -4,7 +4,6 @@ import dev.sterner.book_of_the_dead.BotD;
 import dev.sterner.book_of_the_dead.common.block.*;
 import dev.sterner.book_of_the_dead.common.item.AllBlackSwordItem;
 import dev.sterner.book_of_the_dead.common.item.BotDItem;
-import dev.sterner.book_of_the_dead.common.item.DebugWandItem;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;

@@ -5,7 +5,6 @@ import dev.sterner.book_of_the_dead.api.block.entity.BaseButcherBlockEntity;
 import dev.sterner.book_of_the_dead.api.interfaces.IBlockEntityInventory;
 import dev.sterner.book_of_the_dead.api.interfaces.IHauler;
 import dev.sterner.book_of_the_dead.common.registry.*;
-import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;

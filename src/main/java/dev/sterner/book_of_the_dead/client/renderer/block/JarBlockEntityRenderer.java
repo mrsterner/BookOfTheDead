@@ -9,18 +9,13 @@ import dev.sterner.book_of_the_dead.common.registry.BotDSpriteIdentifiers;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import dev.sterner.book_of_the_dead.common.util.RenderUtils;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
-import net.fabricmc.fabric.api.renderer.v1.mesh.Mesh;
 import net.fabricmc.fabric.api.renderer.v1.mesh.MeshBuilder;
-import net.fabricmc.fabric.api.renderer.v1.mesh.MutableQuadView;
-import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
-import net.fabricmc.fabric.api.renderer.v1.model.ModelHelper;
 import net.fabricmc.fabric.impl.client.indigo.renderer.helper.ColorHelper;
 import net.fabricmc.fabric.impl.renderer.RendererAccessImpl;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.item.ItemRenderer;
-import net.minecraft.client.render.model.BakedQuad;
 import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.util.math.MatrixStack;
@@ -30,8 +25,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3f;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
 
 public class JarBlockEntityRenderer implements BlockEntityRenderer<JarBlockEntity>, BuiltinItemRendererRegistry.DynamicItemRenderer {
 	private static final float EDGE_SIZE = 1f / 8f;

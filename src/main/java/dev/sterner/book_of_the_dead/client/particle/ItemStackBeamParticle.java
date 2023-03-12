@@ -6,7 +6,6 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.particle.*;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.item.ItemStack;
-import net.minecraft.particle.ItemStackParticleEffect;
 import org.jetbrains.annotations.Nullable;
 
 public class ItemStackBeamParticle extends SpriteBillboardParticle {

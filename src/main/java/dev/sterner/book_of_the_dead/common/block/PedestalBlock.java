@@ -1,14 +1,12 @@
 package dev.sterner.book_of_the_dead.common.block;
 
 import dev.sterner.book_of_the_dead.common.block.entity.PedestalBlockEntity;
-import dev.sterner.book_of_the_dead.common.block.entity.RitualBlockEntity;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;

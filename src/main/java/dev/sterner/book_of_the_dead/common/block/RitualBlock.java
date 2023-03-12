@@ -1,7 +1,5 @@
 package dev.sterner.book_of_the_dead.common.block;
 
-import dev.sterner.book_of_the_dead.common.block.entity.NecroTableBlockEntity;
-import dev.sterner.book_of_the_dead.common.block.entity.PedestalBlockEntity;
 import dev.sterner.book_of_the_dead.common.block.entity.RitualBlockEntity;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;

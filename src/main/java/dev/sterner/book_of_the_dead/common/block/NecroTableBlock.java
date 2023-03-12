@@ -1,7 +1,5 @@
 package dev.sterner.book_of_the_dead.common.block;
 
-import dev.sterner.book_of_the_dead.api.block.HorizontalDoubleBlock;
-import dev.sterner.book_of_the_dead.api.enums.HorizontalDoubleBlockHalf;
 import dev.sterner.book_of_the_dead.common.block.entity.NecroTableBlockEntity;
 import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
 import net.minecraft.block.*;
