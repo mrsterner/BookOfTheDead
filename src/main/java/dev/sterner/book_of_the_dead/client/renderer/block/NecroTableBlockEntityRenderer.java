@@ -32,9 +32,7 @@ import java.util.List;
 public class NecroTableBlockEntityRenderer<T extends BlockEntity> implements BlockEntityRenderer<T> {
 	public static final EntityModelLayer LAYER_LOCATION = new EntityModelLayer(Constants.id("necro_model"), "main");
 	private final Identifier TEXTURE = Constants.id("textures/entity/necro_table.png");
-	private final Identifier CIRCLE_TEXTURE = Constants.id("textures/entity/circle.png");
-	private final LargeCircleEntityModel<Entity> jarEntityModel =  new LargeCircleEntityModel<>(LargeCircleEntityModel.createBodyLayer().createModel());
-	private final EntityRenderDispatcher dispatcher;
+
 	private final ModelPart base;
 	private final ModelPart book;
 	private final ModelPart candle;
@@ -85,50 +83,6 @@ public class NecroTableBlockEntityRenderer<T extends BlockEntity> implements Blo
 		}
 	}
 
-	/*
-	private void renderSummonEntity(NecroTableBlockEntity necroTableBlockEntity, BlockState blockState, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
-		if(necroTableBlockEntity.currentNecrotableRitual != null && !necroTableBlockEntity.currentNecrotableRitual.summons.isEmpty()){
-			if(necroTableBlockEntity.getWorld() != null){
-				if(necroTableBlockEntity.posList == null){
-					necroTableBlockEntity.posList = BotDUtils.genRandomPos(1).getFirst();
-				}
-				if(necroTableBlockEntity.yawList == null){
-					necroTableBlockEntity.yawList =  BotDUtils.genRandomPos(1).getSecond();
-				}
-				NecrotableRitual ritual = necroTableBlockEntity.currentNecrotableRitual;
-				List<Entity> entityList = ritual.summons;
-				if(!entityList.isEmpty()){
-					for(Entity entity : entityList){
-						int index = entityList.indexOf(entity);
-						if(entity instanceof LivingEntity livingEntity){
-							matrices.push();
-							float offsetInGround = livingEntity.getHeight();
-							int t = necroTableBlockEntity.timer + index * 10;
-							float f = ((float)t + tickDelta - 1.0F) / 20.0F * 0.5F;
-							f = MathHelper.sqrt(f);
-							if (f > 1.0F) {
-								f = 1.0F;
-							}
-							livingEntity.headYaw = 0;
-							matrices.translate(0,f * offsetInGround - offsetInGround   ,0);
-							matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(necroTableBlockEntity.yawList.get(index) * 360));
-							dispatcher.render(livingEntity, necroTableBlockEntity.posList.get(index).getX(), 0, necroTableBlockEntity.posList.get(index).getZ(), 0 ,tickDelta, matrices, vertexConsumers, light);
-						    matrices.pop();
-						}
-
-					}
-
-				}
-
-
-			}
-
-		}
-	}
-
-	 */
-
-
 	public void render(MatrixStack matrixStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay) {
 		base.render(matrixStack, vertexConsumer, packedLight, packedOverlay, 1, 1, 1, 1);
 		candle.render(matrixStack, vertexConsumer, packedLight, packedOverlay, 1, 1, 1, 1);
@@ -149,7 +103,6 @@ public class NecroTableBlockEntityRenderer<T extends BlockEntity> implements Blo
 
 	public NecroTableBlockEntityRenderer(BlockEntityRendererFactory.Context ctx) {
 		ModelPart modelPart = ctx.getLayerModelPart(LAYER_LOCATION);
-		this.dispatcher = ctx.getEntityRendererDispatcher();
 		this.base = modelPart.getChild("base");
 		this.book = modelPart.getChild("book");
 		this.candle = modelPart.getChild("candle");

@@ -81,7 +81,7 @@ public class ButcheringRecipe implements Recipe<Inventory> {
 		public ButcheringRecipe read(Identifier id, JsonObject json) {
 			EntityType<?> entityType = Registry.ENTITY_TYPE.get(new Identifier(JsonHelper.getString(json, "entityType")));
 			JsonArray array = JsonHelper.getArray(json, "results");
-			DefaultedList<Pair<ItemStack, Float>> outputs = RecipeUtils.deserializeStacks(array);
+			DefaultedList<Pair<ItemStack, Float>> outputs = RecipeUtils.deserializeStackPairs(array);
 			if (outputs.isEmpty()) {
 				throw new JsonParseException("No output for Butchering");
 			} else if (outputs.size() > 8) {

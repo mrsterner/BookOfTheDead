@@ -18,7 +18,9 @@ public class StatusEffectRitual extends ConsumeItemsRitual {
 		if(user != null){
 			PlayerEntity player = world.getPlayerByUuid(user);
 			if(player != null && recipe.statusEffectInstance != null){
-				player.addStatusEffect(recipe.statusEffectInstance);
+				for(StatusEffectInstance instance : recipe.statusEffectInstance){
+					player.addStatusEffect(instance);
+				}
 			}
 		}
 		super.onStopped(world, blockPos, blockEntity);

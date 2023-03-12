@@ -39,11 +39,13 @@ public class ConsumeItemsRitual extends NecrotableRitual {
 		}
 
 		for (Pair<ItemStack, BlockPos> itemStackBlockPosPair : stream) {
-			for(Ingredient ingredient : recipe.ingredients){
-				if (ingredient.test(itemStackBlockPosPair.getLeft())) {
-					BlockPos checkPos = itemStackBlockPosPair.getRight().add(blockPos.getX(), blockPos.getY(), blockPos.getZ());
-					if(world.getBlockEntity(checkPos) instanceof PedestalBlockEntity){
-						pedestalToActivate.add(checkPos);
+			if (recipe.inputs != null) {
+				for(Ingredient ingredient : recipe.inputs){
+					if (ingredient.test(itemStackBlockPosPair.getLeft())) {
+						BlockPos checkPos = itemStackBlockPosPair.getRight().add(blockPos.getX(), blockPos.getY(), blockPos.getZ());
+						if(world.getBlockEntity(checkPos) instanceof PedestalBlockEntity){
+							pedestalToActivate.add(checkPos);
+						}
 					}
 				}
 			}
@@ -61,17 +63,19 @@ public class ConsumeItemsRitual extends NecrotableRitual {
 			if(ticker % 5 == 0 && ticker < recipe.getDuration() - 40){
 				serverWorld.playSound(null, x,y,z, SoundEvents.BLOCK_CAMPFIRE_CRACKLE, SoundCategory.BLOCKS, 10,0.5f);
 			}
-			if(!recipe.output.isOf(Items.AIR)){
-				for (int i = 0; i < 8; i++) {
-					serverWorld.spawnParticles(new ItemStackParticleEffect(ParticleTypes.ITEM, recipe.output),
-							x + ((world.random.nextDouble() / 2) - 0.25),
-							y + ((world.random.nextDouble() / 2) - 0.25),
-							z + ((world.random.nextDouble() / 2) - 0.25),
-							0,
-							1 * ((world.random.nextDouble() / 2) - 0.25),
-							1 * ((world.random.nextDouble() / 2) - 0.25),
-							1 * ((world.random.nextDouble() / 2) - 0.25),
-							0);
+			if (recipe.outputs != null) {
+				for(ItemStack output : recipe.outputs){
+					for (int i = 0; i < 8; i++) {
+						serverWorld.spawnParticles(new ItemStackParticleEffect(ParticleTypes.ITEM, output),
+								x + ((world.random.nextDouble() / 2) - 0.25),
+								y + ((world.random.nextDouble() / 2) - 0.25),
+								z + ((world.random.nextDouble() / 2) - 0.25),
+								0,
+								1 * ((world.random.nextDouble() / 2) - 0.25),
+								1 * ((world.random.nextDouble() / 2) - 0.25),
+								1 * ((world.random.nextDouble() / 2) - 0.25),
+								0);
+					}
 				}
 			}
 		}

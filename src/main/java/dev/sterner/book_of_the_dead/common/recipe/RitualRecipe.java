@@ -3,14 +3,17 @@ package dev.sterner.book_of_the_dead.common.recipe;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
+import dev.sterner.book_of_the_dead.api.CommandType;
 import dev.sterner.book_of_the_dead.api.NecrotableRitual;
 import dev.sterner.book_of_the_dead.api.interfaces.IRecipe;
 import dev.sterner.book_of_the_dead.common.registry.BotDRecipeTypes;
 import dev.sterner.book_of_the_dead.common.registry.BotDRegistries;
+import dev.sterner.book_of_the_dead.common.util.RecipeUtils;
 import net.minecraft.block.EnchantingTableBlock;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
@@ -23,62 +26,43 @@ import net.minecraft.util.JsonHelper;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 import org.quiltmc.qsl.recipe.api.serializer.QuiltRecipeSerializer;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class RitualRecipe implements Recipe<Inventory> {
-	public final DefaultedList<Ingredient> ingredients = DefaultedList.ofSize(8, Ingredient.EMPTY);
-	public final ItemStack output;
-	public final Enchantment enchantment;
-	public final int enchantmentLevel;
-	public final NecrotableRitual ritual;
 	public final Identifier id;
+	public final NecrotableRitual ritual;
+
+	public final DefaultedList<Ingredient> inputs;
+	public final List<ItemStack> outputs;
+	public final List<EntityType<?>> summons;
+	public final List<EntityType<?>> sacrifices;
 	public final int duration;
-
-	public final EntityType<?> inputEntityType;
-	public final int inputEntityCount;
-
-	public final EntityType<?> outputEntityType;
-	public final int outputEntityCount;
+	public final Set<CommandType> command;
 
 	public final boolean requireBotD;
 	public final boolean requireEmeraldTablet;
-	public final StatusEffectInstance statusEffectInstance;
+	public final List<StatusEffectInstance> statusEffectInstance;
 
-	public RitualRecipe(
-			Identifier id,
-			Ingredient[] ingredients,
-			EntityType<?> inputEntityType,
-			int inputEntityCount,
-			ItemStack output,
-			Enchantment enchantment,
-			int enchantmentLevel,
-			EntityType<?> outputEntityType,
-			int outputEntityCount,
-			NecrotableRitual ritual,
-			int duration,
-			boolean requireBotD,
-			boolean requireEmeraldTablet,
-			StatusEffectInstance statusEffectInstance
-	) {
+	public RitualRecipe(Identifier id, NecrotableRitual ritual, boolean requireBotD, boolean requireEmeraldTablet, int duration, @Nullable DefaultedList<Ingredient> inputs, @Nullable List<ItemStack> outputs, @Nullable List<EntityType<?>> sacrifices, @Nullable List<EntityType<?>> summons, @Nullable List<StatusEffectInstance> statusEffectInstance, Set<CommandType> command) {
 		this.id = id;
-		for (int i = 0; i < ingredients.length; i++) {
-			this.ingredients.set(i, ingredients[i]);
-		}
-		this.ritual = ritual;
-		this.output = output;
+		this.outputs = outputs;
+		this.inputs = inputs;
+		this.sacrifices = sacrifices;
 		this.duration = duration;
-		this.outputEntityType = outputEntityType;
-		this.outputEntityCount = outputEntityCount;
-		this.inputEntityCount = inputEntityCount;
-		this.inputEntityType = inputEntityType;
+		this.command = command;
+		this.ritual = ritual;
 		this.requireBotD = requireBotD;
 		this.requireEmeraldTablet = requireEmeraldTablet;
-		this.enchantment = enchantment;
-		this.enchantmentLevel = enchantmentLevel;
 		this.statusEffectInstance = statusEffectInstance;
+		this.summons = summons;
 	}
 
 	public int getDuration(){
@@ -102,7 +86,34 @@ public class RitualRecipe implements Recipe<Inventory> {
 
 	@Override
 	public boolean matches(Inventory inventory, World world) {
-		return matches(inventory, ingredients);
+		return matches(inventory, inputs, sacrifices);
+	}
+
+	public static boolean matches(Inventory inv, DefaultedList<Ingredient> input, List<EntityType<?>> sacrifices) {
+		List<ItemStack> checklist = new ArrayList<>();
+		for (int i = 0; i < inv.size(); i++) {
+			ItemStack stack = inv.getStack(i);
+			if (!stack.isEmpty()) {
+				checklist.add(stack);
+			}
+		}
+		if (input.size() != checklist.size()) {
+			return false;
+		}
+		for (Ingredient ingredient : input) {
+			boolean found = false;
+			for (ItemStack stack : checklist) {
+				if (ingredient.test(stack)) {
+					found = true;
+					checklist.remove(stack);
+					break;
+				}
+			}
+			if (!found) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	@Override
@@ -117,7 +128,7 @@ public class RitualRecipe implements Recipe<Inventory> {
 
 	@Override
 	public ItemStack getOutput() {
-		return output;
+		return ItemStack.EMPTY;
 	}
 
 	public static boolean matches(Inventory inv, DefaultedList<Ingredient> input) {
@@ -147,71 +158,88 @@ public class RitualRecipe implements Recipe<Inventory> {
 		return true;
 	}
 
-	@Override
-	public DefaultedList<Ingredient> getIngredients() {
-		return ingredients;
-	}
-
 	public static class Serializer implements QuiltRecipeSerializer<RitualRecipe> {
 
 		@Override
 		public RitualRecipe read(Identifier id, JsonObject json) {
+			//Ritual
 			NecrotableRitual ritual = BotDRegistries.NECROTABLE_RITUALS.get(new Identifier(JsonHelper.getString(json, "ritual")));
 			boolean requireBotD = JsonHelper.getBoolean(json, "requireBotD", false);
 			boolean requireEmeraldTablet = JsonHelper.getBoolean(json, "requireEmeraldTablet", false);
 
-			EntityType<?> inputEntityType = Registry.ENTITY_TYPE.get(new Identifier(JsonHelper.getString(json, "inputEntityType", "chicken")));
-			int inputEntityCount = JsonHelper.getInt(json,"inputEntityCount", 1);
+			//Inputs
+			DefaultedList<Ingredient> inputs = RecipeUtils.deserializeIngredients(JsonHelper.getArray(json, "inputs"));
 
-			EntityType<?> outputEntityType = Registry.ENTITY_TYPE.get(new Identifier(JsonHelper.getString(json, "outputEntityType", "chicken")));
-			int outputEntityCount = JsonHelper.getInt(json,"outputEntityCount", 1);
+			//Outputs
+			DefaultedList<ItemStack> outputs = RecipeUtils.deserializeStacks(JsonHelper.getArray(json, "outputs"));
 
-			Ingredient[] ingredients = readIngredients(JsonHelper.getArray(json, "ingredients"));
+			//Sacrifices
+			var sacrificeArray = JsonHelper.getArray(json, "sacrifices");
+			List<EntityType<?>> sacrifices = RecipeUtils.deserializeEntityTypes(sacrificeArray);
 
-			Item outputItem = Registry.ITEM.getOrEmpty(new Identifier(JsonHelper.getString(json, "outputItem"))).orElseThrow(() -> new JsonSyntaxException("No such item " + JsonHelper.getString(json, "outputItem")));
-			ItemStack output = new ItemStack(outputItem, JsonHelper.getInt(json,"outputCount", 1));
+			//Summons
+			var summonArray = JsonHelper.getArray(json, "summons");
+			List<EntityType<?>> summons = RecipeUtils.deserializeEntityTypes(summonArray);
 
+			//Duration
 			int duration = JsonHelper.getInt(json, "duration", 20 * 8);
 
-			Enchantment enchantment = Registry.ENCHANTMENT.get(new Identifier(JsonHelper.getString(json, "enchantment", "unbreaking")));
-			int enchantmentLevel = JsonHelper.getInt(json, "enchantmentLevel", 1);
+			//StatusEffect
+			var statusList = JsonHelper.getArray(json, "statusEffects");
+			List<StatusEffectInstance> statusEffectInstanceList = RecipeUtils.deserializeStatusEffects(statusList);
 
-			StatusEffectInstance statusEffectInstance = new StatusEffectInstance(
-					Registry.STATUS_EFFECT.getOrEmpty(new Identifier(JsonHelper.getString(json, "statusEffect", "speed"))).orElseThrow(() -> new JsonSyntaxException("No such statusEffect")),
-					JsonHelper.getInt(json, "statusEffectDuration", 0),
-					JsonHelper.getInt(json, "statusEffectAmplifier", 0));
-			return new RitualRecipe(id, ingredients, inputEntityType, inputEntityCount, output, enchantment, enchantmentLevel, outputEntityType, outputEntityCount, ritual, duration, requireBotD, requireEmeraldTablet, statusEffectInstance);
+			//Command
+			JsonArray commandArray = JsonHelper.getArray(json, "commands");
+			Set<CommandType> commands = RecipeUtils.deserializeCommands(commandArray);
+
+			return new RitualRecipe(id, ritual, requireBotD, requireEmeraldTablet, duration, inputs, outputs, sacrifices, summons, statusEffectInstanceList, commands);
 		}
 
-		private Ingredient[] readIngredients(JsonArray json) {
-			List<Ingredient> ingredients = new ArrayList<>();
-			json.forEach(jsonElement -> ingredients.add(Ingredient.fromJson(jsonElement)));
-			return ingredients.toArray(new Ingredient[ingredients.size()]);
-		}
+
 
 		@Override
 		public RitualRecipe read(Identifier id, PacketByteBuf buf) {
+			//Ritual
 			NecrotableRitual rite = BotDRegistries.NECROTABLE_RITUALS.get(buf.readIdentifier());
 			boolean requireBotD = buf.readBoolean();
 			boolean requireEmeraldTablet = buf.readBoolean();
-			int sizeIngredients = buf.readInt();
-			ItemStack itemStack = buf.readItemStack();
-			Enchantment enchantment = Registry.ENCHANTMENT.get(new Identifier(buf.readString()));
-			int enchantmentLevel = buf.readInt();
-			List<Ingredient> ingredients = new ArrayList<>();
-			for (int i = 0; i < sizeIngredients; i++) {
-				ingredients.add(Ingredient.fromPacket(buf));
-			}
-			final EntityType<?> inputEntityType = Registry.ENTITY_TYPE.get(new Identifier(buf.readString()));
-			int inputEntityCount = buf.readInt();
 
-			final EntityType<?> outputEntityType = Registry.ENTITY_TYPE.get(new Identifier(buf.readString()));
-			int outputEntityCount = buf.readInt();
+			//Inputs
+			DefaultedList<Ingredient> inputs = DefaultedList.ofSize(buf.readVarInt(), Ingredient.EMPTY);
+			inputs.replaceAll(ignored -> Ingredient.fromPacket(buf));
+
+			//Outputs
+			DefaultedList<ItemStack> outputs = DefaultedList.ofSize(buf.readVarInt(), ItemStack.EMPTY);
+			outputs.replaceAll(ignored -> buf.readItemStack());
+
+			//Sacrifices
+			int sacrificeSize = buf.readInt();
+			List<EntityType<?>> sacrificeList = IntStream.range(0, sacrificeSize).mapToObj(i -> Registry.ENTITY_TYPE.get(new Identifier(buf.readString()))).collect(Collectors.toList());
+
+			//Summons
+			int summonsSize = buf.readInt();
+			List<EntityType<?>> summons = IntStream.range(0, summonsSize).mapToObj(i -> Registry.ENTITY_TYPE.get(new Identifier(buf.readString()))).collect(Collectors.toList());
+
+			//Duration
 			int duration = buf.readInt();
 
-			final StatusEffectInstance statusEffectInstance = new StatusEffectInstance(
-					Registry.STATUS_EFFECT.getOrEmpty(new Identifier(buf.readString())).orElseThrow(() -> new JsonSyntaxException("No such statusEffect")), buf.readInt(), buf.readInt());
-			return new RitualRecipe(id, ingredients.toArray(new Ingredient[ingredients.size()]), inputEntityType, inputEntityCount, itemStack,enchantment, enchantmentLevel, outputEntityType, outputEntityCount, rite, duration, requireBotD, requireEmeraldTablet, statusEffectInstance);
+			//StatusEffect
+			int effectSize = buf.readInt();
+			List<StatusEffectInstance> statusEffectInstanceList = IntStream.range(0, effectSize).mapToObj(i -> {
+				StatusEffect effect = Registry.STATUS_EFFECT.get(new Identifier(buf.readString()));
+				if (effect != null) {
+					return new StatusEffectInstance(effect, buf.readInt(), buf.readInt());
+				}
+				return null;
+			}).collect(Collectors.toList());
+
+			//Commands
+			Set<CommandType> commandTypeSet = new HashSet<>();
+			for (int i = 0; i < buf.readInt(); i++) {
+				commandTypeSet.add(new CommandType(buf.readString(), buf.readString()));
+			}
+
+			return new RitualRecipe(id, rite, requireBotD, requireEmeraldTablet, duration, inputs, outputs, sacrificeList, summons, statusEffectInstanceList, commandTypeSet);
 		}
 
 		@Override
@@ -219,19 +247,47 @@ public class RitualRecipe implements Recipe<Inventory> {
 			buf.writeIdentifier(recipe.ritual.getId());
 			buf.writeBoolean(recipe.requireBotD);
 			buf.writeBoolean(recipe.requireEmeraldTablet);
-			buf.writeInt(recipe.ingredients.size());
-			buf.writeItemStack(recipe.output);
-			buf.writeString(Registry.ENCHANTMENT.getId(recipe.enchantment).toString());
-			buf.writeInt(recipe.enchantmentLevel);
-			recipe.ingredients.forEach(i -> i.write(buf));
-			buf.writeString(Registry.ENTITY_TYPE.getId(recipe.inputEntityType).toString());
-			buf.writeInt(recipe.inputEntityCount);
-			buf.writeString(Registry.ENTITY_TYPE.getId(recipe.outputEntityType).toString());
-			buf.writeInt(recipe.outputEntityCount);
+
+			//Inputs
+			buf.writeVarInt(recipe.inputs.size());
+			for (Ingredient ingredient : recipe.inputs) {
+				ingredient.write(buf);
+			}
+			//Outputs
+			buf.writeVarInt(recipe.outputs.size());
+			for (ItemStack stack : recipe.outputs) {
+				buf.writeItemStack(stack);
+			}
+
+			//Sacrifices
+			buf.writeInt(recipe.sacrifices.size());
+			for (EntityType<?> entityType : recipe.sacrifices) {
+				buf.writeString(Registry.ENTITY_TYPE.getId(entityType).toString());
+			}
+
+			//Summons
+			buf.writeInt(recipe.summons.size());
+			for (EntityType<?> entityType : recipe.summons) {
+				buf.writeString(Registry.ENTITY_TYPE.getId(entityType).toString());
+			}
+
+			//Duration
 			buf.writeInt(recipe.duration);
-			buf.writeString(Registry.STATUS_EFFECT.getId(recipe.statusEffectInstance.getEffectType()).toString());
-			buf.writeInt(recipe.statusEffectInstance.getDuration());
-			buf.writeInt(recipe.statusEffectInstance.getAmplifier());
+
+			//Effects
+			buf.writeVarInt(recipe.statusEffectInstance.size());
+			for (StatusEffectInstance effectInstance : recipe.statusEffectInstance) {
+				buf.writeString(Registry.STATUS_EFFECT.getId(effectInstance.getEffectType()).toString());
+				buf.writeInt(effectInstance.getDuration());
+				buf.writeInt(effectInstance.getAmplifier());
+			}
+
+			//Commands
+			buf.writeVarInt(recipe.command.size());
+			for (CommandType commandType : recipe.command) {
+				buf.writeString(commandType.getCommand());
+				buf.writeString(commandType.getType());
+			}
 		}
 
 		@Override

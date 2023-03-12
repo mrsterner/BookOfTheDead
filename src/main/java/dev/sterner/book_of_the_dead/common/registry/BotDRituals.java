@@ -14,7 +14,6 @@ public class BotDRituals {
 
 	public static final NecrotableRitual SUMMON_ZOMBIE = register("summon_zombie", new SummonUndeadRitual(new Identifier("summon_zombie"), new Identifier(""), new Identifier("")));
 	public static final NecrotableRitual CREATE_ITEM = register("create_item", new CreateItemRitual(new Identifier("create_item"), new Identifier(""), new Identifier("")));
-	public static final NecrotableRitual ENCHANT_ITEM = register("enchant_item", new EnchantItemRitual(new Identifier("enchant_item"), new Identifier(""), new Identifier("")));
 	public static final NecrotableRitual STATUS_EFFECT = register("status_effect", new StatusEffectRitual(new Identifier("status_effect"), new Identifier(""), new Identifier("")));
 
 

@@ -28,8 +28,9 @@ public class CreateItemRitual extends ConsumeItemsRitual {
 				if(world instanceof ServerWorld serverWorld){
 					serverWorld.playSound(null, x, y, z, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, 1F,1F);
 				}
-				ItemStack out = recipe.output.copy();
-				ItemScatterer.spawn(world, x, y, z, out);
+				for(ItemStack output : recipe.outputs){
+					ItemScatterer.spawn(world, x, y, z, output);
+				}
 			}
 		}
 		super.onStopped(world, blockPos, blockEntity);

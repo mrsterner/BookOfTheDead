@@ -28,7 +28,7 @@ public class BotDObjects {
 	public static final Map<Block, Identifier> BLOCKS = new LinkedHashMap<>();
 	public static final Map<Item, Identifier> ITEMS = new LinkedHashMap<>();
 
-	public static final Item DEBUG_WAND = register("debug_wand", new DebugWandItem(settings()));
+	//public static final Item DEBUG_WAND = register("debug_wand", new DebugWandItem(settings()));
 
 	public static final Item PAPER_AND_QUILL = register("paper_and_quill", new Item(settings().maxCount(1)));
 	public static final Item CARPENTER_TOOLS = register("carpenter_tools", new Item(settings().maxCount(1).maxDamage(32)));

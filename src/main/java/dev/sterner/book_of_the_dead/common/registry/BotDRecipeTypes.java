@@ -56,7 +56,7 @@ public class BotDRecipeTypes {
 	public static RitualRecipe getRiteRecipe(RitualBlockEntity ritualBlockEntity) {
 		World world = ritualBlockEntity.getWorld();
 		return world.getRecipeManager().listAllOfType(RITUAL_RECIPE_TYPE).stream()
-				.filter(r -> BotDUtils.containsAllIngredients(r.ingredients.stream()
+				.filter(r -> BotDUtils.containsAllIngredients(r.inputs.stream()
 						.filter(ingredient -> !ingredient.isEmpty()).collect(Collectors.toList()), ritualBlockEntity.getPedestalInfo(world).stream().map(Pair::getLeft).toList()))
 				.findFirst().orElse(null);
 	}

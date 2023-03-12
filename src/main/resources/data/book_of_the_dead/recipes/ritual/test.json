@@ -3,28 +3,12 @@
   "ritual": "book_of_the_dead:create_item",
   "requireBotD": false,
   "requireEmeraldTablet": true,
-  "ingredients": [
-    {
-      "item": "stick"
-    },
-    {
-      "item": "apple"
-    }
-  ],
-  "inputEntityType": "",
-  "inputEntityCount": 1,
+  "duration": 160,
 
-  "outputEntityType": "",
-  "outputEntityCount": 1,
-
-  "outputItem": "minecraft:diamond",
-  "outputAmount": 1,
-  "enchantment": "",
-  "enchantmentLevel": 1,
-
-  "statusEffect": "speed",
-  "statusEffectDuration": 1,
-  "statusEffectAmplifier": 0,
-
-  "duration": 160
+  "inputs": [],
+  "outputs": [],
+  "sacrifices": [],
+  "summons": [],
+  "commands": [],
+  "effects": []
 }
