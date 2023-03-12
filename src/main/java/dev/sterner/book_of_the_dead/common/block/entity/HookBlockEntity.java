@@ -15,6 +15,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ItemScatterer;
@@ -59,19 +61,20 @@ public class HookBlockEntity extends BaseButcherBlockEntity {
 				List<ItemStack> nonEmptyOutput = this.outputs.stream().filter(item -> !item.isEmpty() || !item.isOf(Items.AIR) || item.getCount() != 0).toList();
 				List<Float> nonEmptyChance = this.chances.stream().filter(chance -> chance != 0).toList();
 				if(nonEmptyOutput.size() > 0){
-					double butcherLevel = BotDComponents.PLAYER_COMPONENT.maybeGet(player).map(PlayerDataComponent::getButcheringModifier).orElse(1D);
-					double chance = ((0.25D + (hookedAge > 0 ? (float)(Constants.Values.BLEEDING / hookedAge) : 0))) * butcherLevel;
-					if(world.getRandom().nextDouble() < chance) {
+					double butcherModifier = BotDComponents.PLAYER_COMPONENT.maybeGet(player).map(PlayerDataComponent::getButcheringModifier).orElse(1D);
+					if(world.getRandom().nextFloat() < (0.25f + (hookedAge > 0 ? (float)(Constants.Values.BLEEDING / hookedAge) : 1) * butcherModifier)) {
 						if (nonEmptyChance.size() > 0) {
 							if (world.getRandom().nextFloat() < nonEmptyChance.get(0)) {
 								ItemScatterer.spawn(world, pos.getX() + 0.5, pos.getY() + 1.2, pos.getZ() + 0.5, nonEmptyOutput.get(0));
-								this.chances.set(0, 0F);
 							}
 						} else {
 							ItemScatterer.spawn(world, pos.getX() + 0.5, pos.getY() + 1.2, pos.getZ() + 0.5, nonEmptyOutput.get(0));
 						}
 					}
 					this.outputs.set(0, ItemStack.EMPTY);
+					this.chances.set(0, 0F);
+					world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.BLOCK_HONEY_BLOCK_BREAK, SoundCategory.PLAYERS, 2,1);
+					world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_PLAYER_ATTACK_CRIT, SoundCategory.PLAYERS, 1,1);
 					nonEmptyOutput = this.outputs.stream().filter(item -> !item.isEmpty() || !item.isOf(Items.AIR) || item.getCount() != 0).toList();
 					if(nonEmptyOutput.isEmpty()){
 						reset();

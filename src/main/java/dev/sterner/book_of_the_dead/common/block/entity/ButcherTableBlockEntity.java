@@ -43,6 +43,7 @@ public class ButcherTableBlockEntity extends BaseButcherBlockEntity implements I
 					if(!nbtCompound.isEmpty()){
 						setCorpse(nbtCompound);
 						hauler.clearCorpseData();
+						markDirty();
 					}
 				}
 			});
@@ -50,38 +51,21 @@ public class ButcherTableBlockEntity extends BaseButcherBlockEntity implements I
 
 				refreshButcheringRecipe();
 
-				if(player.isSneaking() && player.getMainHandStack().isEmpty() && (this.butcheringRecipe == null || this.outputs.get(0).isOf(this.butcheringRecipe.getOutputs().stream().map(Pair::getFirst).toList().get(0).getItem()))){
-					IHauler.of(player).ifPresent(hauler ->{
-						Optional<Entity> entity = EntityType.getEntityFromNbt(getCorpseEntity(), world);
+				if (player.getMainHandStack().isOf(BotDObjects.BUTCHER_KNIFE)){
 
-						if(hauler.getCorpseEntity().isEmpty() && entity.isPresent() && entity.get() instanceof LivingEntity livingEntity){
-							hauler.setCorpseEntity(livingEntity);
-							clearCorpseData();
-							markDirty();
-							this.outputs = DefaultedList.ofSize(8, ItemStack.EMPTY);
-							this.chances = DefaultedList.ofSize(8, 1.0f);
-						}
-					});
-					this.resetRecipe = true;
-				} else if(player.getMainHandStack().isOf(BotDObjects.BUTCHER_KNIFE)){
-					world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.BLOCK_HONEY_BLOCK_BREAK, SoundCategory.PLAYERS, 2,1);
-					world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_PLAYER_ATTACK_CRIT, SoundCategory.PLAYERS, 1,1);
 					List<ItemStack> nonEmptyOutput = this.outputs.stream().filter(item -> !item.isEmpty() || !item.isOf(Items.AIR) || item.getCount() != 0).toList();
 					List<Float> nonEmptyChance = this.chances.stream().filter(chance -> chance != 0).toList();
 					if(nonEmptyOutput.size() > 0){
 						double butcherLevel = BotDComponents.PLAYER_COMPONENT.maybeGet(player).map(PlayerDataComponent::getButcheringModifier).orElse(1D);
-						double chance = 0.5D * butcherLevel;
-						if(world.getRandom().nextDouble() < chance){
-							if(nonEmptyChance.size() > 0){
-								if(world.getRandom().nextFloat() < nonEmptyChance.get(0)){
-									ItemScatterer.spawn(world, pos.getX() + 0.5, pos.getY() + 1.2, pos.getZ() + 0.5, nonEmptyOutput.get(0));
-									this.chances.set(0, 0F);
-								}
-							}else{
-								ItemScatterer.spawn(world, pos.getX() + 0.5, pos.getY() + 1.2, pos.getZ() + 0.5, nonEmptyOutput.get(0));
-							}
-						}
+						double chance = 0.5D + 0.5D * butcherLevel;
+						System.out.println("chance: " + chance + " : " + nonEmptyChance + " : Items: " + nonEmptyOutput);
 
+						nonEmptyOutput.get(0).setCount(world.getRandom().nextDouble() < chance ? 1 : 0);
+						ItemScatterer.spawn(world, pos.getX() + 0.5, pos.getY() + 1.2, pos.getZ() + 0.5, nonEmptyOutput.get(0));
+
+						world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.BLOCK_HONEY_BLOCK_BREAK, SoundCategory.PLAYERS, 2,1);
+						world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_PLAYER_ATTACK_CRIT, SoundCategory.PLAYERS, 1,1);
+						this.chances.set(0, 0F);
 						this.outputs.set(0, ItemStack.EMPTY);
 						nonEmptyOutput = this.outputs.stream().filter(item -> !item.isEmpty() || !item.isOf(Items.AIR) || item.getCount() != 0).toList();
 						if(nonEmptyOutput.isEmpty()){

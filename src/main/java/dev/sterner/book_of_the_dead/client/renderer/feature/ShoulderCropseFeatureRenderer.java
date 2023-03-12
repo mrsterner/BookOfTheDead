@@ -80,11 +80,11 @@ public class ShoulderCropseFeatureRenderer extends FeatureRenderer<AbstractClien
 	public void renderHumanoid(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, LivingEntity livingEntity){
 		matrices.push();
 		if(livingEntity.isBaby()){
-			matrices.translate(0,-0.25,0);
+			matrices.translate(0,-0.25,0.5);
 		}else{
 			float f = 0.75f;
 			matrices.scale(f,f,f);
-			matrices.translate(0,-0.75,0);
+			matrices.translate(0,-0.75,0.5);
 		}
 		dispatcher.render(livingEntity, 0, 0, 0, 0, 0, matrices, vertexConsumers, light);
 		matrices.pop();
