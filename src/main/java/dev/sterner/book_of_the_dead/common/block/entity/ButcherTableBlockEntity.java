@@ -61,8 +61,6 @@ public class ButcherTableBlockEntity extends BaseButcherBlockEntity implements I
 					});
 					this.resetRecipe = true;
 				} else if(player.getMainHandStack().isOf(BotDObjects.BUTCHER_KNIFE)){
-					player.swingHand(hand);
-					player.swingHand(hand, true);
 					world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.BLOCK_HONEY_BLOCK_BREAK, SoundCategory.PLAYERS, 2,1);
 					world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_PLAYER_ATTACK_CRIT, SoundCategory.PLAYERS, 1,1);
 					List<ItemStack> nonEmptyOutput = this.outputs.stream().filter(item -> !item.isEmpty() || !item.isOf(Items.AIR) || item.getCount() != 0).toList();
@@ -76,23 +74,15 @@ public class ButcherTableBlockEntity extends BaseButcherBlockEntity implements I
 						}else{
 							ItemScatterer.spawn(world, pos.getX() + 0.5, pos.getY() + 1.2, pos.getZ() + 0.5, nonEmptyOutput.get(0));
 						}
+
 						this.outputs.set(0, ItemStack.EMPTY);
 						nonEmptyOutput = this.outputs.stream().filter(item -> !item.isEmpty() || !item.isOf(Items.AIR) || item.getCount() != 0).toList();
 						if(nonEmptyOutput.isEmpty()){
-							clearCorpseData();
-							clear();
-							this.setCorpse(new NbtCompound());
-							butcheringRecipe = null;
-							resetRecipe = true;
-							markDirty();
+							reset();
 						}
+						return ActionResult.CONSUME;
 					}else {
-						clearCorpseData();
-						this.setCorpse(new NbtCompound());
-						butcheringRecipe = null;
-						resetRecipe = true;
-						clear();
-						markDirty();
+						reset();
 					}
 				}
 			}

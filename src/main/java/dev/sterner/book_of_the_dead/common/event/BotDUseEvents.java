@@ -28,17 +28,17 @@ import net.minecraft.world.World;
 
 import static net.minecraft.block.HorizontalFacingBlock.FACING;
 
-public class UseEvents {
+public class BotDUseEvents {
 
 
 	public static void init(){
-		UseBlockCallback.EVENT.register(UseEvents::placeCorpse);
-		UseBlockCallback.EVENT.register(UseEvents::extendRope);
-		UseBlockCallback.EVENT.register(UseEvents::placeHook);
-		UseBlockCallback.EVENT.register(UseEvents::placeMetalHook);
-		UseBlockCallback.EVENT.register(UseEvents::createNecroTable);
-		UseBlockCallback.EVENT.register(UseEvents::createButcherTable);
-		UseBlockCallback.EVENT.register(UseEvents::createPedestalAndRitual);
+		UseBlockCallback.EVENT.register(BotDUseEvents::placeCorpse);
+		UseBlockCallback.EVENT.register(BotDUseEvents::extendRope);
+		UseBlockCallback.EVENT.register(BotDUseEvents::placeHook);
+		UseBlockCallback.EVENT.register(BotDUseEvents::placeMetalHook);
+		UseBlockCallback.EVENT.register(BotDUseEvents::createNecroTable);
+		UseBlockCallback.EVENT.register(BotDUseEvents::createButcherTable);
+		UseBlockCallback.EVENT.register(BotDUseEvents::createPedestalAndRitual);
 	}
 
 	private static void addParticle(World world, BlockPos blockPos, BlockState blockState){

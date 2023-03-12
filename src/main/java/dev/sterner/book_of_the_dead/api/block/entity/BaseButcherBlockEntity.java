@@ -72,6 +72,15 @@ public class BaseButcherBlockEntity extends BlockEntity implements IHauler, IBlo
 		}
 	}
 
+	public void reset(){
+		clearCorpseData();
+		clear();
+		this.setCorpse(new NbtCompound());
+		butcheringRecipe = null;
+		resetRecipe = true;
+		markDirty();
+	}
+
 	@Override
 	protected void writeNbt(NbtCompound nbt) {
 		super.writeNbt(nbt);

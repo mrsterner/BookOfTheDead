@@ -129,19 +129,17 @@ public class RitualBlockEntity extends BaseBlockEntity {
 	}
 
 	public boolean checkTier(RitualBlockEntity blockEntity){
-		if(!blockEntity.ritualRecipe.requireEmeraldTablet && !blockEntity.ritualRecipe.requireBotD){
+		boolean tablet = blockEntity.ritualRecipe.requireEmeraldTablet;
+		boolean botD = blockEntity.ritualRecipe.requireBotD;
+		boolean tabletMatch = tablet && blockEntity.hasEmeraldTablet;
+		boolean botDMatch = botD && blockEntity.hasBotD;
+		if(!tablet && !botD){
 			return true;
 		}
-		if(blockEntity.ritualRecipe.requireBotD && blockEntity.hasBotD && blockEntity.ritualRecipe.requireEmeraldTablet && blockEntity.hasEmeraldTablet){
+		if(botDMatch && tabletMatch){
 			return true;
 		}
-		if(blockEntity.ritualRecipe.requireBotD && blockEntity.hasBotD){
-			return true;
-		}
-		if(blockEntity.ritualRecipe.requireEmeraldTablet && blockEntity.hasEmeraldTablet){
-			return true;
-		}
-		return false;
+		return botDMatch || tabletMatch;
 	}
 
 	public void reset(RitualBlockEntity blockEntity){

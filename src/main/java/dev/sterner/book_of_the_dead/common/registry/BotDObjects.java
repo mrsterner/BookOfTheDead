@@ -62,9 +62,9 @@ public class BotDObjects {
 
 	public static final Block RETORT_FLASK_BLOCK = register("retort_flask_block", new RetortFlaskBlock(QuiltBlockSettings.of(Material.GLASS)), settings(), false);
 	public static final Item RETORT_FLASK = register("retort_flask", new BlockItem(RETORT_FLASK_BLOCK, settings()));
-	public static final Item QUICKSILVER = register("quicksilver", new Item(settings()));
-	public static final Item SOUL_GEM = register("soul_gem", new Item(settings()));
-	public static final Item CINNABAR = register("cinnabar", new Item(settings()));
+	//public static final Item QUICKSILVER = register("quicksilver", new Item(settings()));
+	//public static final Item SOUL_GEM = register("soul_gem", new Item(settings()));
+	//public static final Item CINNABAR = register("cinnabar", new Item(settings()));
 	public static final Item EMERALD_TABLET = register("emerald_tablet", new Item(settings()));
 
 

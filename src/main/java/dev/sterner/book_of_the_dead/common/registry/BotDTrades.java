@@ -18,7 +18,7 @@ public class BotDTrades {
 	public static final Int2ObjectMap<TradeOffers.Factory[]> OLD_MAN_TRADES = new Int2ObjectArrayMap<>();
 
 	public static final TradeOffers.Factory LEGEMETON_OFFER = new ItemToItemOffer(new ItemStack(BotDObjects.BOOK_OF_THE_DEAD), BotDObjects.OLD_LETTER, 1,10, 0.2F);
-	public static final TradeOffers.Factory CELLAR_KEY_OFFER = new ItemToItemOffer(new ItemStack(BotDObjects.CELLAR_KEY), BotDObjects.SOUL_GEM, 1,10, 0.2F);
+	public static final TradeOffers.Factory CELLAR_KEY_OFFER = new EmeraldToItemOffer(new ItemStack(BotDObjects.CELLAR_KEY), 24, 1,10, 0.2F);
 
 
 	public static void init() {

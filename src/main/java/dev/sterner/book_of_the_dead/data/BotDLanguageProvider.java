@@ -31,9 +31,9 @@ public class BotDLanguageProvider extends FabricLanguageProvider {
 		builder.add(BotDObjects.HOOK, "Hook");
 		builder.add(BotDObjects.METAL_HOOK, "Metal Hook");
 		builder.add(BotDObjects.ALL_BLACK, "All-Black");
-		builder.add(BotDObjects.QUICKSILVER, "Quicksilver");
-		builder.add(BotDObjects.SOUL_GEM, "Soul Gem");
-		builder.add(BotDObjects.CINNABAR, "Cinnabar");
+		//builder.add(BotDObjects.QUICKSILVER, "Quicksilver");
+		//builder.add(BotDObjects.SOUL_GEM, "Soul Gem");
+		//builder.add(BotDObjects.CINNABAR, "Cinnabar");
 		builder.add(BotDObjects.CELLAR_KEY, "Cellar Key");
 		builder.add(BotDObjects.REINFORCED_DOOR, "Reinforced Door");
 		builder.add(BotDObjects.REINFORCED_BLOCK, "Reinforced Block");

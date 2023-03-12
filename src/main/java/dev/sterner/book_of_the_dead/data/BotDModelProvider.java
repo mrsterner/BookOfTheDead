@@ -39,9 +39,9 @@ public class BotDModelProvider extends FabricModelProvider {
 		itemModelGenerator.register(BotDObjects.SKIN, Models.GENERATED);
 		itemModelGenerator.register(BotDObjects.BOTTLE_OF_BLOOD, Models.GENERATED);
 		itemModelGenerator.register(BotDObjects.ROPE.asItem(), Models.GENERATED);
-		itemModelGenerator.register(BotDObjects.QUICKSILVER, Models.GENERATED);
-		itemModelGenerator.register(BotDObjects.SOUL_GEM, Models.GENERATED);
-		itemModelGenerator.register(BotDObjects.CINNABAR, Models.GENERATED);
+		//itemModelGenerator.register(BotDObjects.QUICKSILVER, Models.GENERATED);
+		//itemModelGenerator.register(BotDObjects.SOUL_GEM, Models.GENERATED);
+		//itemModelGenerator.register(BotDObjects.CINNABAR, Models.GENERATED);
 		itemModelGenerator.register(BotDObjects.CELLAR_KEY, Models.GENERATED);
 		itemModelGenerator.register(BotDObjects.OLD_LETTER, Models.GENERATED);
 		itemModelGenerator.register(BotDObjects.RETORT_FLASK, Models.GENERATED);
