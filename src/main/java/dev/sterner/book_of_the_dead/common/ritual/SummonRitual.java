@@ -10,8 +10,8 @@ import net.minecraft.world.World;
 
 public class SummonRitual extends NecrotableRitual {
 
-	public SummonRitual(Identifier id, Identifier largeCircleSprite, Identifier smallCircleSprite) {
-		super(id, largeCircleSprite, smallCircleSprite);
+	public SummonRitual(Identifier id) {
+		super(id);
 	}
 
 

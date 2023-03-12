@@ -1,6 +1,5 @@
 package dev.sterner.book_of_the_dead.common.ritual;
 
-import dev.sterner.book_of_the_dead.api.NecrotableRitual;
 import dev.sterner.book_of_the_dead.common.block.entity.RitualBlockEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
@@ -11,9 +10,11 @@ import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class CreateItemRitual extends NecrotableRitual {
-	public CreateItemRitual(Identifier id) {
+
+public class CreateAndConsumeItemRitual extends ConsumeItemsRitual {
+	public CreateAndConsumeItemRitual(Identifier id) {
 		super(id);
+		height = 1;
 	}
 
 	@Override

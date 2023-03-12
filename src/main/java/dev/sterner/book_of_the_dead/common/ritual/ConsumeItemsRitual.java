@@ -21,8 +21,8 @@ import java.util.List;
 
 public class ConsumeItemsRitual extends NecrotableRitual {
 	private int index = 0;
-	public ConsumeItemsRitual(Identifier id, Identifier largeCircleSprite, Identifier smallCircleSprite) {
-		super(id, largeCircleSprite, smallCircleSprite);
+	public ConsumeItemsRitual(Identifier id) {
+		super(id);
 	}
 
 	@Override

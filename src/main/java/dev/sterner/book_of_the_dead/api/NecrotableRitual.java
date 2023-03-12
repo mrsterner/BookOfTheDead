@@ -1,10 +1,14 @@
 package dev.sterner.book_of_the_dead.api;
 
+import com.mojang.brigadier.ParseResults;
 import dev.sterner.book_of_the_dead.common.block.entity.RitualBlockEntity;
 import dev.sterner.book_of_the_dead.common.recipe.RitualRecipe;
 import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
 import net.minecraft.entity.Entity;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.command.CommandManager;
+import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -16,8 +20,6 @@ import java.util.UUID;
 
 public class NecrotableRitual {
 	private final Identifier id;
-	public final Identifier smallCircleSprite;
-	public final Identifier largeCircleSprite;
 	public BlockPos ritualCenter = null;
 	public RitualRecipe recipe;
 	public List<Entity> summons = new ArrayList<>();
@@ -26,22 +28,28 @@ public class NecrotableRitual {
 	public UUID user = null;
 	public int height = 0;
 
-	public NecrotableRitual(Identifier id, Identifier largeCircleSprite, Identifier smallCircleSprite) {
+	public NecrotableRitual(Identifier id) {
 		this.id = id;
-		this.smallCircleSprite = smallCircleSprite;
-		this.largeCircleSprite = largeCircleSprite;
 	}
 
 	public void tick(World world, BlockPos blockPos, RitualBlockEntity blockEntity) {
 		ticker++;
-		BlockPos blockPos1 = blockPos.add(0.5,0.5,0.5);
-		ritualCenter = blockPos1;
-		world.addParticle(ParticleTypes.SMALL_FLAME, ritualCenter.getX(), ritualCenter.getY(), ritualCenter.getZ(), 0,0,0);
+		MinecraftServer minecraftServer = world.getServer();
+		for (CommandType commandType : blockEntity.ritualRecipe.command) {
+			if (commandType.type.equals("tick")) {
+				runCommand(minecraftServer, blockPos, commandType.command);
+			}
+		}
 	}
 
 	public void onStopped(World world, BlockPos blockPos, RitualBlockEntity blockEntity){
 		ticker = 0;
-
+		MinecraftServer minecraftServer = world.getServer();
+		for (CommandType commandType : blockEntity.ritualRecipe.command) {
+			if (commandType.type.equals("end")) {
+				runCommand(minecraftServer, blockPos, commandType.command);
+			}
+		}
 	}
 
 	public void onStart(World world, BlockPos blockPos, RitualBlockEntity blockEntity){
@@ -50,10 +58,28 @@ public class NecrotableRitual {
 				this.world = world;
 			}
 			ritualCenter = blockPos.add(0.5,0.5,0.5);
+			MinecraftServer minecraftServer = world.getServer();
+			for (CommandType commandType : blockEntity.ritualRecipe.command) {
+				if (commandType.type.equals("start")) {
+					runCommand(minecraftServer, blockPos, commandType.command);
+				}
+			}
 		}
 	}
 
 	public Identifier getId() {
 		return id;
+	}
+
+	//TODO test this
+	public void runCommand(MinecraftServer minecraftServer, BlockPos blockPos, String command) {
+		if (minecraftServer != null && !command.isEmpty()) {
+			String posString = blockPos.getX() + " " + blockPos.getY() + " " + blockPos.getZ();
+			String parsedCommand = command.replaceAll("\\{pos}", posString);
+			ServerCommandSource commandSource = minecraftServer.getCommandSource();
+			CommandManager commandManager = minecraftServer.getCommandManager();
+			ParseResults<ServerCommandSource> parseResults = commandManager.getDispatcher().parse(parsedCommand, commandSource);
+			commandManager.execute(parseResults, parsedCommand);
+		}
 	}
 }
