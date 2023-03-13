@@ -23,6 +23,8 @@ public class BotDModelProvider extends FabricModelProvider {
 
 	@Override
 	public void generateItemModels(ItemModelGenerator itemModelGenerator) {
+		itemModelGenerator.register(BotDObjects.DEBUG_WAND, Models.GENERATED);
+
 		itemModelGenerator.register(BotDObjects.BOOK_OF_THE_DEAD, Models.GENERATED);
 		itemModelGenerator.register(BotDObjects.SIGNED_CONTRACT, Models.GENERATED);
 		itemModelGenerator.register(BotDObjects.CONTRACT, Models.GENERATED);

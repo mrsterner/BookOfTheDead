@@ -56,8 +56,11 @@ public class BotDClient implements ClientModInitializer {
 		BlockEntityRendererFactories.register(BotDBlockEntityTypes.PEDESTAL, PedestalBlockEntityRenderer::new);
 		BlockEntityRendererFactories.register(BotDBlockEntityTypes.RITUAL, RitualBlockEntityRenderer::new);
 		BlockEntityRendererFactories.register(BotDBlockEntityTypes.RETORT, RetortFlaskBlockEntityRenderer::new);
+		BlockEntityRendererFactories.register(BotDBlockEntityTypes.HEAD, ctx -> new BotDSkullBlockEntityRenderer());
 
 		BuiltinItemRendererRegistry.INSTANCE.register(BotDObjects.JAR, new JarBlockEntityRenderer());
+		BuiltinItemRendererRegistry.INSTANCE.register(BotDObjects.VILLAGER_HEAD, new BotDSkullBlockEntityRenderer());
+		BuiltinItemRendererRegistry.INSTANCE.register(BotDObjects.VILLAGER_WALL_HEAD, new BotDSkullBlockEntityRenderer());
 		//EntityRendererRegistry.register(BotDEntityTypes.CORPSE_ENTITY, CorpseEntityRenderer::new);
 		EntityRendererRegistry.register(BotDEntityTypes.OLD_MAN_ENTITY, OldManEntityRenderer::new);
 		EntityRendererRegistry.register(BotDEntityTypes.BLOOD_SLIME_ENTITY, BloodSlimeEntityRenderer::new);
@@ -72,6 +75,7 @@ public class BotDClient implements ClientModInitializer {
 		EntityModelLayerRegistry.registerModelLayer(BloodSlimeEntityModel.OUTER_LAYER_LOCATION, BloodSlimeEntityModel::createOverylayBodyLayer);
 		EntityModelLayerRegistry.registerModelLayer(BrainEntityModel.LAYER_LOCATION, BrainEntityModel::createBodyLayer);
 		EntityModelLayerRegistry.registerModelLayer(RetortFlaskBlockEntityRenderer.LAYER_LOCATION, RetortFlaskBlockEntityRenderer::createBodyLayer);
+		EntityModelLayerRegistry.registerModelLayer(BotDSkullBlockEntityModel.LAYER_LOCATION, BotDSkullBlockEntityModel::getSkullTexturedModelData);
 
 		BotDSpriteIdentifiers.INSTANCE.addIdentifier(BotDSpriteIdentifiers.BLOOD);
 

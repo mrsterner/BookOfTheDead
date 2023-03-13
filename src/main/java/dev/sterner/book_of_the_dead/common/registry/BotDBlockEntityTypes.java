@@ -35,6 +35,10 @@ public class BotDBlockEntityTypes {
 	public static final BlockEntityType<RetortFlaskBlockEntity> RETORT = register("retort",
 			QuiltBlockEntityTypeBuilder.create(RetortFlaskBlockEntity::new, BotDObjects.RETORT_FLASK_BLOCK).build());
 
+	public static final BlockEntityType<BotDSkullBlockEntity> HEAD = register("head",
+			QuiltBlockEntityTypeBuilder.create(BotDSkullBlockEntity::new, BotDObjects.VILLAGER_HEAD, BotDObjects.VILLAGER_WALL_HEAD).build());
+
+
 
 	private static <T extends BlockEntity> BlockEntityType<T> register(String name, BlockEntityType<T> type) {
 		BLOCK_ENTITY_TYPES.put(type, Constants.id(name));

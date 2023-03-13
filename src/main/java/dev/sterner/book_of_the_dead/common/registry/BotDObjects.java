@@ -4,10 +4,9 @@ import dev.sterner.book_of_the_dead.BotD;
 import dev.sterner.book_of_the_dead.common.block.*;
 import dev.sterner.book_of_the_dead.common.item.AllBlackSwordItem;
 import dev.sterner.book_of_the_dead.common.item.BotDItem;
+import dev.sterner.book_of_the_dead.common.item.DebugWandItem;
 import dev.sterner.book_of_the_dead.common.util.Constants;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.Material;
+import net.minecraft.block.*;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.*;
 import net.minecraft.sound.BlockSoundGroup;
@@ -27,7 +26,7 @@ public class BotDObjects {
 	public static final Map<Block, Identifier> BLOCKS = new LinkedHashMap<>();
 	public static final Map<Item, Identifier> ITEMS = new LinkedHashMap<>();
 
-	//public static final Item DEBUG_WAND = register("debug_wand", new DebugWandItem(settings()));
+	public static final Item DEBUG_WAND = register("debug_wand", new DebugWandItem(settings()));
 
 	public static final Item PAPER_AND_QUILL = register("paper_and_quill", new Item(settings().maxCount(1)));
 	public static final Item CARPENTER_TOOLS = register("carpenter_tools", new Item(settings().maxCount(1).maxDamage(32)));
@@ -59,6 +58,9 @@ public class BotDObjects {
 	public static final Item FAT = register("fat", new Item(settings()));
 	public static final Item SKIN = register("skin", new Item(settings()));
 	public static final Item BOTTLE_OF_BLOOD = register("bottle_of_blood", new Item(settings()));
+
+	public static final Block VILLAGER_HEAD = register("villager_head", new BotDSkullBlock(BotDSkullBlock.Type.VILLAGER, QuiltBlockSettings.copyOf(Blocks.ZOMBIE_HEAD)), settings(), true);
+	public static final Block VILLAGER_WALL_HEAD = register("villager_wall_head", new BotDWallSkullBlock(BotDSkullBlock.Type.VILLAGER, QuiltBlockSettings.copyOf(Blocks.ZOMBIE_HEAD).dropsLike(VILLAGER_HEAD)), settings(), false);
 
 	public static final Block RETORT_FLASK_BLOCK = register("retort_flask_block", new RetortFlaskBlock(QuiltBlockSettings.of(Material.GLASS)), settings(), false);
 	public static final Item RETORT_FLASK = register("retort_flask", new BlockItem(RETORT_FLASK_BLOCK, settings()));

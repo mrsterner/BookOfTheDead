@@ -160,8 +160,8 @@ public class ButcherTableBlockEntityRenderer implements BlockEntityRenderer<Butc
 		} else if(model instanceof VillagerResemblingModel<?> villagerResemblingModel){
 			villagerResemblingModel.getHead().visible = entity.getHeadVisible();
 			villagerResemblingModel.getPart().getChild(EntityModelPartNames.RIGHT_LEG).visible = entity.getRLegVisible();
-			villagerResemblingModel.getPart().getChild(EntityModelPartNames.LEFT_LEG).visible = true;
-			villagerResemblingModel.getPart().getChild(EntityModelPartNames.ARMS).visible = false;
+			villagerResemblingModel.getPart().getChild(EntityModelPartNames.LEFT_LEG).visible = entity.getLLegVisible();
+			villagerResemblingModel.getPart().getChild(EntityModelPartNames.ARMS).visible = entity.getRArmVisible();
 		}
 	}
 

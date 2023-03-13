@@ -1,1 +1,6 @@
-// 1.19.2	2022-12-31T09:35:27.334921928	Block Loot Tables
+// 1.19.2	2023-03-13T19:01:53.399810568	Block Loot Tables
+54c3eac27346a6f569f7afcb3ee33ab3e5ab1ae4 data/book_of_the_dead/loot_tables/blocks/pedestal.json
+183ca28d62a0ba16f3106652ebb351dd4cca0f9a data/book_of_the_dead/loot_tables/blocks/metal_hook_block.json
+a9a116840a5f5abdf144cb319ad8807b925bcf4e data/book_of_the_dead/loot_tables/blocks/ritual.json
+9017fcfc8eca642ec8e68a7d58d938da1aef82d2 data/book_of_the_dead/loot_tables/blocks/hook_block.json
+3bf6765e2a653e757bbdfad2ce4c0de6e89024fb data/book_of_the_dead/loot_tables/blocks/rope.json

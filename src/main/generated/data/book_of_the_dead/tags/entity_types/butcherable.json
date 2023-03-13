@@ -8,6 +8,7 @@
     "minecraft:pig",
     "minecraft:piglin",
     "minecraft:piglin_brute",
-    "minecraft:chicken"
+    "minecraft:chicken",
+    "minecraft:player"
   ]
 }

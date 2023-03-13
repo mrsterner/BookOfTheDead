@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "book_of_the_dead:item/soul_gem"
-  }
-}

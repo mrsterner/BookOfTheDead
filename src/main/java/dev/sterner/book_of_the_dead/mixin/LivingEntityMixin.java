@@ -9,6 +9,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
@@ -65,10 +66,12 @@ public abstract class LivingEntityMixin extends Entity {
 				component.get().isCorpse(true);
 				++livingEntity.deathTime;
 				if (livingEntity.deathTime == 1) {
-					if (livingEntity.isOnFire())
+					if (livingEntity.isOnFire()){
 						livingEntity.extinguish();
-					if (livingEntity.getVehicle() != null)
+					}
+					if (livingEntity.getVehicle() != null){
 						livingEntity.stopRiding();
+					}
 				}
 				if (livingEntity.deathTime >= 20) {
 					Box corpseBox = new Box(livingEntity.getX() - (livingEntity.getWidth() / 2.0F), livingEntity.getY() - (livingEntity.getWidth() / 2.0F), livingEntity.getZ() - (livingEntity.getWidth() / 2.0F), livingEntity.getX() + (livingEntity.getWidth() / 2F), livingEntity.getY() + (livingEntity.getWidth() / 2F), livingEntity.getZ() + (livingEntity.getWidth() / 2F));

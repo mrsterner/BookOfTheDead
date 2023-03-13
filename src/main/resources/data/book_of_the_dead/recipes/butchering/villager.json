@@ -3,7 +3,7 @@
   "entityType": "minecraft:villager",
   "head" : [
     {
-      "item": "minecraft:stick",
+      "item": "book_of_the_dead:villager_head",
       "count": 1,
       "chance": 1
     }
