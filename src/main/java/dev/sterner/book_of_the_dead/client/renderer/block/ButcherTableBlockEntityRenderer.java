@@ -76,7 +76,6 @@ public class ButcherTableBlockEntityRenderer implements BlockEntityRenderer<Butc
 						if(entityRenderer instanceof LivingEntityRenderer<?,?> livingEntityRenderer){
 							handleVisibilities(livingEntityRenderer, hauler);
 						}
-						System.out.println(hauler.getHeadVisible());
 						dispatcher.render(livingEntity, 0,0,0,0, tickDelta, matrices, vertexConsumers, light);
 						if(entityRenderer instanceof LivingEntityRenderer<?,?> livingEntityRenderer){
 							resetVisibility(livingEntityRenderer);

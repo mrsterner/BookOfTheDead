@@ -127,10 +127,13 @@ public class BaseButcherBlockEntity extends BlockEntity implements IHauler, IBlo
 						double chance = probability + 0.5D * butcherLevel;
 
 						nonEmptyOutput.get(0).setCount(world.getRandom().nextDouble() < chance * nonEmptyChance.get(0) ? 1 : 0);
-						if(getHeadVisible() && !isNeighbour){
+						if(getHeadVisible() && !isNeighbour && this.butcheringRecipe.headDrop.getFirst() != ItemStack.EMPTY){
 							setHeadVisible(false);
-							ItemScatterer.spawn(world, pos.getX() + 0.5, pos.getY() + 1.2, pos.getZ() + 0.5, new ItemStack(Items.ZOMBIE_HEAD));
+							ItemStack head = this.butcheringRecipe.headDrop.getFirst();
+							head.setCount(world.getRandom().nextDouble() < chance * this.butcheringRecipe.headDrop.getSecond() ? 1 : 0);
+							ItemScatterer.spawn(world, pos.getX() + 0.5, pos.getY() + 1.2, pos.getZ() + 0.5, head);
 						}else{
+							dismemberAtRandom(world, isNeighbour);
 							ItemScatterer.spawn(world, pos.getX() + 0.5, pos.getY() + 1.2, pos.getZ() + 0.5, nonEmptyOutput.get(0));
 						}
 
@@ -155,6 +158,31 @@ public class BaseButcherBlockEntity extends BlockEntity implements IHauler, IBlo
 		}
 		markDirty();
 		return ActionResult.PASS;
+	}
+
+	private void dismemberAtRandom(World world, boolean isNeighbour) {
+		boolean rand = world.getRandom().nextBoolean();
+		if(isNeighbour){
+			if(rand){
+				if(getLArmVisible()){
+					setLArmVisible(false);
+				}
+			}else{
+				if(getRArmVisible()){
+					setRArmVisible(false);
+				}
+			}
+		}else{
+			if(rand){
+				if(getLLegVisible()){
+					setLLegVisible(false);
+				}
+			}else{
+				if(getRLegVisible()){
+					setRLegVisible(false);
+				}
+			}
+		}
 	}
 
 	public void reset(){

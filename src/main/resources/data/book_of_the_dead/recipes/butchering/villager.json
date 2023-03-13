@@ -1,6 +1,13 @@
 {
   "type": "book_of_the_dead:butchering",
   "entityType": "minecraft:villager",
+  "head" : [
+    {
+      "item": "minecraft:stick",
+      "count": 1,
+      "chance": 1
+    }
+  ],
   "results": [
     {
       "item": "book_of_the_dead:flesh",

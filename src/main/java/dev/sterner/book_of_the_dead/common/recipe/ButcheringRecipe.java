@@ -25,11 +25,13 @@ public class ButcheringRecipe implements Recipe<Inventory> {
 	private final Identifier identifier;
 	public final EntityType<?> entityType;
 	private final DefaultedList<Pair<ItemStack, Float>> outputs;
+	public final Pair<ItemStack, Float> headDrop;
 
-	public ButcheringRecipe(Identifier id, EntityType<?> entityType, DefaultedList<Pair<ItemStack, Float>> outputs) {
+	public ButcheringRecipe(Identifier id, EntityType<?> entityType, DefaultedList<Pair<ItemStack, Float>> outputs, Pair<ItemStack, Float> headDrop) {
 		this.identifier = id;
 		this.entityType = entityType;
 		this.outputs = outputs;
+		this.headDrop = headDrop;
 	}
 
 	@Override
@@ -83,16 +85,23 @@ public class ButcheringRecipe implements Recipe<Inventory> {
 			} else if (outputs.size() > 8) {
 				throw new JsonParseException("Too many outputs for Butchering recipe");
 			}
-			return new ButcheringRecipe(id, entityType, outputs);
+			Pair<ItemStack, Float> headDrop = Pair.of(ItemStack.EMPTY, 1.0f);
+			if(JsonHelper.hasArray(json, "head")){
+				JsonArray headArray = JsonHelper.getArray(json, "head");
+				headDrop = RecipeUtils.deserializeStackPairs(headArray).get(0);
+			}
+
+			return new ButcheringRecipe(id, entityType, outputs, headDrop);
 		}
 
 		@Override
 		public ButcheringRecipe read(Identifier id, PacketByteBuf buf) {
 			EntityType<?> entityType = Registry.ENTITY_TYPE.get(new Identifier(buf.readString()));
-			DefaultedList<Pair<ItemStack, Float>> outputs = DefaultedList.ofSize(buf.readInt(), Pair.of(ItemStack.EMPTY, 1.1F));
+			DefaultedList<Pair<ItemStack, Float>> outputs = DefaultedList.ofSize(buf.readInt(), Pair.of(ItemStack.EMPTY, 1.0F));
 			outputs.replaceAll(ignored -> Pair.of(buf.readItemStack(), buf.readFloat()));
+			Pair<ItemStack, Float> headDrop = Pair.of(buf.readItemStack(), buf.readFloat());
 
-			return new ButcheringRecipe(id, entityType, outputs);
+			return new ButcheringRecipe(id, entityType, outputs, headDrop);
 
 		}
 
@@ -104,6 +113,8 @@ public class ButcheringRecipe implements Recipe<Inventory> {
 				buf.writeItemStack(pair.getFirst());
 				buf.writeFloat(pair.getSecond());
 			}
+			buf.writeItemStack(recipe.headDrop.getFirst());
+			buf.writeFloat(recipe.headDrop.getSecond());
 		}
 
 		@Override
