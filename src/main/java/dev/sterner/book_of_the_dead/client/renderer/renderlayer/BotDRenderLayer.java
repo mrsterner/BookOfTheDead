@@ -3,12 +3,9 @@ package dev.sterner.book_of_the_dead.client.renderer.renderlayer;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormats;
-import dev.sterner.book_of_the_dead.client.renderer.shader.BotDShaders;
 import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.RenderPhase;
 import net.minecraft.item.ItemStack;
@@ -60,18 +57,6 @@ public class BotDRenderLayer extends RenderLayer {
 				.build(true);
 		return RenderLayer.of("glowing_layer", VertexFormats.POSITION_COLOR_TEXTURE_OVERLAY_LIGHT_NORMAL, VertexFormat.DrawMode.QUADS, 256, false, false, multiPhaseParameters);
 	});
-
-	public static final Function<Identifier, RenderLayer> RITUAL_LAYER = Util.memoize(texture -> {
-		MultiPhaseParameters multiPhaseParameters = MultiPhaseParameters.builder()
-				.texture(new RenderPhase.Texture(texture, false, false))
-				.transparency(Transparency.TRANSLUCENT_TRANSPARENCY)
-				.cull(DISABLE_CULLING)
-				.lightmap(ENABLE_LIGHTMAP)
-				.shader(new Shader(BotDShaders::ritual))
-				.build(true);
-		return RenderLayer.of(Constants.MOD_ID + "ritual", VertexFormats.POSITION_COLOR_TEXTURE_LIGHT_NORMAL, VertexFormat.DrawMode.QUADS, 256, false, false, multiPhaseParameters);
-	});
-
 
 	private static RenderLayer buildGlintRenderLayer() {
 		return RenderLayer.of("glint_black", VertexFormats.POSITION_TEXTURE, VertexFormat.DrawMode.QUADS, 256, MultiPhaseParameters.builder()

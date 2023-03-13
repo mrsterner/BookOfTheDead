@@ -61,5 +61,10 @@ public class Constants {
 
         public static final String BUTCHERING_LEVEL = "ButcheringLevel";
 		public static final String IS_CORPSE = "IsCorpse";
-	}
+        public static final String HEAD_VISIBLE = "HeadVisible";
+		public static final String RIGHT_ARM_VISIBLE = "RightArmVisible";
+		public static final String LEFT_ARM_VISIBLE = "LeftArmVisible";
+		public static final String RIGHT_LEG_VISIBLE = "RightLegVisible";
+		public static final String LEFT_LEG_VISIBLE = "LeftLegVisible";
+    }
 }

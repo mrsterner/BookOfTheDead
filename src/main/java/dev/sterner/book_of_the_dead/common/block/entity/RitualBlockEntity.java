@@ -1,5 +1,6 @@
 package dev.sterner.book_of_the_dead.common.block.entity;
 
+import com.google.common.collect.Lists;
 import dev.sterner.book_of_the_dead.api.NecrotableRitual;
 import dev.sterner.book_of_the_dead.api.block.entity.BaseBlockEntity;
 import dev.sterner.book_of_the_dead.common.recipe.RitualRecipe;
@@ -7,6 +8,10 @@ import dev.sterner.book_of_the_dead.common.registry.*;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
@@ -16,12 +21,10 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 
 public class RitualBlockEntity extends BaseBlockEntity {
@@ -36,7 +39,7 @@ public class RitualBlockEntity extends BaseBlockEntity {
 
 	//Logic
 	private boolean loaded = false;
-	public int timer = 0;
+	public int timer = -20;
 	public long age = 0;
 	public boolean startGate = true;
 	public boolean shouldRun = false;
@@ -94,7 +97,9 @@ public class RitualBlockEntity extends BaseBlockEntity {
 				if(blockEntity.ritualRecipe == null || blockEntity.currentNecrotableRitual == null){
 					blockEntity.ritualRecipe = BotDRecipeTypes.getRiteRecipe(blockEntity);
 					if(blockEntity.ritualRecipe != null){
-						blockEntity.currentNecrotableRitual = blockEntity.ritualRecipe.ritual;
+						if(blockEntity.checkValidSacrifices(blockEntity.ritualRecipe, world)){
+							blockEntity.currentNecrotableRitual = blockEntity.ritualRecipe.ritual;
+						}
 					}
 
 				}else if(blockEntity.checkTier(blockEntity)){
@@ -107,10 +112,10 @@ public class RitualBlockEntity extends BaseBlockEntity {
 						blockEntity.startGate = false;
 					}
 					blockEntity.timer++;
-					if (blockEntity.timer >= 20) {
+					if (blockEntity.timer >= 0) {
 						blockEntity.currentNecrotableRitual.tick(world, pos, blockEntity);
 					}
-					if (blockEntity.timer >= blockEntity.currentNecrotableRitual.recipe.getDuration() + 20) {
+					if (blockEntity.timer >= blockEntity.currentNecrotableRitual.recipe.getDuration()) {
 						blockEntity.currentNecrotableRitual.onStopped(world, pos, blockEntity);
 						blockEntity.reset(blockEntity);
 					}
@@ -126,6 +131,43 @@ public class RitualBlockEntity extends BaseBlockEntity {
 				}
 			}
 		}
+	}
+
+	private boolean checkValidSacrifices(RitualRecipe ritual, World world) {
+		if (ritual.sacrifices != null && ritual.sacrifices.isEmpty()) {
+			return true;
+		}
+
+		int size = 8;
+
+		List<LivingEntity> livingEntityList = world.getEntitiesByClass(LivingEntity.class, new Box(this.pos).expand(size), Entity::isAlive);
+		List<EntityType<?>> entityTypeList = Lists.newArrayList(livingEntityList.stream().map(Entity::getType).toList());
+		List<EntityType<?>> ritualSacrifices = ritual.sacrifices;
+
+		if (ritualSacrifices != null && new HashSet<>(entityTypeList).containsAll(ritualSacrifices)) {
+			for (EntityType<?> entityType : ritualSacrifices) {
+				LivingEntity foundEntity = getClosestEntity(livingEntityList, entityType, this.pos);
+				if (foundEntity != null) {
+					foundEntity.damage(DamageSource.MAGIC, Integer.MAX_VALUE);
+				}
+			}
+			return true;
+		}
+		return false;
+	}
+
+
+	public <T extends LivingEntity> T getClosestEntity(List<? extends T> entityList, EntityType<?> type, BlockPos pos) {
+		double d = -1.0;
+		T livingEntity = null;
+		for (T livingEntity2 : entityList) {
+			double e = livingEntity2.squaredDistanceTo(pos.getX(), pos.getY(), pos.getZ());
+			if (livingEntity2.getType() == type && (d == -1.0 || e < d)) {
+				d = e;
+				livingEntity = livingEntity2;
+			}
+		}
+		return livingEntity;
 	}
 
 	public boolean checkTier(RitualBlockEntity blockEntity){
@@ -145,7 +187,7 @@ public class RitualBlockEntity extends BaseBlockEntity {
 	public void reset(RitualBlockEntity blockEntity){
 		blockEntity.currentNecrotableRitual = null;
 		blockEntity.user = null;
-		blockEntity.timer = 0;
+		blockEntity.timer = -20;
 		blockEntity.startGate = true;
 		blockEntity.shouldRun = false;
 		blockEntity.markDirty();

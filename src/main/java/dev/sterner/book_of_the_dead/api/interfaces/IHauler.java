@@ -21,4 +21,25 @@ public interface IHauler {
 	void setCorpseEntity(LivingEntity livingEntity);
 
 	void clearCorpseData();
+
+
+	boolean getHeadVisible();
+
+	boolean getRArmVisible();
+
+	boolean getLArmVisible();
+
+	boolean getRLegVisible();
+
+	boolean getLLegVisible();
+
+	void setHeadVisible(boolean visible);
+
+	void setRArmVisible(boolean visible);
+
+	void setLArmVisible(boolean visible);
+
+	void setRLegVisible(boolean visible);
+
+	void setLLegVisible(boolean visible);
 }

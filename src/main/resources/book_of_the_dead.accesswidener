@@ -12,3 +12,9 @@ accessible      field   net/minecraft/client/render/RenderLayer$MultiPhaseParame
 accessible      method  net/minecraft/client/render/RenderPhase$TextureBase                getId                ()Ljava/util/Optional;
 accessible      method  net/minecraft/entity/Entity                                        getRotationVector    ()Lnet/minecraft/util/math/Vec3d;
 accessible      method  net/minecraft/entity/Entity                                        getRotationVector    (FF)Lnet/minecraft/util/math/Vec3d;
+
+accessible field net/minecraft/client/render/entity/model/QuadrupedEntityModel head Lnet/minecraft/client/model/ModelPart;
+accessible field net/minecraft/client/render/entity/model/QuadrupedEntityModel rightHindLeg Lnet/minecraft/client/model/ModelPart;
+accessible field net/minecraft/client/render/entity/model/QuadrupedEntityModel leftHindLeg Lnet/minecraft/client/model/ModelPart;
+accessible field net/minecraft/client/render/entity/model/QuadrupedEntityModel rightFrontLeg Lnet/minecraft/client/model/ModelPart;
+accessible field net/minecraft/client/render/entity/model/QuadrupedEntityModel leftFrontLeg Lnet/minecraft/client/model/ModelPart;

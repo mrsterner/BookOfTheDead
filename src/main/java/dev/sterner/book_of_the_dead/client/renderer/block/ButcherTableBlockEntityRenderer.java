@@ -16,7 +16,9 @@ import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
-import net.minecraft.client.render.entity.model.EntityModelLayer;
+import net.minecraft.client.render.entity.EntityRenderer;
+import net.minecraft.client.render.entity.LivingEntityRenderer;
+import net.minecraft.client.render.entity.model.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -69,9 +71,21 @@ public class ButcherTableBlockEntityRenderer implements BlockEntityRenderer<Butc
 						}
 						matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(getRot(entity) + 90));
 						matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(-90));
+
+						EntityRenderer<? super LivingEntity> entityRenderer = dispatcher.getRenderer(livingEntity);
+						if(entityRenderer instanceof LivingEntityRenderer<?,?> livingEntityRenderer){
+							handleVisibilities(livingEntityRenderer, hauler);
+						}
+						System.out.println(hauler.getHeadVisible());
 						dispatcher.render(livingEntity, 0,0,0,0, tickDelta, matrices, vertexConsumers, light);
+						if(entityRenderer instanceof LivingEntityRenderer<?,?> livingEntityRenderer){
+							resetVisibility(livingEntityRenderer);
+						}
+
 					}
 				});
+
+
 			}
 		});
 		matrices.pop();
@@ -103,6 +117,52 @@ public class ButcherTableBlockEntityRenderer implements BlockEntityRenderer<Butc
 				render(matrices, vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(TEXTURE)), light, overlay);
 				matrices.pop();
 			}
+		}
+	}
+
+	private void resetVisibility(LivingEntityRenderer<?,?> livingEntityRenderer) {
+		EntityModel<? extends LivingEntity> model = livingEntityRenderer.getModel();
+		if(model instanceof QuadrupedEntityModel<?> quadrupedEntityModel){
+			quadrupedEntityModel.head.visible = true;
+			quadrupedEntityModel.rightHindLeg.visible = true;
+			quadrupedEntityModel.leftHindLeg.visible = true;
+			quadrupedEntityModel.rightFrontLeg.visible = true;
+			quadrupedEntityModel.leftFrontLeg.visible = true;
+		} else if(model instanceof BipedEntityModel<?> bipedEntityModel){
+			bipedEntityModel.head.visible = true;
+			bipedEntityModel.rightLeg.visible = true;
+			bipedEntityModel.leftLeg.visible = true;
+			bipedEntityModel.rightArm.visible = true;
+			bipedEntityModel.leftArm.visible = true;
+
+		} else if(model instanceof VillagerResemblingModel<?> villagerResemblingModel){
+			villagerResemblingModel.getHead().visible = true;
+			villagerResemblingModel.getPart().getChild(EntityModelPartNames.RIGHT_LEG).visible = true;
+			villagerResemblingModel.getPart().getChild(EntityModelPartNames.LEFT_LEG).visible = true;
+			villagerResemblingModel.getPart().getChild(EntityModelPartNames.ARMS).visible = true;
+		}
+	}
+
+	private void handleVisibilities(LivingEntityRenderer<?,?> livingEntityRenderer, IHauler entity) {
+		EntityModel<? extends LivingEntity> model = livingEntityRenderer.getModel();
+		if(model instanceof QuadrupedEntityModel<?> quadrupedEntityModel){
+			quadrupedEntityModel.head.visible = entity.getHeadVisible();
+			quadrupedEntityModel.rightHindLeg.visible = entity.getRLegVisible();
+			quadrupedEntityModel.leftHindLeg.visible = entity.getLLegVisible();
+			quadrupedEntityModel.rightFrontLeg.visible = entity.getRArmVisible();
+			quadrupedEntityModel.leftFrontLeg.visible = entity.getLArmVisible();
+		} else if(model instanceof BipedEntityModel<?> bipedEntityModel){
+			bipedEntityModel.head.visible = entity.getHeadVisible();
+			bipedEntityModel.rightLeg.visible = entity.getRLegVisible();
+			bipedEntityModel.leftLeg.visible = entity.getLLegVisible();
+			bipedEntityModel.rightArm.visible = entity.getRArmVisible();
+			bipedEntityModel.leftArm.visible = entity.getLArmVisible();
+
+		} else if(model instanceof VillagerResemblingModel<?> villagerResemblingModel){
+			villagerResemblingModel.getHead().visible = entity.getHeadVisible();
+			villagerResemblingModel.getPart().getChild(EntityModelPartNames.RIGHT_LEG).visible = entity.getRLegVisible();
+			villagerResemblingModel.getPart().getChild(EntityModelPartNames.LEFT_LEG).visible = true;
+			villagerResemblingModel.getPart().getChild(EntityModelPartNames.ARMS).visible = false;
 		}
 	}
 

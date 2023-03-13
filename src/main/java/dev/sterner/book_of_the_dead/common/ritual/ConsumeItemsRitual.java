@@ -58,25 +58,10 @@ public class ConsumeItemsRitual extends NecrotableRitual {
 			}
 			index++;
 		}
+
 		if(world instanceof ServerWorld serverWorld) {
-			if(ticker % 5 == 0 && ticker < recipe.getDuration() - 40){
-				serverWorld.playSound(null, x,y,z, SoundEvents.BLOCK_CAMPFIRE_CRACKLE, SoundCategory.BLOCKS, 10,0.5f);
-			}
-			if (recipe.outputs != null) {
-				for(ItemStack output : recipe.outputs){
-					for (int i = 0; i < recipe.outputs.size() * 2; i++) {
-						serverWorld.spawnParticles(new ItemStackParticleEffect(ParticleTypes.ITEM, output),
-								x + ((world.random.nextDouble() / 2) - 0.25),
-								y + ((world.random.nextDouble() / 2) - 0.25),
-								z + ((world.random.nextDouble() / 2) - 0.25),
-								0,
-								1 * ((world.random.nextDouble() / 2) - 0.25),
-								1 * ((world.random.nextDouble() / 2) - 0.25),
-								1 * ((world.random.nextDouble() / 2) - 0.25),
-								0);
-					}
-				}
-			}
+			generateFX(serverWorld, x, y, z);
+
 		}
 		super.tick(world, blockPos, blockEntity);
 	}
@@ -85,5 +70,26 @@ public class ConsumeItemsRitual extends NecrotableRitual {
 	public void onStopped(World world, BlockPos blockPos, RitualBlockEntity blockEntity) {
 		index = 0;
 		super.onStopped(world, blockPos, blockEntity);
+	}
+
+	private void generateFX(ServerWorld serverWorld, double x, double y, double z) {
+		if(ticker % 5 == 0 && ticker < recipe.getDuration() - 40){
+			serverWorld.playSound(null, x,y,z, SoundEvents.BLOCK_CAMPFIRE_CRACKLE, SoundCategory.BLOCKS, 10,0.5f);
+		}
+		if (recipe.outputs != null) {
+			for(ItemStack output : recipe.outputs){
+				for (int i = 0; i < recipe.outputs.size() * 2; i++) {
+					serverWorld.spawnParticles(new ItemStackParticleEffect(ParticleTypes.ITEM, output),
+							x + ((world.random.nextDouble() / 2) - 0.25),
+							y + ((world.random.nextDouble() / 2) - 0.25),
+							z + ((world.random.nextDouble() / 2) - 0.25),
+							0,
+							1 * ((world.random.nextDouble() / 2) - 0.25),
+							1 * ((world.random.nextDouble() / 2) - 0.25),
+							1 * ((world.random.nextDouble() / 2) - 0.25),
+							0);
+				}
+			}
+		}
 	}
 }
