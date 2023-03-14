@@ -1,28 +1,31 @@
 package dev.sterner.book_of_the_dead.common.util;
 
 import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
+import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.tag.TagKey;
-import net.minecraft.util.HolderSet;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
-import org.quiltmc.qsl.item.group.api.QuiltItemGroup;
 
 
 public class Constants {
 
-	public static final String MOD_ID = "book_of_the_dead";
-	public static final QuiltItemGroup BOTD_GROUP = QuiltItemGroup.builder(Constants.id("items")).icon(() -> new ItemStack(BotDObjects.BUTCHER_KNIFE)).build();
+	public static final String MODID = "book_of_the_dead";
+	
+	public static final ItemGroup BOTD_GROUP = FabricItemGroup.builder(Constants.id("items")).icon(() -> new ItemStack(BotDObjects.BUTCHER_KNIFE)).build();
+
+
 
 	public static Identifier id(String string){
-		return new Identifier(MOD_ID, string);
+		return new Identifier(MODID, string);
 	}
 
 	public static class Values{
@@ -35,8 +38,8 @@ public class Constants {
 	 }
 
 	public static class Tags {
-		public static final TagKey<EntityType<?>> BUTCHERABLE = TagKey.of(Registry.ENTITY_TYPE_KEY, id("butcherable"));
-        public static final TagKey<Block> EMITS_HEAT = TagKey.of(Registry.BLOCK_KEY, id("emits_heat"));
+		public static final TagKey<EntityType<?>> BUTCHERABLE = TagKey.of(RegistryKeys.ENTITY_TYPE, id("butcherable"));
+        public static final TagKey<Block> EMITS_HEAT = TagKey.of(RegistryKeys.BLOCK, id("emits_heat"));
     }
 
 	public static class Nbt {

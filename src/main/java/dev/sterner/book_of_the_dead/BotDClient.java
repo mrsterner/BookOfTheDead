@@ -18,9 +18,9 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.item.Item;
+import net.minecraft.registry.Registries;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 import org.quiltmc.loader.api.ModContainer;
 import org.quiltmc.qsl.base.api.entrypoint.client.ClientModInitializer;
 import org.quiltmc.qsl.block.extensions.api.client.BlockRenderLayerMap;
@@ -85,13 +85,13 @@ public class BotDClient implements ClientModInitializer {
 
 		for (Item item : BotDObjects.ITEMS.keySet()) {
 			if(item instanceof AllBlackSwordItem){
-				Identifier allBlackId = Registry.ITEM.getId(item);
+				Identifier allBlackId = Registries.ITEM.getId(item);
 				AllBlackSwordItemRenderer allBlackItemRenderer = new AllBlackSwordItemRenderer(allBlackId);
 				ResourceLoader.get(ResourceType.CLIENT_RESOURCES).registerReloader(allBlackItemRenderer);
 				BuiltinItemRendererRegistry.INSTANCE.register(item, allBlackItemRenderer);
 				ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> {
-					out.accept(new ModelIdentifier(allBlackId + "_gui", "inventory"));
-					out.accept(new ModelIdentifier(allBlackId + "_handheld", "inventory"));
+					out.accept(new ModelIdentifier(allBlackId.withPath(allBlackId.getPath() + "_gui"), "inventory"));
+					out.accept(new ModelIdentifier(allBlackId.withPath(allBlackId.getPath() + "_handheld"), "inventory"));
 				});
 			}
 		}

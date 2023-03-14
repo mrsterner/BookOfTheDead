@@ -2,13 +2,14 @@ package dev.sterner.book_of_the_dead;
 
 import dev.sterner.book_of_the_dead.common.component.BotDComponents;
 import dev.sterner.book_of_the_dead.common.component.CorpseDataComponent;
+import dev.sterner.book_of_the_dead.common.event.BotDItemGroupEvents;
 import dev.sterner.book_of_the_dead.common.event.BotDUseEvents;
 import dev.sterner.book_of_the_dead.common.registry.*;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.quiltmc.loader.api.ModContainer;
 import org.quiltmc.loader.api.QuiltLoader;
 import org.quiltmc.qsl.base.api.entrypoint.ModInitializer;
-import org.quiltmc.qsl.entity_events.api.ServerPlayerEntityCopyCallback;
+import org.quiltmc.qsl.entity.event.api.ServerPlayerEntityCopyCallback;
 
 import java.util.Optional;
 
@@ -32,6 +33,7 @@ public class BotD implements ModInitializer {
 		BotDSoundEvents.init();
 
 		BotDUseEvents.init();
+		BotDItemGroupEvents.init();
 
 		ServerPlayerEntityCopyCallback.EVENT.register(this::afterRespawn);
 	}

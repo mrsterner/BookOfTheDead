@@ -41,8 +41,8 @@ public class AllBlackSwordItemRenderer implements BuiltinItemRendererRegistry.Dy
 			applyProfiler.push("listener");
 			final MinecraftClient client = MinecraftClient.getInstance();
 			this.itemRenderer = client.getItemRenderer();
-			this.inventoryAllblackModel = client.getBakedModelManager().getModel(new ModelIdentifier(this.allblackId + "_gui", "inventory"));
-			this.worldAllblackModel = client.getBakedModelManager().getModel(new ModelIdentifier(this.allblackId + "_handheld", "inventory"));
+			this.inventoryAllblackModel = client.getBakedModelManager().getModel(new ModelIdentifier(this.allblackId.withPath(allblackId.getPath() + "_gui"), "inventory"));
+			this.worldAllblackModel = client.getBakedModelManager().getModel(new ModelIdentifier(this.allblackId.withPath(allblackId.getPath() + "_handheld"), "inventory"));
 			applyProfiler.pop();
 			applyProfiler.endTick();
 		}, applyExecutor);

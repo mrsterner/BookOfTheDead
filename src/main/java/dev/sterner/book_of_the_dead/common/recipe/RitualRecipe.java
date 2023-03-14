@@ -14,10 +14,10 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.*;
+import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import org.quiltmc.qsl.recipe.api.serializer.QuiltRecipeSerializer;
@@ -200,11 +200,11 @@ public class RitualRecipe implements Recipe<Inventory> {
 
 			//Sacrifices
 			int sacrificeSize = buf.readInt();
-			List<EntityType<?>> sacrificeList = IntStream.range(0, sacrificeSize).mapToObj(i -> Registry.ENTITY_TYPE.get(new Identifier(buf.readString()))).collect(Collectors.toList());
+			List<EntityType<?>> sacrificeList = IntStream.range(0, sacrificeSize).mapToObj(i -> Registries.ENTITY_TYPE.get(new Identifier(buf.readString()))).collect(Collectors.toList());
 
 			//Summons
 			int summonsSize = buf.readInt();
-			List<EntityType<?>> summons = IntStream.range(0, summonsSize).mapToObj(i -> Registry.ENTITY_TYPE.get(new Identifier(buf.readString()))).collect(Collectors.toList());
+			List<EntityType<?>> summons = IntStream.range(0, summonsSize).mapToObj(i -> Registries.ENTITY_TYPE.get(new Identifier(buf.readString()))).collect(Collectors.toList());
 
 			//Duration
 			int duration = buf.readInt();
@@ -212,7 +212,7 @@ public class RitualRecipe implements Recipe<Inventory> {
 			//StatusEffect
 			int effectSize = buf.readInt();
 			List<StatusEffectInstance> statusEffectInstanceList = IntStream.range(0, effectSize).mapToObj(i -> {
-				StatusEffect effect = Registry.STATUS_EFFECT.get(new Identifier(buf.readString()));
+				StatusEffect effect = Registries.STATUS_EFFECT.get(new Identifier(buf.readString()));
 				if (effect != null) {
 					return new StatusEffectInstance(effect, buf.readInt(), buf.readInt());
 				}
@@ -248,13 +248,13 @@ public class RitualRecipe implements Recipe<Inventory> {
 			//Sacrifices
 			buf.writeInt(recipe.sacrifices.size());
 			for (EntityType<?> entityType : recipe.sacrifices) {
-				buf.writeString(Registry.ENTITY_TYPE.getId(entityType).toString());
+				buf.writeString(Registries.ENTITY_TYPE.getId(entityType).toString());
 			}
 
 			//Summons
 			buf.writeInt(recipe.summons.size());
 			for (EntityType<?> entityType : recipe.summons) {
-				buf.writeString(Registry.ENTITY_TYPE.getId(entityType).toString());
+				buf.writeString(Registries.ENTITY_TYPE.getId(entityType).toString());
 			}
 
 			//Duration
@@ -263,7 +263,7 @@ public class RitualRecipe implements Recipe<Inventory> {
 			//Effects
 			buf.writeVarInt(recipe.statusEffectInstance.size());
 			for (StatusEffectInstance effectInstance : recipe.statusEffectInstance) {
-				buf.writeString(Registry.STATUS_EFFECT.getId(effectInstance.getEffectType()).toString());
+				buf.writeString(Registries.STATUS_EFFECT.getId(effectInstance.getEffectType()).toString());
 				buf.writeInt(effectInstance.getDuration());
 				buf.writeInt(effectInstance.getAmplifier());
 			}

@@ -19,8 +19,8 @@ import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Axis;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.World;
 
 public class RetortFlaskBlockEntityRenderer<T extends BlockEntity> implements BlockEntityRenderer<T> {
@@ -54,9 +54,9 @@ public class RetortFlaskBlockEntityRenderer<T extends BlockEntity> implements Bl
 				matrices.push();
 				float f = blockState.get(NecroTableBlock.FACING).asRotation();
 				matrices.translate(0.5, 0.5, 0.5);
-				matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(-f));
+				matrices.multiply(Axis.Y_POSITIVE.rotationDegrees(-f));
 				matrices.translate(0, 1, 0);
-				matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(180f));
+				matrices.multiply(Axis.Z_POSITIVE.rotationDegrees(180f));
 				main.render(matrices, vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(TEXTURE)), light, overlay, 1, 1, 1, 1);
 				matrices.pop();
 			}

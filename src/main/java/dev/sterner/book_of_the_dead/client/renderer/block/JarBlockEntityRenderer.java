@@ -22,8 +22,8 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Axis;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3f;
 import org.jetbrains.annotations.Nullable;
 
 public class JarBlockEntityRenderer implements BlockEntityRenderer<JarBlockEntity>, BuiltinItemRendererRegistry.DynamicItemRenderer {
@@ -50,7 +50,7 @@ public class JarBlockEntityRenderer implements BlockEntityRenderer<JarBlockEntit
 		matrices.push();
 		float f = 0.5F;
 		matrices.translate(f,3 * f + 0.0001,f);
-		matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(180));
+		matrices.multiply(Axis.Z_POSITIVE.rotationDegrees(180));
 		matrices.translate(0,1,0);
 		if(entity.getWorld() != null && entity.getWorld().getBlockState(entity.getPos()).isOf(BotDObjects.JAR) && entity.getWorld().getBlockState(entity.getPos()).get(JarBlock.OPEN)){
 			jarEntityModel.renderNoCap(matrices, vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(TEXTURE)),light, overlay, 1,1,1,1);
@@ -76,7 +76,7 @@ public class JarBlockEntityRenderer implements BlockEntityRenderer<JarBlockEntit
 		matrices.pop();
 
 		matrices.push();
-		matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(180));
+		matrices.multiply(Axis.Z_POSITIVE.rotationDegrees(180));
 		VertexConsumer vertexConsumer = ItemRenderer.getItemGlintConsumer(vertexConsumers, jarEntityModel.getLayer(TEXTURE_ITEM), false, stack.hasGlint());
 		jarEntityModel.render(matrices, vertexConsumer, light, overlay, 1, 1, 1, 1);
 		matrices.pop();

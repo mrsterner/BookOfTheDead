@@ -18,7 +18,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Vec3f;
+import net.minecraft.util.math.Axis;
 
 public class ShoulderCropseFeatureRenderer extends FeatureRenderer<AbstractClientPlayerEntity, PlayerEntityModel<AbstractClientPlayerEntity>> {
 	private final EntityRenderDispatcher dispatcher;
@@ -43,7 +43,7 @@ public class ShoulderCropseFeatureRenderer extends FeatureRenderer<AbstractClien
 						livingEntity.deathTime = 0;
 						dispatcher.setRenderShadows(false);
 						matrices.push();
-						matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(entity.isInSneakingPose() ? 20 : 0));
+						matrices.multiply(Axis.X_POSITIVE.rotationDegrees(entity.isInSneakingPose() ? 20 : 0));
 						if(livingEntity instanceof AnimalEntity){
 							renderQuadraped(matrices, vertexConsumers, light, livingEntity);
 						}else{
@@ -58,7 +58,7 @@ public class ShoulderCropseFeatureRenderer extends FeatureRenderer<AbstractClien
 	}
 	public void renderQuadraped(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, LivingEntity livingEntity){
 		matrices.push();
-		matrices.multiply(Vec3f.NEGATIVE_X.getDegreesQuaternion(90));
+		matrices.multiply(Axis.X_NEGATIVE.rotationDegrees(90));
 		if(livingEntity.isBaby()){
 			matrices.translate(0,-1,0);
 		}else{

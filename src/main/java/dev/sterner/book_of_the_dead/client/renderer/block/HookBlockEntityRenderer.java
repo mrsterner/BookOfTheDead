@@ -13,7 +13,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.math.Vec3f;
+import net.minecraft.util.math.Axis;
 import net.minecraft.world.World;
 
 public class HookBlockEntityRenderer implements BlockEntityRenderer<HookBlockEntity> {
@@ -50,7 +50,7 @@ public class HookBlockEntityRenderer implements BlockEntityRenderer<HookBlockEnt
 						livingEntity.headYaw = 0;
 						dispatcher.setRenderShadows(false);
 						matrices.translate(0.5,-livingEntity.getHeight() * 0.5,0.5);
-						matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(-getRot(entity)));
+						matrices.multiply(Axis.Y_POSITIVE.rotationDegrees(-getRot(entity)));
 						matrices.translate(0,0,0.2);
 						dispatcher.render(livingEntity, 0,0,0,0, tickDelta, matrices, vertexConsumers, light);
 					}

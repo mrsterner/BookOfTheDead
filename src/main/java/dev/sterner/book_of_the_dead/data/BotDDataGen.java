@@ -6,12 +6,15 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 public class BotDDataGen implements DataGeneratorEntrypoint {
 
 	@Override
-	public void onInitializeDataGenerator(FabricDataGenerator fabricDataGenerator) {
-		fabricDataGenerator.addProvider(BotDBlockTagProvider::new);
-		fabricDataGenerator.addProvider(BotDRecipeProvider::new);
-		fabricDataGenerator.addProvider(BotDBlockLootTableProvider::new);
-		fabricDataGenerator.addProvider(BotDModelProvider::new);
-		fabricDataGenerator.addProvider(BotDEntityTagProvider::new);
-		fabricDataGenerator.addProvider(BotDLanguageProvider::new);
+	public void onInitializeDataGenerator(FabricDataGenerator dataGenerator) {
+		FabricDataGenerator.Pack pack = dataGenerator.createPack();
+		pack.addProvider(BotDBlockTagProvider::new);
+		pack.addProvider(BotDRecipeProvider::new);
+		pack.addProvider(BotDBlockLootTableProvider::new);
+
+		pack.addProvider(BotDModelProvider::new);
+		pack.addProvider(BotDEntityTagProvider::new);
+		pack.addProvider(BotDLanguageProvider::new);
+
 	}
 }

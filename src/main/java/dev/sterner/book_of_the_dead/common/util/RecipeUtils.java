@@ -16,10 +16,10 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.recipe.Ingredient;
+import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.util.registry.Registry;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -55,7 +55,7 @@ public class RecipeUtils {
 	 */
 	public static @Nullable EntityType<?> deserializeEntityType(JsonObject object) {
 		final Identifier id = new Identifier(JsonHelper.getString(object, "entity"));
-		return Registry.ENTITY_TYPE.get(id);
+		return Registries.ENTITY_TYPE.get(id);
 	}
 
 	/**
@@ -74,7 +74,7 @@ public class RecipeUtils {
 	 */
 	public static @NotNull ItemStack deserializeStack(JsonObject object) {
 		final Identifier id = new Identifier(JsonHelper.getString(object, "item"));
-		final Item item = Registry.ITEM.get(id);
+		final Item item = Registries.ITEM.get(id);
 		if (Items.AIR == item) {
 			throw new IllegalStateException("Invalid item: " + item);
 		}
@@ -106,7 +106,7 @@ public class RecipeUtils {
 	 */
 	public static @NotNull Pair<ItemStack, Float> deserializeStackPair(JsonObject object) {
 		final Identifier id = new Identifier(JsonHelper.getString(object, "item"));
-		final Item item = Registry.ITEM.get(id);
+		final Item item = Registries.ITEM.get(id);
 		if (Items.AIR == item) {
 			throw new IllegalStateException("Invalid item: " + item);
 		}
@@ -161,7 +161,7 @@ public class RecipeUtils {
 		final Identifier id = new Identifier(JsonHelper.getString(object, "id"));
 		final int duration = JsonHelper.getInt(object, "duration");
 		final int amplifier = JsonHelper.getInt(object, "amplifier");
-		StatusEffect statusEffect = Registry.STATUS_EFFECT.get(id);
+		StatusEffect statusEffect = Registries.STATUS_EFFECT.get(id);
 		if(statusEffect != null){
 			return new StatusEffectInstance(statusEffect, duration, amplifier);
 		}

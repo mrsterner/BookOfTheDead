@@ -1,21 +1,8 @@
 package dev.sterner.book_of_the_dead.common.util;
 
-import com.mojang.datafixers.util.Pair;
-import dev.sterner.book_of_the_dead.mixin.StructurePoolAccessor;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.structure.pool.StructurePool;
-import net.minecraft.structure.pool.StructurePoolElement;
-import net.minecraft.structure.processor.StructureProcessorLists;
 import net.minecraft.util.Hand;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Vec3d;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 public class BotDUtils {
 
@@ -42,16 +29,6 @@ public class BotDUtils {
 			if (!player.getInventory().insertStack(toAdd)) {
 				player.dropItem(toAdd, false, true);
 			}
-		}
-	}
-
-	public static void tryAddElementToPool(Identifier targetPool, StructurePool pool, String elementId, StructurePool.Projection projection, int weight) {
-		if(targetPool.equals(pool.getId())) {
-			StructurePoolElement element = StructurePoolElement.ofProcessedLegacySingle(elementId, StructureProcessorLists.EMPTY).apply(projection);
-			for (int i = 0; i < weight; i++) {
-				((StructurePoolAccessor)pool).book_of_the_dead$getElements().add(element);
-			}
-			((StructurePoolAccessor)pool).book_of_the_dead$getElementCounts().add(Pair.of(element, weight));
 		}
 	}
 }

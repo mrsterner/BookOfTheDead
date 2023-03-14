@@ -20,9 +20,8 @@ import net.minecraft.world.WorldAccess;
 public class ReinforcedDoorBlock extends DoorBlock {
 	public static final BooleanProperty LOCKED =  BooleanProperty.of("locked");
 	public ReinforcedDoorBlock(Settings settings) {
-		super(settings.strength(-1.0F, 3600000.0F));
-		this.stateManager
-				.getDefaultState().with(LOCKED, true);
+		super(settings.strength(-1.0F, 3600000.0F), SoundEvents.BLOCK_WOODEN_DOOR_CLOSE, SoundEvents.BLOCK_WOODEN_DOOR_OPEN);
+		this.stateManager.getDefaultState().with(LOCKED, true);
 	}
 
 	@Override

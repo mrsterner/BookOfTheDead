@@ -13,8 +13,9 @@ import net.minecraft.client.world.ClientWorld;
 import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleType;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -22,10 +23,10 @@ import java.util.Map;
 public interface BotDParticleTypes {
 	Map<ParticleType<?>, Identifier> PARTICLE_TYPES = new LinkedHashMap<>();
 
-	DefaultParticleType DRIPPING_BLOOD = Registry.register(Registry.PARTICLE_TYPE, Constants.id("dripping_blood"), FabricParticleTypes.simple());
-	DefaultParticleType FALLING_BLOOD = Registry.register(Registry.PARTICLE_TYPE, Constants.id("falling_blood"), FabricParticleTypes.simple());
-	DefaultParticleType LANDING_BLOOD = Registry.register(Registry.PARTICLE_TYPE, Constants.id("landing_blood"), FabricParticleTypes.simple());
-	DefaultParticleType SPLASHING_BLOOD = Registry.register(Registry.PARTICLE_TYPE, Constants.id("splashing_blood"), FabricParticleTypes.simple());
+	DefaultParticleType DRIPPING_BLOOD = Registry.register(Registries.PARTICLE_TYPE, Constants.id("dripping_blood"), FabricParticleTypes.simple());
+	DefaultParticleType FALLING_BLOOD = Registry.register(Registries.PARTICLE_TYPE, Constants.id("falling_blood"), FabricParticleTypes.simple());
+	DefaultParticleType LANDING_BLOOD = Registry.register(Registries.PARTICLE_TYPE, Constants.id("landing_blood"), FabricParticleTypes.simple());
+	DefaultParticleType SPLASHING_BLOOD = Registry.register(Registries.PARTICLE_TYPE, Constants.id("splashing_blood"), FabricParticleTypes.simple());
 
 	ParticleType<ItemStackBeamParticleEffect> ITEM_BEAM_PARTICLE = register("item_beam_particle", FabricParticleTypes.complex(ItemStackBeamParticleEffect.PARAMETERS_FACTORY));
 
@@ -35,7 +36,7 @@ public interface BotDParticleTypes {
 	}
 
 	static void init() {
-		PARTICLE_TYPES.keySet().forEach(particleType -> Registry.register(Registry.PARTICLE_TYPE, PARTICLE_TYPES.get(particleType), particleType));
+		PARTICLE_TYPES.keySet().forEach(particleType -> Registry.register(Registries.PARTICLE_TYPE, PARTICLE_TYPES.get(particleType), particleType));
 		ParticleFactoryRegistry.getInstance().register(ITEM_BEAM_PARTICLE, new ItemStackBeamParticle.ItemFactory());
 		ParticleFactoryRegistry.getInstance().register(SPLASHING_BLOOD, BloodSplashParticle.DefaultFactory::new);
 

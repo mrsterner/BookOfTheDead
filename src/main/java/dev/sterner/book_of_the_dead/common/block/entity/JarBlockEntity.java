@@ -1,5 +1,6 @@
 package dev.sterner.book_of_the_dead.common.block.entity;
 
+import dev.sterner.book_of_the_dead.api.block.entity.BaseBlockEntity;
 import dev.sterner.book_of_the_dead.common.block.JarBlock;
 import dev.sterner.book_of_the_dead.common.registry.BotDBlockEntityTypes;
 import dev.sterner.book_of_the_dead.common.util.Constants;
@@ -19,7 +20,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-public class JarBlockEntity extends BlockEntity implements Inventory {
+public class JarBlockEntity extends BaseBlockEntity implements Inventory {
 	private DefaultedList<ItemStack> inventory;
 	public int bloodAmount = 0;
 
@@ -56,19 +57,11 @@ public class JarBlockEntity extends BlockEntity implements Inventory {
 		return false;
 	}
 
-	@Override
-	public NbtCompound toInitialChunkDataNbt() {
-		NbtCompound nbt = super.toInitialChunkDataNbt();
-		writeNbt(nbt);
-		return nbt;
-	}
-
 	@Nullable
 	@Override
 	public Packet<ClientPlayPacketListener> toUpdatePacket() {
 		return BlockEntityUpdateS2CPacket.of(this, (BlockEntity b) -> this.toInvetoryNbt());
 	}
-
 
 	@Override
 	public void readNbt(NbtCompound nbt) {
@@ -91,16 +84,6 @@ public class JarBlockEntity extends BlockEntity implements Inventory {
 		Inventories.writeNbt(rtn, inventory);
 		rtn.putInt(Constants.Nbt.BLOOD_LEVEL, this.bloodAmount);
 		return rtn;
-	}
-
-
-	@Override
-	public void markDirty() {
-		super.markDirty();
-		if (world != null && !world.isClient) {
-			world.updateListeners(pos, getCachedState(), getCachedState(), Block.NOTIFY_LISTENERS);
-			toUpdatePacket();
-		}
 	}
 
 	@Override

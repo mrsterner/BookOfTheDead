@@ -2,9 +2,10 @@ package dev.sterner.book_of_the_dead.common.registry;
 
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import dev.sterner.book_of_the_dead.common.world.structure.OldHouse;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import net.minecraft.structure.StructureType;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.gen.feature.StructureFeature;
 
 import java.util.LinkedHashMap;
@@ -22,6 +23,6 @@ public interface BotDWorldGenerators {
 	}
 
 	static void init() {
-		STRUCTURE_TYPES.keySet().forEach(structureType -> Registry.register(Registry.STRUCTURE_TYPE, STRUCTURE_TYPES.get(structureType), structureType));
+		STRUCTURE_TYPES.keySet().forEach(structureType -> Registry.register(Registries.STRUCTURE_TYPE, STRUCTURE_TYPES.get(structureType), structureType));
 	}
 }

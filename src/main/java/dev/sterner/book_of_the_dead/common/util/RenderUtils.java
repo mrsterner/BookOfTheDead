@@ -16,9 +16,8 @@ import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Quaternion;
-import net.minecraft.util.math.Vec3f;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Quaternionf;
 
 import java.util.List;
 
@@ -28,6 +27,7 @@ public class RenderUtils {
 	 */
 	public static void drawEntity(int x, int y, int size, float mouseX, float mouseY, LivingEntity entity, @Nullable Rectangle bounds) {
 		float f;
+
 		float g;
 		if(bounds != null){
 			f = (float) Math.atan((bounds.getCenterX() - mouseX) / 40.0F);
@@ -48,10 +48,10 @@ public class RenderUtils {
 		MatrixStack matrixStack2 = new MatrixStack();
 		matrixStack2.translate(0.0, 0.0, 1000.0);
 		matrixStack2.scale((float)size, (float)size, (float)size);
-		Quaternion quaternion = Vec3f.POSITIVE_Z.getDegreesQuaternion(180.0F);
-		Quaternion quaternion2 = Vec3f.POSITIVE_X.getDegreesQuaternion(g * 20.0F);
-		quaternion.hamiltonProduct(quaternion2);
-		matrixStack2.multiply(quaternion);
+		Quaternionf quaternionf = new Quaternionf().rotateZ((float) Math.PI);
+		Quaternionf quaternionf2 = new Quaternionf().rotateX(g * 20.0F * (float) (Math.PI / 180.0));
+		quaternionf.mul(quaternionf2);
+		matrixStack2.multiply(quaternionf);
 		float h = entity.bodyYaw;
 		float i = entity.getYaw();
 		float j = entity.getPitch();
@@ -64,8 +64,8 @@ public class RenderUtils {
 		entity.prevHeadYaw = entity.getYaw();
 		DiffuseLighting.setupInventoryEntityLighting();
 		EntityRenderDispatcher entityRenderDispatcher = MinecraftClient.getInstance().getEntityRenderDispatcher();
-		quaternion2.conjugate();
-		entityRenderDispatcher.setRotation(quaternion2);
+		quaternionf2.conjugate();
+		entityRenderDispatcher.setRotation(quaternionf2);
 		entityRenderDispatcher.setRenderShadows(false);
 		VertexConsumerProvider.Immediate immediate = MinecraftClient.getInstance().getBufferBuilders().getEntityVertexConsumers();
 		RenderSystem.runAsFancy(() -> entityRenderDispatcher.render(entity, 0.0, 0.0, 0.0, 0.0F, 1.0F, matrixStack2, immediate, 15728880));

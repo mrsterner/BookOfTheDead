@@ -3,16 +3,21 @@ package dev.sterner.book_of_the_dead.data;
 import dev.sterner.book_of_the_dead.common.registry.BotDEntityTypes;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.entity.EntityType;
+import net.minecraft.registry.HolderLookup;
+
+import java.util.concurrent.CompletableFuture;
 
 public class BotDEntityTagProvider extends FabricTagProvider.EntityTypeTagProvider {
-	public BotDEntityTagProvider(FabricDataGenerator dataGenerator) {
-		super(dataGenerator);
+
+	public BotDEntityTagProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> completableFuture) {
+		super(output, completableFuture);
 	}
 
 	@Override
-	protected void generateTags() {
+	protected void configure(HolderLookup.Provider arg) {
 		getOrCreateTagBuilder(Constants.Tags.BUTCHERABLE)
 				.add(EntityType.COW)
 				.add(EntityType.VILLAGER)

@@ -48,7 +48,7 @@ public class PedestalBlock extends Block implements BlockEntityProvider {
 			if(!entity.isCrafting()) {
 				if(!playerStack.isEmpty()) {
 					ItemStack entityStack = entity.getStack();
-					if(!entityStack.isItemEqual(playerStack)) {
+					if(!entityStack.isItemEqualIgnoreDamage(playerStack)) {
 						if(!world.isClient) {
 							ItemStack newStack = playerStack.copy();
 							newStack.setCount(1);
@@ -86,20 +86,7 @@ public class PedestalBlock extends Block implements BlockEntityProvider {
 
 	@Override
 	public void randomDisplayTick(BlockState state, World world, BlockPos pos, net.minecraft.util.random.RandomGenerator random) {
-		/*
-		double x = (double)pos.getX() + 0.5D;
-		double y = (double)pos.getY() + 1.0625D;
-		double z = (double)pos.getZ() + 0.5D;
-		BlockEntity testEntity = world.getBlockEntity(pos);
-		if(testEntity instanceof PedestalBlockEntity entity) {
-			if(entity.isCrafting()) {
-				for(int i = 0; i  < 4; i++) {
-					world.addParticle(ParticleTypes.WITCH, x, y, z, random.nextDouble() - 0.5D, random.nextDouble() - 0.5D, random.nextDouble() - 0.5D);
-				}
-			}
-		}
 
-		 */
 	}
 
 	@Nullable

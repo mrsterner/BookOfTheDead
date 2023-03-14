@@ -26,9 +26,9 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Axis;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.World;
 
 public class ButcherTableBlockEntityRenderer implements BlockEntityRenderer<ButcherTableBlockEntity> {
@@ -67,11 +67,11 @@ public class ButcherTableBlockEntityRenderer implements BlockEntityRenderer<Butc
 						setupTransforms(matrices, entity.getWorld().getBlockState(entity.getPos()));
 						if(livingEntity instanceof AnimalEntity){
 							matrices.translate(0.75,0.1,-1.0);
-							matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(-90));
-							matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(90));
+							matrices.multiply(Axis.X_POSITIVE.rotationDegrees(-90));
+							matrices.multiply(Axis.Y_POSITIVE.rotationDegrees(90));
 						}
-						matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(getRot(entity) + 90));
-						matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(-90));
+						matrices.multiply(Axis.Y_POSITIVE.rotationDegrees(getRot(entity) + 90));
+						matrices.multiply(Axis.X_POSITIVE.rotationDegrees(-90));
 
 						EntityRenderer<? super LivingEntity> entityRenderer = dispatcher.getRenderer(livingEntity);
 						if(entityRenderer instanceof LivingEntityRenderer<?,?> livingEntityRenderer){
@@ -98,20 +98,20 @@ public class ButcherTableBlockEntityRenderer implements BlockEntityRenderer<Butc
 				matrices.push();
 				float f = blockState.get(NecroTableBlock.FACING).asRotation();
 				Direction direction = blockState.get(NecroTableBlock.FACING);
-				matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(180f));
+				matrices.multiply(Axis.Z_POSITIVE.rotationDegrees(180f));
 				matrices.translate(0.5, 0.5, 0.5);
-				matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(-f));
+				matrices.multiply(Axis.Y_POSITIVE.rotationDegrees(-f));
 				matrices.translate(-0.5, -0.5, -0.5);
 
 				if(direction == Direction.SOUTH){
 					matrices.translate(-0.5,-1.5,0.5);
 				}else if(direction == Direction.WEST){
-					matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(180));
+					matrices.multiply(Axis.Y_POSITIVE.rotationDegrees(180));
 					matrices.translate(-0.5,-1.5,-1.5);
 				}else if(direction == Direction.NORTH){
 					matrices.translate(1.5,-1.5,0.5);
 				}else if(direction == Direction.EAST){
-					matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(180));
+					matrices.multiply(Axis.Y_POSITIVE.rotationDegrees(180));
 					matrices.translate(-0.5,-1.5,0.5);
 				}
 				render(matrices, vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(TEXTURE)), light, overlay);

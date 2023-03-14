@@ -42,21 +42,21 @@ public class NecroTableBlockEntityRenderer<T extends BlockEntity> implements Blo
 				matrices.push();
 				float f = blockState.get(NecroTableBlock.FACING).asRotation();
 				Direction direction = blockState.get(NecroTableBlock.FACING);
-				matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(180f));
+				matrices.multiply(Axis.Z_POSITIVE.rotationDegrees(180f));
 				matrices.translate(0.5, 0.5, 0.5);
-				matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(-f));
+				matrices.multiply(Axis.Y_POSITIVE.rotationDegrees(-f));
 				matrices.translate(-0.5, -0.5, -0.5);
 
 				if(direction == Direction.SOUTH){
 					matrices.translate(0,-1.5,0.5);
 				}else if(direction == Direction.WEST){
 					matrices.translate(0,-1.5,1.5);
-					matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(180));
+					matrices.multiply(Axis.Y_POSITIVE.rotationDegrees(180));
 				}else if(direction == Direction.NORTH){
 					matrices.translate(2,-1.5,0.5);
 				}else if(direction == Direction.EAST){
 					matrices.translate(0,-1.5,-0.5);
-					matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(180));
+					matrices.multiply(Axis.Y_POSITIVE.rotationDegrees(180));
 				}
 
 				if(necroTableBlockEntity.hasEmeraldTablet){

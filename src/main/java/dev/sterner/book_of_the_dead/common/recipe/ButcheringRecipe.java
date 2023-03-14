@@ -13,10 +13,10 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
+import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import org.quiltmc.qsl.recipe.api.serializer.QuiltRecipeSerializer;
 
@@ -77,7 +77,7 @@ public class ButcheringRecipe implements Recipe<Inventory> {
 
 		@Override
 		public ButcheringRecipe read(Identifier id, JsonObject json) {
-			EntityType<?> entityType = Registry.ENTITY_TYPE.get(new Identifier(JsonHelper.getString(json, "entityType")));
+			EntityType<?> entityType = Registries.ENTITY_TYPE.get(new Identifier(JsonHelper.getString(json, "entityType")));
 			JsonArray array = JsonHelper.getArray(json, "results");
 			DefaultedList<Pair<ItemStack, Float>> outputs = RecipeUtils.deserializeStackPairs(array);
 			if (outputs.isEmpty()) {
@@ -96,7 +96,7 @@ public class ButcheringRecipe implements Recipe<Inventory> {
 
 		@Override
 		public ButcheringRecipe read(Identifier id, PacketByteBuf buf) {
-			EntityType<?> entityType = Registry.ENTITY_TYPE.get(new Identifier(buf.readString()));
+			EntityType<?> entityType = Registries.ENTITY_TYPE.get(new Identifier(buf.readString()));
 			DefaultedList<Pair<ItemStack, Float>> outputs = DefaultedList.ofSize(buf.readInt(), Pair.of(ItemStack.EMPTY, 1.0F));
 			outputs.replaceAll(ignored -> Pair.of(buf.readItemStack(), buf.readFloat()));
 			Pair<ItemStack, Float> headDrop = Pair.of(buf.readItemStack(), buf.readFloat());
@@ -107,7 +107,7 @@ public class ButcheringRecipe implements Recipe<Inventory> {
 
 		@Override
 		public void write(PacketByteBuf buf, ButcheringRecipe recipe) {
-			buf.writeString(Registry.ENTITY_TYPE.getId(recipe.entityType).toString());
+			buf.writeString(Registries.ENTITY_TYPE.getId(recipe.entityType).toString());
 			buf.writeInt(recipe.outputs.size());
 			for (Pair<ItemStack, Float> pair : recipe.outputs) {
 				buf.writeItemStack(pair.getFirst());

@@ -48,7 +48,7 @@ import java.util.Optional;
 
 import static dev.sterner.book_of_the_dead.api.block.HorizontalDoubleBlock.FACING;
 
-public class BaseButcherBlockEntity extends BlockEntity implements IHauler, IBlockEntityInventory {
+public class BaseButcherBlockEntity extends BaseBlockEntity implements IHauler, IBlockEntityInventory {
 	public NbtCompound storedCorpseNbt = new NbtCompound();
 	public LivingEntity storedLiving = null;
 	public DefaultedList<ItemStack> outputs = DefaultedList.ofSize(8, ItemStack.EMPTY);
@@ -255,37 +255,6 @@ public class BaseButcherBlockEntity extends BlockEntity implements IHauler, IBlo
 			float j = nbtCompound.getFloat("Float");
 			floats.set(i, j);
 		}
-	}
-
-	@Override
-	public void markDirty() {
-		super.markDirty();
-		if (world != null && !world.isClient) {
-			world.updateListeners(pos, this.getCachedState(), this.getCachedState(), Block.NOTIFY_LISTENERS);
-			this.toUpdatePacket();
-		}
-		if(world instanceof ServerWorld serverWorld){
-			serverWorld.getChunkManager().markForUpdate(pos);
-		}
-	}
-
-	@Override
-	public NbtCompound toInitialChunkDataNbt() {
-		NbtCompound nbt = super.toInitialChunkDataNbt();
-		this.writeNbt(nbt);
-		return nbt;
-	}
-
-	@Nullable
-	@Override
-	public Packet<ClientPlayPacketListener> toUpdatePacket() {
-		return BlockEntityUpdateS2CPacket.of(this, (BlockEntity b) -> toNbt2());
-	}
-
-	public NbtCompound toNbt2() {
-		NbtCompound nbtCompound = new NbtCompound();
-		this.writeNbt(nbtCompound);
-		return nbtCompound;
 	}
 
 	@Override

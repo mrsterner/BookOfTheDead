@@ -73,6 +73,14 @@ repositories {
 		name = 'Ladysnake Mods'
 		url = 'https://ladysnake.jfrog.io/artifactory/mods'
 	}
+	maven {
+		name = "CurseForge"
+		url = "https://minecraft.curseforge.com/api/maven"
+	}
+	maven {
+		name = "Curse"
+		url = "https://www.cursemaven.com"
+	}
 }
 
 dependencies {
@@ -118,7 +126,7 @@ dependencies {
 	}
 
 	//Revelationary
-	modImplementation "com.github.DaFuqs:Revelationary:${project.revelationary_version}"
+	modImplementation "curse.maven:revelationary-656526:${project.revelationary_version}"
 }
 
 processResources {

@@ -5,12 +5,12 @@ import dev.sterner.book_of_the_dead.common.recipe.ButcheringRecipe;
 import dev.sterner.book_of_the_dead.common.recipe.RetortRecipe;
 import dev.sterner.book_of_the_dead.common.recipe.RitualRecipe;
 import dev.sterner.book_of_the_dead.common.util.Constants;
-import dev.sterner.book_of_the_dead.common.util.BotDUtils;
 import dev.sterner.book_of_the_dead.common.util.RecipeUtils;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import net.minecraft.util.Pair;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
 import java.util.stream.Collectors;
@@ -20,7 +20,7 @@ public interface BotDRecipeTypes {
 	RecipeType<ButcheringRecipe> BUTCHERING_RECIPE_TYPE = new RecipeType<>() {
 		@Override
 		public String toString() {
-			return Constants.MOD_ID + ":butchering";
+			return Constants.MODID + ":butchering";
 		}
 	};
 
@@ -28,7 +28,7 @@ public interface BotDRecipeTypes {
 	RecipeType<RitualRecipe> RITUAL_RECIPE_TYPE = new RecipeType<>() {
 		@Override
 		public String toString() {
-			return Constants.MOD_ID + ":ritual";
+			return Constants.MODID + ":ritual";
 		}
 	};
 
@@ -36,20 +36,20 @@ public interface BotDRecipeTypes {
 	RecipeType<RetortRecipe> RETORT_RECIPE_TYPE = new RecipeType<>() {
 		@Override
 		public String toString() {
-			return Constants.MOD_ID + ":retort";
+			return Constants.MODID + ":retort";
 		}
 	};
 
 
 	static void init(){
-		Registry.register(Registry.RECIPE_SERIALIZER, Constants.id("butchering"), BUTCHERING_RECIPE_SERIALIZER);
-		Registry.register(Registry.RECIPE_TYPE,Constants.id("butchering"), BUTCHERING_RECIPE_TYPE);
+		Registry.register(Registries.RECIPE_SERIALIZER, Constants.id("butchering"), BUTCHERING_RECIPE_SERIALIZER);
+		Registry.register(Registries.RECIPE_TYPE,Constants.id("butchering"), BUTCHERING_RECIPE_TYPE);
 
-		Registry.register(Registry.RECIPE_SERIALIZER, Constants.id("ritual"), RITUAL_RECIPE_SERIALIZER);
-		Registry.register(Registry.RECIPE_TYPE,Constants.id("ritual"), RITUAL_RECIPE_TYPE);
+		Registry.register(Registries.RECIPE_SERIALIZER, Constants.id("ritual"), RITUAL_RECIPE_SERIALIZER);
+		Registry.register(Registries.RECIPE_TYPE,Constants.id("ritual"), RITUAL_RECIPE_TYPE);
 
-		Registry.register(Registry.RECIPE_SERIALIZER, Constants.id("retort"), RETORT_RECIPE_SERIALIZER);
-		Registry.register(Registry.RECIPE_TYPE,Constants.id("retort"), RETORT_RECIPE_TYPE);
+		Registry.register(Registries.RECIPE_SERIALIZER, Constants.id("retort"), RETORT_RECIPE_SERIALIZER);
+		Registry.register(Registries.RECIPE_TYPE,Constants.id("retort"), RETORT_RECIPE_TYPE);
 	}
 
 

@@ -12,10 +12,10 @@ import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
+import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import org.quiltmc.qsl.recipe.api.serializer.QuiltRecipeSerializer;
 
@@ -109,7 +109,7 @@ public class RetortRecipe implements Recipe<Inventory> {
 		@Override
 		public RetortRecipe read(Identifier id, JsonObject json) {
 			Ingredient[] ingredients = readIngredients(JsonHelper.getArray(json, "ingredients"));
-			Item outputItem = Registry.ITEM.getOrEmpty(new Identifier(JsonHelper.getString(json, "outputItem"))).orElseThrow(() -> new JsonSyntaxException("No such item " + JsonHelper.getString(json, "outputItem")));
+			Item outputItem = Registries.ITEM.getOrEmpty(new Identifier(JsonHelper.getString(json, "outputItem"))).orElseThrow(() -> new JsonSyntaxException("No such item " + JsonHelper.getString(json, "outputItem")));
 			ItemStack output = new ItemStack(outputItem, JsonHelper.getInt(json,"outputCount", 1));
 			int color = Integer.parseInt(JsonHelper.getString(json, "color").substring(2), 16);
 			return new RetortRecipe(id, color, ingredients, output);

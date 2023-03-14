@@ -9,8 +9,9 @@ import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.entity.attribute.DefaultAttributeRegistry;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 import org.quiltmc.qsl.entity.api.QuiltEntityTypeBuilder;
 
 import java.util.LinkedHashMap;
@@ -59,6 +60,6 @@ public interface BotDEntityTypes {
 		DefaultAttributeRegistry.DEFAULT_ATTRIBUTE_REGISTRY.put(BLOOD_SLIME_ENTITY, BloodSlimeEntity.createMobAttributes().build());
 		DefaultAttributeRegistry.DEFAULT_ATTRIBUTE_REGISTRY.put(PLAYER_CORPSE_ENTITY, PlayerCorpseEntity.createMobAttributes().build());
 
-		ENTITY_TYPES.keySet().forEach(entityType -> Registry.register(Registry.ENTITY_TYPE, ENTITY_TYPES.get(entityType), entityType));
+		ENTITY_TYPES.keySet().forEach(entityType -> Registry.register(Registries.ENTITY_TYPE, ENTITY_TYPES.get(entityType), entityType));
 	}
 }

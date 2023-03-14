@@ -9,14 +9,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleType;
-import net.minecraft.util.HolderLookup;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.registry.Registries;
 
 public class ItemStackBeamParticleEffect implements ParticleEffect {
 	public static final ParticleEffect.Factory<ItemStackBeamParticleEffect> PARAMETERS_FACTORY = new ParticleEffect.Factory<>() {
 		public ItemStackBeamParticleEffect read(ParticleType<ItemStackBeamParticleEffect> particleType, StringReader stringReader) throws CommandSyntaxException {
 			stringReader.expect(' ');
-			ItemStringReader.ItemResult itemResult = ItemStringReader.parseForItem(HolderLookup.forRegistry(Registry.ITEM), stringReader);
+			ItemStringReader.ItemResult itemResult = ItemStringReader.parseForItem(Registries.ITEM.asLookup(), stringReader);
 			ItemStack itemStack = new ItemStackArgument(itemResult.item(), itemResult.nbt()).createStack(1, false);
 			stringReader.expect(' ');
 			int maxAge = stringReader.readInt();
@@ -49,7 +48,7 @@ public class ItemStackBeamParticleEffect implements ParticleEffect {
 
 	@Override
 	public String asString() {
-		return Registry.PARTICLE_TYPE.getId(this.getType()) + " " + new ItemStackArgument(this.stack.getHolder(), this.stack.getNbt()).asString();
+		return Registries.PARTICLE_TYPE.getId(this.getType()) + " " + new ItemStackArgument(this.stack.getHolder(), this.stack.getNbt()).asString();
 	}
 
 	@Override

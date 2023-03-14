@@ -12,8 +12,8 @@ import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Axis;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3f;
 
 public class RitualBlockEntityRenderer implements BlockEntityRenderer<RitualBlockEntity> {
 	private float alpha = 0;
@@ -43,8 +43,8 @@ public class RitualBlockEntityRenderer implements BlockEntityRenderer<RitualBloc
 		final float rotationModifier = 4F;
 		double ticks = (BotDClient.ClientTickHandler.ticksInGame + tickDelta) * 0.5;
 		float deg =  (float) (ticks / rotationModifier % 360F);
-		matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(MathHelper.sin(deg) / (float) Math.PI));
-		matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(MathHelper.cos(deg) / (float) Math.PI));
+		matrices.multiply(Axis.Z_POSITIVE.rotationDegrees(MathHelper.sin(deg) / (float) Math.PI));
+		matrices.multiply(Axis.X_POSITIVE.rotationDegrees(MathHelper.cos(deg) / (float) Math.PI));
 		renderCircleLarge(matrices, vertexConsumers.getBuffer(BotDRenderLayer.GLOWING_LAYER.apply(CIRCLE_TEXTURE)), light, overlay);
 		matrices.pop();
 	}

@@ -8,6 +8,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
@@ -20,7 +21,13 @@ public abstract class BaseBlockEntity extends BlockEntity {
 	@Override
 	public void markDirty() {
 		super.markDirty();
-		sync(world, pos);
+		if (world != null && !world.isClient) {
+			world.updateListeners(pos, this.getCachedState(), this.getCachedState(), Block.NOTIFY_LISTENERS);
+			this.toUpdatePacket();
+		}
+		if(world instanceof ServerWorld serverWorld){
+			serverWorld.getChunkManager().markForUpdate(pos);
+		}
 	}
 
 	public void sync(World world, BlockPos pos) {
@@ -30,16 +37,22 @@ public abstract class BaseBlockEntity extends BlockEntity {
 		}
 	}
 
-	@Override
-	public NbtCompound toInitialChunkDataNbt() {
-		NbtCompound nbt = super.toInitialChunkDataNbt();
-		writeNbt(nbt);
-		return nbt;
-	}
-
 	@Nullable
 	@Override
 	public Packet<ClientPlayPacketListener> toUpdatePacket() {
-		return BlockEntityUpdateS2CPacket.of(this);
+		return BlockEntityUpdateS2CPacket.of(this, (BlockEntity b) -> toNbt2());
+	}
+
+	public NbtCompound toNbt2() {
+		NbtCompound nbtCompound = new NbtCompound();
+		this.writeNbt(nbtCompound);
+		return nbtCompound;
+	}
+
+	@Override
+	public NbtCompound toSyncedNbt() {
+		NbtCompound nbt = super.toSyncedNbt();
+		writeNbt(nbt);
+		return nbt;
 	}
 }
