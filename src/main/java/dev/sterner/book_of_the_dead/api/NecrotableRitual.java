@@ -42,12 +42,12 @@ public class NecrotableRitual implements IRitual {
 	private final Identifier id;
 	public BlockPos ritualCenter = null;
 	public RitualRecipe recipe;
-	public World world = null;
 	public int ticker = 0;
 	public UUID user = null;
 	public int height = 0;
 	private int index = 0;
 	private boolean canEndRitual = false;
+	private boolean lockTick = false;
 
 	public NecrotableRitual(Identifier id) {
 		this.id = id;
@@ -57,13 +57,9 @@ public class NecrotableRitual implements IRitual {
 
 	@Override
 	public void onStart(World world, BlockPos blockPos, RitualBlockEntity blockEntity){
-		if(this.world == null){
-			this.world = world;
-		}
-
 		if(world.getBlockState(blockPos).isOf(BotDObjects.NECRO_TABLE)){
 			ritualCenter = blockPos.add(0.5,0.5,0.5);
-			this.runCommand(blockEntity, blockPos, "start");
+			this.runCommand(world, blockEntity, blockPos, "start");
 		}
 	}
 
@@ -71,8 +67,9 @@ public class NecrotableRitual implements IRitual {
 	public void tick(World world, BlockPos blockPos, RitualBlockEntity blockEntity) {
 		ticker++;
 		canEndRitual = this.consumeItems(world, blockPos, blockEntity) && this.consumeSacrifices(world, blockPos, blockEntity);
-		if(canEndRitual){
-			this.runCommand(blockEntity, blockPos, "tick");
+		if(canEndRitual || lockTick){
+			this.lockTick = true;
+			this.runCommand(world, blockEntity, blockPos, "tick");
 			this.generateStatusEffects(world, blockPos, blockEntity);
 		}
 	}
@@ -81,10 +78,11 @@ public class NecrotableRitual implements IRitual {
 	public void onStopped(World world, BlockPos blockPos, RitualBlockEntity blockEntity){
 		ticker = 0;
 		index = 0;
-		if(canEndRitual){
-			this.runCommand(blockEntity, blockPos, "end");
+		if(lockTick){
+			this.runCommand(world, blockEntity, blockPos, "end");
 			this.summonSummons(world, blockPos, blockEntity);
 			this.summonItems(world, blockPos, blockEntity);
+			this.lockTick = false;
 		}
 	}
 
@@ -95,15 +93,13 @@ public class NecrotableRitual implements IRitual {
 		double y = blockPos.getY() + 0.5;
 		double z = blockPos.getZ() + 0.5;
 
-		if(world.getBlockEntity(blockPos) instanceof RitualBlockEntity ritualBlockEntity){
-			if(ritualBlockEntity.currentNecrotableRitual != null && recipe != null){
-				if(world instanceof ServerWorld serverWorld){
-					serverWorld.playSound(null, x, y, z, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, 1F,1F);
-				}
-				if (recipe.outputs != null) {
-					for(ItemStack output : recipe.outputs){
-						ItemScatterer.spawn(world, x, y, z, output);
-					}
+		if (blockEntity.currentNecrotableRitual != null && recipe != null) {
+			if (world instanceof ServerWorld serverWorld) {
+				serverWorld.playSound(null, x, y, z, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, 1F, 1F);
+			}
+			if (recipe.outputs != null) {
+				for (ItemStack output : recipe.outputs) {
+					ItemScatterer.spawn(world, x, y, z, output.copy());
 				}
 			}
 		}
@@ -174,8 +170,8 @@ public class NecrotableRitual implements IRitual {
 		if(world instanceof ServerWorld serverWorld) {
 			this.generateFX(serverWorld, x, y, z);
 		}
-
-		return index == pedestalToActivate.size();
+		System.out.println(index + " : " + pedestalToActivate.size());
+		return index == pedestalToActivate.size() + 1;
 	}
 
 	private boolean consumeSacrifices(World world, BlockPos blockPos, RitualBlockEntity blockEntity) {
@@ -222,20 +218,20 @@ public class NecrotableRitual implements IRitual {
 			for(ItemStack output : recipe.outputs){
 				for (int i = 0; i < recipe.outputs.size() * 2; i++) {
 					serverWorld.spawnParticles(new ItemStackParticleEffect(ParticleTypes.ITEM, output),
-							x + ((world.random.nextDouble() / 2) - 0.25),
-							y + ((world.random.nextDouble() / 2) - 0.25),
-							z + ((world.random.nextDouble() / 2) - 0.25),
+							x + ((serverWorld.random.nextDouble() / 2) - 0.25),
+							y + ((serverWorld.random.nextDouble() / 2) - 0.25),
+							z + ((serverWorld.random.nextDouble() / 2) - 0.25),
 							0,
-							1 * ((world.random.nextDouble() / 2) - 0.25),
-							1 * ((world.random.nextDouble() / 2) - 0.25),
-							1 * ((world.random.nextDouble() / 2) - 0.25),
+							1 * ((serverWorld.random.nextDouble() / 2) - 0.25),
+							1 * ((serverWorld.random.nextDouble() / 2) - 0.25),
+							1 * ((serverWorld.random.nextDouble() / 2) - 0.25),
 							0);
 				}
 			}
 		}
 	}
 
-	public void runCommand(RitualBlockEntity blockEntity, BlockPos blockPos, String phase){
+	public void runCommand(World world, RitualBlockEntity blockEntity, BlockPos blockPos, String phase){
 		MinecraftServer minecraftServer = world.getServer();
 		for (CommandType commandType : blockEntity.ritualRecipe.command) {
 			if (commandType.type.equals(phase)) {

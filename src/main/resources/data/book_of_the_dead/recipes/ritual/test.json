@@ -1,12 +1,20 @@
 {
   "type": "book_of_the_dead:ritual",
-  "ritual": "book_of_the_dead:create_item",
+  "ritual": "book_of_the_dead:basic",
   "requireBotD": false,
   "requireEmeraldTablet": true,
   "duration": 160,
 
-  "inputs": [],
-  "outputs": [],
+  "inputs": [
+    {
+      "item" : "minecraft:stick"
+    }
+  ],
+  "outputs": [
+    {
+      "item" : "minecraft:diamond"
+    }
+  ],
   "sacrifices": [],
   "summons": [],
   "commands": [],

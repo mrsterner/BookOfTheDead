@@ -13,7 +13,7 @@ import net.minecraft.util.HolderLookup;
 import net.minecraft.util.registry.Registry;
 
 public class ItemStackBeamParticleEffect implements ParticleEffect {
-	public static final ParticleEffect.Factory<ItemStackBeamParticleEffect> PARAMETERS_FACTORY = new ParticleEffect.Factory<ItemStackBeamParticleEffect>() {
+	public static final ParticleEffect.Factory<ItemStackBeamParticleEffect> PARAMETERS_FACTORY = new ParticleEffect.Factory<>() {
 		public ItemStackBeamParticleEffect read(ParticleType<ItemStackBeamParticleEffect> particleType, StringReader stringReader) throws CommandSyntaxException {
 			stringReader.expect(' ');
 			ItemStringReader.ItemResult itemResult = ItemStringReader.parseForItem(HolderLookup.forRegistry(Registry.ITEM), stringReader);

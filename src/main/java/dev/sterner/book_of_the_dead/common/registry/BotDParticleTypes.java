@@ -2,6 +2,7 @@ package dev.sterner.book_of_the_dead.common.registry;
 
 import dev.sterner.book_of_the_dead.api.interfaces.IBlockLeakParticle;
 import dev.sterner.book_of_the_dead.client.particle.BloodSplashParticle;
+import dev.sterner.book_of_the_dead.client.particle.ItemStackBeamParticle;
 import dev.sterner.book_of_the_dead.client.particle.ItemStackBeamParticleEffect;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
@@ -35,6 +36,7 @@ public interface BotDParticleTypes {
 
 	static void init() {
 		PARTICLE_TYPES.keySet().forEach(particleType -> Registry.register(Registry.PARTICLE_TYPE, PARTICLE_TYPES.get(particleType), particleType));
+		ParticleFactoryRegistry.getInstance().register(ITEM_BEAM_PARTICLE, new ItemStackBeamParticle.ItemFactory());
 		ParticleFactoryRegistry.getInstance().register(SPLASHING_BLOOD, BloodSplashParticle.DefaultFactory::new);
 
 		ParticleFactoryRegistry.getInstance().register(LANDING_BLOOD, s -> new BlockLeakParticle.LandingHoneyFactory(s) {
