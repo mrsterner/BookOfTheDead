@@ -1,5 +1,6 @@
 package dev.sterner.book_of_the_dead.common.item;
 
+import dev.sterner.book_of_the_dead.BotD;
 import dev.sterner.book_of_the_dead.common.component.BotDComponents;
 import dev.sterner.book_of_the_dead.common.component.CorpseDataComponent;
 import dev.sterner.book_of_the_dead.common.entity.PlayerCorpseEntity;
@@ -19,16 +20,17 @@ public class DebugWandItem extends Item {
 
 	@Override
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-		PlayerCorpseEntity entity = BotDEntityTypes.PLAYER_CORPSE_ENTITY.create(world);
-		if (entity != null) {
-			entity.setSkinProfile(user.getGameProfile());
-			entity.refreshPositionAndAngles(user.getBlockPos(), 0, 0);
-			world.spawnEntity(entity);
-			CorpseDataComponent dataComponent = BotDComponents.CORPSE_COMPONENT.get(entity);
-			dataComponent.isCorpse(true);
-			entity.damage(DamageSource.MAGIC, Integer.MAX_VALUE);
+		if(BotD.isDebugMode()){
+			PlayerCorpseEntity entity = BotDEntityTypes.PLAYER_CORPSE_ENTITY.create(world);
+			if (entity != null) {
+				entity.setSkinProfile(user.getGameProfile());
+				entity.refreshPositionAndAngles(user.getBlockPos(), 0, 0);
+				world.spawnEntity(entity);
+				CorpseDataComponent dataComponent = BotDComponents.CORPSE_COMPONENT.get(entity);
+				dataComponent.isCorpse(true);
+				entity.damage(DamageSource.MAGIC, Integer.MAX_VALUE);
+			}
 		}
-
 		return super.use(world, user, hand);
 	}
 }

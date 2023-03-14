@@ -22,16 +22,25 @@ public interface IHauler {
 
 	void clearCorpseData();
 
+	default boolean getHeadVisible(){
+		return true;
+	};
 
-	boolean getHeadVisible();
+	default boolean getRArmVisible(){
+		return true;
+	};
 
-	boolean getRArmVisible();
+	default boolean getLArmVisible(){
+		return true;
+	};
 
-	boolean getLArmVisible();
+	default boolean getRLegVisible(){
+		return true;
+	};
 
-	boolean getRLegVisible();
-
-	boolean getLLegVisible();
+	default boolean getLLegVisible(){
+		return true;
+	};
 
 	void setHeadVisible(boolean visible);
 
@@ -42,4 +51,12 @@ public interface IHauler {
 	void setRLegVisible(boolean visible);
 
 	void setLLegVisible(boolean visible);
+
+	default void setAllVisible(){
+		setHeadVisible(true);
+		setLArmVisible(true);
+		setLLegVisible(true);
+		setRArmVisible(true);
+		setRLegVisible(true);
+	};
 }

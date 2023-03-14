@@ -32,7 +32,6 @@ public class BotD implements ModInitializer {
 		BotDSoundEvents.init();
 
 		BotDUseEvents.init();
-		BotDAttackEvents.init();
 
 		ServerPlayerEntityCopyCallback.EVENT.register(this::afterRespawn);
 	}

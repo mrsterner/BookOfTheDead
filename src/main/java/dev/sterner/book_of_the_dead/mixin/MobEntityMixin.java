@@ -55,7 +55,7 @@ public abstract class MobEntityMixin extends LivingEntity {
 				IHauler.of(player).ifPresent(hauler -> {
 					if(hauler.getCorpseEntity().isEmpty()){
 						BlockPos pos = mobEntity.getBlockPos();
-						world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.BLOCK_HONEY_BLOCK_BREAK, SoundCategory.PLAYERS, 2,1);
+						world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 1,1);
 						hauler.setCorpseEntity(mobEntity);
 						mobEntity.remove(Entity.RemovalReason.DISCARDED);
 					}

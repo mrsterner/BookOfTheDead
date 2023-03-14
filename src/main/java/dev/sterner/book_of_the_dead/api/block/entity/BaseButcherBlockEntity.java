@@ -104,12 +104,8 @@ public class BaseButcherBlockEntity extends BlockEntity implements IHauler, IBlo
 				if(optionalIHauler.get().getCorpseEntity() != null){
 					NbtCompound nbtCompound = optionalIHauler.get().getCorpseEntity();
 					if(!nbtCompound.isEmpty()){
-						setCorpse(nbtCompound);
-						setHeadVisible(true);
-						setRArmVisible(true);
-						setLArmVisible(true);
-						setRLegVisible(true);
-						setLLegVisible(true);
+						this.setCorpse(nbtCompound);
+						this.setAllVisible();
 						optionalIHauler.get().clearCorpseData();
 
 						Direction targetDirection = state.get(FACING).rotateClockwise(Direction.Axis.Y);
@@ -118,16 +114,16 @@ public class BaseButcherBlockEntity extends BlockEntity implements IHauler, IBlo
 						}
 
 						BlockPos neighbourPos = pos.offset(targetDirection);
-						spawnMuckParticles((ServerWorld) world, pos);
-						spawnMuckParticles((ServerWorld) world, neighbourPos);
+						this.spawnMuckParticles((ServerWorld) world, pos);
+						this.spawnMuckParticles((ServerWorld) world, neighbourPos);
+						world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 1,1);
 						markDirty();
 						return ActionResult.CONSUME;
 					}
 				}
 			}
 			if(getCorpseEntity() != null && !getCorpseEntity().isEmpty()){
-
-				refreshButcheringRecipe();
+				this.refreshButcheringRecipe();
 
 				if (player.getMainHandStack().isOf(BotDObjects.BUTCHER_KNIFE)){
 
@@ -139,7 +135,7 @@ public class BaseButcherBlockEntity extends BlockEntity implements IHauler, IBlo
 
 						nonEmptyOutput.get(0).setCount(world.getRandom().nextDouble() < chance * nonEmptyChance.get(0) ? 1 : 0);
 						if(getHeadVisible() && !isNeighbour && this.butcheringRecipe.headDrop.getFirst() != ItemStack.EMPTY){
-							setHeadVisible(false);
+							this.setHeadVisible(false);
 							ItemStack head = this.butcheringRecipe.headDrop.getFirst();
 							head.setCount(world.getRandom().nextDouble() < chance * this.butcheringRecipe.headDrop.getSecond() ? 1 : 0);
 							ItemScatterer.spawn(world, pos.getX() + 0.5, pos.getY() + 1.2, pos.getZ() + 0.5, head);
@@ -148,23 +144,18 @@ public class BaseButcherBlockEntity extends BlockEntity implements IHauler, IBlo
 							ItemScatterer.spawn(world, pos.getX() + 0.5, pos.getY() + 1.2, pos.getZ() + 0.5, nonEmptyOutput.get(0));
 						}
 
-						PlayerLookup.tracking(player).forEach(track -> BloodSplashParticlePacket.send(track, pos.getX(), pos.getY() + particleOffset, pos.getZ()));
-						BloodSplashParticlePacket.send(player, pos.getX(), pos.getY() + particleOffset, pos.getZ());
-
-						world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.BLOCK_HONEY_BLOCK_BREAK, SoundCategory.PLAYERS, 2,1);
-						world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_PLAYER_ATTACK_CRIT, SoundCategory.PLAYERS, 0.75f,1);
+						this.makeARuckus(world, player, pos, particleOffset);
 						this.chances.set(0, 0F);
 						this.outputs.set(0, ItemStack.EMPTY);
 						nonEmptyOutput = this.outputs.stream().filter(item -> !item.isEmpty() || !item.isOf(Items.AIR) || item.getCount() != 0).toList();
 						if(nonEmptyOutput.isEmpty()){
-							reset();
+							this.reset();
 						}
 						player.swingHand(hand, true);
 						return ActionResult.CONSUME;
 					}else {
-						PlayerLookup.tracking(player).forEach(track -> BloodSplashParticlePacket.send(track, pos.getX(), pos.getY() + particleOffset, pos.getZ()));
-						BloodSplashParticlePacket.send(player, pos.getX(), pos.getY() + particleOffset, pos.getZ());
-						reset();
+						this.makeARuckus(world, player, pos, particleOffset);
+						this.reset();
 					}
 				}
 			}
@@ -186,6 +177,13 @@ public class BaseButcherBlockEntity extends BlockEntity implements IHauler, IBlo
 				0.15F);
 	}
 
+	private void makeARuckus(World world, PlayerEntity player, BlockPos pos, double particleOffset){
+		world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.BLOCK_HONEY_BLOCK_BREAK, SoundCategory.PLAYERS, 2,1);
+		world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_PLAYER_ATTACK_CRIT, SoundCategory.PLAYERS, 0.75f,1);
+		PlayerLookup.tracking(player).forEach(track -> BloodSplashParticlePacket.send(track, pos.getX(), pos.getY() + particleOffset, pos.getZ()));
+		BloodSplashParticlePacket.send(player, pos.getX(), pos.getY() + particleOffset, pos.getZ());
+	}
+
 	private void dismemberAtRandom(World world) {
 		int i = world.getRandom().nextInt(3);
 		switch (i) {
@@ -197,19 +195,19 @@ public class BaseButcherBlockEntity extends BlockEntity implements IHauler, IBlo
 	}
 
 	public void reset(){
-		clear();
+		this.clear();
 		this.setCorpse(new NbtCompound());
-		butcheringRecipe = null;
-		resetRecipe = true;
-		clearCorpseData();
-		markDirty();
+		this.butcheringRecipe = null;
+		this.resetRecipe = true;
+		this.clearCorpseData();
+		this.markDirty();
 	}
 
 	@Override
 	protected void writeNbt(NbtCompound nbt) {
 		super.writeNbt(nbt);
 		Inventories.writeNbt(nbt, outputs);
-		writeChancesNbt(nbt, chances);
+		this.writeChancesNbt(nbt, chances);
 		if(!storedCorpseNbt.isEmpty()){
 			nbt.put(Constants.Nbt.CORPSE_ENTITY, getCorpseEntity());
 		}
@@ -226,7 +224,7 @@ public class BaseButcherBlockEntity extends BlockEntity implements IHauler, IBlo
 	public void readNbt(NbtCompound nbt) {
 		super.readNbt(nbt);
 		Inventories.readNbt(nbt, outputs);
-		readChanceNbt(nbt, chances);
+		this.readChanceNbt(nbt, chances);
 		setCorpse(nbt.getCompound(Constants.Nbt.CORPSE_ENTITY));
 		this.resetRecipe = nbt.getBoolean("Refresh");
 
@@ -237,7 +235,7 @@ public class BaseButcherBlockEntity extends BlockEntity implements IHauler, IBlo
 		setLLegVisible(nbt.getBoolean(Constants.Nbt.LEFT_LEG_VISIBLE));
 	}
 
-	public static NbtCompound writeChancesNbt(NbtCompound nbt, DefaultedList<Float> floats) {
+	public void writeChancesNbt(NbtCompound nbt, DefaultedList<Float> floats) {
 		NbtList nbtList = new NbtList();
 		for (float aFloat : floats) {
 			NbtCompound nbtCompound = new NbtCompound();
@@ -245,10 +243,9 @@ public class BaseButcherBlockEntity extends BlockEntity implements IHauler, IBlo
 			nbtList.add(nbtCompound);
 		}
 		nbt.put("Floats", nbtList);
-		return nbt;
 	}
 
-	public static void readChanceNbt(NbtCompound nbt, DefaultedList<Float> floats) {
+	public void readChanceNbt(NbtCompound nbt, DefaultedList<Float> floats) {
 		NbtList nbtList = nbt.getList("Floats", NbtElement.COMPOUND_TYPE);
 		for(int i = 0; i < nbtList.size(); ++i) {
 			NbtCompound nbtCompound = nbtList.getCompound(i);
@@ -262,7 +259,7 @@ public class BaseButcherBlockEntity extends BlockEntity implements IHauler, IBlo
 		super.markDirty();
 		if (world != null && !world.isClient) {
 			world.updateListeners(pos, this.getCachedState(), this.getCachedState(), Block.NOTIFY_LISTENERS);
-			toUpdatePacket();
+			this.toUpdatePacket();
 		}
 		if(world instanceof ServerWorld serverWorld){
 			serverWorld.getChunkManager().markForUpdate(pos);
@@ -272,7 +269,7 @@ public class BaseButcherBlockEntity extends BlockEntity implements IHauler, IBlo
 	@Override
 	public NbtCompound toInitialChunkDataNbt() {
 		NbtCompound nbt = super.toInitialChunkDataNbt();
-		writeNbt(nbt);
+		this.writeNbt(nbt);
 		return nbt;
 	}
 

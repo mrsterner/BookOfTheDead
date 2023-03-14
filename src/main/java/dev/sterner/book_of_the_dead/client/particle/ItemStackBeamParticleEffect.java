@@ -62,5 +62,4 @@ public class ItemStackBeamParticleEffect implements ParticleEffect {
 		buf.writeItemStack(this.stack);
 		buf.writeInt(this.maxAge);
 	}
-
 }

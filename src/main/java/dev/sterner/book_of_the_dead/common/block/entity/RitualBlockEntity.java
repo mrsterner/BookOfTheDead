@@ -144,30 +144,7 @@ public class RitualBlockEntity extends BaseBlockEntity {
 		List<EntityType<?>> entityTypeList = Lists.newArrayList(livingEntityList.stream().map(Entity::getType).toList());
 		List<EntityType<?>> ritualSacrifices = ritual.sacrifices;
 
-		if (ritualSacrifices != null && new HashSet<>(entityTypeList).containsAll(ritualSacrifices)) {
-			for (EntityType<?> entityType : ritualSacrifices) {
-				LivingEntity foundEntity = getClosestEntity(livingEntityList, entityType, this.pos);
-				if (foundEntity != null) {
-					foundEntity.damage(DamageSource.MAGIC, Integer.MAX_VALUE);
-				}
-			}
-			return true;
-		}
-		return false;
-	}
-
-
-	public <T extends LivingEntity> T getClosestEntity(List<? extends T> entityList, EntityType<?> type, BlockPos pos) {
-		double d = -1.0;
-		T livingEntity = null;
-		for (T livingEntity2 : entityList) {
-			double e = livingEntity2.squaredDistanceTo(pos.getX(), pos.getY(), pos.getZ());
-			if (livingEntity2.getType() == type && (d == -1.0 || e < d)) {
-				d = e;
-				livingEntity = livingEntity2;
-			}
-		}
-		return livingEntity;
+		return ritualSacrifices != null && new HashSet<>(entityTypeList).containsAll(ritualSacrifices);
 	}
 
 	public boolean checkTier(RitualBlockEntity blockEntity){
