@@ -1,6 +1,7 @@
 package dev.sterner.book_of_the_dead.common.util;
 
 import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
+import net.minecraft.block.Block;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
@@ -9,6 +10,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.tag.TagKey;
+import net.minecraft.util.HolderSet;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import org.quiltmc.qsl.item.group.api.QuiltItemGroup;
@@ -34,7 +36,8 @@ public class Constants {
 
 	public static class Tags {
 		public static final TagKey<EntityType<?>> BUTCHERABLE = TagKey.of(Registry.ENTITY_TYPE_KEY, id("butcherable"));
-	}
+        public static final TagKey<Block> EMITS_HEAT = TagKey.of(Registry.BLOCK_KEY, id("emits_heat"));
+    }
 
 	public static class Nbt {
 		public static final String CORPSE_ENTITY = "CorpseEntity";

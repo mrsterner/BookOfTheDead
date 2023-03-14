@@ -35,8 +35,6 @@ public class RetortFlaskBlockEntityRenderer<T extends BlockEntity> implements Bl
 		this.main = modelPart.getChild("main");
 	}
 
-
-
 	@Override
 	public void render(T entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
 		World world = entity.getWorld();

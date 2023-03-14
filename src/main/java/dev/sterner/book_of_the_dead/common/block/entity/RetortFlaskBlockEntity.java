@@ -47,10 +47,9 @@ public class RetortFlaskBlockEntity extends BaseBlockEntity implements IBlockEnt
 				blockEntity.loaded = true;
 			}
 
-			blockEntity.heatTimer = MathHelper.clamp((state.get(Properties.LIT) && blockEntity.hasLiquid ? blockEntity.heatTimer + 1 : -1), -1, 160);
+			blockEntity.heatTimer = MathHelper.clamp(blockEntity.heatTimer + (state.get(Properties.LIT) && blockEntity.hasLiquid ? 1 : -1), 0, 160);
 			if (!world.isClient) {
-				if (blockEntity.hasLiquid) {
-					blockEntity.heatTimer++;
+				if (blockEntity.hasLiquid && blockEntity.heatTimer > 20) {
 					if(blockEntity.retortRecipe != null ){
 						if(blockEntity.progress < blockEntity.MAX_PROGRESS){
 							blockEntity.progress++;

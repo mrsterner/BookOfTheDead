@@ -37,7 +37,6 @@ public class RetortRecipe implements Recipe<Inventory> {
 		this.color = color;
 	}
 
-
 	@Override
 	public boolean matches(Inventory inventory, World world) {
 		return matches(inventory, ingredients);
