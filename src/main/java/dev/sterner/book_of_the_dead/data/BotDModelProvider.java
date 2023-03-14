@@ -27,8 +27,6 @@ public class BotDModelProvider extends FabricModelProvider {
 		itemModelGenerator.register(BotDObjects.DEBUG_WAND, Models.GENERATED);
 
 		itemModelGenerator.register(BotDObjects.BOOK_OF_THE_DEAD, Models.GENERATED);
-		itemModelGenerator.register(BotDObjects.SIGNED_CONTRACT, Models.GENERATED);
-		itemModelGenerator.register(BotDObjects.CONTRACT, Models.GENERATED);
 		itemModelGenerator.register(BotDObjects.PACKET, Models.GENERATED);
 		itemModelGenerator.register(BotDObjects.BUTCHER_KNIFE, Models.HANDHELD);
 		itemModelGenerator.register(BotDObjects.BLOODY_BUTCHER_KNIFE, Models.HANDHELD);
@@ -42,9 +40,6 @@ public class BotDModelProvider extends FabricModelProvider {
 		itemModelGenerator.register(BotDObjects.SKIN, Models.GENERATED);
 		itemModelGenerator.register(BotDObjects.BOTTLE_OF_BLOOD, Models.GENERATED);
 		itemModelGenerator.register(BotDObjects.ROPE.asItem(), Models.GENERATED);
-		//itemModelGenerator.register(BotDObjects.QUICKSILVER, Models.GENERATED);
-		//itemModelGenerator.register(BotDObjects.SOUL_GEM, Models.GENERATED);
-		//itemModelGenerator.register(BotDObjects.CINNABAR, Models.GENERATED);
 		itemModelGenerator.register(BotDObjects.CELLAR_KEY, Models.GENERATED);
 		itemModelGenerator.register(BotDObjects.OLD_LETTER, Models.GENERATED);
 		itemModelGenerator.register(BotDObjects.RETORT_FLASK, Models.GENERATED);

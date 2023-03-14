@@ -21,7 +21,6 @@ public class BotDLanguageProvider extends FabricLanguageProvider {
 		builder.add(BotDObjects.BOOK_OF_THE_DEAD, "The Book of the Dead");
 		builder.add(BotDObjects.BUTCHER_KNIFE, "Butcher Knife");
 		builder.add(BotDObjects.CONTRACT, "Contract");
-		builder.add(BotDObjects.SIGNED_CONTRACT, "Signed Contract");
 		builder.add(BotDObjects.PACKET, "Packet");
 		builder.add(BotDObjects.FAT, "Fat");
 		builder.add(BotDObjects.SKIN, "Skin");
@@ -32,9 +31,6 @@ public class BotDLanguageProvider extends FabricLanguageProvider {
 		builder.add(BotDObjects.HOOK, "Hook");
 		builder.add(BotDObjects.METAL_HOOK, "Metal Hook");
 		builder.add(BotDObjects.ALL_BLACK, "All-Black");
-		//builder.add(BotDObjects.QUICKSILVER, "Quicksilver");
-		//builder.add(BotDObjects.SOUL_GEM, "Soul Gem");
-		//builder.add(BotDObjects.CINNABAR, "Cinnabar");
 		builder.add(BotDObjects.CELLAR_KEY, "Cellar Key");
 		builder.add(BotDObjects.REINFORCED_DOOR, "Reinforced Door");
 		builder.add(BotDObjects.REINFORCED_BLOCK, "Reinforced Block");

@@ -29,9 +29,6 @@ public class ReinforcedDoorBlock extends DoorBlock {
 		if(player.getMainHandStack().isOf(BotDObjects.CELLAR_KEY)){
 			world.setBlockState(pos, state.cycle(LOCKED));
 			world.playSound(null, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 1,1);
-			if(!player.isCreative()){
-				player.getMainHandStack().decrement(1);
-			}
 			return ActionResult.CONSUME;
 		}else if (state.get(LOCKED)) {
 			player.sendMessage(Text.translatable("info.book_of_the_dead.door_locked"), true);

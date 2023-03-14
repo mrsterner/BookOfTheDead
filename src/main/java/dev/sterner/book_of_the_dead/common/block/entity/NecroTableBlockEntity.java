@@ -8,6 +8,8 @@ import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtHelper;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
@@ -34,9 +36,11 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 					if(necroTableBlockEntity.hasBotD){
 						player.setStackInHand(hand, BotDObjects.BOOK_OF_THE_DEAD.getDefaultStack());
 						necroTableBlockEntity.hasBotD = false;
+						this.playItemSound(world, pos);
 					}else if(necroTableBlockEntity.hasEmeraldTablet){
 						player.setStackInHand(hand, BotDObjects.EMERALD_TABLET.getDefaultStack());
 						necroTableBlockEntity.hasEmeraldTablet = false;
+						this.playItemSound(world, pos);
 					}
 					necroTableBlockEntity.markDirty();
 				}else{
@@ -45,14 +49,20 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 			}else if(player.getMainHandStack().isOf(BotDObjects.BOOK_OF_THE_DEAD)){
 				necroTableBlockEntity.hasBotD = true;
 				player.getMainHandStack().decrement(1);
+				this.playItemSound(world, pos);
 				necroTableBlockEntity.markDirty();
 			}else if(player.getMainHandStack().isOf(BotDObjects.EMERALD_TABLET)){
 				necroTableBlockEntity.hasEmeraldTablet = true;
 				player.getMainHandStack().decrement(1);
+				this.playItemSound(world, pos);
 				necroTableBlockEntity.markDirty();
 			}
 		}
 		return ActionResult.PASS;
+	}
+
+	private void playItemSound(World world, BlockPos pos){
+		world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.5f, ((world.getRandom().nextFloat() - world.getRandom().nextFloat()) * 0.7F + 1.0F) * 2.0F);
 	}
 
 	private void sendInfoToRitualBlock(World world, PlayerEntity player, BlockPos pos, boolean hasBotD, boolean hasEmeraldTablet) {

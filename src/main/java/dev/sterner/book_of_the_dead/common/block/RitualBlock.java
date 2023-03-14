@@ -6,13 +6,18 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.Fluids;
+import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.state.StateManager;
+import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Pair;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
@@ -21,11 +26,14 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
+import static net.minecraft.state.property.Properties.LIT;
+
 public class RitualBlock extends BlockWithEntity {
 	protected static final VoxelShape OUTLINE_SHAPE = VoxelShapes.union(createCuboidShape(0D, 0D, 0D, 16D, 2D, 16D));
 
 	public RitualBlock(Settings settings) {
 		super(settings.nonOpaque());
+		setDefaultState(getDefaultState().with(HorizontalFacingBlock.FACING, Direction.NORTH));
 	}
 
 	@Override
@@ -80,5 +88,17 @@ public class RitualBlock extends BlockWithEntity {
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
 		return (tickerWorld, pos, tickerState, blockEntity) -> RitualBlockEntity.tick(tickerWorld, pos, tickerState, (RitualBlockEntity) blockEntity);
+	}
+
+	@Override
+	public BlockState getPlacementState(ItemPlacementContext ctx) {
+		PlayerEntity player = ctx.getPlayer();
+		return this.getDefaultState().with(HorizontalFacingBlock.FACING, player != null && player.isSneaking() ? ctx.getPlayerFacing().getOpposite() : ctx.getPlayerFacing());
+	}
+
+	@Override
+	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+		builder.add(HorizontalFacingBlock.FACING);
+		super.appendProperties(builder);
 	}
 }

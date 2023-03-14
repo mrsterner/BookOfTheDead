@@ -18,3 +18,6 @@ accessible field net/minecraft/client/render/entity/model/QuadrupedEntityModel r
 accessible field net/minecraft/client/render/entity/model/QuadrupedEntityModel leftHindLeg Lnet/minecraft/client/model/ModelPart;
 accessible field net/minecraft/client/render/entity/model/QuadrupedEntityModel rightFrontLeg Lnet/minecraft/client/model/ModelPart;
 accessible field net/minecraft/client/render/entity/model/QuadrupedEntityModel leftFrontLeg Lnet/minecraft/client/model/ModelPart;
+
+accessible field net/minecraft/structure/pool/StructurePool elements Lit/unimi/dsi/fastutil/objects/ObjectArrayList;
+

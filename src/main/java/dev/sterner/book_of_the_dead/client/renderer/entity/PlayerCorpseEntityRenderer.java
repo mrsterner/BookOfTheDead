@@ -20,8 +20,8 @@ import net.minecraft.util.math.MathHelper;
 import java.util.Map;
 
 public class PlayerCorpseEntityRenderer extends LivingEntityRenderer<PlayerCorpseEntity, BipedEntityModel<PlayerCorpseEntity>> {
-	private final BipedEntityModel normalModel;
-	private final BipedEntityModel slimModel;
+	private final BipedEntityModel<PlayerCorpseEntity> normalModel;
+	private final BipedEntityModel<PlayerCorpseEntity> slimModel;
 
 	public PlayerCorpseEntityRenderer(EntityRendererFactory.Context ctx) {
 		super(ctx, new BipedEntityModel<>(ctx.getPart(EntityModelLayers.PLAYER)), 0.5F);

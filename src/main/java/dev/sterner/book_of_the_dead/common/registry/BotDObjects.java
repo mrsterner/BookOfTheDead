@@ -2,9 +2,7 @@ package dev.sterner.book_of_the_dead.common.registry;
 
 import dev.sterner.book_of_the_dead.BotD;
 import dev.sterner.book_of_the_dead.common.block.*;
-import dev.sterner.book_of_the_dead.common.item.AllBlackSwordItem;
-import dev.sterner.book_of_the_dead.common.item.BookOfTheDeadItem;
-import dev.sterner.book_of_the_dead.common.item.DebugWandItem;
+import dev.sterner.book_of_the_dead.common.item.*;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.block.*;
 import net.minecraft.client.item.TooltipContext;
@@ -37,9 +35,8 @@ public interface BotDObjects {
 	Item BOOK_OF_THE_DEAD = register("book_of_the_dead", new BookOfTheDeadItem(Constants.id("book_of_the_dead"), settings()));
 	Item ALL_BLACK = register("all_black", new AllBlackSwordItem(ToolMaterials.NETHERITE, 8, -2, settings(), true));
 
-	Item CELLAR_KEY = register("cellar_key", new Item(settings()));
-	Item CONTRACT = register("contract", new Item(settings()));
-	Item SIGNED_CONTRACT = register("signed_contract", new Item(settings()));
+	Item CELLAR_KEY = register("cellar_key", new CellarKeyItem(settings()));
+	Item CONTRACT = register("contract", new ContractItem(settings()));
 	Item PACKET = register("packet", new Item(settings()));
 	Item CAGE = register("cage", new Item(settings()));
 	Item HOOK = register("hook", new Item(settings()));

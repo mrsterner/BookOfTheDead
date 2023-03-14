@@ -1,7 +1,19 @@
 {
   "variants": {
-    "": {
+    "facing=east": {
+      "model": "book_of_the_dead:block/ritual",
+      "y": 90
+    },
+    "facing=north": {
       "model": "book_of_the_dead:block/ritual"
+    },
+    "facing=south": {
+      "model": "book_of_the_dead:block/ritual",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "book_of_the_dead:block/ritual",
+      "y": 270
     }
   }
 }

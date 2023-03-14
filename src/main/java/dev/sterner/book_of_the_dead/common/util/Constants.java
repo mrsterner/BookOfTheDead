@@ -19,7 +19,7 @@ import net.minecraft.util.Identifier;
 public class Constants {
 
 	public static final String MODID = "book_of_the_dead";
-	
+
 	public static final ItemGroup BOTD_GROUP = FabricItemGroup.builder(Constants.id("items")).icon(() -> new ItemStack(BotDObjects.BUTCHER_KNIFE)).build();
 
 
@@ -71,5 +71,8 @@ public class Constants {
 		public static final String LEFT_ARM_VISIBLE = "LeftArmVisible";
 		public static final String RIGHT_LEG_VISIBLE = "RightLegVisible";
 		public static final String LEFT_LEG_VISIBLE = "LeftLegVisible";
-    }
+		public static final String CONTRACT = "Contract";
+		public static final String NAME = "Name";
+		public static final String UUID = "Uuid";
+	}
 }
