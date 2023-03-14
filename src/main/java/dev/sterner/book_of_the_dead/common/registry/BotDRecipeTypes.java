@@ -6,6 +6,7 @@ import dev.sterner.book_of_the_dead.common.recipe.RetortRecipe;
 import dev.sterner.book_of_the_dead.common.recipe.RitualRecipe;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import dev.sterner.book_of_the_dead.common.util.BotDUtils;
+import dev.sterner.book_of_the_dead.common.util.RecipeUtils;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Pair;
@@ -54,8 +55,11 @@ public interface BotDRecipeTypes {
 
 	static RitualRecipe getRiteRecipe(RitualBlockEntity ritualBlockEntity) {
 		World world = ritualBlockEntity.getWorld();
+		if(world == null){
+			return null;
+		}
 		return world.getRecipeManager().listAllOfType(RITUAL_RECIPE_TYPE).stream()
-				.filter(r -> BotDUtils.containsAllIngredients(r.inputs.stream()
+				.filter(r -> RecipeUtils.containsAllIngredients(r.inputs.stream()
 						.filter(ingredient -> !ingredient.isEmpty()).collect(Collectors.toList()), ritualBlockEntity.getPedestalInfo(world).stream().map(Pair::getLeft).toList()))
 				.findFirst().orElse(null);
 	}

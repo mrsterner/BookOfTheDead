@@ -23,6 +23,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class RenderUtils {
+	/**
+	 * Draw an entity just like the player is drawn in the PlayerInventoryScreen screen
+	 */
 	public static void drawEntity(int x, int y, int size, float mouseX, float mouseY, LivingEntity entity, @Nullable Rectangle bounds) {
 		float f;
 		float g;

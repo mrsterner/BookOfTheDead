@@ -19,6 +19,12 @@ import java.util.Random;
 
 public class BotDUtils {
 
+	/**
+	 * Try to add an itemStack to a players Hand, otherwise drops the item
+	 * @param player player
+	 * @param hand hand to receive item
+	 * @param toAdd item to add
+	 */
 	public static void addItemToInventoryAndConsume(PlayerEntity player, Hand hand, ItemStack toAdd) {
 		boolean shouldAdd = false;
 		ItemStack stack = player.getStackInHand(hand);
@@ -47,49 +53,5 @@ public class BotDUtils {
 			}
 			((StructurePoolAccessor)pool).book_of_the_dead$getElementCounts().add(Pair.of(element, weight));
 		}
-	}
-
-	public static boolean containsAllIngredients(List<Ingredient> ingredients, List<ItemStack> items) {
-		List<Integer> checkedIndexes = new ArrayList<>();
-		for (Ingredient ingredient : ingredients) {
-			for (int i = 0; i < items.size(); i++) {
-				if (!checkedIndexes.contains(i)) {
-					if (ingredient.test(items.get(i))) {
-						checkedIndexes.add(i);
-						break;
-					}
-				}
-			}
-		}
-		return checkedIndexes.size() == ingredients.size();
-	}
-
-	public static NbtCompound fromVec3d(Vec3d pos) {
-		NbtCompound nbtCompound = new NbtCompound();
-		nbtCompound.putDouble("X", pos.getX());
-		nbtCompound.putDouble("Y", pos.getY());
-		nbtCompound.putDouble("Z", pos.getZ());
-		return nbtCompound;
-	}
-
-	public static Vec3d toVec3d(NbtCompound compound) {
-		return new Vec3d(compound.getDouble("X"), compound.getDouble("Y"), compound.getDouble("Z"));
-	}
-
-	public static Pair<ArrayList<Vec3d>, ArrayList<Float>> genRandomPos(double interval){
-		ArrayList<Vec3d> list = new ArrayList<>();
-		ArrayList<Float> yawList = new ArrayList<>();
-		for(int i = 0; i < 10; i++) {
-			Random randomX = new Random();
-			Random randomZ = new Random();
-
-			list.add(i, new Vec3d(nextDouble(randomX, -interval, interval), 0, nextDouble(randomZ, -interval, interval)));
-			yawList.add(i, randomX.nextFloat());
-		}
-		return Pair.of(list, yawList);
-	}
-
-	public static double nextDouble(Random random, double min, double max) {
-		return min >= max ? min : random.nextDouble() * (max - min) + min;
 	}
 }

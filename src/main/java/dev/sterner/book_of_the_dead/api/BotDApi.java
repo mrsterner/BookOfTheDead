@@ -9,6 +9,12 @@ import net.minecraft.entity.player.PlayerEntity;
 import org.jetbrains.annotations.Nullable;
 
 public class BotDApi {
+
+	/**
+	 * Check if a killed entity should become a corpse or not with the EntityTag, Enchantment and ItemStack
+	 * @param livingEntity killed entity
+	 * @return true if killed entity should become a corpse
+	 */
 	public static boolean isButchering(@Nullable LivingEntity livingEntity){
 		if(livingEntity == null){
 			return false;

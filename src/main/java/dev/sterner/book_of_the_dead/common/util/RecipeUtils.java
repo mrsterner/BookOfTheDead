@@ -23,10 +23,7 @@ import net.minecraft.util.registry.Registry;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
@@ -38,30 +35,32 @@ import java.util.stream.Stream;
 
 public class RecipeUtils {
 
-	public static @Nullable StatusEffectInstance deserializeStatusEffect(JsonObject object) {
-		final Identifier id = new Identifier(JsonHelper.getString(object, "id"));
-		final int duration = JsonHelper.getInt(object, "duration");
-		final int amplifier = JsonHelper.getInt(object, "amplifier");
-		StatusEffect statusEffect = Registry.STATUS_EFFECT.get(id);
-		if(statusEffect != null){
-			return new StatusEffectInstance(statusEffect, duration, amplifier);
-		}
-		return null;
+	public static Stream<JsonElement> arrayStream(JsonArray array) {
+		return IntStream.range(0, array.size()).mapToObj(array::get);
 	}
 
+	/**
+	 * Deserialize a List of entityTypes from a json array
+	 */
+	public static List<EntityType<?>> deserializeEntityTypes(JsonArray array) {
+		if (array.isJsonArray()) {
+			return arrayStream(array.getAsJsonArray()).map(entry -> deserializeEntityType(entry.getAsJsonObject())).collect(DefaultedListCollector.toList());
+		} else {
+			return DefaultedList.copyOf(deserializeEntityType(array.getAsJsonObject()));
+		}
+	}
+
+	/**
+	 * Deserialize an EntityType from a json object
+	 */
 	public static @Nullable EntityType<?> deserializeEntityType(JsonObject object) {
 		final Identifier id = new Identifier(JsonHelper.getString(object, "entity"));
 		return Registry.ENTITY_TYPE.get(id);
 	}
 
-	public static List<StatusEffectInstance> deserializeStatusEffects(JsonArray array) {
-		if (array.isJsonArray()) {
-			return arrayStream(array.getAsJsonArray()).map(entry -> deserializeStatusEffect(entry.getAsJsonObject())).collect(DefaultedListCollector.toList());
-		} else {
-			return DefaultedList.copyOf(deserializeStatusEffect(array.getAsJsonObject()));
-		}
-	}
-
+	/**
+	 * Deserialize a DefaultedList of ItemStacks from a json array
+	 */
 	public static DefaultedList<ItemStack> deserializeStacks(JsonArray array) {
 		if (array.isJsonArray()) {
 			return arrayStream(array.getAsJsonArray()).map(entry -> deserializeStack(entry.getAsJsonObject())).collect(DefaultedListCollector.toList());
@@ -70,6 +69,30 @@ public class RecipeUtils {
 		}
 	}
 
+	/**
+	 * Deserialize an ItemStack from a json object
+	 */
+	public static @NotNull ItemStack deserializeStack(JsonObject object) {
+		final Identifier id = new Identifier(JsonHelper.getString(object, "item"));
+		final Item item = Registry.ITEM.get(id);
+		if (Items.AIR == item) {
+			throw new IllegalStateException("Invalid item: " + item);
+		}
+		int count = 1;
+		if (object.has("count")) {
+			count = JsonHelper.getInt(object, "count");
+		}
+		final ItemStack stack = new ItemStack(item, count);
+		if (object.has("nbt")) {
+			final NbtCompound tag = (NbtCompound) Dynamic.convert(JsonOps.INSTANCE, NbtOps.INSTANCE, object.get("nbt"));
+			stack.setNbt(tag);
+		}
+		return stack;
+	}
+
+	/**
+	 * Deserialize a DefaultedList of Pairs of ItemStacks and Floats from a json array
+	 */
 	public static DefaultedList<Pair<ItemStack, Float>> deserializeStackPairs(JsonArray array) {
 		if (array.isJsonArray()) {
 			return arrayStream(array.getAsJsonArray()).map(entry -> deserializeStackPair(entry.getAsJsonObject())).collect(DefaultedListCollector.toList());
@@ -78,6 +101,9 @@ public class RecipeUtils {
 		}
 	}
 
+	/**
+	 * Deserialize a Pair of an ItemStack and a Float from a json object
+	 */
 	public static @NotNull Pair<ItemStack, Float> deserializeStackPair(JsonObject object) {
 		final Identifier id = new Identifier(JsonHelper.getString(object, "item"));
 		final Item item = Registry.ITEM.get(id);
@@ -100,36 +126,51 @@ public class RecipeUtils {
 		return Pair.of(stack, chance);
 	}
 
-	public static List<EntityType<?>> deserializeEntityTypes(JsonArray array) {
+	/**
+	 * Deserialize a Set of CommandTypes from a json array
+	 */
+	public static Set<CommandType> deserializeCommands(JsonArray array) {
+		if (!array.isEmpty()) {
+			return arrayStream(array.getAsJsonArray()).map(entry -> deserializeCommand(entry.getAsJsonObject())).collect(Collectors.toSet());
+		}
+		return Set.of();
+	}
+
+	/**
+	 * Deserialize a CommandType from a json object
+	 */
+	public static @NotNull CommandType deserializeCommand(JsonObject object) {
+		return new CommandType(JsonHelper.getString(object, "command"), JsonHelper.getString(object, "type"));
+	}
+
+	/**
+	 * Deserialize a List of StatusEffectInstances from a json array
+	 */
+	public static List<StatusEffectInstance> deserializeStatusEffects(JsonArray array) {
 		if (array.isJsonArray()) {
-			return arrayStream(array.getAsJsonArray()).map(entry -> deserializeEntityType(entry.getAsJsonObject())).collect(DefaultedListCollector.toList());
+			return arrayStream(array.getAsJsonArray()).map(entry -> deserializeStatusEffect(entry.getAsJsonObject())).collect(DefaultedListCollector.toList());
 		} else {
-			return DefaultedList.copyOf(deserializeEntityType(array.getAsJsonObject()));
+			return DefaultedList.copyOf(deserializeStatusEffect(array.getAsJsonObject()));
 		}
 	}
 
-	public static Stream<JsonElement> arrayStream(JsonArray array) {
-		return IntStream.range(0, array.size()).mapToObj(array::get);
+	/**
+	 * Deserialize a StatusEffectInstance from a json object
+	 */
+	public static @Nullable StatusEffectInstance deserializeStatusEffect(JsonObject object) {
+		final Identifier id = new Identifier(JsonHelper.getString(object, "id"));
+		final int duration = JsonHelper.getInt(object, "duration");
+		final int amplifier = JsonHelper.getInt(object, "amplifier");
+		StatusEffect statusEffect = Registry.STATUS_EFFECT.get(id);
+		if(statusEffect != null){
+			return new StatusEffectInstance(statusEffect, duration, amplifier);
+		}
+		return null;
 	}
 
-	public static @NotNull ItemStack deserializeStack(JsonObject object) {
-		final Identifier id = new Identifier(JsonHelper.getString(object, "item"));
-		final Item item = Registry.ITEM.get(id);
-		if (Items.AIR == item) {
-			throw new IllegalStateException("Invalid item: " + item);
-		}
-		int count = 1;
-		if (object.has("count")) {
-			count = JsonHelper.getInt(object, "count");
-		}
-		final ItemStack stack = new ItemStack(item, count);
-		if (object.has("nbt")) {
-			final NbtCompound tag = (NbtCompound) Dynamic.convert(JsonOps.INSTANCE, NbtOps.INSTANCE, object.get("nbt"));
-			stack.setNbt(tag);
-		}
-		return stack;
-	}
-
+	/**
+	 * Deserialize a DefaultedList of Ingredients from a json array
+	 */
 	public static DefaultedList<Ingredient> deserializeIngredients(JsonArray json) {
 		DefaultedList<Ingredient> ingredients = DefaultedList.of();
 		for (int i = 0; i < json.size(); i++) {
@@ -141,17 +182,19 @@ public class RecipeUtils {
 		return ingredients;
 	}
 
-	public static Set<CommandType> deserializeCommands(JsonArray array) {
-		if (!array.isEmpty()) {
-			return arrayStream(array.getAsJsonArray()).map(entry -> deserializeCommand(entry.getAsJsonObject())).collect(Collectors.toSet());
+	public static boolean containsAllIngredients(List<Ingredient> ingredients, List<ItemStack> items) {
+		List<Integer> checkedIndexes = new ArrayList<>();
+		for (Ingredient ingredient : ingredients) {
+			for (int i = 0; i < items.size(); i++) {
+				if (!checkedIndexes.contains(i)) {
+					if (ingredient.test(items.get(i))) {
+						checkedIndexes.add(i);
+						break;
+					}
+				}
+			}
 		}
-		return Set.of();
-	}
-
-	public static @NotNull CommandType deserializeCommand(JsonObject object) {
-		String command = JsonHelper.getString(object, "command");
-		String type = JsonHelper.getString(object, "type");
-		return new CommandType(command, type);
+		return checkedIndexes.size() == ingredients.size();
 	}
 
 	public static class DefaultedListCollector<T> implements Collector<T, DefaultedList<T>, DefaultedList<T>> {

@@ -88,6 +88,12 @@ public class NecrotableRitual implements IRitual {
 
 	//RITUAL MANAGER
 
+	/**
+	 * Drops all resulting items at ritual origin
+	 * @param world world
+	 * @param blockPos ritual origin
+	 * @param blockEntity ritualBlockEntity
+	 */
 	private void summonItems(World world, BlockPos blockPos, RitualBlockEntity blockEntity) {
 		double x = blockPos.getX() + 0.5;
 		double y = blockPos.getY() + 0.5;
@@ -105,6 +111,12 @@ public class NecrotableRitual implements IRitual {
 		}
 	}
 
+	/**
+	 * Spawns all entities which was specified in the ritual recipe at ritual origin
+	 * @param world world
+	 * @param blockPos ritual origin
+	 * @param blockEntity ritualBlockEntity
+	 */
 	private void summonSummons(World world, BlockPos blockPos, RitualBlockEntity blockEntity) {
 		if(blockEntity.ritualRecipe.summons != null){
 			for(EntityType<?> entityType : blockEntity.ritualRecipe.summons){
@@ -118,6 +130,12 @@ public class NecrotableRitual implements IRitual {
 		}
 	}
 
+	/**
+	 * Adds all statusEffects to the user of the ritual
+	 * @param world world
+	 * @param blockPos ritual origin
+	 * @param blockEntity ritualBlockEntity
+	 */
 	private void generateStatusEffects(World world, BlockPos blockPos, RitualBlockEntity blockEntity) {
 		if(user != null){
 			PlayerEntity player = world.getPlayerByUuid(user);
@@ -133,6 +151,13 @@ public class NecrotableRitual implements IRitual {
 		return id;
 	}
 
+	/**
+	 * Check if the pedestals have appropriate items matching recipe and consumes them in succession
+	 * @param world world
+	 * @param blockPos ritual origin
+	 * @param blockEntity ritualBlockEntity
+	 * @return true if all items where consumed
+	 */
 	private boolean consumeItems(World world, BlockPos blockPos, RitualBlockEntity blockEntity) {
 		if(blockEntity.ritualRecipe.inputs != null && blockEntity.ritualRecipe.inputs.isEmpty()) return true;
 		double x = blockPos.getX() + 0.5;
@@ -170,10 +195,16 @@ public class NecrotableRitual implements IRitual {
 		if(world instanceof ServerWorld serverWorld) {
 			this.generateFX(serverWorld, x, y, z);
 		}
-		System.out.println(index + " : " + pedestalToActivate.size());
 		return index == pedestalToActivate.size() + 1;
 	}
 
+	/**
+	 * Check and kill sacrifices around the ritual origin depending on recipe
+	 * @param world world
+	 * @param blockPos origin
+	 * @param blockEntity ritualBlockEntity
+	 * @return true if sacrifice was successful
+	 */
 	private boolean consumeSacrifices(World world, BlockPos blockPos, RitualBlockEntity blockEntity) {
 		if (blockEntity.ritualRecipe.sacrifices != null && blockEntity.ritualRecipe.sacrifices.isEmpty()) {
 			return true;
@@ -197,6 +228,13 @@ public class NecrotableRitual implements IRitual {
 		return false;
 	}
 
+	/**
+	 * Gets closes entity of a specific type
+	 * @param entityList list of entities to test
+	 * @param type entityType to look for
+	 * @param pos position to measure distance from
+	 * @return Entity closest to pos from entityList
+	 */
 	public <T extends LivingEntity> T getClosestEntity(List<? extends T> entityList, EntityType<?> type, BlockPos pos) {
 		double d = -1.0;
 		T livingEntity = null;
@@ -210,6 +248,13 @@ public class NecrotableRitual implements IRitual {
 		return livingEntity;
 	}
 
+	/**
+	 * Handles the output items sound and particle effect
+	 * @param serverWorld serverWorld
+	 * @param x coordinate for sound and particle
+	 * @param y coordinate for sound and particle
+	 * @param z coordinate for sound and particle
+	 */
 	private void generateFX(ServerWorld serverWorld, double x, double y, double z) {
 		if(ticker % 5 == 0 && ticker < recipe.getDuration() - 40){
 			serverWorld.playSound(null, x,y,z, SoundEvents.BLOCK_CAMPFIRE_CRACKLE, SoundCategory.BLOCKS, 10,0.5f);
@@ -231,6 +276,13 @@ public class NecrotableRitual implements IRitual {
 		}
 	}
 
+	/**
+	 * Runs a command depending on which key phrase is used, "start", "tick", "end"
+	 * @param world world
+	 * @param blockEntity ritualBlockEntity
+	 * @param blockPos pos of the ritual origin
+	 * @param phase keyword for which phase the command should run in
+	 */
 	public void runCommand(World world, RitualBlockEntity blockEntity, BlockPos blockPos, String phase){
 		MinecraftServer minecraftServer = world.getServer();
 		for (CommandType commandType : blockEntity.ritualRecipe.command) {
