@@ -11,6 +11,7 @@ import net.minecraft.client.render.entity.model.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -33,6 +34,14 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity, M extend
 	@Inject(method = "<init>", at = @At(value = "TAIL"))
 	private void book_of_the_dead$init(EntityRendererFactory.Context ctx, EntityModel model, float shadowRadius, CallbackInfo ci){
 
+	}
+
+	@Inject(method = "render(Lnet/minecraft/entity/LivingEntity;FFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V", at = @At(value = "HEAD"), cancellable = true)
+	private void book_of_the_dead$render(T livingEntity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, CallbackInfo ci){
+		Optional<CorpseDataComponent> component = BotDComponents.CORPSE_COMPONENT.maybeGet(livingEntity);
+		if(component.isPresent() && livingEntity instanceof PlayerEntity && component.get().isCorpse){
+			ci.cancel();
+		}
 	}
 
 	@Inject(method = "getOverlay", at = @At("HEAD"), cancellable = true)

@@ -46,7 +46,9 @@ public class BotDSkullBlockEntityRenderer implements BlockEntityRenderer<BotDSku
 
 	@Override
 	public void render(ItemStack stack, ModelTransformation.Mode mode, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
-
+		BotDSkullBlockEntityModel skullBlockEntityModel = this.MODELS.get(BotDSkullBlock.Type.VILLAGER);
+		RenderLayer renderLayer = getRenderLayer(BotDSkullBlock.Type.VILLAGER);
+		renderSkull(null, 0, matrices, vertexConsumers, light, skullBlockEntityModel, renderLayer);
 	}
 
 	@Override

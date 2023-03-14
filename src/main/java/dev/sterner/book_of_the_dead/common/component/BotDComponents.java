@@ -6,6 +6,7 @@ import dev.onyxstudios.cca.api.v3.entity.EntityComponentFactoryRegistry;
 import dev.onyxstudios.cca.api.v3.entity.EntityComponentInitializer;
 import dev.onyxstudios.cca.api.v3.entity.RespawnCopyStrategy;
 import dev.sterner.book_of_the_dead.common.util.Constants;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 
@@ -16,7 +17,7 @@ public class BotDComponents implements EntityComponentInitializer {
 
 	@Override
 	public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
-		registry.beginRegistration(MobEntity.class, CORPSE_COMPONENT).respawnStrategy(RespawnCopyStrategy.ALWAYS_COPY).end(CorpseDataComponent::new);
+		registry.beginRegistration(LivingEntity.class, CORPSE_COMPONENT).respawnStrategy(RespawnCopyStrategy.ALWAYS_COPY).end(CorpseDataComponent::new);
 		registry.beginRegistration(PlayerEntity.class, PLAYER_COMPONENT).respawnStrategy(RespawnCopyStrategy.ALWAYS_COPY).end(PlayerDataComponent::new);
 	}
 }

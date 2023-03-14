@@ -4,6 +4,7 @@ import dev.sterner.book_of_the_dead.client.model.*;
 import dev.sterner.book_of_the_dead.client.renderer.block.*;
 import dev.sterner.book_of_the_dead.client.renderer.entity.BloodSlimeEntityRenderer;
 import dev.sterner.book_of_the_dead.client.renderer.entity.OldManEntityRenderer;
+import dev.sterner.book_of_the_dead.client.renderer.entity.PlayerCorpseEntityRenderer;
 import dev.sterner.book_of_the_dead.client.renderer.item.AllBlackSwordItemRenderer;
 import dev.sterner.book_of_the_dead.common.item.AllBlackSwordItem;
 import dev.sterner.book_of_the_dead.client.network.BloodSplashParticlePacket;
@@ -12,9 +13,11 @@ import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
+import net.fabricmc.fabric.api.event.client.ClientSpriteRegistryCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
+import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.item.Item;
 import net.minecraft.resource.ResourceType;
@@ -61,9 +64,10 @@ public class BotDClient implements ClientModInitializer {
 		BuiltinItemRendererRegistry.INSTANCE.register(BotDObjects.JAR, new JarBlockEntityRenderer());
 		BuiltinItemRendererRegistry.INSTANCE.register(BotDObjects.VILLAGER_HEAD, new BotDSkullBlockEntityRenderer());
 		BuiltinItemRendererRegistry.INSTANCE.register(BotDObjects.VILLAGER_WALL_HEAD, new BotDSkullBlockEntityRenderer());
-		//EntityRendererRegistry.register(BotDEntityTypes.CORPSE_ENTITY, CorpseEntityRenderer::new);
+
 		EntityRendererRegistry.register(BotDEntityTypes.OLD_MAN_ENTITY, OldManEntityRenderer::new);
 		EntityRendererRegistry.register(BotDEntityTypes.BLOOD_SLIME_ENTITY, BloodSlimeEntityRenderer::new);
+		EntityRendererRegistry.register(BotDEntityTypes.PLAYER_CORPSE_ENTITY, PlayerCorpseEntityRenderer::new);
 
 		EntityModelLayerRegistry.registerModelLayer(BagEntityModel.LAYER_LOCATION, BagEntityModel::createBodyLayer);
 		EntityModelLayerRegistry.registerModelLayer(JarEntityModel.LAYER_LOCATION, JarEntityModel::createBodyLayer);
@@ -93,8 +97,6 @@ public class BotDClient implements ClientModInitializer {
 				});
 			}
 		}
-
-
 	}
 
 	public static final class ClientTickHandler {

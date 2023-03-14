@@ -10,6 +10,7 @@ import dev.sterner.book_of_the_dead.common.block.entity.ButcherTableBlockEntity;
 import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.client.model.*;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -24,6 +25,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -53,7 +55,7 @@ public class ButcherTableBlockEntityRenderer implements BlockEntityRenderer<Butc
 		matrices.push();
 		IHauler.of(entity).ifPresent(hauler -> {
 			NbtCompound renderedEntity = hauler.getCorpseEntity();
-			if(renderedEntity != null && !renderedEntity.isEmpty()){
+			if(renderedEntity != null && !renderedEntity.isEmpty() && entity.getWorld() != null){
 				EntityType.getEntityFromNbt(renderedEntity, entity.getWorld()).ifPresent(type -> {
 					if(type instanceof LivingEntity livingEntity){
 						livingEntity.hurtTime = 0;
@@ -63,7 +65,7 @@ public class ButcherTableBlockEntityRenderer implements BlockEntityRenderer<Butc
 						livingEntity.prevPitch = 20;
 						livingEntity.headYaw = 0;
 						dispatcher.setRenderShadows(false);
-						matrices.translate(0.5,1.15,2.0);
+						setupTransforms(matrices, entity.getWorld().getBlockState(entity.getPos()));
 						if(livingEntity instanceof AnimalEntity){
 							matrices.translate(0.75,0.1,-1.0);
 							matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(-90));
@@ -116,6 +118,16 @@ public class ButcherTableBlockEntityRenderer implements BlockEntityRenderer<Butc
 				render(matrices, vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(TEXTURE)), light, overlay);
 				matrices.pop();
 			}
+		}
+	}
+
+	private void setupTransforms(MatrixStack matrices, BlockState blockState) {
+		Direction dir = blockState.get(HorizontalFacingBlock.FACING);
+		switch (dir) {
+			case NORTH -> matrices.translate(-1.0,1.15,0.5);
+			case SOUTH -> matrices.translate(2.0,1.15,0.5);
+			case EAST -> matrices.translate(0.5,1.15,-1.0);
+			case WEST -> matrices.translate(0.5,1.15,2.0);
 		}
 	}
 

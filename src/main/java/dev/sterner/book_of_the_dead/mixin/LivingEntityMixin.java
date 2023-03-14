@@ -4,6 +4,7 @@ import dev.sterner.book_of_the_dead.api.BotDApi;
 import dev.sterner.book_of_the_dead.api.event.OnEntityDeathEvent;
 import dev.sterner.book_of_the_dead.common.component.BotDComponents;
 import dev.sterner.book_of_the_dead.common.component.CorpseDataComponent;
+import dev.sterner.book_of_the_dead.common.entity.PlayerCorpseEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -27,6 +28,9 @@ public abstract class LivingEntityMixin extends Entity {
 	public int deathTime;
 	@Shadow
 	public float bodyYaw;
+
+	@Shadow
+	protected abstract void initDataTracker();
 
 	public LivingEntityMixin(EntityType<?> type, World world) {
 		super(type, world);
@@ -62,22 +66,27 @@ public abstract class LivingEntityMixin extends Entity {
 		Optional<CorpseDataComponent> component = BotDComponents.CORPSE_COMPONENT.maybeGet(livingEntity);
 		if(component.isPresent()){
 			boolean isCorpse = component.get().isCorpse;
-			if (livingEntity instanceof MobEntity && (isCorpse || BotDApi.isButchering(livingEntity))){
-				component.get().isCorpse(true);
-				++livingEntity.deathTime;
-				if (livingEntity.deathTime == 1) {
-					if (livingEntity.isOnFire()){
-						livingEntity.extinguish();
-					}
-					if (livingEntity.getVehicle() != null){
-						livingEntity.stopRiding();
-					}
+			if((isCorpse || BotDApi.isButchering(livingEntity))){
+				if(livingEntity instanceof PlayerEntity){
+					component.get().isCorpse(true);
 				}
-				if (livingEntity.deathTime >= 20) {
-					Box corpseBox = new Box(livingEntity.getX() - (livingEntity.getWidth() / 2.0F), livingEntity.getY() - (livingEntity.getWidth() / 2.0F), livingEntity.getZ() - (livingEntity.getWidth() / 2.0F), livingEntity.getX() + (livingEntity.getWidth() / 2F), livingEntity.getY() + (livingEntity.getWidth() / 2F), livingEntity.getZ() + (livingEntity.getWidth() / 2F));
-					livingEntity.setBoundingBox(corpseBox.offset(livingEntity.getRotationVector(0F, livingEntity.bodyYaw).rotateY(- 30.0F)));
+				if (livingEntity instanceof MobEntity){
+					component.get().isCorpse(true);
+					++livingEntity.deathTime;
+					if (livingEntity.deathTime == 1) {
+						if (livingEntity.isOnFire()){
+							livingEntity.extinguish();
+						}
+						if (livingEntity.getVehicle() != null){
+							livingEntity.stopRiding();
+						}
+					}
+					if (livingEntity.deathTime >= 20) {
+						Box corpseBox = new Box(livingEntity.getX() - (livingEntity.getWidth() / 2.0F), livingEntity.getY() - (livingEntity.getWidth() / 2.0F), livingEntity.getZ() - (livingEntity.getWidth() / 2.0F), livingEntity.getX() + (livingEntity.getWidth() / 2F), livingEntity.getY() + (livingEntity.getWidth() / 2F), livingEntity.getZ() + (livingEntity.getWidth() / 2F));
+						livingEntity.setBoundingBox(corpseBox.offset(livingEntity.getRotationVector(0F, livingEntity.bodyYaw).rotateY(- 30.0F)));
+					}
+					callbackInfo.cancel();
 				}
-				callbackInfo.cancel();
 			}
 		}
 	}

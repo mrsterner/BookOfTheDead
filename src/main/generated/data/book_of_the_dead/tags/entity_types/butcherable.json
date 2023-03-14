@@ -9,6 +9,7 @@
     "minecraft:piglin",
     "minecraft:piglin_brute",
     "minecraft:chicken",
-    "minecraft:player"
+    "minecraft:player",
+    "book_of_the_dead:corpse_player"
   ]
 }

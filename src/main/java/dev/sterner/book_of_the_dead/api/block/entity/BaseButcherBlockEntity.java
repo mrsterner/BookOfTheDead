@@ -13,6 +13,7 @@ import dev.sterner.book_of_the_dead.common.registry.BotDRecipeTypes;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.Entity;
@@ -28,6 +29,8 @@ import net.minecraft.nbt.NbtList;
 import net.minecraft.network.Packet;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
+import net.minecraft.particle.BlockStateParticleEffect;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -98,7 +101,7 @@ public class BaseButcherBlockEntity extends BlockEntity implements IHauler, IBlo
 	public ActionResult onUse(World world, BlockState state, BlockPos pos, PlayerEntity player, Hand hand, double probability, double particleOffset, boolean isNeighbour) {
 		if(hand == Hand.MAIN_HAND){
 			Optional<IHauler> optionalIHauler = IHauler.of(player);
-			if(optionalIHauler.isPresent()){
+			if(optionalIHauler.isPresent() && getCorpseEntity().isEmpty()){
 				if(optionalIHauler.get().getCorpseEntity() != null){
 					NbtCompound nbtCompound = optionalIHauler.get().getCorpseEntity();
 					if(!nbtCompound.isEmpty()){
@@ -109,6 +112,15 @@ public class BaseButcherBlockEntity extends BlockEntity implements IHauler, IBlo
 						setRLegVisible(true);
 						setLLegVisible(true);
 						optionalIHauler.get().clearCorpseData();
+
+						Direction targetDirection = state.get(FACING).rotateClockwise(Direction.Axis.Y);
+						if(!isNeighbour){
+							targetDirection = targetDirection.getOpposite();
+						}
+
+						BlockPos neighbourPos = pos.offset(targetDirection);
+						spawnMuckParticles((ServerWorld) world, pos);
+						spawnMuckParticles((ServerWorld) world, neighbourPos);
 						markDirty();
 						return ActionResult.CONSUME;
 					}
@@ -151,6 +163,8 @@ public class BaseButcherBlockEntity extends BlockEntity implements IHauler, IBlo
 						player.swingHand(hand, true);
 						return ActionResult.CONSUME;
 					}else {
+						PlayerLookup.tracking(player).forEach(track -> BloodSplashParticlePacket.send(track, pos.getX(), pos.getY() + particleOffset, pos.getZ()));
+						BloodSplashParticlePacket.send(player, pos.getX(), pos.getY() + particleOffset, pos.getZ());
 						reset();
 					}
 				}
@@ -158,6 +172,19 @@ public class BaseButcherBlockEntity extends BlockEntity implements IHauler, IBlo
 		}
 		markDirty();
 		return ActionResult.PASS;
+	}
+
+	private void spawnMuckParticles(ServerWorld world, BlockPos pos) {
+		int count = 150;
+		(world).spawnParticles(new BlockStateParticleEffect(ParticleTypes.BLOCK, Blocks.DARK_OAK_PLANKS.getDefaultState()),
+				pos.getX() + 0.5f,
+				pos.getY() + 1.0f,
+				pos.getZ() + 0.5f,
+				count,
+				0.0,
+				0.0,
+				0.0,
+				0.15F);
 	}
 
 	private void dismemberAtRandom(World world, boolean isNeighbour) {

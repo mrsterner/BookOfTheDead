@@ -1,5 +1,6 @@
 package dev.sterner.book_of_the_dead.data;
 
+import dev.sterner.book_of_the_dead.common.registry.BotDEntityTypes;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
@@ -21,7 +22,8 @@ public class BotDEntityTagProvider extends FabricTagProvider.EntityTypeTagProvid
 				.add(EntityType.PIGLIN)
 				.add(EntityType.PIGLIN_BRUTE)
 				.add(EntityType.CHICKEN)
-				.add(EntityType.PLAYER);
+				.add(EntityType.PLAYER)
+				.add(BotDEntityTypes.PLAYER_CORPSE_ENTITY);
 	}
 
 }
