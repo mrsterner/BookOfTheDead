@@ -25,7 +25,6 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -173,7 +172,7 @@ public class ButcherTableBlockEntityRenderer implements BlockEntityRenderer<Butc
 			villagerResemblingModel.getHead().visible = entity.getHeadVisible();
 			villagerResemblingModel.getPart().getChild(EntityModelPartNames.RIGHT_LEG).visible = entity.getRLegVisible();
 			villagerResemblingModel.getPart().getChild(EntityModelPartNames.LEFT_LEG).visible = entity.getLLegVisible();
-			villagerResemblingModel.getPart().getChild(EntityModelPartNames.ARMS).visible = entity.getRArmVisible();
+			villagerResemblingModel.getPart().getChild(EntityModelPartNames.ARMS).visible = entity.getRArmVisible() || entity.getLArmVisible();
 		}
 	}
 

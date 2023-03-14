@@ -12,9 +12,6 @@ import net.minecraft.nbt.NbtHelper;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Optional;
-import java.util.UUID;
-
 public class PlayerCorpseEntity extends MobEntity {
 	private static final TrackedData<NbtCompound> GAME_PROFILE = DataTracker.registerData(PlayerCorpseEntity.class, TrackedDataHandlerRegistry.TAG_COMPOUND);
 

@@ -1,32 +1,15 @@
 package dev.sterner.book_of_the_dead.common.block.entity;
 
-import dev.sterner.book_of_the_dead.api.BotDApi;
 import dev.sterner.book_of_the_dead.api.block.entity.BaseButcherBlockEntity;
-import dev.sterner.book_of_the_dead.api.interfaces.IHauler;
-import dev.sterner.book_of_the_dead.client.network.BloodSplashParticlePacket;
-import dev.sterner.book_of_the_dead.common.component.BotDComponents;
-import dev.sterner.book_of_the_dead.common.component.PlayerDataComponent;
 import dev.sterner.book_of_the_dead.common.registry.BotDBlockEntityTypes;
-import dev.sterner.book_of_the_dead.common.registry.BotDEnchantments;
-import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.block.BlockState;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import org.quiltmc.qsl.networking.api.PlayerLookup;
-
-import java.util.List;
-import java.util.Optional;
 
 public class HookBlockEntity extends BaseButcherBlockEntity {
 	public int hookedAge = 0;

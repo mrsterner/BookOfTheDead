@@ -5,7 +5,6 @@ import dev.sterner.book_of_the_dead.api.interfaces.IBlockEntityInventory;
 import dev.sterner.book_of_the_dead.api.interfaces.IHauler;
 import dev.sterner.book_of_the_dead.client.network.BloodSplashParticlePacket;
 import dev.sterner.book_of_the_dead.common.component.BotDComponents;
-import dev.sterner.book_of_the_dead.common.component.CorpseDataComponent;
 import dev.sterner.book_of_the_dead.common.component.PlayerDataComponent;
 import dev.sterner.book_of_the_dead.common.recipe.ButcheringRecipe;
 import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
@@ -145,7 +144,7 @@ public class BaseButcherBlockEntity extends BlockEntity implements IHauler, IBlo
 							head.setCount(world.getRandom().nextDouble() < chance * this.butcheringRecipe.headDrop.getSecond() ? 1 : 0);
 							ItemScatterer.spawn(world, pos.getX() + 0.5, pos.getY() + 1.2, pos.getZ() + 0.5, head);
 						}else{
-							dismemberAtRandom(world, isNeighbour);
+							dismemberAtRandom(world);
 							ItemScatterer.spawn(world, pos.getX() + 0.5, pos.getY() + 1.2, pos.getZ() + 0.5, nonEmptyOutput.get(0));
 						}
 
@@ -187,28 +186,13 @@ public class BaseButcherBlockEntity extends BlockEntity implements IHauler, IBlo
 				0.15F);
 	}
 
-	private void dismemberAtRandom(World world, boolean isNeighbour) {
-		boolean rand = world.getRandom().nextBoolean();
-		if(isNeighbour){
-			if(rand){
-				if(getLArmVisible()){
-					setLArmVisible(false);
-				}
-			}else{
-				if(getRArmVisible()){
-					setRArmVisible(false);
-				}
-			}
-		}else{
-			if(rand){
-				if(getLLegVisible()){
-					setLLegVisible(false);
-				}
-			}else{
-				if(getRLegVisible()){
-					setRLegVisible(false);
-				}
-			}
+	private void dismemberAtRandom(World world) {
+		int i = world.getRandom().nextInt(3);
+		switch (i) {
+			case 0 -> setLArmVisible(false);
+			case 1 -> setRArmVisible(false);
+			case 2 -> setLLegVisible(false);
+			case 3 -> setRLegVisible(false);
 		}
 	}
 

@@ -24,8 +24,8 @@ public class DebugWandItem extends Item {
 			entity.setSkinProfile(user.getGameProfile());
 			entity.refreshPositionAndAngles(user.getBlockPos(), 0, 0);
 			world.spawnEntity(entity);
-			CorpseDataComponent dataComponent2 = BotDComponents.CORPSE_COMPONENT.get(entity);
-			dataComponent2.isCorpse(true);
+			CorpseDataComponent dataComponent = BotDComponents.CORPSE_COMPONENT.get(entity);
+			dataComponent.isCorpse(true);
 			entity.damage(DamageSource.MAGIC, Integer.MAX_VALUE);
 		}
 
