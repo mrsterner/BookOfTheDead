@@ -3,7 +3,7 @@ package dev.sterner.book_of_the_dead.common.registry;
 import dev.sterner.book_of_the_dead.BotD;
 import dev.sterner.book_of_the_dead.common.block.*;
 import dev.sterner.book_of_the_dead.common.item.AllBlackSwordItem;
-import dev.sterner.book_of_the_dead.common.item.BotDItem;
+import dev.sterner.book_of_the_dead.common.item.BookOfTheDeadItem;
 import dev.sterner.book_of_the_dead.common.item.DebugWandItem;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.block.*;
@@ -33,7 +33,7 @@ public interface BotDObjects {
 
 	Item BUTCHER_KNIFE = register("butcher_knife", new AxeItem(ToolMaterials.NETHERITE, 6, -2, settings()));
 	Item BLOODY_BUTCHER_KNIFE = register("bloody_butcher_knife", new AxeItem(ToolMaterials.NETHERITE, 6, -2, new Item.Settings()));
-	Item BOOK_OF_THE_DEAD = register("book_of_the_dead", new BotDItem(Constants.id("book_of_the_dead"), settings()));
+	Item BOOK_OF_THE_DEAD = register("book_of_the_dead", new BookOfTheDeadItem(Constants.id("book_of_the_dead"), settings()));
 	Item ALL_BLACK = register("all_black", new AllBlackSwordItem(ToolMaterials.NETHERITE, 8, -2, settings(), true));
 
 	Item CELLAR_KEY = register("cellar_key", new Item(settings()));

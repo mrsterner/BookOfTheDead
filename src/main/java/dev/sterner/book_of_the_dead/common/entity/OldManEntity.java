@@ -29,7 +29,7 @@ public class OldManEntity extends VillagerEntity {
 		VillagerData villagerData = this.getVillagerData();
 		TradeOfferList tradeOfferList = this.getOffers();
 		if (villagerData.getLevel() == 1) {
-			tradeOfferList.add(BotDTrades.LEGEMETON_OFFER.create(this, getRandom()));
+			tradeOfferList.add(BotDTrades.BOOK_OF_THE_DEAD_OFFER.create(this, getRandom()));
 		} else if(villagerData.getLevel() == 2){
 			tradeOfferList.add(BotDTrades.CELLAR_KEY_OFFER.create(this, getRandom()));
 		}

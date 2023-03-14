@@ -20,9 +20,9 @@ import vazkii.patchouli.common.book.BookRegistry;
 
 import java.util.List;
 
-public class BotDItem extends Item {
+public class BookOfTheDeadItem extends Item {
 	private final Identifier id;
-	public BotDItem(Identifier id, Settings settings) {
+	public BookOfTheDeadItem(Identifier id, Settings settings) {
 		super(settings);
 		this.id = id;
 	}
