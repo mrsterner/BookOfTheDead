@@ -24,15 +24,17 @@ import java.util.List;
 
 public class RetortRecipe implements Recipe<Inventory> {
 	private final Identifier id;
+	public final int color;
 	public final DefaultedList<Ingredient> ingredients = DefaultedList.ofSize(4, Ingredient.EMPTY);
 	public final ItemStack output;
 
-	public RetortRecipe(Identifier id, Ingredient[] ingredients, ItemStack output) {
+	public RetortRecipe(Identifier id, int color, Ingredient[] ingredients, ItemStack output) {
 		this.id = id;
 		for (int i = 0; i < ingredients.length; i++) {
 			this.ingredients.set(i, ingredients[i]);
 		}
 		this.output = output;
+		this.color = color;
 	}
 
 
@@ -110,7 +112,8 @@ public class RetortRecipe implements Recipe<Inventory> {
 			Ingredient[] ingredients = readIngredients(JsonHelper.getArray(json, "ingredients"));
 			Item outputItem = Registry.ITEM.getOrEmpty(new Identifier(JsonHelper.getString(json, "outputItem"))).orElseThrow(() -> new JsonSyntaxException("No such item " + JsonHelper.getString(json, "outputItem")));
 			ItemStack output = new ItemStack(outputItem, JsonHelper.getInt(json,"outputCount", 1));
-			return new RetortRecipe(id, ingredients, output);
+			int color = Integer.parseInt(JsonHelper.getString(json, "color").substring(2), 16);
+			return new RetortRecipe(id, color, ingredients, output);
 		}
 
 		private Ingredient[] readIngredients(JsonArray json) {
@@ -127,7 +130,8 @@ public class RetortRecipe implements Recipe<Inventory> {
 			for (int i = 0; i < sizeIngredients; i++) {
 				ingredients.add(Ingredient.fromPacket(buf));
 			}
-			return new RetortRecipe(id, ingredients.toArray(new Ingredient[ingredients.size()]), itemStack);
+			int color = Integer.parseInt(buf.readString().substring(2), 16);
+			return new RetortRecipe(id, color, ingredients.toArray(new Ingredient[ingredients.size()]), itemStack);
 		}
 
 		@Override
@@ -135,6 +139,7 @@ public class RetortRecipe implements Recipe<Inventory> {
 			buf.writeInt(recipe.ingredients.size());
 			buf.writeItemStack(recipe.output);
 			recipe.ingredients.forEach(i -> i.write(buf));
+			buf.writeInt(recipe.color);
 		}
 
 		@Override

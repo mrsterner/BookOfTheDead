@@ -114,8 +114,11 @@ public class BaseButcherBlockEntity extends BlockEntity implements IHauler, IBlo
 						}
 
 						BlockPos neighbourPos = pos.offset(targetDirection);
-						this.spawnMuckParticles((ServerWorld) world, pos);
-						this.spawnMuckParticles((ServerWorld) world, neighbourPos);
+						if(state.isOf(BotDObjects.BUTCHER_TABLE)){
+							this.spawnMuckParticles((ServerWorld) world, pos);
+							this.spawnMuckParticles((ServerWorld) world, neighbourPos);
+						}
+
 						world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 1,1);
 						markDirty();
 						return ActionResult.CONSUME;

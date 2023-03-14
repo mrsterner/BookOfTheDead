@@ -9,5 +9,6 @@
     }
   ],
   "outputItem": "minecraft:diamond",
-  "outputCount": 1
+  "outputCount": 1,
+  "color": "0x3f76e4"
 }
