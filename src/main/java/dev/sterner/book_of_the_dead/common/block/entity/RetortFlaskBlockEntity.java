@@ -5,7 +5,9 @@ import dev.sterner.book_of_the_dead.api.interfaces.IBlockEntityInventory;
 import dev.sterner.book_of_the_dead.common.recipe.RetortRecipe;
 import dev.sterner.book_of_the_dead.common.registry.BotDBlockEntityTypes;
 import dev.sterner.book_of_the_dead.common.registry.BotDRecipeTypes;
+import net.minecraft.block.AbstractFurnaceBlock;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
@@ -16,6 +18,7 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -36,6 +39,23 @@ public class RetortFlaskBlockEntity extends BaseBlockEntity implements IBlockEnt
 	}
 
 	public ActionResult onUse(World world, BlockState state, BlockPos pos, PlayerEntity player, Hand hand) {
+		if (!state.get(Properties.WATERLOGGED)) {
+			ItemStack stack = player.getStackInHand(hand);
+			if (!stack.isEmpty()) {
+				int firstEmpty = this.getFirstEmptySlot();
+				if (firstEmpty != -1) {
+					this.setStack(firstEmpty, stack.split(1));
+					this.sync(world, pos);
+					return ActionResult.CONSUME;
+				}
+			}else{
+				if(progress >= MAX_PROGRESS){
+					ItemScatterer.spawn(world, pos, inventory);
+					this.reset();
+				}
+			}
+		}
+
 		return ActionResult.PASS;
 	}
 
@@ -46,7 +66,6 @@ public class RetortFlaskBlockEntity extends BaseBlockEntity implements IBlockEnt
 				blockEntity.retortRecipe = world.getRecipeManager().listAllOfType(BotDRecipeTypes.RETORT_RECIPE_TYPE).stream().filter(recipe -> recipe.matches(blockEntity, world)).findFirst().orElse(null);
 				blockEntity.loaded = true;
 			}
-
 			blockEntity.heatTimer = MathHelper.clamp(blockEntity.heatTimer + (state.get(Properties.LIT) && blockEntity.hasLiquid ? 1 : -1), 0, 160);
 			if (!world.isClient) {
 				if (blockEntity.hasLiquid && blockEntity.heatTimer > 20) {
@@ -58,11 +77,11 @@ public class RetortFlaskBlockEntity extends BaseBlockEntity implements IBlockEnt
 							blockEntity.craft(blockEntity.retortRecipe.output);
 							blockEntity.setColor(blockEntity.retortRecipe.color);
 						}
-
 					}
 					if (world.random.nextFloat() <= 0.075f) {
 						world.playSound(null, pos, SoundEvents.BLOCK_BUBBLE_COLUMN_UPWARDS_AMBIENT, SoundCategory.BLOCKS, 1 / 3f, 1);
 					}
+					blockEntity.markDirty();
 				}
 			}
 		}
@@ -72,7 +91,6 @@ public class RetortFlaskBlockEntity extends BaseBlockEntity implements IBlockEnt
 		inventory.clear();
 		inventory.set(0, output);
 		retortRecipe = null;
-		setColor(0x3f76e4);
 	}
 
 	@Override
@@ -105,9 +123,11 @@ public class RetortFlaskBlockEntity extends BaseBlockEntity implements IBlockEnt
 
 	public void reset() {
 		if (world != null) {
-			setColor(0x3f76e4);
-			clear();
+			this.setColor(0x3f76e4);
+			this.clear();
 			retortRecipe = null;
+			progress = 0;
+			this.markDirty();
 		}
 	}
 

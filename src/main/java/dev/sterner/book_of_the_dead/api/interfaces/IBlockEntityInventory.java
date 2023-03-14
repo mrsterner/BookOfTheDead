@@ -100,4 +100,13 @@ public interface IBlockEntityInventory extends Inventory {
 	default boolean canPlayerUse(PlayerEntity player) {
 		return true;
 	}
+
+	default int getFirstEmptySlot() {
+		for (int i = 0; i < size(); i++) {
+			if (getStack(i).isEmpty()) {
+				return i;
+			}
+		}
+		return -1;
+	}
 }
