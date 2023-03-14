@@ -12,6 +12,7 @@ import net.minecraft.world.World;
 
 
 public class CreateAndConsumeItemRitual extends ConsumeItemsRitual {
+
 	public CreateAndConsumeItemRitual(Identifier id) {
 		super(id);
 		height = 1;

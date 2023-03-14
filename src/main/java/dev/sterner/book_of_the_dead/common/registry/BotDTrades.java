@@ -14,20 +14,20 @@ import org.jetbrains.annotations.Nullable;
 import org.quiltmc.qsl.villager.api.TradeOfferHelper;
 
 
-public class BotDTrades {
-	public static final Int2ObjectMap<TradeOffers.Factory[]> OLD_MAN_TRADES = new Int2ObjectArrayMap<>();
+public interface BotDTrades {
+	Int2ObjectMap<TradeOffers.Factory[]> OLD_MAN_TRADES = new Int2ObjectArrayMap<>();
 
-	public static final TradeOffers.Factory LEGEMETON_OFFER = new ItemToItemOffer(new ItemStack(BotDObjects.BOOK_OF_THE_DEAD), BotDObjects.OLD_LETTER, 1,10, 0.2F);
-	public static final TradeOffers.Factory CELLAR_KEY_OFFER = new EmeraldToItemOffer(new ItemStack(BotDObjects.CELLAR_KEY), 24, 1,10, 0.2F);
+	TradeOffers.Factory LEGEMETON_OFFER = new ItemToItemOffer(new ItemStack(BotDObjects.BOOK_OF_THE_DEAD), BotDObjects.OLD_LETTER, 1,10, 0.2F);
+	TradeOffers.Factory CELLAR_KEY_OFFER = new EmeraldToItemOffer(new ItemStack(BotDObjects.CELLAR_KEY), 24, 1,10, 0.2F);
 
 
-	public static void init() {
+	static void init() {
 		TradeOfferHelper.registerVillagerOffers(VillagerProfession.LIBRARIAN, 1, factories -> {
 			factories.add(new EmeraldToItemOffer(new ItemStack(BotDObjects.OLD_LETTER, 1), 10, 10 ,5, 0.2F));
 		});
 	}
 
-	public static class ItemToItemOffer implements TradeOffers.Factory {
+	class ItemToItemOffer implements TradeOffers.Factory {
 		private final Item buy;
 		private final ItemStack sell;
 		private final int maxUses;
@@ -49,7 +49,7 @@ public class BotDTrades {
 		}
 	}
 
-	public static class EmeraldToItemOffer implements TradeOffers.Factory {
+	class EmeraldToItemOffer implements TradeOffers.Factory {
 
 		private final ItemStack sell;
 		private final int price;

@@ -28,7 +28,7 @@ public class ShoulderCropseFeatureRenderer extends FeatureRenderer<AbstractClien
 	public ShoulderCropseFeatureRenderer(FeatureRendererContext<AbstractClientPlayerEntity, PlayerEntityModel<AbstractClientPlayerEntity>> context, EntityModelLoader loader, EntityRenderDispatcher dispatcher) {
 		super(context);
 		this.dispatcher = dispatcher;
-		this.model = new BagEntityModel<>(loader.getModelPart(BagEntityModel.LAYER_LOCATION));
+		this.model = new BagEntityModel(loader.getModelPart(BagEntityModel.LAYER_LOCATION));
 	}
 
 	@Override
@@ -84,7 +84,7 @@ public class ShoulderCropseFeatureRenderer extends FeatureRenderer<AbstractClien
 		}else{
 			float f = 0.75f;
 			matrices.scale(f,f,f);
-			matrices.translate(0,-0.75,0.5);
+			matrices.translate(0,-1.0,0.5);
 		}
 		dispatcher.render(livingEntity, 0, 0, 0, 0, 0, matrices, vertexConsumers, light);
 		matrices.pop();

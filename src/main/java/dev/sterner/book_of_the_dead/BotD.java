@@ -2,7 +2,6 @@ package dev.sterner.book_of_the_dead;
 
 import dev.sterner.book_of_the_dead.common.component.BotDComponents;
 import dev.sterner.book_of_the_dead.common.component.CorpseDataComponent;
-import dev.sterner.book_of_the_dead.common.event.BotDAttackEvents;
 import dev.sterner.book_of_the_dead.common.event.BotDUseEvents;
 import dev.sterner.book_of_the_dead.common.registry.*;
 import net.minecraft.server.network.ServerPlayerEntity;

@@ -11,43 +11,61 @@ import org.quiltmc.qsl.block.entity.api.QuiltBlockEntityTypeBuilder;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class BotDBlockEntityTypes {
-	private static final Map<BlockEntityType<?>, Identifier> BLOCK_ENTITY_TYPES = new LinkedHashMap<>();
+public interface BotDBlockEntityTypes {
+	Map<BlockEntityType<?>, Identifier> BLOCK_ENTITY_TYPES = new LinkedHashMap<>();
 
-	public static final BlockEntityType<HookBlockEntity> HOOK = register("hook",
-			QuiltBlockEntityTypeBuilder.create(HookBlockEntity::new, BotDObjects.HOOK_BLOCK, BotDObjects.METAL_HOOK_BLOCK).build(null));
+	BlockEntityType<HookBlockEntity> HOOK = register("hook",
+			QuiltBlockEntityTypeBuilder.create(HookBlockEntity::new,
+					BotDObjects.HOOK_BLOCK,
+					BotDObjects.METAL_HOOK_BLOCK
+			).build(null));
 
-	public static final BlockEntityType<JarBlockEntity> JAR = register("jar",
-			QuiltBlockEntityTypeBuilder.create(JarBlockEntity::new, BotDObjects.JAR).build(null));
+	BlockEntityType<JarBlockEntity> JAR = register("jar",
+			QuiltBlockEntityTypeBuilder.create(JarBlockEntity::new,
+					BotDObjects.JAR
+			).build(null));
 
-	public static final BlockEntityType<NecroTableBlockEntity> NECRO = register("necro",
-			QuiltBlockEntityTypeBuilder.create(NecroTableBlockEntity::new, BotDObjects.NECRO_TABLE).build(null));
+	BlockEntityType<NecroTableBlockEntity> NECRO = register("necro",
+			QuiltBlockEntityTypeBuilder.create(NecroTableBlockEntity::new,
+					BotDObjects.NECRO_TABLE
+			).build(null));
 
-	public static final BlockEntityType<ButcherTableBlockEntity> BUTCHER = register("butcher",
-			QuiltBlockEntityTypeBuilder.create(ButcherTableBlockEntity::new, BotDObjects.BUTCHER_TABLE).build(null));
+	BlockEntityType<ButcherTableBlockEntity> BUTCHER = register("butcher",
+			QuiltBlockEntityTypeBuilder.create(ButcherTableBlockEntity::new,
+					BotDObjects.BUTCHER_TABLE
+			).build(null));
 
-	public static final BlockEntityType<RitualBlockEntity> RITUAL = register("ritual",
-			QuiltBlockEntityTypeBuilder.create(RitualBlockEntity::new, BotDObjects.RITUAL).build(null));
+	BlockEntityType<RitualBlockEntity> RITUAL = register("ritual",
+			QuiltBlockEntityTypeBuilder.create(RitualBlockEntity::new,
+					BotDObjects.RITUAL
+			).build(null));
 
-	public static final BlockEntityType<PedestalBlockEntity> PEDESTAL = register("pedestal",
-			QuiltBlockEntityTypeBuilder.create(PedestalBlockEntity::new, BotDObjects.PEDESTAL).build());
+	BlockEntityType<PedestalBlockEntity> PEDESTAL = register("pedestal",
+			QuiltBlockEntityTypeBuilder.create(PedestalBlockEntity::new,
+					BotDObjects.PEDESTAL
+			).build());
 
-	public static final BlockEntityType<RetortFlaskBlockEntity> RETORT = register("retort",
-			QuiltBlockEntityTypeBuilder.create(RetortFlaskBlockEntity::new, BotDObjects.RETORT_FLASK_BLOCK).build());
+	BlockEntityType<RetortFlaskBlockEntity> RETORT = register("retort",
+			QuiltBlockEntityTypeBuilder.create(RetortFlaskBlockEntity::new,
+					BotDObjects.RETORT_FLASK_BLOCK
+			).build());
 
-	public static final BlockEntityType<BotDSkullBlockEntity> HEAD = register("head",
-			QuiltBlockEntityTypeBuilder.create(BotDSkullBlockEntity::new, BotDObjects.VILLAGER_HEAD, BotDObjects.VILLAGER_WALL_HEAD).build());
+	BlockEntityType<BotDSkullBlockEntity> HEAD = register("head",
+			QuiltBlockEntityTypeBuilder.create(BotDSkullBlockEntity::new,
+					BotDObjects.VILLAGER_HEAD,
+					BotDObjects.VILLAGER_WALL_HEAD
+			).build());
 
 
 
-	private static <T extends BlockEntity> BlockEntityType<T> register(String name, BlockEntityType<T> type) {
+	static <T extends BlockEntity> BlockEntityType<T> register(String name, BlockEntityType<T> type) {
 		BLOCK_ENTITY_TYPES.put(type, Constants.id(name));
 		return type;
 	}
 
 
 
-	public static void init() {
+	static void init() {
 		BLOCK_ENTITY_TYPES.keySet().forEach(blockEntityType -> Registry.register(Registry.BLOCK_ENTITY_TYPE, BLOCK_ENTITY_TYPES.get(blockEntityType), blockEntityType));
 	}
 }

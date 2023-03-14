@@ -9,18 +9,18 @@ import net.minecraft.util.registry.Registry;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class BotDRituals {
-	private static final Map<NecrotableRitual, Identifier> NECROTABLE_RITUAL = new LinkedHashMap<>();
+public interface BotDRituals {
+	Map<NecrotableRitual, Identifier> NECROTABLE_RITUAL = new LinkedHashMap<>();
 
-	public static final NecrotableRitual CREATE_ITEM = register("create_item", new CreateAndConsumeItemRitual(new Identifier("create_item")));
-	public static final NecrotableRitual STATUS_EFFECT = register("status_effect", new StatusEffectRitual(new Identifier("status_effect")));
+	NecrotableRitual CREATE_ITEM = register("create_item", new CreateAndConsumeItemRitual(new Identifier("create_item")));
+	NecrotableRitual STATUS_EFFECT = register("status_effect", new StatusEffectRitual(new Identifier("status_effect")));
 
-	private static <T extends NecrotableRitual> T register(String name, T necroRitual) {
+	static <T extends NecrotableRitual> T register(String name, T necroRitual) {
 		NECROTABLE_RITUAL.put(necroRitual, Constants.id(name));
 		return necroRitual;
 	}
 
-	public static void init(){
+	static void init(){
 		NECROTABLE_RITUAL.keySet().forEach(ritual -> Registry.register(BotDRegistries.NECROTABLE_RITUALS, NECROTABLE_RITUAL.get(ritual), ritual));
 	}
 }

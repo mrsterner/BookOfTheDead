@@ -1,7 +1,5 @@
 package dev.sterner.book_of_the_dead.common.item;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -14,6 +12,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
+import org.quiltmc.loader.api.minecraft.ClientOnly;
 import vazkii.patchouli.api.PatchouliAPI;
 import vazkii.patchouli.common.base.PatchouliSounds;
 import vazkii.patchouli.common.book.Book;
@@ -43,7 +42,7 @@ public class BotDItem extends Item {
 		return BookRegistry.INSTANCE.books.get(id);
 	}
 
-	@Environment(EnvType.CLIENT)
+	@ClientOnly
 	public void appendTooltip(ItemStack stack, World worldIn, List<Text> tooltip, TooltipContext flagIn) {
 		super.appendTooltip(stack, worldIn, tooltip, flagIn);
 		Book book = getBook();

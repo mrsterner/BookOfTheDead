@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Random;
 
 public class BotDUtils {
+
 	public static void addItemToInventoryAndConsume(PlayerEntity player, Hand hand, ItemStack toAdd) {
 		boolean shouldAdd = false;
 		ItemStack stack = player.getStackInHand(hand);

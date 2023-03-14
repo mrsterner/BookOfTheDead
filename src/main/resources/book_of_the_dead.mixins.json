@@ -12,16 +12,15 @@
     "StructurePoolsMixin"
   ],
   "client": [
-    "BufferBuilderStorageMixin",
-    "ContinuousFallingParticleMixin",
-    "DrippingParticleMixin",
-    "EntityRenderDispatcherMixin",
-    "GameRenderMixin",
-    "ItemRendererMixin",
-    "LivingEntityRendererMixin",
-    "MinecraftClientMixin",
-    "PlayerEntityRendererMixin",
-    "TexturedRenderLayersMixin"
+    "client.BufferBuilderStorageMixin",
+    "client.ContinuousFallingParticleMixin",
+    "client.DrippingParticleMixin",
+    "client.EntityRenderDispatcherMixin",
+    "client.ItemRendererMixin",
+    "client.LivingEntityRendererMixin",
+    "client.MinecraftClientMixin",
+    "client.PlayerEntityRendererMixin",
+    "client.TexturedRenderLayersMixin"
   ],
   "injectors": {
     "defaultRequire": 1

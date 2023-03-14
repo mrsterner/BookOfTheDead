@@ -27,7 +27,6 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IHauler 
 		dataTracker.startTracking(Constants.DataTrackers.PLAYER_CORPSE_ENTITY, new NbtCompound());
 	}
 
-
 	@Inject(method = "writeCustomDataToNbt", at = @At("TAIL"))
 	private void book_of_the_dead$writeCustomDataToNbt(NbtCompound compoundTag, CallbackInfo info) {
 		if(storedCorpseEntity != null){
@@ -68,5 +67,4 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IHauler 
 		this.dataTracker.set(Constants.DataTrackers.PLAYER_CORPSE_ENTITY, nbtCompound);
 		this.storedCorpseEntity = entity;
 	}
-
 }

@@ -10,21 +10,32 @@ import net.minecraft.client.particle.BlockLeakParticle;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.particle.DefaultParticleType;
+import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleType;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
-public class BotDParticleTypes {
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-	public static final DefaultParticleType DRIPPING_BLOOD = Registry.register(Registry.PARTICLE_TYPE, Constants.id("dripping_blood"), FabricParticleTypes.simple());
-	public static final DefaultParticleType FALLING_BLOOD = Registry.register(Registry.PARTICLE_TYPE, Constants.id("falling_blood"), FabricParticleTypes.simple());
-	public static final DefaultParticleType LANDING_BLOOD = Registry.register(Registry.PARTICLE_TYPE, Constants.id("landing_blood"), FabricParticleTypes.simple());
-	public static final DefaultParticleType SPLASHING_BLOOD = Registry.register(Registry.PARTICLE_TYPE, Constants.id("splashing_blood"), FabricParticleTypes.simple());
+public interface BotDParticleTypes {
+	Map<ParticleType<?>, Identifier> PARTICLE_TYPES = new LinkedHashMap<>();
 
-	public static ParticleType<ItemStackBeamParticleEffect> ITEM_BEAM_PARTICLE;
+	DefaultParticleType DRIPPING_BLOOD = Registry.register(Registry.PARTICLE_TYPE, Constants.id("dripping_blood"), FabricParticleTypes.simple());
+	DefaultParticleType FALLING_BLOOD = Registry.register(Registry.PARTICLE_TYPE, Constants.id("falling_blood"), FabricParticleTypes.simple());
+	DefaultParticleType LANDING_BLOOD = Registry.register(Registry.PARTICLE_TYPE, Constants.id("landing_blood"), FabricParticleTypes.simple());
+	DefaultParticleType SPLASHING_BLOOD = Registry.register(Registry.PARTICLE_TYPE, Constants.id("splashing_blood"), FabricParticleTypes.simple());
 
-	public static void init() {
+	ParticleType<ItemStackBeamParticleEffect> ITEM_BEAM_PARTICLE = register("item_beam_particle", FabricParticleTypes.complex(ItemStackBeamParticleEffect.PARAMETERS_FACTORY));
+
+	static <T extends ParticleEffect> ParticleType<T> register(String name, ParticleType<T> type) {
+		PARTICLE_TYPES.put(type, Constants.id(name));
+		return type;
+	}
+
+	static void init() {
+		PARTICLE_TYPES.keySet().forEach(particleType -> Registry.register(Registry.PARTICLE_TYPE, PARTICLE_TYPES.get(particleType), particleType));
 		ParticleFactoryRegistry.getInstance().register(SPLASHING_BLOOD, BloodSplashParticle.DefaultFactory::new);
-		ITEM_BEAM_PARTICLE = Registry.register(Registry.PARTICLE_TYPE, Constants.id("item_beam_particle"), FabricParticleTypes.complex(ItemStackBeamParticleEffect.PARAMETERS_FACTORY));
 
 		ParticleFactoryRegistry.getInstance().register(LANDING_BLOOD, s -> new BlockLeakParticle.LandingHoneyFactory(s) {
 			@Override

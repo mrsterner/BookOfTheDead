@@ -9,8 +9,11 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.control.BodyControl;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -51,6 +54,8 @@ public abstract class MobEntityMixin extends LivingEntity {
 				MobEntity mobEntity = (MobEntity) (Object) this;
 				IHauler.of(player).ifPresent(hauler -> {
 					if(hauler.getCorpseEntity().isEmpty()){
+						BlockPos pos = mobEntity.getBlockPos();
+						world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.BLOCK_HONEY_BLOCK_BREAK, SoundCategory.PLAYERS, 2,1);
 						hauler.setCorpseEntity(mobEntity);
 						mobEntity.remove(Entity.RemovalReason.DISCARDED);
 					}

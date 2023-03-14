@@ -1,4 +1,4 @@
-package dev.sterner.book_of_the_dead.mixin;
+package dev.sterner.book_of_the_dead.mixin.client;
 
 import dev.sterner.book_of_the_dead.common.component.BotDComponents;
 import dev.sterner.book_of_the_dead.common.component.CorpseDataComponent;

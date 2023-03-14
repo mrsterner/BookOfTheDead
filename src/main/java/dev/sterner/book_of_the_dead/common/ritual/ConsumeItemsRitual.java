@@ -21,6 +21,7 @@ import java.util.List;
 
 public class ConsumeItemsRitual extends NecrotableRitual {
 	private int index = 0;
+
 	public ConsumeItemsRitual(Identifier id) {
 		super(id);
 	}
@@ -61,7 +62,6 @@ public class ConsumeItemsRitual extends NecrotableRitual {
 
 		if(world instanceof ServerWorld serverWorld) {
 			generateFX(serverWorld, x, y, z);
-
 		}
 		super.tick(world, blockPos, blockEntity);
 	}

@@ -25,8 +25,6 @@ public abstract class LivingEntityMixin extends Entity {
 
 	@Shadow
 	public int deathTime;
-	@Shadow
-	public float bodyYaw;
 
 	@Shadow
 	protected abstract void initDataTracker();

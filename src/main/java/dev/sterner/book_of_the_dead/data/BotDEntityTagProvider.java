@@ -25,5 +25,4 @@ public class BotDEntityTagProvider extends FabricTagProvider.EntityTypeTagProvid
 				.add(EntityType.PLAYER)
 				.add(BotDEntityTypes.PLAYER_CORPSE_ENTITY);
 	}
-
 }

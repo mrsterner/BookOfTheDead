@@ -17,7 +17,6 @@ public interface BotDEnchantments {
 
 	EnchantmentTarget AXE = ClassTinkerers.getEnum(EnchantmentTarget.class, "AXE");
 
-
 	Enchantment BUTCHERING = register("butchering", new ButcheringEnchantment(Enchantment.Rarity.RARE, AXE, EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND));
 
 	static <T extends Enchantment> T register(String id, T enchantment) {

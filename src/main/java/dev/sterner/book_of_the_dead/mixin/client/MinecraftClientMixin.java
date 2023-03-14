@@ -1,18 +1,17 @@
-package dev.sterner.book_of_the_dead.mixin;
+package dev.sterner.book_of_the_dead.mixin.client;
 
 import dev.sterner.book_of_the_dead.BotDClient;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import org.jetbrains.annotations.Nullable;
+import org.quiltmc.loader.api.minecraft.ClientOnly;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Environment(EnvType.CLIENT)
+@ClientOnly
 @Mixin(MinecraftClient.class)
 public abstract class MinecraftClientMixin {
 	@Shadow
@@ -29,7 +28,7 @@ public abstract class MinecraftClientMixin {
 	public ClientPlayerEntity player;
 
 	@Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/GameRenderer;render(FJZ)V"))
-	private void onFrameStart(boolean tick, CallbackInfo ci) {
+	private void book_of_the_dead$onFrameStart(boolean tick, CallbackInfo ci) {
 		BotDClient.ClientTickHandler.renderTick(isPaused() ? pausedTickDelta : getTickDelta());
 	}
 }

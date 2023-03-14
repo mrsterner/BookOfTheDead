@@ -1,4 +1,4 @@
-package dev.sterner.book_of_the_dead.mixin;
+package dev.sterner.book_of_the_dead.mixin.client;
 
 import dev.sterner.book_of_the_dead.client.renderer.renderlayer.BotDRenderLayer;
 import dev.sterner.book_of_the_dead.common.item.AllBlackSwordItem;
@@ -40,18 +40,17 @@ final class ItemRendererMixin {
 	}
 
 	@Inject(method = "renderItem(Lnet/minecraft/item/ItemStack;Lnet/minecraft/client/render/model/json/ModelTransformation$Mode;ZLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;IILnet/minecraft/client/render/model/BakedModel;)V", at = @At("HEAD"))
-	private void setAllBlack(ItemStack stack, ModelTransformation.Mode renderMode, boolean leftHanded, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, BakedModel model, CallbackInfo callbackInfo) {
+	private void book_of_the_dead$setAllBlack(ItemStack stack, ModelTransformation.Mode renderMode, boolean leftHanded, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, BakedModel model, CallbackInfo callbackInfo) {
 		BotDRenderLayer.setTargetStack(stack);
 	}
 
 	@Redirect(method = "getItemGlintConsumer", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/RenderLayer;getGlint()Lnet/minecraft/client/render/RenderLayer;"))
-	private static RenderLayer getGlint() {
+	private static RenderLayer book_of_the_dead$getGlint() {
 		return BotDRenderLayer.getGlint();
 	}
 
-
 	@Redirect(method = "getDirectItemGlintConsumer", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/RenderLayer;getDirectGlint()Lnet/minecraft/client/render/RenderLayer;"))
-	private static RenderLayer getGlintDirect() {
+	private static RenderLayer book_of_the_dead$getGlintDirect() {
 		return BotDRenderLayer.getGlintDirect();
 	}
 }

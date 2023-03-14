@@ -8,6 +8,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class StatusEffectRitual extends ConsumeItemsRitual {
+
 	public StatusEffectRitual(Identifier id) {
 		super(id);
 	}

@@ -14,25 +14,25 @@ import net.minecraft.world.World;
 
 import java.util.stream.Collectors;
 
-public class BotDRecipeTypes {
-	public static final RecipeSerializer<ButcheringRecipe> BUTCHERING_RECIPE_SERIALIZER = new ButcheringRecipe.Serializer();
-	public static final RecipeType<ButcheringRecipe> BUTCHERING_RECIPE_TYPE = new RecipeType<>() {
+public interface BotDRecipeTypes {
+	RecipeSerializer<ButcheringRecipe> BUTCHERING_RECIPE_SERIALIZER = new ButcheringRecipe.Serializer();
+	RecipeType<ButcheringRecipe> BUTCHERING_RECIPE_TYPE = new RecipeType<>() {
 		@Override
 		public String toString() {
 			return Constants.MOD_ID + ":butchering";
 		}
 	};
 
-	public static final RecipeSerializer<RitualRecipe> RITUAL_RECIPE_SERIALIZER = new RitualRecipe.Serializer();
-	public static final RecipeType<RitualRecipe> RITUAL_RECIPE_TYPE = new RecipeType<>() {
+	RecipeSerializer<RitualRecipe> RITUAL_RECIPE_SERIALIZER = new RitualRecipe.Serializer();
+	RecipeType<RitualRecipe> RITUAL_RECIPE_TYPE = new RecipeType<>() {
 		@Override
 		public String toString() {
 			return Constants.MOD_ID + ":ritual";
 		}
 	};
 
-	public static final RecipeSerializer<RetortRecipe> RETORT_RECIPE_SERIALIZER = new RetortRecipe.Serializer();
-	public static final RecipeType<RetortRecipe> RETORT_RECIPE_TYPE = new RecipeType<>() {
+	RecipeSerializer<RetortRecipe> RETORT_RECIPE_SERIALIZER = new RetortRecipe.Serializer();
+	RecipeType<RetortRecipe> RETORT_RECIPE_TYPE = new RecipeType<>() {
 		@Override
 		public String toString() {
 			return Constants.MOD_ID + ":retort";
@@ -40,7 +40,7 @@ public class BotDRecipeTypes {
 	};
 
 
-	public static void init(){
+	static void init(){
 		Registry.register(Registry.RECIPE_SERIALIZER, Constants.id("butchering"), BUTCHERING_RECIPE_SERIALIZER);
 		Registry.register(Registry.RECIPE_TYPE,Constants.id("butchering"), BUTCHERING_RECIPE_TYPE);
 
@@ -52,7 +52,7 @@ public class BotDRecipeTypes {
 	}
 
 
-	public static RitualRecipe getRiteRecipe(RitualBlockEntity ritualBlockEntity) {
+	static RitualRecipe getRiteRecipe(RitualBlockEntity ritualBlockEntity) {
 		World world = ritualBlockEntity.getWorld();
 		return world.getRecipeManager().listAllOfType(RITUAL_RECIPE_TYPE).stream()
 				.filter(r -> BotDUtils.containsAllIngredients(r.inputs.stream()

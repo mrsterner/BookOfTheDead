@@ -24,7 +24,6 @@ public class Constants {
 	}
 
 	public static class Values{
-
 		public static final int BLEEDING = 120;
 		public static final double JAR_COLLECTION_RANGE = 10;
 	}

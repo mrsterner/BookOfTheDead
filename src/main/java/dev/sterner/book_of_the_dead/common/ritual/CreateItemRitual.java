@@ -12,6 +12,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class CreateItemRitual extends NecrotableRitual {
+
 	public CreateItemRitual(Identifier id) {
 		super(id);
 	}
