@@ -1,9 +1,13 @@
 package dev.sterner.book_of_the_dead.mixin;
 
 import dev.sterner.book_of_the_dead.api.interfaces.IHauler;
+import dev.sterner.book_of_the_dead.common.component.BotDComponents;
+import dev.sterner.book_of_the_dead.common.component.LivingEntityDataComponent;
+import dev.sterner.book_of_the_dead.common.registry.BotDStatusEffects;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.world.World;
@@ -66,5 +70,17 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IHauler 
 		entity.writeNbt(nbtCompound);
 		this.dataTracker.set(Constants.DataTrackers.PLAYER_CORPSE_ENTITY, nbtCompound);
 		this.storedCorpseEntity = entity;
+	}
+
+	@Inject(method = "applyDamage", at = @At("HEAD"), cancellable = true)
+	protected void book_of_the_dead$morphine(DamageSource source, float amount, CallbackInfo callbackInfo) {
+		PlayerEntity player = (PlayerEntity) (Object) this;
+		if (player.hasStatusEffect(BotDStatusEffects.MORPHINE) && amount > 0.1f) {
+			if (!player.isInvulnerableTo(source)) {
+				LivingEntityDataComponent component = BotDComponents.LIVING_COMPONENT.get(player);
+				component.increaseMorphine$accumulatedDamage(amount);
+				callbackInfo.cancel();
+			}
+		}
 	}
 }

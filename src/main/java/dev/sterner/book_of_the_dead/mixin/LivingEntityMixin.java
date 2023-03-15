@@ -4,6 +4,8 @@ import dev.sterner.book_of_the_dead.api.BotDApi;
 import dev.sterner.book_of_the_dead.api.event.OnEntityDeathEvent;
 import dev.sterner.book_of_the_dead.common.component.BotDComponents;
 import dev.sterner.book_of_the_dead.common.component.CorpseDataComponent;
+import dev.sterner.book_of_the_dead.common.component.LivingEntityDataComponent;
+import dev.sterner.book_of_the_dead.common.registry.BotDStatusEffects;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -84,6 +86,18 @@ public abstract class LivingEntityMixin extends Entity {
 					}
 					callbackInfo.cancel();
 				}
+			}
+		}
+	}
+
+	@Inject(method = "applyDamage", at = @At("HEAD"), cancellable = true)
+	protected void book_of_the_dead$morphine(DamageSource source, float amount, CallbackInfo callbackInfo) {
+		LivingEntity livingEntity = (LivingEntity) (Object) this;
+		if (livingEntity.hasStatusEffect(BotDStatusEffects.MORPHINE) && amount > 0.1f) {
+			if (!livingEntity.isInvulnerableTo(source)) {
+				LivingEntityDataComponent component = BotDComponents.LIVING_COMPONENT.get(livingEntity);
+				component.increaseMorphine$accumulatedDamage(amount);
+				callbackInfo.cancel();
 			}
 		}
 	}

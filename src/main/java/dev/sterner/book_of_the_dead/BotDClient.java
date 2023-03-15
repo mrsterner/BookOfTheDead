@@ -12,6 +12,7 @@ import dev.sterner.book_of_the_dead.common.registry.*;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.MinecraftClient;
@@ -19,7 +20,11 @@ import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 import net.minecraft.client.util.ModelIdentifier;
+import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.Item;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.potion.PotionUtil;
 import net.minecraft.registry.Registries;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
@@ -98,11 +103,29 @@ public class BotDClient implements ClientModInitializer {
 			}
 		}
 
+		ColorProviderRegistry.ITEM.register((itemStack, index) -> {
+			if(index == 0){
+				if(itemStack.hasNbt() && itemStack.getOrCreateNbt().contains(Constants.Nbt.STATUS_EFFECT_INSTANCE)){
+					NbtCompound nbt = itemStack.getSubNbt(Constants.Nbt.STATUS_EFFECT_INSTANCE);
+					StatusEffect effect = Registries.STATUS_EFFECT.get(Identifier.tryParse(nbt.getString(Constants.Nbt.STATUS_EFFECT)));
+					return effect.getColor();
+				}
+			}
+			return -1;
+		}, BotDObjects.SYRINGE);
+
 		ModelPredicateProviderRegistry.register(BotDObjects.CONTRACT, new Identifier("signed"), (itemStack, clientWorld, livingEntity, i) -> {
 			if (livingEntity == null) {
 				return 0.0F;
 			}
 			return itemStack.hasNbt() && itemStack.getOrCreateNbt().contains(Constants.Nbt.CONTRACT) ? 1.0F : 0.0F;
+		});
+
+		ModelPredicateProviderRegistry.register(BotDObjects.SYRINGE, new Identifier("filled"), (itemStack, clientWorld, livingEntity, i) -> {
+			if (livingEntity == null) {
+				return 0.0F;
+			}
+			return itemStack.hasNbt() && itemStack.getOrCreateNbt().contains(Constants.Nbt.STATUS_EFFECT_INSTANCE) ? 1.0F : 0.0F;
 		});
 	}
 

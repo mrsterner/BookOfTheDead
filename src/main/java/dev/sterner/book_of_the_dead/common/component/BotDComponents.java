@@ -12,10 +12,12 @@ import net.minecraft.entity.player.PlayerEntity;
 public class BotDComponents implements EntityComponentInitializer {
 	public static final ComponentKey<CorpseDataComponent> CORPSE_COMPONENT = ComponentRegistry.getOrCreate(Constants.id("corpse"), CorpseDataComponent.class);
 	public static final ComponentKey<PlayerDataComponent> PLAYER_COMPONENT = ComponentRegistry.getOrCreate(Constants.id("player"), PlayerDataComponent.class);
+	public static final ComponentKey<LivingEntityDataComponent> LIVING_COMPONENT = ComponentRegistry.getOrCreate(Constants.id("living"), LivingEntityDataComponent.class);
 
 	@Override
 	public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
 		registry.beginRegistration(LivingEntity.class, CORPSE_COMPONENT).respawnStrategy(RespawnCopyStrategy.ALWAYS_COPY).end(CorpseDataComponent::new);
 		registry.beginRegistration(PlayerEntity.class, PLAYER_COMPONENT).respawnStrategy(RespawnCopyStrategy.ALWAYS_COPY).end(PlayerDataComponent::new);
+		registry.beginRegistration(LivingEntity.class, LIVING_COMPONENT).respawnStrategy(RespawnCopyStrategy.ALWAYS_COPY).end(LivingEntityDataComponent::new);
 	}
 }

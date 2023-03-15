@@ -28,51 +28,56 @@ public class Constants {
 		return new Identifier(MODID, string);
 	}
 
-	public static class Values{
-		public static final int BLEEDING = 120;
-		public static final double JAR_COLLECTION_RANGE = 10;
+	public interface Values{
+		int BLEEDING = 120;
+		double JAR_COLLECTION_RANGE = 10;
 	}
 
-	public static class DataTrackers{
-		public static final TrackedData<NbtCompound> PLAYER_CORPSE_ENTITY = DataTracker.registerData(PlayerEntity.class, TrackedDataHandlerRegistry.TAG_COMPOUND);
+	public interface DataTrackers{
+		TrackedData<NbtCompound> PLAYER_CORPSE_ENTITY = DataTracker.registerData(PlayerEntity.class, TrackedDataHandlerRegistry.TAG_COMPOUND);
 	 }
 
-	public static class Tags {
-		public static final TagKey<EntityType<?>> BUTCHERABLE = TagKey.of(RegistryKeys.ENTITY_TYPE, id("butcherable"));
-        public static final TagKey<Block> EMITS_HEAT = TagKey.of(RegistryKeys.BLOCK, id("emits_heat"));
+	public interface Tags {
+		TagKey<EntityType<?>> BUTCHERABLE = TagKey.of(RegistryKeys.ENTITY_TYPE, id("butcherable"));
+        TagKey<Block> EMITS_HEAT = TagKey.of(RegistryKeys.BLOCK, id("emits_heat"));
     }
 
-	public static class Nbt {
-		public static final String CORPSE_ENTITY = "CorpseEntity";
-        public static final String HOOKED_AGE = "HookedAge";
-        public static final String BLOOD_LEVEL = "BloodLevel";
-        public static final String ALL_BLACK = "AllBlack";
-        public static final String HAS_LEGEMETON = "HasBotD";
-		public static final String HAS_EMERALD_TABLET = "HasEmeraldTablet";
-		public static final String NECRO_RITUAL = "NecroRitual";
-		public static final String TIMER = "Timer";
-		public static final String AGE = "Age";
-        public static final String PLAYER_UUID = "PlayerUuid";
-        public static final String RITUAL_POS = "RitualPos";
-		public static final String PEDESTAL_ITEM = "PedestalItem";
-		public static final String CRAFTING_FINISHED = "CraftingFinished";
-		public static final String CRAFTING = "Crafting";
-        public static final String RITUAL_RECIPE = "RitualRecipe";
-        public static final String START = "Start";
-		public static final String SHOULD_RUN = "ShouldRun";
-        public static final String CLIENT_TIMER = "ClientTimer";
-        public static final String DURATION = "Duration";
-		public static final String TARGET_Y = "TargetY";
+	public interface Nbt {
+		String CORPSE_ENTITY = "CorpseEntity";
+        String HOOKED_AGE = "HookedAge";
+        String BLOOD_LEVEL = "BloodLevel";
+        String ALL_BLACK = "AllBlack";
+        String HAS_LEGEMETON = "HasBotD";
+		String HAS_EMERALD_TABLET = "HasEmeraldTablet";
+		String NECRO_RITUAL = "NecroRitual";
+		String TIMER = "Timer";
+		String AGE = "Age";
+        String PLAYER_UUID = "PlayerUuid";
+        String RITUAL_POS = "RitualPos";
+		String PEDESTAL_ITEM = "PedestalItem";
+		String CRAFTING_FINISHED = "CraftingFinished";
+		String CRAFTING = "Crafting";
+        String RITUAL_RECIPE = "RitualRecipe";
+        String START = "Start";
+		String SHOULD_RUN = "ShouldRun";
+        String CLIENT_TIMER = "ClientTimer";
+        String DURATION = "Duration";
+		String TARGET_Y = "TargetY";
 
-        public static final String BUTCHERING_LEVEL = "ButcheringLevel";
-		public static final String IS_CORPSE = "IsCorpse";
-        public static final String HEAD_VISIBLE = "HeadVisible";
-		public static final String RIGHT_ARM_VISIBLE = "RightArmVisible";
-		public static final String LEFT_ARM_VISIBLE = "LeftArmVisible";
-		public static final String RIGHT_LEG_VISIBLE = "RightLegVisible";
-		public static final String LEFT_LEG_VISIBLE = "LeftLegVisible";
-		public static final String CONTRACT = "Contract";
-		public static final String NAME = "Name";
-		public static final String UUID = "Uuid";
+        String BUTCHERING_LEVEL = "ButcheringLevel";
+		String IS_CORPSE = "IsCorpse";
+        String HEAD_VISIBLE = "HeadVisible";
+		String RIGHT_ARM_VISIBLE = "RightArmVisible";
+		String LEFT_ARM_VISIBLE = "LeftArmVisible";
+		String RIGHT_LEG_VISIBLE = "RightLegVisible";
+		String LEFT_LEG_VISIBLE = "LeftLegVisible";
+		String CONTRACT = "Contract";
+		String NAME = "Name";
+		String UUID = "Uuid";
+		String STATUS_EFFECT_INSTANCE = "StatusEffectInstance";
+		String STATUS_EFFECT = "StatusEffect";
+		String AMPLIFIER = "Amplifier";
+		String MORPHINE = "Morphine";
+		String ADRENALINE = "Adrenaline";
 	}
 }

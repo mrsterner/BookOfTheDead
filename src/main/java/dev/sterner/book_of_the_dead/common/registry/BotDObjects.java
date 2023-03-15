@@ -35,6 +35,12 @@ public interface BotDObjects {
 	Item BOOK_OF_THE_DEAD = register("book_of_the_dead", new BookOfTheDeadItem(Constants.id("book_of_the_dead"), settings()));
 	Item ALL_BLACK = register("all_black", new AllBlackSwordItem(ToolMaterials.NETHERITE, 8, -2, settings(), true));
 
+	Item SYRINGE = register("syringe", new SyringeItem(settings()));
+
+	Item MORPHINE = register("morphine", new StatusEffectItem(settings(), BotDStatusEffects.MORPHINE));
+	Item EUTHANASIA = register("euthanasia", new StatusEffectItem(settings(), BotDStatusEffects.EUTHANASIA));
+	Item ADRENALINE = register("adrenaline", new StatusEffectItem(settings(), BotDStatusEffects.ADRENALINE));
+
 	Item CELLAR_KEY = register("cellar_key", new CellarKeyItem(settings()));
 	Item CONTRACT = register("contract", new ContractItem(settings()));
 	Item PACKET = register("packet", new Item(settings()));

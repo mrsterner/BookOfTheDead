@@ -33,6 +33,7 @@ public class BotD implements ModInitializer {
 		BotDEntityTypes.init();
 		BotDBlockEntityTypes.init();
 		BotDEnchantments.init();
+		BotDStatusEffects.init();
 		BotDRecipeTypes.init();
 		BotDWorldGenerators.init();
 		BotDTrades.init();
