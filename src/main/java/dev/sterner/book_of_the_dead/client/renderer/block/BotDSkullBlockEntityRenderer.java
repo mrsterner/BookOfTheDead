@@ -6,6 +6,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import dev.sterner.book_of_the_dead.api.block.AbstractBotDSkullBlock;
 import dev.sterner.book_of_the_dead.client.model.BotDSkullBlockEntityModel;
 import dev.sterner.book_of_the_dead.common.block.BotDSkullBlock;
+import dev.sterner.book_of_the_dead.common.block.BotDWallSkullBlock;
 import dev.sterner.book_of_the_dead.common.block.entity.BotDSkullBlockEntity;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 import net.minecraft.block.BlockState;
@@ -14,6 +15,7 @@ import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
+import net.minecraft.client.render.block.entity.SkullBlockEntityRenderer;
 import net.minecraft.client.render.entity.model.EntityModelLoader;
 import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.util.math.MatrixStack;
@@ -52,8 +54,8 @@ public class BotDSkullBlockEntityRenderer implements BlockEntityRenderer<BotDSku
 	@Override
 	public void render(BotDSkullBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
 		BlockState blockState = entity.getCachedState();
-		boolean bl = blockState.getBlock() instanceof WallSkullBlock;
-		Direction direction = bl ? blockState.get(WallSkullBlock.FACING) : null;
+		boolean bl = blockState.getBlock() instanceof BotDWallSkullBlock;
+		Direction direction = bl ? blockState.get(BotDWallSkullBlock.FACING) : null;
 		float h = 22.5F * (float)(bl ? (2 + direction.getHorizontal()) * 4 : blockState.get(BotDSkullBlock.ROTATION));
 		BotDSkullBlock.BotDType skullType = ((AbstractBotDSkullBlock)blockState.getBlock()).getSkullType();
 		BotDSkullBlockEntityModel skullBlockEntityModel = this.MODELS.get(skullType);

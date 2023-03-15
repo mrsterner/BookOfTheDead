@@ -13,6 +13,7 @@ import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import org.quiltmc.qsl.block.extensions.api.QuiltBlockSettings;
@@ -65,8 +66,8 @@ public interface BotDObjects {
 	Item SKIN = register("skin", new Item(settings()));
 	Item BOTTLE_OF_BLOOD = register("bottle_of_blood", new Item(settings()));
 
-	Block VILLAGER_HEAD = register("villager_head", new BotDSkullBlock(BotDSkullBlock.Type.VILLAGER, QuiltBlockSettings.copyOf(Blocks.ZOMBIE_HEAD)), settings(), true);
-	Block VILLAGER_WALL_HEAD = register("villager_wall_head", new BotDWallSkullBlock(BotDSkullBlock.Type.VILLAGER, QuiltBlockSettings.copyOf(Blocks.ZOMBIE_HEAD).dropsLike(VILLAGER_HEAD)), settings(), false);
+	Block VILLAGER_WALL_HEAD = register("villager_wall_head", new BotDWallSkullBlock(BotDSkullBlock.Type.VILLAGER, QuiltBlockSettings.copyOf(Blocks.ZOMBIE_HEAD)), settings(), false);
+	Block VILLAGER_HEAD = registerSkull("villager_head", new BotDSkullBlock(BotDSkullBlock.Type.VILLAGER, QuiltBlockSettings.copyOf(Blocks.ZOMBIE_HEAD)), VILLAGER_WALL_HEAD, settings(), true);
 
 	Block RETORT_FLASK_BLOCK = register("retort_flask_block", new RetortFlaskBlock(QuiltBlockSettings.of(Material.GLASS)), settings(), false);
 	Item RETORT_FLASK = register("retort_flask", new BlockItem(RETORT_FLASK_BLOCK, settings()));
@@ -92,6 +93,14 @@ public interface BotDObjects {
 
 	static Item.Settings settings() {
 		return new Item.Settings();
+	}
+
+	static <T extends Block> T registerSkull(String name, T block, T wall, Item.Settings settings, boolean createItem) {
+		BLOCKS.put(block, Constants.id(name));
+		if (createItem) {
+			ITEMS.put(new WallStandingBlockItem(block, wall, settings, Direction.DOWN), BLOCKS.get(block));
+		}
+		return block;
 	}
 
 	static <T extends Item> T register(String name, T item) {

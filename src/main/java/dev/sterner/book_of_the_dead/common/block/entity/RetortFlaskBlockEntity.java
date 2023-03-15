@@ -2,6 +2,7 @@ package dev.sterner.book_of_the_dead.common.block.entity;
 
 import dev.sterner.book_of_the_dead.api.block.entity.BaseBlockEntity;
 import dev.sterner.book_of_the_dead.api.interfaces.IBlockEntityInventory;
+import dev.sterner.book_of_the_dead.common.item.StatusEffectItem;
 import dev.sterner.book_of_the_dead.common.recipe.RetortRecipe;
 import dev.sterner.book_of_the_dead.common.registry.BotDBlockEntityTypes;
 import dev.sterner.book_of_the_dead.common.registry.BotDRecipeTypes;
@@ -46,12 +47,24 @@ public class RetortFlaskBlockEntity extends BaseBlockEntity implements IBlockEnt
 				if (firstEmpty != -1) {
 					this.setStack(firstEmpty, stack.split(1));
 					this.sync(world, pos);
+					world.playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS,1, 0.5f);
 					return ActionResult.CONSUME;
 				}
 			}else{
 				if(progress >= MAX_PROGRESS){
+					for(ItemStack item : inventory){
+						if(item.getItem() instanceof StatusEffectItem){
+							inventory.clear();
+						}
+					}
 					ItemScatterer.spawn(world, pos, inventory);
+					world.playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS,1, 1);
 					this.reset();
+				}else{
+					if(player.isSneaking()){
+						ItemScatterer.spawn(world, pos, inventory);
+						world.playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS,1, 1);
+					}
 				}
 			}
 		}

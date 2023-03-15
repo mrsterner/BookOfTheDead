@@ -3,6 +3,7 @@ package dev.sterner.book_of_the_dead.common.block;
 import dev.sterner.book_of_the_dead.api.block.AbstractBotDSkullBlock;
 import net.minecraft.block.*;
 import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.item.SkullItem;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.IntProperty;
 import net.minecraft.state.property.Properties;

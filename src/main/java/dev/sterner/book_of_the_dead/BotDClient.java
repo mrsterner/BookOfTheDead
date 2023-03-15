@@ -68,7 +68,7 @@ public class BotDClient implements ClientModInitializer {
 
 		BuiltinItemRendererRegistry.INSTANCE.register(BotDObjects.JAR, new JarBlockEntityRenderer());
 		BuiltinItemRendererRegistry.INSTANCE.register(BotDObjects.VILLAGER_HEAD, new BotDSkullBlockEntityRenderer());
-		BuiltinItemRendererRegistry.INSTANCE.register(BotDObjects.VILLAGER_WALL_HEAD, new BotDSkullBlockEntityRenderer());
+		//BuiltinItemRendererRegistry.INSTANCE.register(BotDObjects.VILLAGER_WALL_HEAD, new BotDSkullBlockEntityRenderer());
 
 		EntityRendererRegistry.register(BotDEntityTypes.OLD_MAN_ENTITY, OldManEntityRenderer::new);
 		EntityRendererRegistry.register(BotDEntityTypes.BLOOD_SLIME_ENTITY, BloodSlimeEntityRenderer::new);
