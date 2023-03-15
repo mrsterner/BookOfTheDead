@@ -27,6 +27,8 @@ public class BotDItemGroupEvents {
 		e.addItem(METAL_HOOK);
 		e.addItem(ROPE);
 		e.addItem(RETORT_FLASK);
+		e.addItem(SYRINGE);
+		e.addItem(SOAP);
 		e.addItem(ALL_BLACK);
 		e.addItem(EMERALD_TABLET);
 		e.addItem(POPPY_POD);

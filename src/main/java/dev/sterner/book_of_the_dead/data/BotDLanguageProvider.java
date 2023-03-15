@@ -3,6 +3,7 @@ package dev.sterner.book_of_the_dead.data;
 import dev.sterner.book_of_the_dead.common.registry.BotDEnchantments;
 import dev.sterner.book_of_the_dead.common.registry.BotDEntityTypes;
 import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
+import dev.sterner.book_of_the_dead.common.registry.BotDStatusEffects;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
@@ -46,6 +47,8 @@ public class BotDLanguageProvider extends FabricLanguageProvider {
 		builder.add(BotDObjects.VILLAGER_HEAD, "Villager Head");
 		builder.add(BotDObjects.VILLAGER_WALL_HEAD, "Villager Head");
 		builder.add(BotDObjects.DEBUG_WAND, "Debug Wand");
+		builder.add(BotDObjects.SOAP, "Soap");
+		builder.add(BotDObjects.SYRINGE, "Syringe");
 
 		builder.add(BotDEnchantments.BUTCHERING, "Butchering");
 
@@ -65,5 +68,9 @@ public class BotDLanguageProvider extends FabricLanguageProvider {
 		builder.add("book_of_the_dead.book_of_the_dead", "Book of the Dead");
 		builder.add("book_of_the_dead.book_of_the_dead:book_of_the_dead", "Book of the Dead");
 		builder.add("book_of_the_dead.book_of_the_dead.landing", "This is a book of dead things and stuff");
+
+		builder.add(BotDStatusEffects.MORPHINE, "Morphine");
+		builder.add(BotDStatusEffects.ADRENALINE, "Adrenaline");
+		builder.add(BotDStatusEffects.EUTHANASIA, "Euthanasia");
 	}
 }

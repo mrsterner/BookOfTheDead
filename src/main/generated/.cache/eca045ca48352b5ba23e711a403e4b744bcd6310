@@ -1,4 +1,4 @@
-// 1.19.3	2023-03-14T19:37:56.104710415	Book of the Dead/Model Definitions
+// 1.19.3	2023-03-15T16:22:03.883366805	Book of the Dead/Model Definitions
 794270f63737a8082c3c60f9b379467d7091f91d assets/book_of_the_dead/models/item/butcher_knife.json
 6761e32ea091ac250b056652d959e6a80753ed69 assets/book_of_the_dead/blockstates/reinforced_door.json
 78f05cc5642a71ba0ce54f04c856ff2fb56ce722 assets/book_of_the_dead/models/block/poppy_crop_stage0.json
@@ -16,6 +16,7 @@ f5f92a6325d085032ee4582da3d4609e1146300e assets/book_of_the_dead/models/block/po
 d5e985ba3cdca469aa989b90fd0f20b5c03f899e assets/book_of_the_dead/models/block/poppy_crop_stage5.json
 2eba5aa01d2f8df05fc80b6f6e49b1811707d7bb assets/book_of_the_dead/models/block/reinforced_door_top_left_open.json
 30d1e800dffaca62d7ad3446f7ed8ccb77741a6c assets/book_of_the_dead/models/item/debug_wand.json
+91d9315f6c7c240f29b355a2abf6ec3cf66b9cb6 assets/book_of_the_dead/models/item/soap.json
 df4074a7177df477fca88fc7d552a54427171a9b assets/book_of_the_dead/models/block/poppy_crop_stage1.json
 329b7f4b9566ee26dbfa3214c1ea48195aff068d assets/book_of_the_dead/models/item/hook.json
 ad4070f826781a7caec42060fa03dda359f7d2fe assets/book_of_the_dead/models/item/skin.json

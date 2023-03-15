@@ -41,6 +41,8 @@ public interface BotDObjects {
 	Item EUTHANASIA = register("euthanasia", new StatusEffectItem(settings(), BotDStatusEffects.EUTHANASIA));
 	Item ADRENALINE = register("adrenaline", new StatusEffectItem(settings(), BotDStatusEffects.ADRENALINE));
 
+	Item SOAP = register("soap", new SoapItem(settings()));
+
 	Item CELLAR_KEY = register("cellar_key", new CellarKeyItem(settings()));
 	Item CONTRACT = register("contract", new ContractItem(settings()));
 	Item PACKET = register("packet", new Item(settings()));
