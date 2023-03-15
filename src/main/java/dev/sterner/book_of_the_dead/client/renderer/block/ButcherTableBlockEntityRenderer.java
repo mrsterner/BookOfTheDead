@@ -8,6 +8,7 @@ import dev.sterner.book_of_the_dead.common.block.ButcherBlock;
 import dev.sterner.book_of_the_dead.common.block.NecroTableBlock;
 import dev.sterner.book_of_the_dead.common.block.entity.ButcherTableBlockEntity;
 import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
+import dev.sterner.book_of_the_dead.common.registry.BotDParticleTypes;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
@@ -25,11 +26,15 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.particle.ParticleEffect;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Axis;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+
+import static dev.sterner.book_of_the_dead.api.block.HorizontalDoubleBlock.FACING;
 
 public class ButcherTableBlockEntityRenderer implements BlockEntityRenderer<ButcherTableBlockEntity> {
 	private final Identifier TEXTURE = Constants.id("textures/entity/butcher_table.png");
@@ -56,6 +61,72 @@ public class ButcherTableBlockEntityRenderer implements BlockEntityRenderer<Butc
 	@Override
 	public void render(ButcherTableBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
 		matrices.push();
+		renderEntityOnTable(entity, tickDelta, matrices, vertexConsumers, light, overlay);
+		matrices.pop();
+
+		World world = entity.getWorld();
+		if(world != null){
+			BlockState blockState = entity.getCachedState();
+			renderBubbleEffect(world, entity, entity.getPos());
+			if(blockState.get(HorizontalDoubleBlock.HHALF) == HorizontalDoubleBlockHalf.RIGHT){
+				matrices.push();
+				float f = blockState.get(NecroTableBlock.FACING).asRotation();
+				Direction direction = blockState.get(NecroTableBlock.FACING);
+				matrices.multiply(Axis.Z_POSITIVE.rotationDegrees(180f));
+				matrices.translate(0.5, 0.5, 0.5);
+				matrices.multiply(Axis.Y_POSITIVE.rotationDegrees(-f));
+				matrices.translate(-0.5, -0.5, -0.5);
+
+				if(direction == Direction.SOUTH){
+					matrices.translate(-0.5,-1.5,0.5);
+				}else if(direction == Direction.WEST){
+					matrices.multiply(Axis.Y_POSITIVE.rotationDegrees(180));
+					matrices.translate(-0.5,-1.5,-1.5);
+				}else if(direction == Direction.NORTH){
+					matrices.translate(1.5,-1.5,0.5);
+				}else if(direction == Direction.EAST){
+					matrices.multiply(Axis.Y_POSITIVE.rotationDegrees(180));
+					matrices.translate(-0.5,-1.5,0.5);
+				}
+				var buffer = vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(TEXTURE));
+				render(matrices, buffer, light, overlay);
+				if(entity.getFilthLevel() > 2){
+					filth.render(matrices, buffer, light, overlay,1, 1, 1, 1);
+				}else if(entity.getFilthLevel() > 0){
+					blood.render(matrices, buffer, light, overlay,1, 1, 1, 1);
+				}
+
+				matrices.pop();
+			}
+		}
+	}
+
+	private void renderBubbleEffect(World world, ButcherTableBlockEntity entity, BlockPos pos) {
+		Direction targetDirection = world.getBlockState(pos).get(FACING).rotateClockwise(Direction.Axis.Y).getOpposite();
+		BlockPos neighbourPos = pos.offset(targetDirection);
+
+
+		if(entity.latter > 0){
+			float width = 0.5f;
+			world.addParticle((ParticleEffect) BotDParticleTypes.SOAP_BUBBLE,
+					pos.getX() + 0.5 + MathHelper.nextDouble(world.random, -width, width),
+					pos.getY() + 1.1,
+					pos.getZ() + 0.5 + MathHelper.nextDouble(world.random, -width, width),
+					0,
+					0,
+					0);
+
+			world.addParticle((ParticleEffect) BotDParticleTypes.SOAP_BUBBLE,
+					neighbourPos.getX() + 0.5 + MathHelper.nextDouble(world.random, -width, width),
+					neighbourPos.getY() + 1.1,
+					neighbourPos.getZ() + 0.5 + MathHelper.nextDouble(world.random, -width, width),
+					0,
+					0,
+					0);
+		}
+	}
+
+	private void renderEntityOnTable(ButcherTableBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
 		IHauler.of(entity).ifPresent(hauler -> {
 			NbtCompound renderedEntity = hauler.getCorpseEntity();
 			if(renderedEntity != null && !renderedEntity.isEmpty() && entity.getWorld() != null){
@@ -92,43 +163,6 @@ public class ButcherTableBlockEntityRenderer implements BlockEntityRenderer<Butc
 
 			}
 		});
-		matrices.pop();
-
-
-		World world = entity.getWorld();
-		if(world != null){
-			BlockState blockState = entity.getCachedState();
-			if(blockState.get(HorizontalDoubleBlock.HHALF) == HorizontalDoubleBlockHalf.RIGHT){
-				matrices.push();
-				float f = blockState.get(NecroTableBlock.FACING).asRotation();
-				Direction direction = blockState.get(NecroTableBlock.FACING);
-				matrices.multiply(Axis.Z_POSITIVE.rotationDegrees(180f));
-				matrices.translate(0.5, 0.5, 0.5);
-				matrices.multiply(Axis.Y_POSITIVE.rotationDegrees(-f));
-				matrices.translate(-0.5, -0.5, -0.5);
-
-				if(direction == Direction.SOUTH){
-					matrices.translate(-0.5,-1.5,0.5);
-				}else if(direction == Direction.WEST){
-					matrices.multiply(Axis.Y_POSITIVE.rotationDegrees(180));
-					matrices.translate(-0.5,-1.5,-1.5);
-				}else if(direction == Direction.NORTH){
-					matrices.translate(1.5,-1.5,0.5);
-				}else if(direction == Direction.EAST){
-					matrices.multiply(Axis.Y_POSITIVE.rotationDegrees(180));
-					matrices.translate(-0.5,-1.5,0.5);
-				}
-				var buffer = vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(TEXTURE));
-				render(matrices, buffer, light, overlay);
-				if(entity.isBloody()){
-					blood.render(matrices, buffer, light, overlay,1, 1, 1, 1);
-				}
-				if(entity.isFilthy()){
-					filth.render(matrices, buffer, light, overlay,1, 1, 1, 1);
-				}
-				matrices.pop();
-			}
-		}
 	}
 
 	private void setupTransforms(MatrixStack matrices, BlockState blockState) {
@@ -198,7 +232,7 @@ public class ButcherTableBlockEntityRenderer implements BlockEntityRenderer<Butc
 		if (world != null) {
 			BlockState blockState = world.getBlockState(blockPos);
 			if(blockState.isOf(BotDObjects.BUTCHER_TABLE)){
-				return switch (blockState.get(ButcherBlock.FACING)){
+				return switch (blockState.get(FACING)){
 					case EAST -> 90;
 					case NORTH ->  180;
 					case WEST ->  270;

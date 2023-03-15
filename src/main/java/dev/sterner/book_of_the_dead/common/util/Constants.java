@@ -81,5 +81,7 @@ public class Constants {
 		String ADRENALINE = "Adrenaline";
         String BLOODY = "Bloody";
 		String FILTHY = "Filthy";
-    }
+		String CLEANING = "Cleaning";
+		String LATTER = "Latter";
+	}
 }

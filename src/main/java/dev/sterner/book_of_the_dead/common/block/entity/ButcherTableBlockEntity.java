@@ -13,62 +13,84 @@ import net.minecraft.util.random.RandomGenerator;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
+
 public class ButcherTableBlockEntity extends BaseButcherBlockEntity {
-	private boolean isBloody = false;
-	private boolean isFilthy = false;
+	private static final int MAX_FILTH = 5;
+	private int filthLevel = 0;
+	public static final int MAX_CLEANING_PROGRESS = 20 * 5;
+	private int cleaningProgress = 0;
+	public int latter = 0;
 
 	public ButcherTableBlockEntity(BlockPos pos, BlockState state) {
 		super(BotDBlockEntityTypes.BUTCHER, pos, state);
+	}
+
+	public static void tick(World world, BlockPos pos, BlockState state, ButcherTableBlockEntity blockEntity) {
+		if(blockEntity.latter > 0){
+			blockEntity.progressCleaning();
+			if(world.getTime() % 20 == 0){
+				blockEntity.latter--;
+				blockEntity.markDirty();
+			}
+		}
 	}
 
 	public ActionResult onUse(World world, BlockState state, BlockPos pos, PlayerEntity player, Hand hand, boolean isNeighbour) {
 		return onUse(world, state, pos, player, hand, 0.5d, 0d, isNeighbour);
 	}
 
-	public boolean isBloody() {
-		return isBloody;
+	public int getFilthLevel() {
+		return filthLevel;
 	}
 
-	public void setBloody(boolean bloody) {
-		isBloody = bloody;
-	}
-
-	public boolean isFilthy() {
-		return isFilthy;
-	}
-
-	public void setFilthy(boolean filthy) {
-		isFilthy = filthy;
+	public void setFilthLevel(int filthLevel) {
+		this.filthLevel = filthLevel;
 	}
 
 	@Override
 	protected void writeNbt(NbtCompound nbt) {
-		nbt.putBoolean(Constants.Nbt.BLOODY, isBloody());
-		nbt.putBoolean(Constants.Nbt.FILTHY, isFilthy());
+		nbt.putInt(Constants.Nbt.FILTHY, getFilthLevel());
+		nbt.putInt(Constants.Nbt.LATTER, latter);
+		nbt.putInt(Constants.Nbt.CLEANING, getCleaningProgress());
 		super.writeNbt(nbt);
 	}
 
 	@Override
 	public void readNbt(NbtCompound nbt) {
-		setBloody(nbt.getBoolean(Constants.Nbt.BLOODY));
-		setFilthy(nbt.getBoolean(Constants.Nbt.FILTHY));
+		setFilthLevel(nbt.getInt(Constants.Nbt.FILTHY));
+		latter = nbt.getInt(Constants.Nbt.LATTER);
+		setCleaningProgress(nbt.getInt(Constants.Nbt.CLEANING));
 		super.readNbt(nbt);
 	}
 
-	public double filthyfy(@NotNull World world) {
+	@Override
+	public void makeFilth(@NotNull World world) {
 		RandomGenerator randomGenerator = world.getRandom();
 		if(randomGenerator.nextDouble() > 0.75d){
-			if(isFilthy()){
-				return 0.25d;
+			if(getFilthLevel() < MAX_FILTH){
+				setFilthLevel(getFilthLevel() + 1);
 			}
-			if(isBloody()){
-				this.setFilthy(true);
-				this.setBloody(false);
-				return 0.25d;
-			}
-			this.setBloody(true);
-			return 0.75d;
 		}
-		return 1;
+	}
+
+	public int getCleaningProgress() {
+		return cleaningProgress;
+	}
+
+	public void setCleaningProgress(int cleaningProgress) {
+		this.cleaningProgress = cleaningProgress;
+	}
+
+	public void progressCleaning(){
+		if(getFilthLevel() > 0){
+			if(getCleaningProgress() < MAX_CLEANING_PROGRESS){
+				setCleaningProgress(getCleaningProgress() + 1);
+			}
+			if(getCleaningProgress() >= MAX_CLEANING_PROGRESS){
+				setFilthLevel(getFilthLevel() - 1);
+				setCleaningProgress(0);
+			}
+			this.markDirty();
+		}
 	}
 }

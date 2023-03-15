@@ -4,6 +4,7 @@ import dev.sterner.book_of_the_dead.api.interfaces.IBlockLeakParticle;
 import dev.sterner.book_of_the_dead.client.particle.BloodSplashParticle;
 import dev.sterner.book_of_the_dead.client.particle.ItemStackBeamParticle;
 import dev.sterner.book_of_the_dead.client.particle.ItemStackBeamParticleEffect;
+import dev.sterner.book_of_the_dead.client.particle.SoapBubbleParticle;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
@@ -29,6 +30,7 @@ public interface BotDParticleTypes {
 	DefaultParticleType SPLASHING_BLOOD = Registry.register(Registries.PARTICLE_TYPE, Constants.id("splashing_blood"), FabricParticleTypes.simple());
 
 	ParticleType<ItemStackBeamParticleEffect> ITEM_BEAM_PARTICLE = register("item_beam_particle", FabricParticleTypes.complex(ItemStackBeamParticleEffect.PARAMETERS_FACTORY));
+	ParticleType<DefaultParticleType> SOAP_BUBBLE = register("soap_bubble", FabricParticleTypes.simple());
 
 	static <T extends ParticleEffect> ParticleType<T> register(String name, ParticleType<T> type) {
 		PARTICLE_TYPES.put(type, Constants.id(name));
@@ -39,6 +41,8 @@ public interface BotDParticleTypes {
 		PARTICLE_TYPES.keySet().forEach(particleType -> Registry.register(Registries.PARTICLE_TYPE, PARTICLE_TYPES.get(particleType), particleType));
 		ParticleFactoryRegistry.getInstance().register(ITEM_BEAM_PARTICLE, new ItemStackBeamParticle.ItemFactory());
 		ParticleFactoryRegistry.getInstance().register(SPLASHING_BLOOD, BloodSplashParticle.DefaultFactory::new);
+		ParticleFactoryRegistry.getInstance().register(SOAP_BUBBLE, SoapBubbleParticle.Factory::new);
+
 
 		ParticleFactoryRegistry.getInstance().register(LANDING_BLOOD, s -> new BlockLeakParticle.LandingHoneyFactory(s) {
 			@Override

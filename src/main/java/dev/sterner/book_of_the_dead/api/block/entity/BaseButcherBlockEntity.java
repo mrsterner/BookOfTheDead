@@ -4,17 +4,14 @@ import com.mojang.datafixers.util.Pair;
 import dev.sterner.book_of_the_dead.api.interfaces.IBlockEntityInventory;
 import dev.sterner.book_of_the_dead.api.interfaces.IHauler;
 import dev.sterner.book_of_the_dead.client.network.BloodSplashParticlePacket;
-import dev.sterner.book_of_the_dead.common.block.entity.ButcherTableBlockEntity;
 import dev.sterner.book_of_the_dead.common.component.BotDComponents;
 import dev.sterner.book_of_the_dead.common.component.PlayerDataComponent;
 import dev.sterner.book_of_the_dead.common.recipe.ButcheringRecipe;
 import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
 import dev.sterner.book_of_the_dead.common.registry.BotDRecipeTypes;
 import dev.sterner.book_of_the_dead.common.util.Constants;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -26,9 +23,6 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
-import net.minecraft.network.Packet;
-import net.minecraft.network.listener.ClientPlayPacketListener;
-import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.particle.BlockStateParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
@@ -41,7 +35,7 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 import org.quiltmc.qsl.networking.api.PlayerLookup;
 
 import java.util.List;
@@ -134,11 +128,7 @@ public class BaseButcherBlockEntity extends BaseBlockEntity implements IHauler, 
 					List<ItemStack> nonEmptyOutput = this.outputs.stream().filter(item -> !item.isEmpty() || !item.isOf(Items.AIR) || item.getCount() != 0).toList();
 					List<Float> nonEmptyChance = this.chances.stream().filter(chance -> chance != 0).toList();
 					if(nonEmptyOutput.size() > 0){
-						double sanitaryModifier = 1;
-						if(this instanceof ButcherTableBlockEntity butcher){
-							sanitaryModifier = butcher.filthyfy(world);
-						}
-
+						double sanitaryModifier = 1 - (getFilthLevel() + 1) / 6d;
 						double butcherLevel = BotDComponents.PLAYER_COMPONENT.maybeGet(player).map(PlayerDataComponent::getButcheringModifier).orElse(1D);
 						double chance = probability + 0.5D * butcherLevel * sanitaryModifier;
 
@@ -152,6 +142,8 @@ public class BaseButcherBlockEntity extends BaseBlockEntity implements IHauler, 
 							dismemberAtRandom(world);
 							ItemScatterer.spawn(world, pos.getX() + 0.5, pos.getY() + 1.2, pos.getZ() + 0.5, nonEmptyOutput.get(0));
 						}
+
+						this.makeFilth(world);
 
 						this.makeARuckus(world, player, pos, particleOffset);
 						this.chances.set(0, 0F);
@@ -210,6 +202,13 @@ public class BaseButcherBlockEntity extends BaseBlockEntity implements IHauler, 
 		this.resetRecipe = true;
 		this.clearCorpseData();
 		this.markDirty();
+	}
+
+	public void makeFilth(@NotNull World world) {
+	}
+
+	public int getFilthLevel(){
+		return 0;
 	}
 
 	@Override
