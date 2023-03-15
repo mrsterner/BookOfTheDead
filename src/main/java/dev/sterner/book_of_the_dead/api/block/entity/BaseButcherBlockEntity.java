@@ -4,6 +4,7 @@ import com.mojang.datafixers.util.Pair;
 import dev.sterner.book_of_the_dead.api.interfaces.IBlockEntityInventory;
 import dev.sterner.book_of_the_dead.api.interfaces.IHauler;
 import dev.sterner.book_of_the_dead.client.network.BloodSplashParticlePacket;
+import dev.sterner.book_of_the_dead.common.block.entity.ButcherTableBlockEntity;
 import dev.sterner.book_of_the_dead.common.component.BotDComponents;
 import dev.sterner.book_of_the_dead.common.component.PlayerDataComponent;
 import dev.sterner.book_of_the_dead.common.recipe.ButcheringRecipe;
@@ -133,8 +134,13 @@ public class BaseButcherBlockEntity extends BaseBlockEntity implements IHauler, 
 					List<ItemStack> nonEmptyOutput = this.outputs.stream().filter(item -> !item.isEmpty() || !item.isOf(Items.AIR) || item.getCount() != 0).toList();
 					List<Float> nonEmptyChance = this.chances.stream().filter(chance -> chance != 0).toList();
 					if(nonEmptyOutput.size() > 0){
+						double sanitaryModifier = 1;
+						if(this instanceof ButcherTableBlockEntity butcher){
+							sanitaryModifier = butcher.filthyfy(world);
+						}
+
 						double butcherLevel = BotDComponents.PLAYER_COMPONENT.maybeGet(player).map(PlayerDataComponent::getButcheringModifier).orElse(1D);
-						double chance = probability + 0.5D * butcherLevel;
+						double chance = probability + 0.5D * butcherLevel * sanitaryModifier;
 
 						nonEmptyOutput.get(0).setCount(world.getRandom().nextDouble() < chance * nonEmptyChance.get(0) ? 1 : 0);
 						if(getHeadVisible() && !isNeighbour && this.butcheringRecipe.headDrop.getFirst() != ItemStack.EMPTY){

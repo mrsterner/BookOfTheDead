@@ -79,5 +79,7 @@ public class Constants {
 		String AMPLIFIER = "Amplifier";
 		String MORPHINE = "Morphine";
 		String ADRENALINE = "Adrenaline";
-	}
+        String BLOODY = "Bloody";
+		String FILTHY = "Filthy";
+    }
 }
