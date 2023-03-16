@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 
 
 public class SoapItem extends Item {
-	private final int MAX_USE_TIME = 7200;
+	private static final int MAX_USE_TIME = 7200;
 	public SoapItem(Settings settings) {
 		super(settings.maxDamage(8));
 	}
@@ -31,7 +31,7 @@ public class SoapItem extends Item {
 			if(world.getBlockState(blockPos).get(HorizontalDoubleBlock.HHALF) == HorizontalDoubleBlockHalf.LEFT){
 				be = ButcherBlock.getNeighbourButcherBlockEntity(world, state, blockPos);
 			}
-			if (player != null && be != null && (be.getFilthLevel() > 0)) {
+			if (player != null && be != null && (be.getFilthLevel() > 0) && be.latter <= 0) {
 				player.setCurrentHand(context.getHand());
 				be.latter = be.latter + 10;
 				context.getStack().damage(1, player, p -> p.sendToolBreakStatus(context.getHand()));

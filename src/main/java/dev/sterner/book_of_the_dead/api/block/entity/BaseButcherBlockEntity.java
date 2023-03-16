@@ -94,31 +94,8 @@ public class BaseButcherBlockEntity extends BaseBlockEntity implements IHauler, 
 
 	public ActionResult onUse(World world, BlockState state, BlockPos pos, PlayerEntity player, Hand hand, double probability, double particleOffset, boolean isNeighbour) {
 		if(hand == Hand.MAIN_HAND){
-			Optional<IHauler> optionalIHauler = IHauler.of(player);
-			if(optionalIHauler.isPresent() && getCorpseEntity().isEmpty()){
-				if(optionalIHauler.get().getCorpseEntity() != null){
-					NbtCompound nbtCompound = optionalIHauler.get().getCorpseEntity();
-					if(!nbtCompound.isEmpty()){
-						this.setCorpse(nbtCompound);
-						this.setAllVisible();
-						optionalIHauler.get().clearCorpseData();
-
-						Direction targetDirection = state.get(FACING).rotateClockwise(Direction.Axis.Y);
-						if(!isNeighbour){
-							targetDirection = targetDirection.getOpposite();
-						}
-
-						BlockPos neighbourPos = pos.offset(targetDirection);
-						if(state.isOf(BotDObjects.BUTCHER_TABLE)){
-							this.spawnMuckParticles((ServerWorld) world, pos);
-							this.spawnMuckParticles((ServerWorld) world, neighbourPos);
-						}
-
-						world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 1,1);
-						markDirty();
-						return ActionResult.CONSUME;
-					}
-				}
+			if(placeCorpseOnTable(world, pos, state, player, isNeighbour)){
+				return ActionResult.CONSUME;
 			}
 			if(getCorpseEntity() != null && !getCorpseEntity().isEmpty()){
 				this.refreshButcheringRecipe();
@@ -128,15 +105,15 @@ public class BaseButcherBlockEntity extends BaseBlockEntity implements IHauler, 
 					List<ItemStack> nonEmptyOutput = this.outputs.stream().filter(item -> !item.isEmpty() || !item.isOf(Items.AIR) || item.getCount() != 0).toList();
 					List<Float> nonEmptyChance = this.chances.stream().filter(chance -> chance != 0).toList();
 					if(nonEmptyOutput.size() > 0){
-						double sanitaryModifier = 1 - (getFilthLevel() + 1) / 6d;
+						double sanitaryModifier = 1.5 - (getFilthLevel() + 1) / 6d;
 						double butcherLevel = BotDComponents.PLAYER_COMPONENT.maybeGet(player).map(PlayerDataComponent::getButcheringModifier).orElse(1D);
-						double chance = probability + 0.5D * butcherLevel * sanitaryModifier;
+						double magicNumber = probability + 0.5D * butcherLevel * sanitaryModifier;//TODO implement index lookup instead of weird math: float[] CHANCE = {0, 0.15f, 0.25f, 0.35f};
 
-						nonEmptyOutput.get(0).setCount(world.getRandom().nextDouble() < chance * nonEmptyChance.get(0) ? 1 : 0);
+						nonEmptyOutput.get(0).setCount(world.getRandom().nextDouble() < magicNumber * nonEmptyChance.get(0) ? 1 : 0);
 						if(getHeadVisible() && !isNeighbour && this.butcheringRecipe.headDrop.getFirst() != ItemStack.EMPTY){
 							this.setHeadVisible(false);
 							ItemStack head = this.butcheringRecipe.headDrop.getFirst();
-							head.setCount(world.getRandom().nextDouble() < chance * this.butcheringRecipe.headDrop.getSecond() ? 1 : 0);
+							head.setCount(world.getRandom().nextDouble() < magicNumber * this.butcheringRecipe.headDrop.getSecond() ? 1 : 0);
 							ItemScatterer.spawn(world, pos.getX() + 0.5, pos.getY() + 1.2, pos.getZ() + 0.5, head);
 						}else{
 							dismemberAtRandom(world);
@@ -145,17 +122,18 @@ public class BaseButcherBlockEntity extends BaseBlockEntity implements IHauler, 
 
 						this.makeFilth(world);
 
-						this.makeARuckus(world, player, pos, particleOffset);
+
 						this.chances.set(0, 0F);
 						this.outputs.set(0, ItemStack.EMPTY);
 						nonEmptyOutput = this.outputs.stream().filter(item -> !item.isEmpty() || !item.isOf(Items.AIR) || item.getCount() != 0).toList();
 						if(nonEmptyOutput.isEmpty()){
 							this.reset();
 						}
-						player.swingHand(hand, true);
+						this.makeARuckus(world, player, hand, pos, particleOffset);
+						markDirty();
 						return ActionResult.CONSUME;
 					}else {
-						this.makeARuckus(world, player, pos, particleOffset);
+						this.makeARuckus(world, player, hand, pos, particleOffset);
 						this.reset();
 					}
 				}
@@ -163,6 +141,35 @@ public class BaseButcherBlockEntity extends BaseBlockEntity implements IHauler, 
 		}
 		markDirty();
 		return ActionResult.PASS;
+	}
+
+	private boolean placeCorpseOnTable(World world, BlockPos pos, BlockState state, PlayerEntity player, boolean isNeighbour) {
+		Optional<IHauler> optionalIHauler = IHauler.of(player);
+		if(optionalIHauler.isPresent() && getCorpseEntity().isEmpty()){
+			if(optionalIHauler.get().getCorpseEntity() != null){
+				NbtCompound nbtCompound = optionalIHauler.get().getCorpseEntity();
+				if(!nbtCompound.isEmpty()){
+					this.setCorpse(nbtCompound);
+					this.setAllVisible();
+					optionalIHauler.get().clearCorpseData();
+
+					Direction targetDirection = state.get(FACING).rotateClockwise(Direction.Axis.Y);
+					if(!isNeighbour){
+						targetDirection = targetDirection.getOpposite();
+					}
+
+					if(state.isOf(BotDObjects.BUTCHER_TABLE)){
+						this.spawnMuckParticles((ServerWorld) world, pos);
+						this.spawnMuckParticles((ServerWorld) world, pos.offset(targetDirection));
+					}
+
+					world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 1,1);
+					markDirty();
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	private void spawnMuckParticles(ServerWorld world, BlockPos pos) {
@@ -178,11 +185,12 @@ public class BaseButcherBlockEntity extends BaseBlockEntity implements IHauler, 
 				0.15F);
 	}
 
-	private void makeARuckus(World world, PlayerEntity player, BlockPos pos, double particleOffset){
+	private void makeARuckus(World world, PlayerEntity player, Hand hand, BlockPos pos, double particleOffset){
 		world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.BLOCK_HONEY_BLOCK_BREAK, SoundCategory.PLAYERS, 2,1);
 		world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_PLAYER_ATTACK_CRIT, SoundCategory.PLAYERS, 0.75f,1);
 		PlayerLookup.tracking(player).forEach(track -> BloodSplashParticlePacket.send(track, pos.getX(), pos.getY() + particleOffset, pos.getZ()));
 		BloodSplashParticlePacket.send(player, pos.getX(), pos.getY() + particleOffset, pos.getZ());
+		player.swingHand(hand, true);
 	}
 
 	private void dismemberAtRandom(World world) {

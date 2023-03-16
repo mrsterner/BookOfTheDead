@@ -7,6 +7,7 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -119,6 +120,11 @@ public class NecroTableBlock extends HorizontalFacingBlock implements BlockEntit
 	@Override
 	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 		return new NecroTableBlockEntity(pos, state);
+	}
+
+	@Override
+	public ItemStack getPickStack(BlockView world, BlockPos pos, BlockState state) {
+		return new ItemStack(Blocks.DEEPSLATE_TILES);
 	}
 
 	static {

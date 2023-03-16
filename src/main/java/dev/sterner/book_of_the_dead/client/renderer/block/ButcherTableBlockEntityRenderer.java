@@ -9,7 +9,12 @@ import dev.sterner.book_of_the_dead.common.block.NecroTableBlock;
 import dev.sterner.book_of_the_dead.common.block.entity.ButcherTableBlockEntity;
 import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
 import dev.sterner.book_of_the_dead.common.registry.BotDParticleTypes;
+import dev.sterner.book_of_the_dead.common.registry.BotDSpriteIdentifiers;
 import dev.sterner.book_of_the_dead.common.util.Constants;
+import dev.sterner.book_of_the_dead.common.util.RenderUtils;
+import net.fabricmc.fabric.api.renderer.v1.mesh.MeshBuilder;
+import net.fabricmc.fabric.impl.client.indigo.renderer.helper.ColorHelper;
+import net.fabricmc.fabric.impl.renderer.RendererAccessImpl;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.client.model.*;
@@ -21,6 +26,7 @@ import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.LivingEntityRenderer;
 import net.minecraft.client.render.entity.model.*;
+import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -33,10 +39,15 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import org.joml.Matrix4f;
+
+import java.util.Properties;
 
 import static dev.sterner.book_of_the_dead.api.block.HorizontalDoubleBlock.FACING;
 
 public class ButcherTableBlockEntityRenderer implements BlockEntityRenderer<ButcherTableBlockEntity> {
+	private static final float[] HEIGHT = {0, 0.15f, 0.25f, 0.35f};
+	public static final int BLOOD_COLOR = 0xff0000;
 	private final Identifier TEXTURE = Constants.id("textures/entity/butcher_table.png");
 	public static final EntityModelLayer LAYER_LOCATION = new EntityModelLayer(Constants.id("butcher_table"), "main");
 	private final ModelPart table;
@@ -62,6 +73,17 @@ public class ButcherTableBlockEntityRenderer implements BlockEntityRenderer<Butc
 	public void render(ButcherTableBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
 		matrices.push();
 		renderEntityOnTable(entity, tickDelta, matrices, vertexConsumers, light, overlay);
+		matrices.pop();
+
+		matrices.push();
+		switch (entity.getCachedState().get(FACING)){
+			case NORTH -> matrices.translate(0.35,0.05,0.6);
+			case SOUTH -> matrices.translate(-0.35,0.05,-0.6);
+			case WEST -> matrices.translate(0.6,0.05,-0.35);
+			case EAST -> matrices.translate(-0.6,0.05,0.35);
+		}
+		matrices.translate(0, HEIGHT[entity.bloodLevel], 0);
+		renderBloodLevel(entity, matrices, vertexConsumers, light, overlay);
 		matrices.pop();
 
 		World world = entity.getWorld();
@@ -98,6 +120,26 @@ public class ButcherTableBlockEntityRenderer implements BlockEntityRenderer<Butc
 
 				matrices.pop();
 			}
+		}
+	}
+
+	private void renderBloodLevel(ButcherTableBlockEntity entity, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
+		if(entity.getCachedState().get(HorizontalDoubleBlock.HHALF) == HorizontalDoubleBlockHalf.RIGHT && entity.bloodLevel > 0){
+			Sprite sprite = BotDSpriteIdentifiers.BLOOD.getSprite();
+
+			float sizeFactor = 0.25F;
+			float maxV = (sprite.getMaxV() - sprite.getMinV()) * sizeFactor;
+			float minV = (sprite.getMaxV() - sprite.getMinV()) * (1 - sizeFactor);
+			int red = (BLOOD_COLOR >> 16) & 0xFF;
+			int green = (BLOOD_COLOR >> 8) & 0xFF;
+			int blue = BLOOD_COLOR & 0xFF;
+
+			Matrix4f mat = matrices.peek().getModel();
+			VertexConsumer vertexConsumer = vertexConsumers.getBuffer(RenderLayer.getTranslucent());
+			vertexConsumer.vertex(mat, sizeFactor, 0, 1 - sizeFactor).color(red, green, blue, 255).uv(sprite.getMinU(), sprite.getMinV() + maxV).light(light).overlay(overlay).normal(1, 1, 1).next();
+			vertexConsumer.vertex(mat, 1 - sizeFactor, 0, 1 - sizeFactor).color(red, green, blue, 255).uv(sprite.getMaxU(), sprite.getMinV() + maxV).light(light).overlay(overlay).normal(1, 1, 1).next();
+			vertexConsumer.vertex(mat, 1 - sizeFactor, 0, sizeFactor).color(red, green, blue, 255).uv(sprite.getMaxU(), sprite.getMinV() + minV).light(light).overlay(overlay).normal(1, 1, 1).next();
+			vertexConsumer.vertex(mat, sizeFactor, 0, sizeFactor).color(red, green, blue, 255).uv(sprite.getMinU(), sprite.getMinV() + minV).light(light).overlay(overlay).normal(1, 1, 1).next();
 		}
 	}
 
