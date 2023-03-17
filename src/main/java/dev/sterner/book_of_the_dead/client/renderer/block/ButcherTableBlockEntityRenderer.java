@@ -183,13 +183,14 @@ public class ButcherTableBlockEntityRenderer implements BlockEntityRenderer<Butc
 						livingEntity.headYaw = 0;
 						dispatcher.setRenderShadows(false);
 						setupTransforms(matrices, entity.getWorld().getBlockState(entity.getPos()));
-						if(livingEntity instanceof AnimalEntity){
-							matrices.translate(0.75,0.1,-1.0);
-							matrices.multiply(Axis.X_POSITIVE.rotationDegrees(-90));
-							matrices.multiply(Axis.Y_POSITIVE.rotationDegrees(90));
-						}
+
 						matrices.multiply(Axis.Y_POSITIVE.rotationDegrees(getRot(entity) + 90));
 						matrices.multiply(Axis.X_POSITIVE.rotationDegrees(-90));
+						if(livingEntity instanceof AnimalEntity){
+							matrices.translate(0.75,1.0,0.0);
+							matrices.multiply(Axis.Y_POSITIVE.rotationDegrees( 90));
+							matrices.multiply(Axis.X_POSITIVE.rotationDegrees(-90));
+						}
 
 						EntityRenderer<? super LivingEntity> entityRenderer = dispatcher.getRenderer(livingEntity);
 						if(entityRenderer instanceof LivingEntityRenderer<?,?> livingEntityRenderer){
