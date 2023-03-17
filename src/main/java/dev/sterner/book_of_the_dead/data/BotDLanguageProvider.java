@@ -5,7 +5,6 @@ import dev.sterner.book_of_the_dead.common.registry.BotDEntityTypes;
 import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
 import dev.sterner.book_of_the_dead.common.registry.BotDStatusEffects;
 import dev.sterner.book_of_the_dead.common.util.Constants;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 

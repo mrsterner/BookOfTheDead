@@ -4,7 +4,6 @@ import dev.sterner.book_of_the_dead.api.block.entity.BaseBlockEntity;
 import dev.sterner.book_of_the_dead.common.block.JarBlock;
 import dev.sterner.book_of_the_dead.common.registry.BotDBlockEntityTypes;
 import dev.sterner.book_of_the_dead.common.util.Constants;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;

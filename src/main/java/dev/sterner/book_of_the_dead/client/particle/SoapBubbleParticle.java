@@ -3,7 +3,6 @@ package dev.sterner.book_of_the_dead.client.particle;
 import net.minecraft.client.particle.*;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.particle.DefaultParticleType;
-import net.minecraft.util.math.BlockPos;
 import org.quiltmc.loader.api.minecraft.ClientOnly;
 
 public class SoapBubbleParticle extends SpriteBillboardParticle {

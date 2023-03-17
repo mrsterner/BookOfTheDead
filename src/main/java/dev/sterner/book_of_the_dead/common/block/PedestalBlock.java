@@ -1,8 +1,6 @@
 package dev.sterner.book_of_the_dead.common.block;
 
-import dev.sterner.book_of_the_dead.common.block.entity.NecroTableBlockEntity;
 import dev.sterner.book_of_the_dead.common.block.entity.PedestalBlockEntity;
-import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;

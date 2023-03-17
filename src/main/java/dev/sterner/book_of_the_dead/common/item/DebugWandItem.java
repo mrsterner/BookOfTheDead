@@ -7,7 +7,6 @@ import dev.sterner.book_of_the_dead.common.component.CorpseDataComponent;
 import dev.sterner.book_of_the_dead.common.entity.PlayerCorpseEntity;
 import dev.sterner.book_of_the_dead.common.registry.BotDEntityTypes;
 import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

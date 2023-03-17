@@ -1,24 +1,19 @@
 package dev.sterner.book_of_the_dead.client.renderer.block;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import dev.sterner.book_of_the_dead.common.block.NecroTableBlock;
 import dev.sterner.book_of_the_dead.common.block.entity.BrainBlockEntity;
-import dev.sterner.book_of_the_dead.common.block.entity.NecroTableBlockEntity;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.model.*;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
-import net.minecraft.client.render.entity.LivingEntityRenderer;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Axis;
-import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 
 public class BrainBlockEntityRenderer implements BlockEntityRenderer<BrainBlockEntity> {

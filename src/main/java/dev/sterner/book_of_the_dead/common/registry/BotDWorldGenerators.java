@@ -11,9 +11,6 @@ import net.minecraft.structure.pool.StructurePool;
 import net.minecraft.structure.pool.StructurePoolElement;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.gen.feature.StructureFeature;
-import org.quiltmc.qsl.worldgen.biome.api.BiomeModification;
-import org.quiltmc.qsl.worldgen.biome.api.BiomeModifications;
-import org.quiltmc.qsl.worldgen.biome.api.ModificationPhase;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

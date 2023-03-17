@@ -1,19 +1,12 @@
 package dev.sterner.book_of_the_dead.common.registry;
 
-import dev.sterner.book_of_the_dead.api.interfaces.IBlockLeakParticle;
 import dev.sterner.book_of_the_dead.client.particle.*;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
-import net.minecraft.client.particle.BlockLeakParticle;
-import net.minecraft.client.particle.Particle;
-import net.minecraft.client.particle.SpriteBillboardParticle;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.fluid.Fluids;
 import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleType;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;

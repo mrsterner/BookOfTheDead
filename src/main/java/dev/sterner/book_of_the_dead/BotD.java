@@ -5,26 +5,13 @@ import dev.sterner.book_of_the_dead.common.component.CorpseDataComponent;
 import dev.sterner.book_of_the_dead.common.event.BotDItemGroupEvents;
 import dev.sterner.book_of_the_dead.common.event.BotDUseEvents;
 import dev.sterner.book_of_the_dead.common.registry.*;
-import dev.sterner.book_of_the_dead.common.util.Constants;
-import net.fabricmc.fabric.api.event.registry.DynamicRegistrySetupCallback;
-import net.minecraft.client.item.ModelPredicateProviderRegistry;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.damage.DamageSources;
-import net.minecraft.entity.damage.DamageType;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.structure.pool.StructurePool;
-import net.minecraft.structure.pool.StructurePoolElement;
-import net.minecraft.util.Identifier;
 import org.quiltmc.loader.api.ModContainer;
 import org.quiltmc.loader.api.QuiltLoader;
 import org.quiltmc.qsl.base.api.entrypoint.ModInitializer;
 import org.quiltmc.qsl.entity.event.api.ServerPlayerEntityCopyCallback;
-import org.quiltmc.qsl.registry.api.event.RegistryEvents;
 
 import java.util.Optional;
-import java.util.Set;
 
 public class BotD implements ModInitializer {
 

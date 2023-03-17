@@ -4,17 +4,12 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import dev.sterner.book_of_the_dead.api.enums.HorizontalDoubleBlockHalf;
 import dev.sterner.book_of_the_dead.api.block.HorizontalDoubleBlock;
 import dev.sterner.book_of_the_dead.api.interfaces.IHauler;
-import dev.sterner.book_of_the_dead.common.block.ButcherBlock;
 import dev.sterner.book_of_the_dead.common.block.NecroTableBlock;
 import dev.sterner.book_of_the_dead.common.block.entity.ButcherTableBlockEntity;
 import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
 import dev.sterner.book_of_the_dead.common.registry.BotDParticleTypes;
 import dev.sterner.book_of_the_dead.common.registry.BotDSpriteIdentifiers;
 import dev.sterner.book_of_the_dead.common.util.Constants;
-import dev.sterner.book_of_the_dead.common.util.RenderUtils;
-import net.fabricmc.fabric.api.renderer.v1.mesh.MeshBuilder;
-import net.fabricmc.fabric.impl.client.indigo.renderer.helper.ColorHelper;
-import net.fabricmc.fabric.impl.renderer.RendererAccessImpl;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.client.model.*;
@@ -40,8 +35,6 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import org.joml.Matrix4f;
-
-import java.util.Properties;
 
 import static dev.sterner.book_of_the_dead.api.block.HorizontalDoubleBlock.FACING;
 
