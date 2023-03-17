@@ -24,28 +24,28 @@ public class BotDModelProvider extends FabricModelProvider {
 
 	@Override
 	public void generateItemModels(ItemModelGenerator itemModelGenerator) {
-		itemModelGenerator.register(BotDObjects.DEBUG_WAND, Models.GENERATED);
+		itemModelGenerator.register(BotDObjects.DEBUG_WAND, Models.SINGLE_LAYER_ITEM);
 
-		itemModelGenerator.register(BotDObjects.BOOK_OF_THE_DEAD, Models.GENERATED);
-		itemModelGenerator.register(BotDObjects.PACKET, Models.GENERATED);
+		itemModelGenerator.register(BotDObjects.BOOK_OF_THE_DEAD, Models.SINGLE_LAYER_ITEM);
+		itemModelGenerator.register(BotDObjects.PACKET, Models.SINGLE_LAYER_ITEM);
 		itemModelGenerator.register(BotDObjects.BUTCHER_KNIFE, Models.HANDHELD);
 		itemModelGenerator.register(BotDObjects.BLOODY_BUTCHER_KNIFE, Models.HANDHELD);
-		itemModelGenerator.register(BotDObjects.CAGE, Models.GENERATED);
-		itemModelGenerator.register(BotDObjects.HOOK, Models.GENERATED);
-		itemModelGenerator.register(BotDObjects.METAL_HOOK, Models.GENERATED);
-		itemModelGenerator.register(BotDObjects.FLESH, Models.GENERATED);
-		itemModelGenerator.register(BotDObjects.COOKED_FLESH, Models.GENERATED);
-		itemModelGenerator.register(BotDObjects.EMERALD_TABLET, Models.GENERATED);
-		itemModelGenerator.register(BotDObjects.FAT, Models.GENERATED);
-		itemModelGenerator.register(BotDObjects.SKIN, Models.GENERATED);
-		itemModelGenerator.register(BotDObjects.BOTTLE_OF_BLOOD, Models.GENERATED);
-		itemModelGenerator.register(BotDObjects.ROPE.asItem(), Models.GENERATED);
-		itemModelGenerator.register(BotDObjects.CELLAR_KEY, Models.GENERATED);
-		itemModelGenerator.register(BotDObjects.OLD_LETTER, Models.GENERATED);
-		itemModelGenerator.register(BotDObjects.RETORT_FLASK, Models.GENERATED);
-		itemModelGenerator.register(BotDObjects.POPPY_POD, Models.GENERATED);
-		itemModelGenerator.register(BotDObjects.PAPER_AND_QUILL, Models.GENERATED);
-		itemModelGenerator.register(BotDObjects.CARPENTER_TOOLS, Models.GENERATED);
-		itemModelGenerator.register(BotDObjects.SOAP, Models.GENERATED);
+		itemModelGenerator.register(BotDObjects.CAGE, Models.SINGLE_LAYER_ITEM);
+		itemModelGenerator.register(BotDObjects.HOOK, Models.SINGLE_LAYER_ITEM);
+		itemModelGenerator.register(BotDObjects.METAL_HOOK, Models.SINGLE_LAYER_ITEM);
+		itemModelGenerator.register(BotDObjects.FLESH, Models.SINGLE_LAYER_ITEM);
+		itemModelGenerator.register(BotDObjects.COOKED_FLESH, Models.SINGLE_LAYER_ITEM);
+		itemModelGenerator.register(BotDObjects.EMERALD_TABLET, Models.SINGLE_LAYER_ITEM);
+		itemModelGenerator.register(BotDObjects.FAT, Models.SINGLE_LAYER_ITEM);
+		itemModelGenerator.register(BotDObjects.SKIN, Models.SINGLE_LAYER_ITEM);
+		itemModelGenerator.register(BotDObjects.BOTTLE_OF_BLOOD, Models.SINGLE_LAYER_ITEM);
+		itemModelGenerator.register(BotDObjects.ROPE.asItem(), Models.SINGLE_LAYER_ITEM);
+		itemModelGenerator.register(BotDObjects.CELLAR_KEY, Models.SINGLE_LAYER_ITEM);
+		itemModelGenerator.register(BotDObjects.OLD_LETTER, Models.SINGLE_LAYER_ITEM);
+		itemModelGenerator.register(BotDObjects.RETORT_FLASK, Models.SINGLE_LAYER_ITEM);
+		itemModelGenerator.register(BotDObjects.POPPY_POD, Models.SINGLE_LAYER_ITEM);
+		itemModelGenerator.register(BotDObjects.PAPER_AND_QUILL, Models.SINGLE_LAYER_ITEM);
+		itemModelGenerator.register(BotDObjects.CARPENTER_TOOLS, Models.SINGLE_LAYER_ITEM);
+		itemModelGenerator.register(BotDObjects.SOAP, Models.SINGLE_LAYER_ITEM);
 	}
 }

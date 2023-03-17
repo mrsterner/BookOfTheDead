@@ -2,6 +2,7 @@ package dev.sterner.book_of_the_dead.common.block;
 
 import dev.sterner.book_of_the_dead.api.block.AbstractBotDSkullBlock;
 import net.minecraft.block.*;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.SkullItem;
 import net.minecraft.state.StateManager;
@@ -55,6 +56,11 @@ public class BotDSkullBlock extends AbstractBotDSkullBlock {
 	@Override
 	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
 		builder.add(ROTATION);
+	}
+
+	@Override
+	public EquipmentSlot getPreferredSlot() {
+		return EquipmentSlot.HEAD;
 	}
 
 	public interface BotDType {

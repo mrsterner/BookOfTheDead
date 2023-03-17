@@ -7,7 +7,9 @@ import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
+import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.render.model.json.ModelTransformation;
+import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.Axis;
 import net.minecraft.util.math.MathHelper;
@@ -28,7 +30,8 @@ public class PedestalBlockEntityRenderer implements BlockEntityRenderer<Pedestal
 			matrices.translate(0.5D, 1.15D + yOffset, 0.5D);
 			float angle = (float)((entity.getWorld().getTime() + tickDelta) / 20F + yOffset);
 			matrices.multiply(Axis.Y_POSITIVE.rotation(angle));
-			MinecraftClient.getInstance().getItemRenderer().renderItem(entity.getStack(), ModelTransformation.Mode.GROUND, light, overlay, matrices, vertexConsumers, 0);
+			ItemRenderer itemRenderer = MinecraftClient.getInstance().getItemRenderer();
+			itemRenderer.renderItem(entity.getStack(), ModelTransformationMode.GROUND, false, matrices, vertexConsumers, light, overlay, itemRenderer.getHeldItemModel(entity.getStack(), null, null, 0));
 			matrices.pop();
 		}
 	}

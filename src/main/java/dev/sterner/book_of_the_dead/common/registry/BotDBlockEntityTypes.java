@@ -57,9 +57,13 @@ public interface BotDBlockEntityTypes {
 					BotDObjects.VILLAGER_WALL_HEAD
 			).build());
 
+	BlockEntityType<BrainBlockEntity> BRAIN = register("brain",
+			QuiltBlockEntityTypeBuilder.create(BrainBlockEntity::new,
+					BotDObjects.BRAIN
+			).build());
 
 
-	static <T extends BlockEntity> BlockEntityType<T> register(String name, BlockEntityType<T> type) {
+    static <T extends BlockEntity> BlockEntityType<T> register(String name, BlockEntityType<T> type) {
 		BLOCK_ENTITY_TYPES.put(type, Constants.id(name));
 		return type;
 	}

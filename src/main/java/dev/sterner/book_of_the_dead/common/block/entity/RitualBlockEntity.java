@@ -22,6 +22,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import java.util.*;
@@ -60,7 +61,7 @@ public class RitualBlockEntity extends BaseBlockEntity {
 		for(BlockPos pos : PEDESTAL_POS_LIST){
 			BlockPos specificPos = pos.add(getPos());
 			if(world.getBlockState(specificPos).isOf(BotDObjects.PEDESTAL) && world.getBlockEntity(specificPos) instanceof PedestalBlockEntity pedestalBlockEntity){
-				pedestalBlockEntity.ritualCenter = getPos();
+				pedestalBlockEntity.ritualCenter = new Vec3d(getPos().getX(), getPos().getY(), getPos().getZ());
 				pedestalBlockEntity.markDirty();
 			}
 		}

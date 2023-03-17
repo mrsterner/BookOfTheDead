@@ -54,7 +54,7 @@ public class OldHouse extends StructureFeature {
 		BlockPos blockPos = new BlockPos(chunkPos.getStartX(), startY, chunkPos.getStartZ());
 
 		Optional<GenerationStub> structurePiecesGenerator =
-				StructurePoolBasedGenerator.m_drsiegyr(
+				StructurePoolBasedGenerator.generate(
 						context,
 						this.startPool,
 						this.startJigsawName,

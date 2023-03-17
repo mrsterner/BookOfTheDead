@@ -12,8 +12,8 @@ import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.Packet;
 import net.minecraft.network.listener.ClientPlayPacketListener;
+import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
@@ -47,7 +47,7 @@ public class JarBlockEntity extends BaseBlockEntity implements Inventory {
 
 	private boolean getBloodyCorpseAbove(World world, BlockPos pos){
 		for (double y = 0; y <= Constants.Values.JAR_COLLECTION_RANGE; ++y) {
-			BlockPos potentialCorpse = new BlockPos(pos.getX(), pos.getY() + y, pos.getZ());
+			BlockPos potentialCorpse = new BlockPos(pos.getX(), (int)(pos.getY() + y), pos.getZ());
 			if(world.getBlockEntity(potentialCorpse) instanceof HookBlockEntity hookBlockEntity){
 				if(hookBlockEntity.hookedAge < Constants.Values.BLEEDING){
 					return true;

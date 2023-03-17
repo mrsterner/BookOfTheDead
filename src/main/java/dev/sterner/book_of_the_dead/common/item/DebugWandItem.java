@@ -46,7 +46,7 @@ public class DebugWandItem extends Item {
 					world.spawnEntity(entity);
 					CorpseDataComponent dataComponent = BotDComponents.CORPSE_COMPONENT.get(entity);
 					dataComponent.isCorpse(true);
-					entity.damage(DamageSource.MAGIC, Integer.MAX_VALUE);
+					entity.damage(user.getDamageSources().magic(), Integer.MAX_VALUE);
 				}
 			}
 

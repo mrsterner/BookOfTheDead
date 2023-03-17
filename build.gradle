@@ -85,7 +85,12 @@ repositories {
 
 dependencies {
 	minecraft "com.mojang:minecraft:${minecraft_version}"
-	mappings "org.quiltmc:quilt-mappings:${minecraft_version}+build.${quilt_mappings}:intermediary-v2"
+
+	mappings loom.layered {
+		officialMojangMappings()
+		mappings "org.quiltmc:quilt-mappings:${minecraft_version}+build.${quilt_mappings}:intermediary-v2"
+	}
+
 	modImplementation "org.quiltmc:quilt-loader:${project.loader_version}"
 	modImplementation "org.quiltmc:qsl:${qsl_version}+${minecraft_version}"
 	modImplementation "org.quiltmc.quilted-fabric-api:quilted-fabric-api:${quilted_fabric_api_version}-${minecraft_version}"
@@ -100,33 +105,26 @@ dependencies {
 		exclude group: "net.fabricmc.fabric-api"
 	}
 
-	//Satin
-	modImplementation "io.github.ladysnake:satin:${satin_version}"
-	include "io.github.ladysnake:satin:${satin_version}"
-
 	//Fabric ASM
 	modImplementation 'com.github.Chocohead:Fabric-ASM:v2.3'
 	include 'com.github.Chocohead:Fabric-ASM:v2.3'
 
 	//Patchouli
-	modImplementation("vazkii.patchouli:Patchouli:${project.patchouli_version}")
+	//modImplementation("vazkii.patchouli:Patchouli:${project.patchouli_version}")
 
 	//REI
-	modLocalRuntime "dev.architectury:architectury-fabric:6.2.46"
+	//modLocalRuntime "dev.architectury:architectury-fabric:6.2.46"
 	modImplementation("me.shedaniel:RoughlyEnoughItems-api-fabric:${project.rei_version}")
 	//modRuntimeOnly("me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}")
 
 	//EMI
-	modImplementation "dev.emi:emi:${project.emi_version}"
+	//modImplementation "dev.emi:emi:${project.emi_version}"
 
 	//Reach
-	modImplementation include ("com.jamieswhiteshirt:reach-entity-attributes:${project.reach_entity_attributes_version}"){
-		exclude group: "net.fabricmc"
-		exclude group: "net.fabricmc.fabric-api"
-	}
-
-	//Revelationary
-	modImplementation "curse.maven:revelationary-656526:${project.revelationary_version}"
+	//modImplementation include ("com.jamieswhiteshirt:reach-entity-attributes:${project.reach_entity_attributes_version}"){
+	//	exclude group: "net.fabricmc"
+	//	exclude group: "net.fabricmc.fabric-api"
+	//}
 }
 
 processResources {

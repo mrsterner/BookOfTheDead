@@ -11,6 +11,7 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.Monster;
+import net.minecraft.entity.mob.SlimeEntity;
 import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -48,7 +49,7 @@ public class BloodSlimeEntity extends MobEntity implements Monster {
 	}
 
 	public static DefaultAttributeContainer.Builder createMobAttributes() {
-		return MobEntity.createLivingAttributes()
+		return MobEntity.createAttributes()
 				.add(EntityAttributes.GENERIC_FOLLOW_RANGE, 16.0)
 				.add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK)
 				.add(EntityAttributes.GENERIC_MAX_HEALTH, 20)
@@ -117,7 +118,7 @@ public class BloodSlimeEntity extends MobEntity implements Monster {
 	}
 
 	protected boolean canAttack() {
-		return this.canMoveVoluntarily();
+		return this.isServer();
 	}
 
 
@@ -126,7 +127,7 @@ public class BloodSlimeEntity extends MobEntity implements Monster {
 			int i = 2;
 			if (this.squaredDistanceTo(target) < 0.6 * (double)i * 0.6 * (double)i
 					&& this.canSee(target)
-					&& target.damage(DamageSource.mob(this), this.getDamageAmount())) {
+					&& target.damage(this.getDamageSources().mobAttack(this), this.getDamageAmount())) {
 				this.playSound(SoundEvents.ENTITY_SLIME_ATTACK, 1.0F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
 				this.applyDamageEffects(this, target);
 			}

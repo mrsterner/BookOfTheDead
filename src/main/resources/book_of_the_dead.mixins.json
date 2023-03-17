@@ -11,8 +11,6 @@
   ],
   "client": [
     "client.BufferBuilderStorageMixin",
-    "client.ContinuousFallingParticleMixin",
-    "client.DrippingParticleMixin",
     "client.EntityRenderDispatcherMixin",
     "client.ItemRendererMixin",
     "client.LivingEntityRendererMixin",

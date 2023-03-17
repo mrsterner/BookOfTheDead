@@ -16,7 +16,7 @@ public class MorphineStatusEffect extends StatusEffect {
 	@Override
 	public void onRemoved(LivingEntity entity, AttributeContainer attributes, int amplifier) {
 		LivingEntityDataComponent component = BotDComponents.LIVING_COMPONENT.get(entity);
-		entity.damage(DamageSource.GENERIC, component.getMorphine$accumulatedDamage());
+		entity.damage(entity.getDamageSources().generic(), component.getMorphine$accumulatedDamage());
 		component.setMorphine$accumulatedDamage(0.0F);
 
 		super.onRemoved(entity, attributes, amplifier);

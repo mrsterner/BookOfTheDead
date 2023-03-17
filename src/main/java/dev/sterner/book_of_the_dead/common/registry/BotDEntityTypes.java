@@ -56,9 +56,9 @@ public interface BotDEntityTypes {
 	}
 
 	static void init() {
-		DefaultAttributeRegistry.DEFAULT_ATTRIBUTE_REGISTRY.put(OLD_MAN_ENTITY, OldManEntity.createMobAttributes().build());
+		DefaultAttributeRegistry.DEFAULT_ATTRIBUTE_REGISTRY.put(OLD_MAN_ENTITY, OldManEntity.createAttributes().build());
 		DefaultAttributeRegistry.DEFAULT_ATTRIBUTE_REGISTRY.put(BLOOD_SLIME_ENTITY, BloodSlimeEntity.createMobAttributes().build());
-		DefaultAttributeRegistry.DEFAULT_ATTRIBUTE_REGISTRY.put(PLAYER_CORPSE_ENTITY, PlayerCorpseEntity.createMobAttributes().build());
+		DefaultAttributeRegistry.DEFAULT_ATTRIBUTE_REGISTRY.put(PLAYER_CORPSE_ENTITY, PlayerCorpseEntity.createAttributes().build());
 
 		ENTITY_TYPES.keySet().forEach(entityType -> Registry.register(Registries.ENTITY_TYPE, ENTITY_TYPES.get(entityType), entityType));
 	}

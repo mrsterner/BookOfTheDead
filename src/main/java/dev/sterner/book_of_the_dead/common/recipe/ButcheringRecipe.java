@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.mojang.datafixers.util.Pair;
+import dev.sterner.book_of_the_dead.api.interfaces.IRecipe;
 import dev.sterner.book_of_the_dead.common.registry.BotDRecipeTypes;
 import dev.sterner.book_of_the_dead.common.util.RecipeUtils;
 import net.minecraft.entity.EntityType;
@@ -13,6 +14,7 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
+import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
@@ -21,7 +23,7 @@ import net.minecraft.world.World;
 import org.quiltmc.qsl.recipe.api.serializer.QuiltRecipeSerializer;
 
 
-public class ButcheringRecipe implements Recipe<Inventory> {
+public class ButcheringRecipe implements IRecipe {
 	private final Identifier identifier;
 	public final EntityType<?> entityType;
 	private final DefaultedList<Pair<ItemStack, Float>> outputs;
@@ -37,21 +39,6 @@ public class ButcheringRecipe implements Recipe<Inventory> {
 	@Override
 	public boolean matches(Inventory inventory, World world) {
 		return false;
-	}
-
-	@Override
-	public ItemStack craft(Inventory inventory) {
-		return ItemStack.EMPTY;
-	}
-
-	@Override
-	public boolean fits(int width, int height) {
-		return false;
-	}
-
-	@Override
-	public ItemStack getOutput() {
-		return ItemStack.EMPTY;
 	}
 
 	public DefaultedList<Pair<ItemStack, Float>> getOutputs() {

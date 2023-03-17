@@ -3,6 +3,7 @@ package dev.sterner.book_of_the_dead.common.recipe;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
+import dev.sterner.book_of_the_dead.api.interfaces.IRecipe;
 import dev.sterner.book_of_the_dead.common.registry.BotDRecipeTypes;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
@@ -22,7 +23,7 @@ import org.quiltmc.qsl.recipe.api.serializer.QuiltRecipeSerializer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RetortRecipe implements Recipe<Inventory> {
+public class RetortRecipe implements IRecipe {
 	private final Identifier id;
 	public final int color;
 	public final DefaultedList<Ingredient> ingredients = DefaultedList.ofSize(4, Ingredient.EMPTY);
@@ -43,18 +44,8 @@ public class RetortRecipe implements Recipe<Inventory> {
 	}
 
 	@Override
-	public ItemStack craft(Inventory inventory) {
-		return ItemStack.EMPTY;
-	}
-
-	@Override
 	public boolean fits(int width, int height) {
 		return true;
-	}
-
-	@Override
-	public ItemStack getOutput() {
-		return output;
 	}
 
 	@Override

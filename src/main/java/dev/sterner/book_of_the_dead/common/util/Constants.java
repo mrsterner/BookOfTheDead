@@ -4,6 +4,8 @@ import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.damage.DamageType;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
@@ -11,6 +13,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
@@ -21,8 +24,6 @@ public class Constants {
 	public static final String MODID = "book_of_the_dead";
 
 	public static final ItemGroup BOTD_GROUP = FabricItemGroup.builder(Constants.id("items")).icon(() -> new ItemStack(BotDObjects.BUTCHER_KNIFE)).build();
-
-
 
 	public static Identifier id(String string){
 		return new Identifier(MODID, string);
@@ -40,6 +41,7 @@ public class Constants {
 	public interface Tags {
 		TagKey<EntityType<?>> BUTCHERABLE = TagKey.of(RegistryKeys.ENTITY_TYPE, id("butcherable"));
         TagKey<Block> EMITS_HEAT = TagKey.of(RegistryKeys.BLOCK, id("emits_heat"));
+		TagKey<DamageType> TRUE = TagKey.of(RegistryKeys.DAMAGE_TYPE, id("true"));
     }
 
 	public interface Nbt {

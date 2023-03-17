@@ -69,11 +69,10 @@ public interface BotDObjects {
 	Block VILLAGER_WALL_HEAD = register("villager_wall_head", new BotDWallSkullBlock(BotDSkullBlock.Type.VILLAGER, QuiltBlockSettings.copyOf(Blocks.ZOMBIE_HEAD)), settings(), false);
 	Block VILLAGER_HEAD = registerSkull("villager_head", new BotDSkullBlock(BotDSkullBlock.Type.VILLAGER, QuiltBlockSettings.copyOf(Blocks.ZOMBIE_HEAD)), VILLAGER_WALL_HEAD, settings(), true);
 
+	Block BRAIN = register("brain", new BrainBlock(QuiltBlockSettings.of(Material.SOLID_ORGANIC)), settings(), true);
+
 	Block RETORT_FLASK_BLOCK = register("retort_flask_block", new RetortFlaskBlock(QuiltBlockSettings.of(Material.GLASS)), settings(), false);
 	Item RETORT_FLASK = register("retort_flask", new BlockItem(RETORT_FLASK_BLOCK, settings()));
-	//public static final Item QUICKSILVER = register("quicksilver", new Item(settings()));
-	//public static final Item SOUL_GEM = register("soul_gem", new Item(settings()));
-	//public static final Item CINNABAR = register("cinnabar", new Item(settings()));
 	Item EMERALD_TABLET = register("emerald_tablet", new Item(settings()));
 
 

@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import dev.sterner.book_of_the_dead.api.CommandType;
 import dev.sterner.book_of_the_dead.api.NecrotableRitual;
+import dev.sterner.book_of_the_dead.api.interfaces.IRecipe;
 import dev.sterner.book_of_the_dead.common.registry.BotDRecipeTypes;
 import dev.sterner.book_of_the_dead.common.registry.BotDRegistries;
 import dev.sterner.book_of_the_dead.common.util.RecipeUtils;
@@ -14,6 +15,7 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.*;
+import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
@@ -29,7 +31,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class RitualRecipe implements Recipe<Inventory> {
+public class RitualRecipe implements IRecipe {
 	public final Identifier id;
 	public final NecrotableRitual ritual;
 
@@ -110,18 +112,8 @@ public class RitualRecipe implements Recipe<Inventory> {
 	}
 
 	@Override
-	public ItemStack craft(Inventory inventory) {
-		return ItemStack.EMPTY;
-	}
-
-	@Override
 	public boolean fits(int width, int height) {
 		return true;
-	}
-
-	@Override
-	public ItemStack getOutput() {
-		return ItemStack.EMPTY;
 	}
 
 	public static class Serializer implements QuiltRecipeSerializer<RitualRecipe> {

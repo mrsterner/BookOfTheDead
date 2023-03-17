@@ -13,10 +13,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import org.quiltmc.loader.api.minecraft.ClientOnly;
-import vazkii.patchouli.api.PatchouliAPI;
-import vazkii.patchouli.common.base.PatchouliSounds;
-import vazkii.patchouli.common.book.Book;
-import vazkii.patchouli.common.book.BookRegistry;
 
 import java.util.List;
 
@@ -29,26 +25,26 @@ public class BookOfTheDeadItem extends Item {
 
 	@Override
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
-		Book book = getBook();
+		//Book book = getBook();
 		if (player instanceof ServerPlayerEntity && !player.isSneaking()) {
-			PatchouliAPI.get().openBookGUI((ServerPlayerEntity) player, book.id);
-			SoundEvent sfx = PatchouliSounds.getSound(book.openSound, PatchouliSounds.BOOK_OPEN);
-			player.playSound(sfx, 1.0F, (float) (0.7D + Math.random() * 0.4D));
+			//PatchouliAPI.get().openBookGUI((ServerPlayerEntity) player, book.id);
+			//SoundEvent sfx = PatchouliSounds.getSound(book.openSound, PatchouliSounds.BOOK_OPEN);
+			//player.playSound(sfx, 1.0F, (float) (0.7D + Math.random() * 0.4D));
 		}
 		return TypedActionResult.success(player.getStackInHand(hand));
 	}
 
-	public Book getBook() {
-		return BookRegistry.INSTANCE.books.get(id);
-	}
+	//public Book getBook() {
+	//	return BookRegistry.INSTANCE.books.get(id);
+	//}
 
 	@ClientOnly
 	public void appendTooltip(ItemStack stack, World worldIn, List<Text> tooltip, TooltipContext flagIn) {
 		super.appendTooltip(stack, worldIn, tooltip, flagIn);
-		Book book = getBook();
-		if (book != null && book.getContents() != null) {
-			tooltip.add(book.getSubtitle().formatted(Formatting.GRAY));
-		}
+		//Book book = getBook();
+		//if (book != null && book.getContents() != null) {
+		//	tooltip.add(book.getSubtitle().formatted(Formatting.GRAY));
+		//}
 
 	}
 }

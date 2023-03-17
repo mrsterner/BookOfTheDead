@@ -13,6 +13,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.mob.EvokerFangsEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ItemStackParticleEffect;
@@ -30,6 +31,7 @@ import net.minecraft.util.Pair;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
@@ -40,7 +42,7 @@ import java.util.UUID;
 
 public class NecrotableRitual implements IRitual {
 	private final Identifier id;
-	public BlockPos ritualCenter = null;
+	public Vec3d ritualCenter = null;
 	public RitualRecipe recipe;
 	public int ticker = 0;
 	public UUID user = null;
@@ -58,7 +60,7 @@ public class NecrotableRitual implements IRitual {
 	@Override
 	public void onStart(World world, BlockPos blockPos, RitualBlockEntity blockEntity){
 		if(world.getBlockState(blockPos).isOf(BotDObjects.NECRO_TABLE)){
-			ritualCenter = blockPos.add(0.5,0.5,0.5);
+			ritualCenter = new Vec3d(blockPos.getX(), blockPos.getY(), blockPos.getZ()).add(0.5,0.5,0.5);
 			this.runCommand(world, blockEntity, blockPos, "start");
 		}
 	}
@@ -122,7 +124,7 @@ public class NecrotableRitual implements IRitual {
 			for(EntityType<?> entityType : blockEntity.ritualRecipe.summons){
 				var entity = entityType.create(world);
 				if(entity instanceof LivingEntity livingEntity){
-					Vec3d worldPos = new Vec3d(blockPos.getX(), blockPos.getY(), blockPos.getZ());
+					Vec3i worldPos = new Vec3i(blockPos.getX(), blockPos.getY(), blockPos.getZ());
 					livingEntity.refreshPositionAndAngles(new BlockPos(worldPos), world.random.nextFloat(), world.random.nextFloat());
 					world.spawnEntity(livingEntity);
 				}
@@ -220,7 +222,7 @@ public class NecrotableRitual implements IRitual {
 			for (EntityType<?> entityType : ritualSacrifices) {
 				LivingEntity foundEntity = getClosestEntity(livingEntityList, entityType, blockPos);
 				if (foundEntity != null) {
-					foundEntity.damage(DamageSource.MAGIC, Integer.MAX_VALUE);
+					foundEntity.damage(foundEntity.getDamageSources().magic(), Integer.MAX_VALUE);
 				}
 			}
 			return true;

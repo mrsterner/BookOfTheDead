@@ -1,5 +1,5 @@
 package dev.sterner.book_of_the_dead.client.integration.emi;
-
+/*
 import dev.emi.emi.api.EmiPlugin;
 import dev.emi.emi.api.EmiRegistry;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
@@ -26,3 +26,5 @@ public class BotDEMIPlugin implements EmiPlugin {
 		}
 	}
 }
+
+ */

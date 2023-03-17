@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import dev.sterner.book_of_the_dead.api.block.AbstractBotDSkullBlock;
 import net.minecraft.block.*;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.DirectionProperty;
@@ -75,5 +76,10 @@ public class BotDWallSkullBlock extends AbstractBotDSkullBlock {
 	@Override
 	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
 		builder.add(FACING);
+	}
+
+	@Override
+	public EquipmentSlot getPreferredSlot() {
+		return EquipmentSlot.HEAD;
 	}
 }

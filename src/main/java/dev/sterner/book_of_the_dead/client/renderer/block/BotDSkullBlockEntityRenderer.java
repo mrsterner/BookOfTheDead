@@ -18,6 +18,7 @@ import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.SkullBlockEntityRenderer;
 import net.minecraft.client.render.entity.model.EntityModelLoader;
 import net.minecraft.client.render.model.json.ModelTransformation;
+import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
@@ -45,7 +46,7 @@ public class BotDSkullBlockEntityRenderer implements BlockEntityRenderer<BotDSku
 	}
 
 	@Override
-	public void render(ItemStack stack, ModelTransformation.Mode mode, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
+	public void render(ItemStack stack, ModelTransformationMode mode, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
 		BotDSkullBlockEntityModel skullBlockEntityModel = this.MODELS.get(BotDSkullBlock.Type.VILLAGER);
 		RenderLayer renderLayer = getRenderLayer(BotDSkullBlock.Type.VILLAGER);
 		renderSkull(null, 0, matrices, vertexConsumers, light, skullBlockEntityModel, renderLayer);

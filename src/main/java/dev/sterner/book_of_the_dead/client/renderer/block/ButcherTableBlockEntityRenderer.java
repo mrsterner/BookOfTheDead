@@ -71,23 +71,24 @@ public class ButcherTableBlockEntityRenderer implements BlockEntityRenderer<Butc
 
 	@Override
 	public void render(ButcherTableBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
-		matrices.push();
-		renderEntityOnTable(entity, tickDelta, matrices, vertexConsumers, light, overlay);
-		matrices.pop();
-
-		matrices.push();
-		switch (entity.getCachedState().get(FACING)){
-			case NORTH -> matrices.translate(0.35,0.05,0.6);
-			case SOUTH -> matrices.translate(-0.35,0.05,-0.6);
-			case WEST -> matrices.translate(0.6,0.05,-0.35);
-			case EAST -> matrices.translate(-0.6,0.05,0.35);
-		}
-		matrices.translate(0, HEIGHT[entity.bloodLevel], 0);
-		renderBloodLevel(entity, matrices, vertexConsumers, light, overlay);
-		matrices.pop();
-
 		World world = entity.getWorld();
-		if(world != null){
+		if(world != null && world.getBlockState(entity.getPos()).isOf(BotDObjects.BUTCHER_TABLE)){
+			matrices.push();
+			renderEntityOnTable(entity, tickDelta, matrices, vertexConsumers, light, overlay);
+			matrices.pop();
+
+			matrices.push();
+			switch (entity.getCachedState().get(FACING)){
+				case NORTH -> matrices.translate(0.35,0.05,0.6);
+				case SOUTH -> matrices.translate(-0.35,0.05,-0.6);
+				case WEST -> matrices.translate(0.6,0.05,-0.35);
+				case EAST -> matrices.translate(-0.6,0.05,0.35);
+			}
+			matrices.translate(0, HEIGHT[entity.bloodLevel], 0);
+			renderBloodLevel(entity, matrices, vertexConsumers, light, overlay);
+			matrices.pop();
+
+
 			BlockState blockState = entity.getCachedState();
 			renderBubbleEffect(world, entity, entity.getPos());
 			if(blockState.get(HorizontalDoubleBlock.HHALF) == HorizontalDoubleBlockHalf.RIGHT){

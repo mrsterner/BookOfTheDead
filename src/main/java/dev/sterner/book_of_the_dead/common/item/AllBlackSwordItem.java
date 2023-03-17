@@ -2,7 +2,6 @@ package dev.sterner.book_of_the_dead.common.item;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-import com.jamieswhiteshirt.reachentityattributes.ReachEntityAttributes;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
@@ -19,6 +18,7 @@ public class AllBlackSwordItem extends SwordItem {
 	public AllBlackSwordItem(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, Settings settings, boolean allBlack) {
 		super(toolMaterial, attackDamage, attackSpeed, settings);
 		ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.builder();
+		/*TODO
 		if(allBlack){
 			builder.put(ReachEntityAttributes.REACH, new EntityAttributeModifier("Attack range", 1.1D, EntityAttributeModifier.Operation.ADDITION));
 			builder.put(ReachEntityAttributes.ATTACK_RANGE, new EntityAttributeModifier("Attack range", 1.1D, EntityAttributeModifier.Operation.ADDITION));
@@ -26,6 +26,8 @@ public class AllBlackSwordItem extends SwordItem {
 			builder.put(ReachEntityAttributes.REACH, new EntityAttributeModifier("Attack range", 0.5D, EntityAttributeModifier.Operation.ADDITION));
 			builder.put(ReachEntityAttributes.ATTACK_RANGE, new EntityAttributeModifier("Attack range", 0.5D, EntityAttributeModifier.Operation.ADDITION));
 		}
+
+		 */
 
 		this.attributeModifiers = builder.build();
 	}

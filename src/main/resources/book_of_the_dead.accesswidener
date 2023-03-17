@@ -21,3 +21,6 @@ accessible field net/minecraft/client/render/entity/model/QuadrupedEntityModel l
 
 accessible field net/minecraft/structure/pool/StructurePool elements Lit/unimi/dsi/fastutil/objects/ObjectArrayList;
 
+accessible class net/minecraft/client/particle/BlockLeakParticle$Landing
+accessible class net/minecraft/client/particle/BlockLeakParticle$Falling
+accessible class net/minecraft/client/particle/BlockLeakParticle$Dripping

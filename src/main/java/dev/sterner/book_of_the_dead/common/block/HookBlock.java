@@ -75,7 +75,7 @@ public class HookBlock extends HorizontalFacingBlock implements BlockEntityProvi
 	}
 
 	private void spawnFluidParticle(World world, double minX, double maxX, double minZ, double maxZ, double y) {
-		world.addParticle(BotDParticleTypes.DRIPPING_BLOOD, MathHelper.lerp(world.random.nextDouble(), minX, maxX), y, MathHelper.lerp(world.random.nextDouble(), minZ, maxZ), 0.0D, 0.0D, 0.0D);
+		world.addParticle(BotDParticleTypes.HANGING_BLOOD, MathHelper.lerp(world.random.nextDouble(), minX, maxX), y, MathHelper.lerp(world.random.nextDouble(), minZ, maxZ), 0.0D, 0.0D, 0.0D);
 	}
 
 	@Nullable
