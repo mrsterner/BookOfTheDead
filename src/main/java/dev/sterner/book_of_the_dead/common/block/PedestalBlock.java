@@ -1,6 +1,8 @@
 package dev.sterner.book_of_the_dead.common.block;
 
+import dev.sterner.book_of_the_dead.common.block.entity.NecroTableBlockEntity;
 import dev.sterner.book_of_the_dead.common.block.entity.PedestalBlockEntity;
+import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
@@ -9,6 +11,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
@@ -87,6 +90,14 @@ public class PedestalBlock extends Block implements BlockEntityProvider {
 	@Override
 	public void randomDisplayTick(BlockState state, World world, BlockPos pos, net.minecraft.util.random.RandomGenerator random) {
 
+	}
+
+	@Override
+	public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
+		if(world.getBlockEntity(pos) instanceof PedestalBlockEntity be){
+			ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), be.getStack());
+		}
+		super.onBreak(world, pos, state, player);
 	}
 
 	@Nullable
