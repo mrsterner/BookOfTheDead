@@ -43,19 +43,13 @@ import java.util.Optional;
 
 import static dev.sterner.book_of_the_dead.api.block.HorizontalDoubleBlock.FACING;
 
-public class BaseButcherBlockEntity extends BaseBlockEntity implements IHauler, IBlockEntityInventory {
+public class BaseButcherBlockEntity extends HaulerBlockEntity implements IBlockEntityInventory {
 	public NbtCompound storedCorpseNbt = new NbtCompound();
 	public LivingEntity storedLiving = null;
 	public DefaultedList<ItemStack> outputs = DefaultedList.ofSize(8, ItemStack.EMPTY);
 	public DefaultedList<Float> chances  = DefaultedList.ofSize(8, 1F);
 	public ButcheringRecipe butcheringRecipe = null;
 	public boolean resetRecipe = true;
-
-	public boolean headVisible = true;
-	public boolean rArmVisible = true;
-	public boolean lArmVisible = true;
-	public boolean rLegVisible = true;
-	public boolean lLegVisible = true;
 
 	public BaseButcherBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
@@ -106,7 +100,7 @@ public class BaseButcherBlockEntity extends BaseBlockEntity implements IHauler, 
 					List<Float> nonEmptyChance = this.chances.stream().filter(chance -> chance != 0).toList();
 					if(nonEmptyOutput.size() > 0){
 						double sanitaryModifier = 1.5 - (getFilthLevel() + 1) / 6d;
-						double butcherLevel = BotDComponents.PLAYER_COMPONENT.maybeGet(player).map(PlayerDataComponent::getButcheringModifier).orElse(1D);
+						float butcherLevel = BotDComponents.PLAYER_COMPONENT.maybeGet(player).map(PlayerDataComponent::getButcheringModifier).orElse(0F);
 						double magicNumber = probability + 0.5D * butcherLevel * sanitaryModifier;//TODO implement index lookup instead of weird math: float[] CHANCE = {0, 0.15f, 0.25f, 0.35f};
 
 						nonEmptyOutput.get(0).setCount(world.getRandom().nextDouble() < magicNumber * nonEmptyChance.get(0) ? 1 : 0);
@@ -228,12 +222,6 @@ public class BaseButcherBlockEntity extends BaseBlockEntity implements IHauler, 
 			nbt.put(Constants.Nbt.CORPSE_ENTITY, getCorpseEntity());
 		}
 		nbt.putBoolean("Refresh", this.resetRecipe);
-
-		nbt.putBoolean(Constants.Nbt.HEAD_VISIBLE, getHeadVisible());
-		nbt.putBoolean(Constants.Nbt.RIGHT_ARM_VISIBLE, getRLegVisible());
-		nbt.putBoolean(Constants.Nbt.LEFT_ARM_VISIBLE, getLArmVisible());
-		nbt.putBoolean(Constants.Nbt.RIGHT_LEG_VISIBLE, getRLegVisible());
-		nbt.putBoolean(Constants.Nbt.LEFT_LEG_VISIBLE, getLLegVisible());
 	}
 
 	@Override
@@ -243,12 +231,6 @@ public class BaseButcherBlockEntity extends BaseBlockEntity implements IHauler, 
 		this.readChanceNbt(nbt, chances);
 		setCorpse(nbt.getCompound(Constants.Nbt.CORPSE_ENTITY));
 		this.resetRecipe = nbt.getBoolean("Refresh");
-
-		setHeadVisible(nbt.getBoolean(Constants.Nbt.HEAD_VISIBLE));
-		setRArmVisible(nbt.getBoolean(Constants.Nbt.RIGHT_ARM_VISIBLE));
-		setLArmVisible(nbt.getBoolean(Constants.Nbt.LEFT_ARM_VISIBLE));
-		setRLegVisible(nbt.getBoolean(Constants.Nbt.RIGHT_LEG_VISIBLE));
-		setLLegVisible(nbt.getBoolean(Constants.Nbt.LEFT_LEG_VISIBLE));
 	}
 
 	public void writeChancesNbt(NbtCompound nbt, DefaultedList<Float> floats) {
@@ -308,55 +290,5 @@ public class BaseButcherBlockEntity extends BaseBlockEntity implements IHauler, 
 	public void clearCorpseData() {
 		this.storedCorpseNbt = new NbtCompound();
 		this.storedLiving = null;
-	}
-
-	@Override
-	public boolean getHeadVisible() {
-		return headVisible;
-	}
-
-	@Override
-	public boolean getRArmVisible() {
-		return rArmVisible;
-	}
-
-	@Override
-	public boolean getLArmVisible() {
-		return lArmVisible;
-	}
-
-	@Override
-	public boolean getRLegVisible() {
-		return rLegVisible;
-	}
-
-	@Override
-	public boolean getLLegVisible() {
-		return lLegVisible;
-	}
-
-	@Override
-	public void setHeadVisible(boolean visible) {
-		this.headVisible = visible;
-	}
-
-	@Override
-	public void setRArmVisible(boolean visible) {
-		this.rArmVisible = visible;
-	}
-
-	@Override
-	public void setLArmVisible(boolean visible) {
-		this.lArmVisible = visible;
-	}
-
-	@Override
-	public void setRLegVisible(boolean visible) {
-		this.rLegVisible = visible;
-	}
-
-	@Override
-	public void setLLegVisible(boolean visible) {
-		this.lLegVisible = visible;
 	}
 }

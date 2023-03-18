@@ -83,5 +83,20 @@ public class Constants {
 		String FILTHY = "Filthy";
 		String CLEANING = "Cleaning";
 		String LATTER = "Latter";
+        String NECROMANCER_LEVEL = "NecromancerLevel";
+		String HEALTH_DEBUFF = "HealthDebuff";
+		String SATURATION_DEBUFF = "SaturationDebuff";
+		String EXPERIENCE_DEBUFF = "ExperienceDebuff";
+		String AGGRESSION_DEBUFF = "AggressionDebuff";
+		String REPUTATION_DEBUFF = "ReputationDebuff";
+		String MOB_SPAWN_RATE_DEBUFF = "MobSpawnRateDebuff";
+		String INSANITY_DEBUFF = "InsanityDebuff";
+		String UNDEAD_AGGRESSION_BUFF = "UndeadAggressionBuff";
+		String RESISTANCE_BUFF = "ResistanceBuff";
+		String NECRO_AURA_BUFF = "NecroAuraBuff";
+		String EXTRA_LIVES = "ExtraLives";
+		String DISPATCHED_MINIONS = "DispatchedMinions";
+		String PHANTOM_IMMUNITY = "PhantomImmunity";
+		String DEATHS_TOUCH_BUFF = "DeathsTouch";
 	}
 }
