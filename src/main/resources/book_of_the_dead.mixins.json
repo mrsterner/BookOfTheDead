@@ -5,8 +5,11 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "EnchantmentTargetMixin",
+    "ExperienceOrbEntityMixin",
+    "HungerManagerMixin",
     "LivingEntityMixin",
     "MobEntityMixin",
+    "PhantomAttackTargetMixin",
     "PlayerEntityMixin"
   ],
   "client": [

@@ -3,6 +3,7 @@ package dev.sterner.book_of_the_dead.mixin;
 import dev.sterner.book_of_the_dead.api.interfaces.IHauler;
 import dev.sterner.book_of_the_dead.common.component.BotDComponents;
 import dev.sterner.book_of_the_dead.common.component.LivingEntityDataComponent;
+import dev.sterner.book_of_the_dead.common.component.PlayerDataComponent;
 import dev.sterner.book_of_the_dead.common.registry.BotDStatusEffects;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.entity.EntityType;
@@ -12,13 +13,18 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(PlayerEntity.class)
 public abstract class PlayerEntityMixin extends LivingEntity implements IHauler {
+	@Shadow
+	public int experienceLevel;
 	@Unique
 	public LivingEntity storedCorpseEntity;
 

@@ -13,8 +13,8 @@ public class PlayerAbilityData {
 
 	//Debuffs
 	public static final float[] HEALTH_DECREASES = {0, 2.0f, 4.0f, 6.0f};
-	public static final float[] SATURATION_DECREASES = {0, 0.95f, 0.75f, 0.5f};
-	public static final float[] EXPERIENCE_DECREASES = {0, 0.95f, 0.85f, 0.75f};
+	public static final float[] SATURATION_DECREASES = {1, 0.95f, 0.75f, 0.5f};
+	public static final float[] EXPERIENCE_DECREASES = {1, 0.95f, 0.85f, 0.75f};
 
 	public static final float[] AGGRESSION = {1, 1.15f, 1.25f, 1.5f};
 	public static final float[] REPUTATION = {1, 0.85f, 0.75f, 0.5f};
