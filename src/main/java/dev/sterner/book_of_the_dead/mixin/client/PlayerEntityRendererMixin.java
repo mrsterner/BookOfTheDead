@@ -1,5 +1,6 @@
 package dev.sterner.book_of_the_dead.mixin.client;
 
+import dev.sterner.book_of_the_dead.client.renderer.feature.ExtraHeartsFeatureRenderer;
 import dev.sterner.book_of_the_dead.client.renderer.feature.ShoulderCropseFeatureRenderer;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.entity.EntityRendererFactory;
@@ -21,5 +22,6 @@ public abstract class PlayerEntityRendererMixin extends LivingEntityRenderer<Abs
 	@Inject(method = "<init>", at = @At("TAIL"))
 	private void book_of_the_dead$playerEntityRenderer(EntityRendererFactory.Context ctx, boolean slim, CallbackInfo callbackInfo) {
 		addFeature(new ShoulderCropseFeatureRenderer(this, ctx.getModelLoader(), ctx.getRenderDispatcher()));
+		addFeature(new ExtraHeartsFeatureRenderer(this, ctx.getModelLoader()));
 	}
 }

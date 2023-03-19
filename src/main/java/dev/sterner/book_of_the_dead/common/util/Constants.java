@@ -98,5 +98,7 @@ public class Constants {
 		String DISPATCHED_MINIONS = "DispatchedMinions";
 		String PHANTOM_IMMUNITY = "PhantomImmunity";
 		String DEATHS_TOUCH_BUFF = "DeathsTouch";
+        String VARIANT = "Variant";
+		String OWNER = "Owner";
 	}
 }

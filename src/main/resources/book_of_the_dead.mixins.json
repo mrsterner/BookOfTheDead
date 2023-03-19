@@ -13,8 +13,7 @@
     "PlayerEntityMixin",
     "TargetGoalMixin",
     "TrackTargetGoalMixin",
-    "VillagerHostilesSensorMixin",
-    "VillagerGossipsMixin"
+    "VillagerHostilesSensorMixin"
   ],
   "client": [
     "client.BufferBuilderStorageMixin",

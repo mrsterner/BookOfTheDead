@@ -1,6 +1,7 @@
 package dev.sterner.book_of_the_dead.common.registry;
 
 import dev.sterner.book_of_the_dead.common.entity.BloodSlimeEntity;
+import dev.sterner.book_of_the_dead.common.entity.KakuzuEntity;
 import dev.sterner.book_of_the_dead.common.entity.OldManEntity;
 import dev.sterner.book_of_the_dead.common.entity.PlayerCorpseEntity;
 import dev.sterner.book_of_the_dead.common.util.Constants;
@@ -49,6 +50,15 @@ public interface BotDEntityTypes {
 							.setDimensions(EntityDimensions.fixed(0.6F, 1.85F))
 							.build());
 
+	EntityType<KakuzuEntity> KAKUZU_ENTITY =
+			register(
+					"kakuzu",
+					QuiltEntityTypeBuilder.<KakuzuEntity>create()
+							.spawnGroup(SpawnGroup.MISC)
+							.entityFactory(KakuzuEntity::new)
+							.setDimensions(EntityDimensions.fixed(0.25F, 0.5F))
+							.build());
+
 
 	static <T extends Entity> EntityType<T> register(String name, EntityType<T> type) {
 		ENTITY_TYPES.put(type, Constants.id(name));
@@ -59,6 +69,7 @@ public interface BotDEntityTypes {
 		DefaultAttributeRegistry.DEFAULT_ATTRIBUTE_REGISTRY.put(OLD_MAN_ENTITY, OldManEntity.createAttributes().build());
 		DefaultAttributeRegistry.DEFAULT_ATTRIBUTE_REGISTRY.put(BLOOD_SLIME_ENTITY, BloodSlimeEntity.createMobAttributes().build());
 		DefaultAttributeRegistry.DEFAULT_ATTRIBUTE_REGISTRY.put(PLAYER_CORPSE_ENTITY, PlayerCorpseEntity.createAttributes().build());
+		DefaultAttributeRegistry.DEFAULT_ATTRIBUTE_REGISTRY.put(KAKUZU_ENTITY, KakuzuEntity.createAttributes().build());
 
 		ENTITY_TYPES.keySet().forEach(entityType -> Registry.register(Registries.ENTITY_TYPE, ENTITY_TYPES.get(entityType), entityType));
 	}

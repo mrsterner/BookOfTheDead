@@ -172,9 +172,9 @@ public abstract class LivingEntityMixin extends Entity {
 		}
 	}
 
-	@ModifyVariable(method = "addStatusEffect*", at = @At("HEAD"), argsOnly = true)
-	private StatusEffectInstance book_of_the_dead$convertHarmfulEffect(StatusEffectInstance effect, Entity source){
-		LivingEntity livingEntity = LivingEntity.class.cast(this);
+	@ModifyVariable(method = "addStatusEffect(Lnet/minecraft/entity/effect/StatusEffectInstance;Lnet/minecraft/entity/Entity;)Z", at = @At("HEAD"), argsOnly = true)
+	private StatusEffectInstance book_of_the_dead$convertHarmfulEffect(StatusEffectInstance effect){
+		LivingEntity livingEntity = (LivingEntity) (Object) this;
 		if(livingEntity instanceof PlayerEntity player && effect.getEffectType().getType().equals(StatusEffectType.HARMFUL)){
 			PlayerDataComponent component = BotDComponents.PLAYER_COMPONENT.get(player);
 			if(component.getStatusEffectConversionBuffModifier() > PlayerAbilityData.STATUS_EFFECT_CONVERSION[0]){

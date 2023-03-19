@@ -328,7 +328,7 @@ public class PlayerDataComponent implements AutoSyncedComponent {
 	}
 
 
-	private int getButcheringLevel(){
+	public int getButcheringLevel(){
 		return butcheringLevel;
 	}
 
@@ -337,7 +337,7 @@ public class PlayerDataComponent implements AutoSyncedComponent {
 		this.syncAbility();
 	}
 
-	private int getNecromancerLevel() {
+	public int getNecromancerLevel() {
 		return necromancerLevel;
 	}
 
@@ -454,7 +454,7 @@ public class PlayerDataComponent implements AutoSyncedComponent {
 		this.syncAbility();
 	}
 
-	private int getExtraLives() {
+	public int getExtraLives() {
 		return extraLives;
 	}
 
@@ -463,7 +463,7 @@ public class PlayerDataComponent implements AutoSyncedComponent {
 		this.syncAbility();
 	}
 
-	private int getDispatchedExtraLivesMinions() {
+	public int getDispatchedExtraLivesMinions() {
 		return dispatchedExtraLivesMinions;
 	}
 

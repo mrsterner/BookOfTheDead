@@ -3,6 +3,7 @@ package dev.sterner.book_of_the_dead;
 import dev.sterner.book_of_the_dead.client.model.*;
 import dev.sterner.book_of_the_dead.client.renderer.block.*;
 import dev.sterner.book_of_the_dead.client.renderer.entity.BloodSlimeEntityRenderer;
+import dev.sterner.book_of_the_dead.client.renderer.entity.KakuzuEntityRenderer;
 import dev.sterner.book_of_the_dead.client.renderer.entity.OldManEntityRenderer;
 import dev.sterner.book_of_the_dead.client.renderer.entity.PlayerCorpseEntityRenderer;
 import dev.sterner.book_of_the_dead.client.renderer.item.AllBlackSwordItemRenderer;
@@ -71,6 +72,7 @@ public class BotDClient implements ClientModInitializer {
 		EntityRendererRegistry.register(BotDEntityTypes.OLD_MAN_ENTITY, OldManEntityRenderer::new);
 		EntityRendererRegistry.register(BotDEntityTypes.BLOOD_SLIME_ENTITY, BloodSlimeEntityRenderer::new);
 		EntityRendererRegistry.register(BotDEntityTypes.PLAYER_CORPSE_ENTITY, PlayerCorpseEntityRenderer::new);
+		EntityRendererRegistry.register(BotDEntityTypes.KAKUZU_ENTITY, KakuzuEntityRenderer::new);
 
 		EntityModelLayerRegistry.registerModelLayer(BagEntityModel.LAYER_LOCATION, BagEntityModel::createBodyLayer);
 		EntityModelLayerRegistry.registerModelLayer(JarEntityModel.LAYER_LOCATION, JarEntityModel::createBodyLayer);
@@ -84,6 +86,9 @@ public class BotDClient implements ClientModInitializer {
 		EntityModelLayerRegistry.registerModelLayer(RetortFlaskBlockEntityRenderer.LAYER_LOCATION, RetortFlaskBlockEntityRenderer::createBodyLayer);
 		EntityModelLayerRegistry.registerModelLayer(BotDSkullBlockEntityModel.LAYER_LOCATION, BotDSkullBlockEntityModel::getSkullTexturedModelData);
 		EntityModelLayerRegistry.registerModelLayer(BrainBlockEntityRenderer.LAYER_LOCATION, BrainBlockEntityRenderer::getTexturedModelData);
+		EntityModelLayerRegistry.registerModelLayer(KakuzuEntityModel.LAYER_LOCATION, KakuzuEntityModel::getTexturedModelData);
+		EntityModelLayerRegistry.registerModelLayer(KakuzuLivingEntityModel.LAYER_LOCATION, KakuzuLivingEntityModel::getTexturedModelData);
+
 
 		BotDSpriteIdentifiers.INSTANCE.addIdentifier(BotDSpriteIdentifiers.BLOOD);
 
