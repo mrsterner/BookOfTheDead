@@ -125,6 +125,9 @@ dependencies {
 	//	exclude group: "net.fabricmc"
 	//	exclude group: "net.fabricmc.fabric-api"
 	//}
+
+	modImplementation include("curse.maven:smartbrainlib-661293:${project.brain_version}")
+
 }
 
 processResources {

@@ -100,5 +100,6 @@ public class Constants {
 		String DEATHS_TOUCH_BUFF = "DeathsTouch";
         String VARIANT = "Variant";
 		String OWNER = "Owner";
+		String MODE = "Mode";
 	}
 }
