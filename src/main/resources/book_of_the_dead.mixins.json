@@ -10,7 +10,11 @@
     "LivingEntityMixin",
     "MobEntityMixin",
     "PhantomAttackTargetMixin",
-    "PlayerEntityMixin"
+    "PlayerEntityMixin",
+    "TargetGoalMixin",
+    "TrackTargetGoalMixin",
+    "VillagerHostilesSensorMixin",
+    "VillagerGossipsMixin"
   ],
   "client": [
     "client.BufferBuilderStorageMixin",
