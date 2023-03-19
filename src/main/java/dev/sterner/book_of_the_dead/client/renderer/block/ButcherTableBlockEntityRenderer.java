@@ -67,7 +67,7 @@ public class ButcherTableBlockEntityRenderer implements BlockEntityRenderer<Butc
 		World world = entity.getWorld();
 		if(world != null && world.getBlockState(entity.getPos()).isOf(BotDObjects.BUTCHER_TABLE)){
 			matrices.push();
-			renderEntityOnTable(entity, tickDelta, matrices, vertexConsumers, light, overlay);
+			renderEntityOnTable(entity, tickDelta, matrices, vertexConsumers, light);
 			matrices.pop();
 
 			matrices.push();
@@ -162,7 +162,7 @@ public class ButcherTableBlockEntityRenderer implements BlockEntityRenderer<Butc
 		}
 	}
 
-	private void renderEntityOnTable(ButcherTableBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
+	private void renderEntityOnTable(ButcherTableBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
 		IHauler.of(entity).ifPresent(hauler -> {
 			NbtCompound renderedEntity = hauler.getCorpseEntity();
 			if(renderedEntity != null && !renderedEntity.isEmpty() && entity.getWorld() != null){
@@ -286,18 +286,18 @@ public class ButcherTableBlockEntityRenderer implements BlockEntityRenderer<Butc
 		ModelPartData table = modelPartData.addChild("table", ModelPartBuilder.create(), ModelTransform.pivot(-8.0F, 24.0F, 0.0F));
 
 		ModelPartData plate = table.addChild("plate", ModelPartBuilder.create().uv(0, 0).cuboid(-16.0F, -16.0F, -10.0F, 32.0F, 4.0F, 20.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, 0.0F, 0.0F));
-		ModelPartData cube_r1 = plate.addChild("cube_r1", ModelPartBuilder.create().uv(55, 83).cuboid(16.9F, -0.5F, 2.3F, 4.0F, 1.0F, 6.0F, new Dilation(0.0F)), ModelTransform.of(-6.5F, -16.0F, -5.8F, 0.0F, 0.3054F, 0.0F));
-		ModelPartData legs = table.addChild("legs", ModelPartBuilder.create().uv(10, 74).cuboid(7.0F, -12.0F, -8.0F, 4.0F, 12.0F, 4.0F, new Dilation(0.0F)).uv(10, 74).cuboid(7.0F, -12.0F, 4.0F, 4.0F, 12.0F, 4.0F, new Dilation(0.0F)).uv(10, 74).cuboid(-11.0F, -12.0F, -8.0F, 4.0F, 12.0F, 4.0F, new Dilation(0.0F)).uv(10, 74).cuboid(-11.0F, -12.0F, 4.0F, 4.0F, 12.0F, 4.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, 0.0F, 0.0F));
-		ModelPartData support = table.addChild("support", ModelPartBuilder.create().uv(10, 108).cuboid(-7.0F, -5.0F, 5.0F, 14.0F, 3.0F, 2.0F, new Dilation(0.0F)).uv(11, 105).cuboid(-7.0F, -5.0F, -7.0F, 14.0F, 3.0F, 2.0F, new Dilation(0.0F)).uv(15, 105).cuboid(8.0F, -5.0F, -4.0F, 2.0F, 3.0F, 8.0F, new Dilation(0.0F)).uv(17, 105).cuboid(-10.0F, -5.0F, -4.0F, 2.0F, 3.0F, 8.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, 0.0F, 0.0F));
+		plate.addChild("cube_r1", ModelPartBuilder.create().uv(55, 83).cuboid(16.9F, -0.5F, 2.3F, 4.0F, 1.0F, 6.0F, new Dilation(0.0F)), ModelTransform.of(-6.5F, -16.0F, -5.8F, 0.0F, 0.3054F, 0.0F));
+		table.addChild("legs", ModelPartBuilder.create().uv(10, 74).cuboid(7.0F, -12.0F, -8.0F, 4.0F, 12.0F, 4.0F, new Dilation(0.0F)).uv(10, 74).cuboid(7.0F, -12.0F, 4.0F, 4.0F, 12.0F, 4.0F, new Dilation(0.0F)).uv(10, 74).cuboid(-11.0F, -12.0F, -8.0F, 4.0F, 12.0F, 4.0F, new Dilation(0.0F)).uv(10, 74).cuboid(-11.0F, -12.0F, 4.0F, 4.0F, 12.0F, 4.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, 0.0F, 0.0F));
+		table.addChild("support", ModelPartBuilder.create().uv(10, 108).cuboid(-7.0F, -5.0F, 5.0F, 14.0F, 3.0F, 2.0F, new Dilation(0.0F)).uv(11, 105).cuboid(-7.0F, -5.0F, -7.0F, 14.0F, 3.0F, 2.0F, new Dilation(0.0F)).uv(15, 105).cuboid(8.0F, -5.0F, -4.0F, 2.0F, 3.0F, 8.0F, new Dilation(0.0F)).uv(17, 105).cuboid(-10.0F, -5.0F, -4.0F, 2.0F, 3.0F, 8.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, 0.0F, 0.0F));
 		ModelPartData headStand = table.addChild("headStand", ModelPartBuilder.create().uv(28, 4).cuboid(8.0F, -18.0F, -4.0F, 3.0F, 2.0F, 8.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, 0.0F, 0.0F));
-		ModelPartData cube_r2 = headStand.addChild("cube_r2", ModelPartBuilder.create().uv(31, 7).cuboid(-2.0F, -1.0F, -2.0F, 3.0F, 2.0F, 4.0F, new Dilation(-0.001F)), ModelTransform.of(10.0F, -17.0F, -4.0F, -0.6545F, 0.0F, 0.0F));
-		ModelPartData cube_r3 = headStand.addChild("cube_r3", ModelPartBuilder.create().uv(32, 3).cuboid(-2.0F, -1.0F, -2.0F, 3.0F, 2.0F, 4.0F, new Dilation(-0.001F)), ModelTransform.of(10.0F, -17.0F, 4.0F, 0.6545F, 0.0F, 0.0F));
-		ModelPartData bucket = modelPartData.addChild("bucket", ModelPartBuilder.create().uv(81, 80).cuboid(-4.5F, -4.7F, 2.5F, 9.0F, 8.0F, 2.0F, new Dilation(0.0F)).uv(81, 80).cuboid(-4.5F, -4.7F, -4.5F, 9.0F, 8.0F, 2.0F, new Dilation(0.0F)).uv(82, 74).cuboid(-2.5F, 2.3F, -2.5F, 5.0F, 1.0F, 5.0F, new Dilation(0.0F)).uv(76, 77).cuboid(-4.5F, -4.7F, -2.5F, 2.0F, 8.0F, 5.0F, new Dilation(0.0F)).uv(76, 77).cuboid(2.5F, -4.7F, -2.5F, 2.0F, 8.0F, 5.0F, new Dilation(0.0F)), ModelTransform.pivot(5.6F, 20.7F, -9.5F));
-		ModelPartData stol = modelPartData.addChild("stol", ModelPartBuilder.create().uv(0, 60).cuboid(-6.0F, -5.4F, -6.0F, 12.0F, 2.0F, 12.0F, new Dilation(0.0F)).uv(18, 75).cuboid(2.0F, -3.4F, -4.0F, 2.0F, 9.0F, 2.0F, new Dilation(0.0F)).uv(16, 73).cuboid(2.0F, -3.4F, 2.0F, 2.0F, 9.0F, 2.0F, new Dilation(0.0F)).uv(13, 73).cuboid(-4.0F, -3.4F, 2.0F, 2.0F, 9.0F, 2.0F, new Dilation(0.0F)).uv(16, 74).cuboid(-4.0F, -3.4F, -4.0F, 2.0F, 9.0F, 2.0F, new Dilation(0.0F)), ModelTransform.of(-23.0F, 18.4F, -12.0F, 0.0F, -0.6545F, 0.0F));
+		headStand.addChild("cube_r2", ModelPartBuilder.create().uv(31, 7).cuboid(-2.0F, -1.0F, -2.0F, 3.0F, 2.0F, 4.0F, new Dilation(-0.001F)), ModelTransform.of(10.0F, -17.0F, -4.0F, -0.6545F, 0.0F, 0.0F));
+		headStand.addChild("cube_r3", ModelPartBuilder.create().uv(32, 3).cuboid(-2.0F, -1.0F, -2.0F, 3.0F, 2.0F, 4.0F, new Dilation(-0.001F)), ModelTransform.of(10.0F, -17.0F, 4.0F, 0.6545F, 0.0F, 0.0F));
+		modelPartData.addChild("bucket", ModelPartBuilder.create().uv(81, 80).cuboid(-4.5F, -4.7F, 2.5F, 9.0F, 8.0F, 2.0F, new Dilation(0.0F)).uv(81, 80).cuboid(-4.5F, -4.7F, -4.5F, 9.0F, 8.0F, 2.0F, new Dilation(0.0F)).uv(82, 74).cuboid(-2.5F, 2.3F, -2.5F, 5.0F, 1.0F, 5.0F, new Dilation(0.0F)).uv(76, 77).cuboid(-4.5F, -4.7F, -2.5F, 2.0F, 8.0F, 5.0F, new Dilation(0.0F)).uv(76, 77).cuboid(2.5F, -4.7F, -2.5F, 2.0F, 8.0F, 5.0F, new Dilation(0.0F)), ModelTransform.pivot(5.6F, 20.7F, -9.5F));
+		modelPartData.addChild("stol", ModelPartBuilder.create().uv(0, 60).cuboid(-6.0F, -5.4F, -6.0F, 12.0F, 2.0F, 12.0F, new Dilation(0.0F)).uv(18, 75).cuboid(2.0F, -3.4F, -4.0F, 2.0F, 9.0F, 2.0F, new Dilation(0.0F)).uv(16, 73).cuboid(2.0F, -3.4F, 2.0F, 2.0F, 9.0F, 2.0F, new Dilation(0.0F)).uv(13, 73).cuboid(-4.0F, -3.4F, 2.0F, 2.0F, 9.0F, 2.0F, new Dilation(0.0F)).uv(16, 74).cuboid(-4.0F, -3.4F, -4.0F, 2.0F, 9.0F, 2.0F, new Dilation(0.0F)), ModelTransform.of(-23.0F, 18.4F, -12.0F, 0.0F, -0.6545F, 0.0F));
 		ModelPartData blood = modelPartData.addChild("blood", ModelPartBuilder.create().uv(24, 104).cuboid(-16.0F, -16.0F, -10.0F, 32.0F, 4.0F, 20.0F, new Dilation(0.1F)).uv(58, 108).cuboid(8.0F, -18.0F, -4.0F, 3.0F, 2.0F, 8.0F, new Dilation(0.1F)), ModelTransform.pivot(-8.0F, 24.0F, 0.0F));
-		ModelPartData cube_r4 = blood.addChild("cube_r4", ModelPartBuilder.create().uv(65, 106).cuboid(-6.0F, -1.0F, -6.0F, 12.0F, 2.0F, 12.0F, new Dilation(0.1F)), ModelTransform.of(-15.0F, -10.0F, -12.0F, 0.0F, -0.6545F, 0.0F));
+		blood.addChild("cube_r4", ModelPartBuilder.create().uv(65, 106).cuboid(-6.0F, -1.0F, -6.0F, 12.0F, 2.0F, 12.0F, new Dilation(0.1F)), ModelTransform.of(-15.0F, -10.0F, -12.0F, 0.0F, -0.6545F, 0.0F));
 		ModelPartData filth = modelPartData.addChild("filth", ModelPartBuilder.create().uv(24, 30).cuboid(-24.0F, -16.0F, -10.0F, 32.0F, 4.0F, 20.0F, new Dilation(0.1F)).uv(83, 45).cuboid(0.0F, -18.0F, -4.0F, 3.0F, 2.0F, 8.0F, new Dilation(0.1F)), ModelTransform.pivot(0.0F, 24.0F, 0.0F));
-		ModelPartData cube_r5 = filth.addChild("cube_r5", ModelPartBuilder.create().uv(31, 26).cuboid(-6.0F, -1.0F, -6.0F, 12.0F, 2.0F, 12.0F, new Dilation(0.1F)), ModelTransform.of(-23.0F, -10.0F, -12.0F, 0.0F, -0.6545F, 0.0F));
+		filth.addChild("cube_r5", ModelPartBuilder.create().uv(31, 26).cuboid(-6.0F, -1.0F, -6.0F, 12.0F, 2.0F, 12.0F, new Dilation(0.1F)), ModelTransform.of(-23.0F, -10.0F, -12.0F, 0.0F, -0.6545F, 0.0F));
 
 		return TexturedModelData.of(modelData, 128, 128);
 	}

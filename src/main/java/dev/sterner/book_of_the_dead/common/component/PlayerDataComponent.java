@@ -8,27 +8,28 @@ import net.minecraft.nbt.NbtCompound;
 public class PlayerDataComponent implements AutoSyncedComponent {
 	private final PlayerEntity player;
 	private int butcheringLevel = 0;
-	private final int MAX_BUTCHERING_LEVEL = 10;
+	private static final int MAX_BUTCHERING_LEVEL = 10;
 	private int necromancerLevel = 0;
-	private final int MAX_NECROMANCER_LEVEL = 10;
-	private final int MAX_ABILITY_LEVEL = 3;
+	private static final int MAX_NECROMANCER_LEVEL = 10;
+
+	private static final int MAX_INSANITY_LEVEL = 10;
+	private static final int MAX_ABILITY_LEVEL = 3;
 
 	//Negatives
 	private int healthDebuff = 0;
 	private int saturationDebuff = 0;
 	private int experienceDebuff = 0;
-	private int aggressionLevel = 0;
-	private int reputationDecrease = 0;
+	private int aggressionDebuff = 0;
+	private int reputationDebuff = 0;
 	private int mobSpawnRateDebuff = 0;
-	private int insanityLevel = 0;
+	private int insanityDebuff = 0;
 
 	//Positives
-	private int undeadAggressionDecrease = 0;
-	private int increasedResistance = 0;
-
-	private int deathsTouchLevel = 0;
-	private int statusEffectConversionLevel = 0;
-	private int necroAuraLevel = 0;
+	private int undeadAggressionBuff = 0;
+	private int resistanceBuff = 0;
+	private int deathsTouchBuff = 0;
+	private int statusEffectConversionBuff = 0;
+	private int necroAuraBuff = 0;
 
 	private int extraLives = 0;
 	private int dispatchedExtraLivesMinions = 0;
@@ -45,14 +46,14 @@ public class PlayerDataComponent implements AutoSyncedComponent {
 		nbt.putInt(Constants.Nbt.HEALTH_DEBUFF, getHealthDebuff());
 		nbt.putInt(Constants.Nbt.SATURATION_DEBUFF, getSaturationDebuff());
 		nbt.putInt(Constants.Nbt.EXPERIENCE_DEBUFF, getExperienceDebuff());
-		nbt.putInt(Constants.Nbt.AGGRESSION_DEBUFF, getAggressionLevel());
-		nbt.putInt(Constants.Nbt.REPUTATION_DEBUFF, getReputationDecrease());
+		nbt.putInt(Constants.Nbt.AGGRESSION_DEBUFF, getAggressionDebuff());
+		nbt.putInt(Constants.Nbt.REPUTATION_DEBUFF, getReputationDebuff());
 		nbt.putInt(Constants.Nbt.MOB_SPAWN_RATE_DEBUFF, getMobSpawnRateDebuff());
-		nbt.putInt(Constants.Nbt.INSANITY_DEBUFF, getInsanityLevel());
-		nbt.putInt(Constants.Nbt.UNDEAD_AGGRESSION_BUFF, getUndeadAggressionDecrease());
-		nbt.putInt(Constants.Nbt.RESISTANCE_BUFF, getIncreasedResistance());
-		nbt.putInt(Constants.Nbt.DEATHS_TOUCH_BUFF, getDeathsTouchLevel());
-		nbt.putInt(Constants.Nbt.NECRO_AURA_BUFF, getNecroAuraLevel());
+		nbt.putInt(Constants.Nbt.INSANITY_DEBUFF, getInsanityDebuff());
+		nbt.putInt(Constants.Nbt.UNDEAD_AGGRESSION_BUFF, getUndeadAggressionBuff());
+		nbt.putInt(Constants.Nbt.RESISTANCE_BUFF, getResistanceBuff());
+		nbt.putInt(Constants.Nbt.DEATHS_TOUCH_BUFF, getDeathsTouchBuff());
+		nbt.putInt(Constants.Nbt.NECRO_AURA_BUFF, getNecroAuraBuff());
 		nbt.putInt(Constants.Nbt.EXTRA_LIVES, getExtraLives());
 		nbt.putInt(Constants.Nbt.DISPATCHED_MINIONS, getDispatchedExtraLivesMinions());
 		nbt.putBoolean(Constants.Nbt.PHANTOM_IMMUNITY, getPhantomImmunity());
@@ -65,42 +66,41 @@ public class PlayerDataComponent implements AutoSyncedComponent {
 		setHealthDebuff(nbt.getInt(Constants.Nbt.HEALTH_DEBUFF));
 		setSaturationDebuff(nbt.getInt(Constants.Nbt.SATURATION_DEBUFF));
 		setExperienceDebuff(nbt.getInt(Constants.Nbt.EXPERIENCE_DEBUFF));
-		setAggressionLevel(nbt.getInt(Constants.Nbt.AGGRESSION_DEBUFF));
-		setReputationDecrease(nbt.getInt(Constants.Nbt.REPUTATION_DEBUFF));
-		setMobSpawnRateModifier(nbt.getInt(Constants.Nbt.MOB_SPAWN_RATE_DEBUFF));
-		setInsanityLevel(nbt.getInt(Constants.Nbt.INSANITY_DEBUFF));
-		setUndeadAggressionDecrease(nbt.getInt(Constants.Nbt.UNDEAD_AGGRESSION_BUFF));
-		setIncreasedResistance(nbt.getInt(Constants.Nbt.RESISTANCE_BUFF));
-		setDeathsTouchLevel(nbt.getInt(Constants.Nbt.DEATHS_TOUCH_BUFF));
-		setNecroAuraLevel(nbt.getInt(Constants.Nbt.NECRO_AURA_BUFF));
+		setAggressionDebuff(nbt.getInt(Constants.Nbt.AGGRESSION_DEBUFF));
+		setReputationDebuff(nbt.getInt(Constants.Nbt.REPUTATION_DEBUFF));
+		setMobSpawnRateDebuff(nbt.getInt(Constants.Nbt.MOB_SPAWN_RATE_DEBUFF));
+		setInsanityDebuff(nbt.getInt(Constants.Nbt.INSANITY_DEBUFF));
+		setUndeadAggressionBuff(nbt.getInt(Constants.Nbt.UNDEAD_AGGRESSION_BUFF));
+		setReputationDebuff(nbt.getInt(Constants.Nbt.RESISTANCE_BUFF));
+		setDeathsTouchBuff(nbt.getInt(Constants.Nbt.DEATHS_TOUCH_BUFF));
+		setNecroAuraBuff(nbt.getInt(Constants.Nbt.NECRO_AURA_BUFF));
 		setExtraLives(nbt.getInt(Constants.Nbt.EXTRA_LIVES));
 		setDispatchedExtraLivesMinions(nbt.getInt(Constants.Nbt.DISPATCHED_MINIONS));
 		setPhantomImmunity(nbt.getBoolean(Constants.Nbt.PHANTOM_IMMUNITY));
-
 	}
 
 	public float getNecroAuraBuffModifier(){
-		return PlayerAbilityData.NECRO_AURA[getNecroAuraLevel()];
+		return PlayerAbilityData.NECRO_AURA[getNecroAuraBuff()];
 	}
 
 	public float getStatusEffectConversionBuffModifier(){
-		return PlayerAbilityData.STATUS_EFFECT_CONVERSION[getStatusEffectConversionLevel()];
+		return PlayerAbilityData.STATUS_EFFECT_CONVERSION[getStatusEffectConversionBuff()];
 	}
 
 	public float getDeathsTouchBuffModifier(){
-		return PlayerAbilityData.DEATHS_TOUCH[getDeathsTouchLevel()];
+		return PlayerAbilityData.DEATHS_TOUCH[getDeathsTouchBuff()];
 	}
 
 	public float getResistanceBuffModifier(){
-		return PlayerAbilityData.INCREASE_RESISTANCE[getIncreasedResistance()];
+		return PlayerAbilityData.INCREASE_RESISTANCE[getResistanceBuff()];
 	}
 
 	public float getUndeadAggressionBuffModifier(){
-		return PlayerAbilityData.UNDEAD_AGGRESSION_DECREASE[getUndeadAggressionDecrease()];
+		return PlayerAbilityData.UNDEAD_AGGRESSION_DECREASE[getUndeadAggressionBuff()];
 	}
 
 	public float getInsanityDebuffModifier(){
-		return PlayerAbilityData.INSANITY[getInsanityLevel()];
+		return PlayerAbilityData.INSANITY[getInsanityDebuff()];
 	}
 
 	public float getMobSpawnDebuffModifier(){
@@ -108,11 +108,11 @@ public class PlayerDataComponent implements AutoSyncedComponent {
 	}
 
 	public float getReputationDebuffModifier(){
-		return PlayerAbilityData.REPUTATION[getReputationDecrease()];
+		return PlayerAbilityData.REPUTATION[getReputationDebuff()];
 	}
 
 	public float getAggressionDebuffModifier(){
-		return PlayerAbilityData.AGGRESSION[getAggressionLevel()];
+		return PlayerAbilityData.AGGRESSION[getAggressionDebuff()];
 	}
 
 	public float getExperienceDebuffModifier(){
@@ -196,110 +196,110 @@ public class PlayerDataComponent implements AutoSyncedComponent {
 	}
 
 	public void increaseAggressionDebuffLevel(){
-		if(getAggressionLevel() + 1 <= MAX_ABILITY_LEVEL){
-			setAggressionLevel(getAggressionLevel() + 1);
+		if(getAggressionDebuff() + 1 <= MAX_ABILITY_LEVEL){
+			setAggressionDebuff(getAggressionDebuff() + 1);
 		}
 	}
 
 	public void decreaseAggressionDebuffLevel(){
-		if(getAggressionLevel() - 1 >= 0){
-			setAggressionLevel(getAggressionLevel() - 1);
+		if(getAggressionDebuff() - 1 >= 0){
+			setAggressionDebuff(getAggressionDebuff() - 1);
 		}
 	}
 
 	public void increaseReputationDebuffLevel(){
-		if(getReputationDecrease() + 1 <= MAX_ABILITY_LEVEL){
-			setReputationDecrease(getReputationDecrease() + 1);
+		if(getReputationDebuff() + 1 <= MAX_ABILITY_LEVEL){
+			setReputationDebuff(getReputationDebuff() + 1);
 		}
 	}
 
 	public void decreaseReputationDebuffLevel(){
-		if(getReputationDecrease() - 1 >= 0){
-			setReputationDecrease(getReputationDecrease() - 1);
+		if(getReputationDebuff() - 1 >= 0){
+			setReputationDebuff(getReputationDebuff() - 1);
 		}
 	}
 
 	public void increaseMobSpawnDebuffLevel(){
 		if(getMobSpawnRateDebuff() + 1 <= MAX_ABILITY_LEVEL){
-			setMobSpawnRateModifier(getMobSpawnRateDebuff() + 1);
+			setMobSpawnRateDebuff(getMobSpawnRateDebuff() + 1);
 		}
 	}
 
 	public void decreaseMobSpawnDebuffLevel(){
 		if(getMobSpawnRateDebuff() - 1 >= 0){
-			setMobSpawnRateModifier(getMobSpawnRateDebuff() - 1);
+			setMobSpawnRateDebuff(getMobSpawnRateDebuff() - 1);
 		}
 	}
 
 	public void increaseInsanityDebuffLevel(){
-		if(getInsanityLevel() + 1 <= MAX_ABILITY_LEVEL){
-			setInsanityLevel(getInsanityLevel() + 1);
+		if(getInsanityDebuff() + 1 <= MAX_INSANITY_LEVEL){
+			setInsanityDebuff(getInsanityDebuff() + 1);
 		}
 	}
 
 	public void decreaseInsanityDebuffLevel(){
-		if(getInsanityLevel() - 1 >= 0){
-			setInsanityLevel(getInsanityLevel() - 1);
+		if(getInsanityDebuff() - 1 >= 0){
+			setInsanityDebuff(getInsanityDebuff() - 1);
 		}
 	}
 
 	public void increaseUndeadAggressionBuffLevel(){
-		if(getUndeadAggressionDecrease() + 1 <= MAX_ABILITY_LEVEL){
-			setUndeadAggressionDecrease(getUndeadAggressionDecrease() + 1);
+		if(getUndeadAggressionBuff() + 1 <= MAX_ABILITY_LEVEL){
+			setUndeadAggressionBuff(getUndeadAggressionBuff() + 1);
 		}
 	}
 
 	public void decreaseUndeadAggressionBuffLevel(){
-		if(getUndeadAggressionDecrease() - 1 >= 0){
-			setUndeadAggressionDecrease(getUndeadAggressionDecrease() - 1);
+		if(getUndeadAggressionBuff() - 1 >= 0){
+			setUndeadAggressionBuff(getUndeadAggressionBuff() - 1);
 		}
 	}
 
 	public void increaseResistanceBuffLevel(){
-		if(getIncreasedResistance() + 1 <= MAX_ABILITY_LEVEL){
-			setIncreasedResistance(getIncreasedResistance() + 1);
+		if(getResistanceBuff() + 1 <= MAX_ABILITY_LEVEL){
+			setResistanceBuff(getResistanceBuff() + 1);
 		}
 	}
 
 	public void decreaseResistanceBuffLevel(){
-		if(getIncreasedResistance() - 1 >= 0){
-			setIncreasedResistance(getIncreasedResistance() - 1);
+		if(getResistanceBuff() - 1 >= 0){
+			setResistanceBuff(getResistanceBuff() - 1);
 		}
 	}
 
 	public void increaseDeathsTouchBuffLevel(){
-		if(getDeathsTouchLevel() + 1 <= MAX_ABILITY_LEVEL){
-			setDeathsTouchLevel(getDeathsTouchLevel() + 1);
+		if(getDeathsTouchBuff() + 1 <= MAX_ABILITY_LEVEL){
+			setDeathsTouchBuff(getDeathsTouchBuff() + 1);
 		}
 	}
 
 	public void decreaseDeathsTouchBuffLevel(){
-		if(getDeathsTouchLevel() - 1 >= 0){
-			setDeathsTouchLevel(getDeathsTouchLevel() - 1);
+		if(getDeathsTouchBuff() - 1 >= 0){
+			setDeathsTouchBuff(getDeathsTouchBuff() - 1);
 		}
 	}
 
 	public void increaseStatusEffectConversionBuffLevel(){
-		if(getStatusEffectConversionLevel() + 1 <= MAX_ABILITY_LEVEL){
-			setStatusEffectConversionLevel(getStatusEffectConversionLevel() + 1);
+		if(getStatusEffectConversionBuff() + 1 <= MAX_ABILITY_LEVEL){
+			setStatusEffectConversionBuff(getStatusEffectConversionBuff() + 1);
 		}
 	}
 
 	public void decreaseStatusEffectConversionBuffLevel(){
-		if(getStatusEffectConversionLevel() - 1 >= 0){
-			setStatusEffectConversionLevel(getStatusEffectConversionLevel() - 1);
+		if(getStatusEffectConversionBuff() - 1 >= 0){
+			setStatusEffectConversionBuff(getStatusEffectConversionBuff() - 1);
 		}
 	}
 
 	public void increaseNecroAuraBuffLevel(){
-		if(getNecroAuraLevel() + 1 <= MAX_ABILITY_LEVEL){
-			setNecroAuraLevel(getNecroAuraLevel() + 1);
+		if(getNecroAuraBuff() + 1 <= MAX_ABILITY_LEVEL){
+			setNecroAuraBuff(getNecroAuraBuff() + 1);
 		}
 	}
 
 	public void decreaseNecroAuraBuffLevel(){
-		if(getNecroAuraLevel() - 1 >= 0){
-			setNecroAuraLevel(getNecroAuraLevel() - 1);
+		if(getNecroAuraBuff() - 1 >= 0){
+			setNecroAuraBuff(getNecroAuraBuff() - 1);
 		}
 	}
 
@@ -373,21 +373,21 @@ public class PlayerDataComponent implements AutoSyncedComponent {
 		this.syncAbility();
 	}
 
-	private int getAggressionLevel() {
-		return aggressionLevel;
+	private int getAggressionDebuff() {
+		return aggressionDebuff;
 	}
 
-	private void setAggressionLevel(int aggressionLevel) {
-		this.aggressionLevel = aggressionLevel;
+	private void setAggressionDebuff(int aggressionDebuff) {
+		this.aggressionDebuff = aggressionDebuff;
 		this.syncAbility();
 	}
 
-	private int getReputationDecrease() {
-		return reputationDecrease;
+	private int getReputationDebuff() {
+		return reputationDebuff;
 	}
 
-	private void setReputationDecrease(int reputationDecrease) {
-		this.reputationDecrease = reputationDecrease;
+	private void setReputationDebuff(int reputationDebuff) {
+		this.reputationDebuff = reputationDebuff;
 		this.syncAbility();
 	}
 
@@ -395,62 +395,62 @@ public class PlayerDataComponent implements AutoSyncedComponent {
 		return mobSpawnRateDebuff;
 	}
 
-	private void setMobSpawnRateModifier(int mobSpawnRateDebuff) {
+	private void setMobSpawnRateDebuff(int mobSpawnRateDebuff) {
 		this.mobSpawnRateDebuff = mobSpawnRateDebuff;
 		this.syncAbility();
 	}
 
-	private int getInsanityLevel() {
-		return insanityLevel;
+	private int getInsanityDebuff() {
+		return insanityDebuff;
 	}
 
-	private void setInsanityLevel(int insanityLevel) {
-		this.insanityLevel = insanityLevel;
+	private void setInsanityDebuff(int insanityDebuff) {
+		this.insanityDebuff = insanityDebuff;
 		this.syncAbility();
 	}
 
-	private int getUndeadAggressionDecrease() {
-		return undeadAggressionDecrease;
+	private int getUndeadAggressionBuff() {
+		return undeadAggressionBuff;
 	}
 
-	private void setUndeadAggressionDecrease(int undeadAggressionDecrease) {
-		this.undeadAggressionDecrease = undeadAggressionDecrease;
+	private void setUndeadAggressionBuff(int undeadAggressionBuff) {
+		this.undeadAggressionBuff = undeadAggressionBuff;
 		this.syncAbility();
 	}
 
-	private int getIncreasedResistance() {
-		return increasedResistance;
+	private int getResistanceBuff() {
+		return resistanceBuff;
 	}
 
-	private void setIncreasedResistance(int increasedResistance) {
-		this.increasedResistance = increasedResistance;
+	private void setResistanceBuff(int resistanceBuff) {
+		this.resistanceBuff = resistanceBuff;
 		this.syncAbility();
 	}
 
-	private int getDeathsTouchLevel() {
-		return deathsTouchLevel;
+	private int getDeathsTouchBuff() {
+		return deathsTouchBuff;
 	}
 
-	private void setDeathsTouchLevel(int deathsTouchLevel) {
-		this.deathsTouchLevel = deathsTouchLevel;
+	private void setDeathsTouchBuff(int deathsTouchBuff) {
+		this.deathsTouchBuff = deathsTouchBuff;
 		this.syncAbility();
 	}
 
-	private int getStatusEffectConversionLevel() {
-		return statusEffectConversionLevel;
+	private int getStatusEffectConversionBuff() {
+		return statusEffectConversionBuff;
 	}
 
-	private void setStatusEffectConversionLevel(int statusEffectConversionLevel) {
-		this.statusEffectConversionLevel = statusEffectConversionLevel;
+	private void setStatusEffectConversionBuff(int statusEffectConversionBuff) {
+		this.statusEffectConversionBuff = statusEffectConversionBuff;
 		this.syncAbility();
 	}
 
-	private int getNecroAuraLevel() {
-		return necroAuraLevel;
+	private int getNecroAuraBuff() {
+		return necroAuraBuff;
 	}
 
-	private void setNecroAuraLevel(int necroAuraLevel) {
-		this.necroAuraLevel = necroAuraLevel;
+	private void setNecroAuraBuff(int necroAuraBuff) {
+		this.necroAuraBuff = necroAuraBuff;
 		this.syncAbility();
 	}
 

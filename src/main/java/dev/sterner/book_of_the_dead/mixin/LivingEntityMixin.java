@@ -2,19 +2,22 @@ package dev.sterner.book_of_the_dead.mixin;
 
 import dev.sterner.book_of_the_dead.api.BotDApi;
 import dev.sterner.book_of_the_dead.api.event.OnEntityDeathEvent;
-import dev.sterner.book_of_the_dead.common.component.BotDComponents;
-import dev.sterner.book_of_the_dead.common.component.CorpseDataComponent;
-import dev.sterner.book_of_the_dead.common.component.LivingEntityDataComponent;
+import dev.sterner.book_of_the_dead.common.component.*;
 import dev.sterner.book_of_the_dead.common.registry.BotDStatusEffects;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffectType;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.loot.LootTable;
 import net.minecraft.loot.context.LootContext;
 import net.minecraft.loot.context.LootContextTypes;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Box;
@@ -24,13 +27,19 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 @Mixin(value = LivingEntity.class, priority = 1001)
 public abstract class LivingEntityMixin extends Entity {
+
+	@Unique
+	public List<StatusEffect> statusEffectList = Registries.STATUS_EFFECT.stream().filter(s -> !s.getType().equals(StatusEffectType.HARMFUL)).toList();
 
 	@Shadow
 	public int deathTime;
@@ -46,6 +55,9 @@ public abstract class LivingEntityMixin extends Entity {
 
 	@Shadow
 	protected abstract LootContext.Builder getLootContextBuilder(boolean causedByPlayer, DamageSource source);
+
+	@Shadow
+	public abstract void remove(RemovalReason reason);
 
 	@Unique
 	private DamageSource damageSource;
@@ -158,5 +170,20 @@ public abstract class LivingEntityMixin extends Entity {
 				callbackInfo.cancel();
 			}
 		}
+	}
+
+	@ModifyVariable(method = "addStatusEffect*", at = @At("HEAD"), argsOnly = true)
+	private StatusEffectInstance book_of_the_dead$convertHarmfulEffect(StatusEffectInstance effect, Entity source){
+		LivingEntity livingEntity = LivingEntity.class.cast(this);
+		if(livingEntity instanceof PlayerEntity player && effect.getEffectType().getType().equals(StatusEffectType.HARMFUL)){
+			PlayerDataComponent component = BotDComponents.PLAYER_COMPONENT.get(player);
+			if(component.getStatusEffectConversionBuffModifier() > PlayerAbilityData.STATUS_EFFECT_CONVERSION[0]){
+				if(player.getWorld().random.nextFloat() < component.getStatusEffectConversionBuffModifier()){
+					var statusEffect = statusEffectList.get(player.getRandom().nextInt(statusEffectList.size()));
+					return new StatusEffectInstance(statusEffect, effect.getDuration(), effect.getAmplifier());
+				}
+			}
+		}
+		return effect;
 	}
 }
