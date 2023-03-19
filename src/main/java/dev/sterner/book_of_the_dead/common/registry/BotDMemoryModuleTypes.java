@@ -10,6 +10,7 @@ import java.util.Optional;
 
 public interface BotDMemoryModuleTypes {
 	MemoryModuleType<PlayerEntity> OWNER_PLAYER = register("owner_player");
+	MemoryModuleType<Boolean> SHOULD_MERGE = register("should_merge");
 	MemoryModuleType<Boolean> SHOULD_FOLLOW_OWNER = register("should_follow_owner");
 
 	static <U> MemoryModuleType<U> register(String id) {

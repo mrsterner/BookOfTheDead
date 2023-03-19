@@ -2,6 +2,7 @@ package dev.sterner.book_of_the_dead.common.entity.brain;
 
 import dev.sterner.book_of_the_dead.common.entity.KakuzuEntity;
 import dev.sterner.book_of_the_dead.common.entity.brain.sensor.KakuzuSpecificSensor;
+import dev.sterner.book_of_the_dead.common.entity.brain.task.EnterPlayerOnDemandTask;
 import dev.sterner.book_of_the_dead.common.entity.brain.task.StrollFlyTask;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.entity.LivingEntity;
@@ -45,7 +46,7 @@ public class KakuzuBrain {
 
 	public static BrainActivityGroup<KakuzuEntity> getCoreTasks() {
 		return BrainActivityGroup.coreTasks(
-				new StayAboveWaterTask(0.8F),
+				new EnterPlayerOnDemandTask(),
 				new WalkTask(2.5F),
 				new LookAroundTask(45, 90),
 				new WanderAroundTask()

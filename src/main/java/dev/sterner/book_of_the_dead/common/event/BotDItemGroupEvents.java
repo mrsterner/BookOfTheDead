@@ -38,6 +38,7 @@ public class BotDItemGroupEvents {
 		e.addItem(FAT);
 		e.addItem(SKIN);
 		e.addItem(BRAIN);
+		e.addItem(HEART);
 		e.addItem(BOTTLE_OF_BLOOD);
 		e.addItem(VILLAGER_HEAD);
 		e.addItem(REINFORCED_DOOR);

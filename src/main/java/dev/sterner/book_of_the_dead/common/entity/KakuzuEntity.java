@@ -28,6 +28,8 @@ import net.minecraft.entity.mob.*;
 import net.minecraft.entity.passive.AllayEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -94,6 +96,19 @@ public class KakuzuEntity extends PathAwareEntity implements SmartBrainOwner<Kak
 		birdNavigation.setCanSwim(true);
 		birdNavigation.setCanEnterOpenDoors(true);
 		return birdNavigation;
+	}
+
+	@Override
+	protected ActionResult interactMob(PlayerEntity player, Hand hand) {
+		if(this.getOwner() != null && this.getOwner().equals(player.getUuid())){
+			PlayerDataComponent component = BotDComponents.PLAYER_COMPONENT.get(player);
+			if(component.getExtraLives() < 3 && component.getDispatchedExtraLivesMinions() > 0){
+				component.increaseExtraLivesBuffLevel();
+				component.decreaseDispatchedMinionBuffLevel();
+				this.discard();
+			}
+		}
+		return super.interactMob(player, hand);
 	}
 
 	@Override

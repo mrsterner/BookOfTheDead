@@ -18,6 +18,7 @@ public class BotDLanguageProvider extends FabricLanguageProvider {
 	public void generateTranslations(TranslationBuilder builder) {
 		builder.add(Constants.BOTD_GROUP, "The Book of the Dead");
 
+		builder.add(BotDObjects.HEART, "Heart");
 		builder.add(BotDObjects.BRAIN, "Brain");
 		builder.add(BotDObjects.BOOK_OF_THE_DEAD, "The Book of the Dead");
 		builder.add(BotDObjects.BUTCHER_KNIFE, "Butcher Knife");

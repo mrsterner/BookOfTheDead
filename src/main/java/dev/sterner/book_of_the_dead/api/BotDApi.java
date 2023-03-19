@@ -1,6 +1,10 @@
 package dev.sterner.book_of_the_dead.api;
 
+import dev.sterner.book_of_the_dead.common.component.BotDComponents;
+import dev.sterner.book_of_the_dead.common.component.PlayerDataComponent;
+import dev.sterner.book_of_the_dead.common.entity.KakuzuEntity;
 import dev.sterner.book_of_the_dead.common.registry.BotDEnchantments;
+import dev.sterner.book_of_the_dead.common.registry.BotDEntityTypes;
 import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -24,5 +28,18 @@ public class BotDApi {
 			return isInTag && isItem;
 		}
 		return false;
+	}
+
+	public void spawnKakuzuFromPlayer(PlayerEntity player){
+		PlayerDataComponent component = BotDComponents.PLAYER_COMPONENT.get(player);
+		if(component.getExtraLives() > 0 && component.getDispatchedExtraLivesMinions() < 3){
+			component.decreaseExtraLivesBuffLevel();
+			component.increaseDispatchedMinionBuffLevel();
+			KakuzuEntity kakuzuEntity = new KakuzuEntity(BotDEntityTypes.KAKUZU_ENTITY, player.world);
+			kakuzuEntity.setOwner(player.getUuid());
+			kakuzuEntity.setVariant(component.getExtraLives());
+			kakuzuEntity.refreshPositionAndAngles(player.getX(), player.getY(), player.getZ(), player.getYaw(), player.getPitch());
+			player.world.spawnEntity(kakuzuEntity);
+		}
 	}
 }

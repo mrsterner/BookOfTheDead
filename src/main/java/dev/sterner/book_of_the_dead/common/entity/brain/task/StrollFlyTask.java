@@ -18,7 +18,6 @@ import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 public class StrollFlyTask<E extends PathAwareEntity> extends ExtendedBehaviour<E> {
-	private static final List<Pair<MemoryModuleType<?>, MemoryModuleState>> MEMORY_REQUIREMENTS = ObjectArrayList.of(new Pair[]{Pair.of(MemoryModuleType.WALK_TARGET, MemoryModuleState.VALUE_ABSENT)});
 	protected BiFunction<E, Vec3d, Float> speedModifier = (entity, targetPos) -> 1.0F;
 	protected Predicate<E> avoidWaterPredicate = (entity) -> true;
 	protected BiPredicate<E, Vec3d> positionPredicate = (entity, pos) -> true;
@@ -27,7 +26,7 @@ public class StrollFlyTask<E extends PathAwareEntity> extends ExtendedBehaviour<
 	}
 
 	protected List<Pair<MemoryModuleType<?>, MemoryModuleState>> getMemoryRequirements() {
-		return MEMORY_REQUIREMENTS;
+		return ObjectArrayList.of(Pair.of(MemoryModuleType.WALK_TARGET, MemoryModuleState.VALUE_ABSENT));
 	}
 
 	public StrollFlyTask<E> dontAvoidWater() {
