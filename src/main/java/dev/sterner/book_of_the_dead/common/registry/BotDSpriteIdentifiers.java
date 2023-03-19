@@ -11,7 +11,6 @@ import static net.minecraft.screen.PlayerScreenHandler.BLOCK_ATLAS_TEXTURE;
 
 @ClientOnly
 public class BotDSpriteIdentifiers {
-	public static final Map<SpriteIdentifier, Identifier> SPRITE_IDENTIFIER = new LinkedHashMap<>();
 
 	public static final SpriteIdentifier BLOOD = new SpriteIdentifier(BLOCK_ATLAS_TEXTURE, Constants.id("block/blood_fluid"));
 	public static final SpriteIdentifier WATER = new SpriteIdentifier(BLOCK_ATLAS_TEXTURE, new Identifier("block/water_still"));

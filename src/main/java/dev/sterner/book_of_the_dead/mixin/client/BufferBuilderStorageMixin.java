@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class BufferBuilderStorageMixin {
 
 	@Inject(method = "assignBufferBuilder", at = @At("HEAD"))
-	private static void addAllBlack(Object2ObjectLinkedOpenHashMap<RenderLayer, BufferBuilder> mapBuildersIn, RenderLayer renderTypeIn, CallbackInfo callbackInfo) {
+	private static void book_of_the_dead$addAllBlack(Object2ObjectLinkedOpenHashMap<RenderLayer, BufferBuilder> mapBuildersIn, RenderLayer renderTypeIn, CallbackInfo callbackInfo) {
 		BotDRenderLayer.addGlintTypes(mapBuildersIn);
 	}
 }

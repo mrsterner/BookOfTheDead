@@ -28,7 +28,7 @@ public class VillagerHostilesSensorMixin {
 
 
 	@Inject(method = "isCloseEnoughForDanger", at = @At("HEAD"), cancellable = true)
-	private void getNearestHostile(LivingEntity villager, LivingEntity target, CallbackInfoReturnable<Boolean> cir){
+	private void book_of_the_dead$getNearestHostile(LivingEntity villager, LivingEntity target, CallbackInfoReturnable<Boolean> cir){
 		if (target instanceof PlayerEntity player && ((VillagerEntity) villager).getReputation(player) < -100) {
 			PlayerDataComponent component = BotDComponents.PLAYER_COMPONENT.get(player);
 			if(component.getReputationDebuffModifier() <= PlayerAbilityData.REPUTATION[2]) {

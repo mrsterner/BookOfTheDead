@@ -11,7 +11,7 @@ import java.util.Map;
 public interface BotDRituals {
 	Map<NecrotableRitual, Identifier> NECROTABLE_RITUAL = new LinkedHashMap<>();
 
-	NecrotableRitual BASIC = register("basic", new NecrotableRitual(new Identifier("create_item")));
+	NecrotableRitual BASIC = register("basic", new NecrotableRitual(new Identifier("basic")));
 
 	static <T extends NecrotableRitual> T register(String name, T necroRitual) {
 		NECROTABLE_RITUAL.put(necroRitual, Constants.id(name));

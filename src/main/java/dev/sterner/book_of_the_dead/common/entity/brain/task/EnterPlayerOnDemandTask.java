@@ -4,7 +4,6 @@ import com.mojang.datafixers.util.Pair;
 import dev.sterner.book_of_the_dead.common.entity.KakuzuEntity;
 import dev.sterner.book_of_the_dead.common.registry.BotDMemoryModuleTypes;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import net.minecraft.entity.ai.brain.EntityLookTarget;
 import net.minecraft.entity.ai.brain.MemoryModuleState;
 import net.minecraft.entity.ai.brain.MemoryModuleType;
 import net.minecraft.entity.ai.brain.WalkTarget;

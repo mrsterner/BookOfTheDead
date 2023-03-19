@@ -1,13 +1,11 @@
 package dev.sterner.book_of_the_dead;
 
-import dev.sterner.book_of_the_dead.client.network.BloodSplashParticlePacket;
 import dev.sterner.book_of_the_dead.common.component.BotDComponents;
 import dev.sterner.book_of_the_dead.common.component.CorpseDataComponent;
 import dev.sterner.book_of_the_dead.common.component.PlayerDataComponent;
 import dev.sterner.book_of_the_dead.common.event.BotDItemGroupEvents;
 import dev.sterner.book_of_the_dead.common.event.BotDUseEvents;
 import dev.sterner.book_of_the_dead.common.registry.*;
-import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
@@ -20,7 +18,6 @@ import org.quiltmc.loader.api.QuiltLoader;
 import org.quiltmc.qsl.base.api.entrypoint.ModInitializer;
 import org.quiltmc.qsl.entity.event.api.EntityReviveEvents;
 import org.quiltmc.qsl.entity.event.api.ServerPlayerEntityCopyCallback;
-import org.quiltmc.qsl.networking.api.PlayerLookup;
 
 import java.util.Optional;
 
