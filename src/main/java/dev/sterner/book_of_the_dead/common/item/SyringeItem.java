@@ -75,8 +75,10 @@ public class SyringeItem extends Item {
 				playerEntity.addStatusEffect(new StatusEffectInstance(BotDStatusEffects.SANGUINE, 20 * 20));
 				emptySyringe = true;
 			}else{
-				stack.getOrCreateNbt().putString(Constants.Nbt.NAME, playerEntity.getEntityName());
-				stack.getOrCreateNbt().putUuid(Constants.Nbt.BLOOD, playerEntity.getUuid());
+				NbtCompound nbt = new NbtCompound();
+				nbt.putString(Constants.Nbt.NAME, playerEntity.getEntityName());
+				nbt.putUuid(Constants.Nbt.UUID, playerEntity.getUuid());
+				stack.getOrCreateNbt().put(Constants.Nbt.BLOOD, nbt);
 				playerEntity.damage(BotDDamageTypes.getDamageSource(world, BotDDamageTypes.SANGUINE), 4f);
 			}
 			if(emptySyringe){
@@ -90,10 +92,6 @@ public class SyringeItem extends Item {
 			}
 		}
 		return stack;
-	}
-
-	public boolean isFull(ItemStack stack){
-		return stack.getOrCreateNbt().contains(Constants.Nbt.STATUS_EFFECT_INSTANCE) || stack.getOrCreateNbt().contains(Constants.Nbt.BLOOD);
 	}
 
 	@Nullable
@@ -138,8 +136,9 @@ public class SyringeItem extends Item {
 
 	@Override
 	public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-		if(stack.getOrCreateNbt().contains(Constants.Nbt.BLOOD) && stack.getOrCreateNbt().contains(Constants.Nbt.NAME)){
-			String name = stack.getOrCreateNbt().getString(Constants.Nbt.NAME);
+		if(stack.getOrCreateNbt().contains(Constants.Nbt.BLOOD)){
+			NbtCompound nbt = stack.getSubNbt(Constants.Nbt.BLOOD);
+			String name = nbt.getString(Constants.Nbt.NAME);
 			String formattedName = TextUtils.capitalizeString(name);
 			tooltip.add(Text.literal(formattedName).setStyle(Style.EMPTY.withColor(0xAC0014)));
 		}
