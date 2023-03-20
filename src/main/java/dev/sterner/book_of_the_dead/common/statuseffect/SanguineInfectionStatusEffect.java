@@ -34,7 +34,6 @@ public class SanguineInfectionStatusEffect extends StatusEffect {
 			entity.world.addParticle(BotDParticleTypes.SPLASHING_BLOOD, x, y, z, dx,dy,dz);
 		}
 
-
 		for(StatusEffectInstance statusEffectInstance : entity.getStatusEffects()){
 			if(statusEffectInstance.getEffectType() == StatusEffects.POISON || statusEffectInstance.getEffectType() == StatusEffects.WITHER || statusEffectInstance.getEffectType() == BotDStatusEffects.SANGUINE){
 				if(statusEffectInstance.getDuration() > 20 * 2){
