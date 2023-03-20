@@ -27,3 +27,4 @@ accessible class net/minecraft/client/particle/BlockLeakParticle$Dripping
 accessible class net/minecraft/entity/mob/PhantomEntity$FindTargetGoal
 accessible class net/minecraft/village/VillagerGossips$Reputation
 accessible field net/minecraft/village/VillagerGossips$Reputation associatedGossip Lit/unimi/dsi/fastutil/objects/Object2IntMap;
+accessible field net/minecraft/entity/effect/StatusEffectInstance duration I

@@ -1,0 +1,7 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "book_of_the_dead:item/syringe_blood",
+    "layer1": "book_of_the_dead:item/syringe"
+  }
+}

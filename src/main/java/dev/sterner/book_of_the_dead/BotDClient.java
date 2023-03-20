@@ -89,9 +89,6 @@ public class BotDClient implements ClientModInitializer {
 		EntityModelLayerRegistry.registerModelLayer(KakuzuEntityModel.LAYER_LOCATION, KakuzuEntityModel::getTexturedModelData);
 		EntityModelLayerRegistry.registerModelLayer(KakuzuLivingEntityModel.LAYER_LOCATION, KakuzuLivingEntityModel::getTexturedModelData);
 
-
-		BotDSpriteIdentifiers.INSTANCE.addIdentifier(BotDSpriteIdentifiers.BLOOD);
-
 		ClientTickEvents.END.register(ClientTickHandler::clientTickEnd);
 
 		for (Item item : BotDObjects.ITEMS.keySet()) {
@@ -130,6 +127,13 @@ public class BotDClient implements ClientModInitializer {
 				return 0.0F;
 			}
 			return itemStack.hasNbt() && itemStack.getOrCreateNbt().contains(Constants.Nbt.STATUS_EFFECT_INSTANCE) ? 1.0F : 0.0F;
+		});
+
+		ModelPredicateProviderRegistry.register(BotDObjects.SYRINGE, new Identifier("blood"), (itemStack, clientWorld, livingEntity, i) -> {
+			if (livingEntity == null) {
+				return 0.0F;
+			}
+			return itemStack.hasNbt() && itemStack.getOrCreateNbt().contains(Constants.Nbt.BLOOD) ? 1.0F : 0.0F;
 		});
 	}
 

@@ -7,12 +7,17 @@ import dev.sterner.book_of_the_dead.common.component.CorpseDataComponent;
 import dev.sterner.book_of_the_dead.common.entity.PlayerCorpseEntity;
 import dev.sterner.book_of_the_dead.common.registry.BotDEntityTypes;
 import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
+import dev.sterner.book_of_the_dead.common.registry.BotDStatusEffects;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -27,10 +32,10 @@ public class DebugWandItem extends Item {
 		World world = context.getWorld();
 		BlockPos pos = context.getBlockPos();
 		PlayerEntity player = context.getPlayer();
-		if(!world.isClient() && player.isSneaking() && world.getBlockState(pos).isOf(BotDObjects.BUTCHER_TABLE) && world.getBlockEntity(pos) instanceof ButcherTableBlockEntity be){
-			be.makeFilth(world);
-			be.markDirty();
-		}
+		ItemStack syringe = new ItemStack(BotDObjects.SYRINGE);
+		StatusEffectInstance instance = new StatusEffectInstance(StatusEffects.WITHER, 20 * 2, 2);
+		SyringeItem.writeStatusEffectNbt(syringe, instance);
+		ItemScatterer.spawn(world, player.getX(), player.getY(), player.getZ(), syringe);
 		return super.useOnBlock(context);
 	}
 
@@ -51,5 +56,11 @@ public class DebugWandItem extends Item {
 
 		}
 		return super.use(world, user, hand);
+	}
+
+	@Override
+	public ActionResult useOnEntity(ItemStack stack, PlayerEntity user, LivingEntity entity, Hand hand) {
+		entity.addStatusEffect(new StatusEffectInstance(BotDStatusEffects.SANGUINE, 20 * 5));
+		return super.useOnEntity(stack, user, entity, hand);
 	}
 }

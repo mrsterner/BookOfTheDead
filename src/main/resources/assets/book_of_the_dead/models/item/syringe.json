@@ -6,9 +6,17 @@
   "overrides": [
     {
       "predicate": {
-        "filled": 1
+        "filled": 1,
+        "blood": 0
       },
       "model": "book_of_the_dead:item/syringe_filled"
+    },
+    {
+      "predicate": {
+        "filled": 0,
+        "blood": 1
+      },
+      "model": "book_of_the_dead:item/syringe_blood"
     }
   ]
 }

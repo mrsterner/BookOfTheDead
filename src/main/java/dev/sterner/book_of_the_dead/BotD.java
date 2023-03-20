@@ -43,6 +43,7 @@ public class BotD implements ModInitializer {
 		BotDSoundEvents.init();
 		BotDMemoryModuleTypes.init();
 		BotDSensorTypes.init();
+		BotDDamageTypes.init();
 
 		BotDUseEvents.init();
 		BotDItemGroupEvents.init();

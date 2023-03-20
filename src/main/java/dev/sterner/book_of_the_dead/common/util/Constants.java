@@ -101,5 +101,6 @@ public class Constants {
         String VARIANT = "Variant";
 		String OWNER = "Owner";
 		String MODE = "Mode";
-	}
+        String BLOOD = "Blood";
+    }
 }

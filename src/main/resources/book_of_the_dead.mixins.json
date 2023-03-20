@@ -21,8 +21,7 @@
     "client.ItemRendererMixin",
     "client.LivingEntityRendererMixin",
     "client.MinecraftClientMixin",
-    "client.PlayerEntityRendererMixin",
-    "client.TexturedRenderLayersMixin"
+    "client.PlayerEntityRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
