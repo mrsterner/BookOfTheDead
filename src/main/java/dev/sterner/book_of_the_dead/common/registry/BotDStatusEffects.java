@@ -20,7 +20,7 @@ public interface BotDStatusEffects {
 	StatusEffect EUTHANASIA = register("euthanasia", new EuthanasiaStatusEffect(StatusEffectType.NEUTRAL, 0xffffff));
 	StatusEffect ADRENALINE = register("adrenaline", new EmptyStatusEffect(StatusEffectType.NEUTRAL, 0xffffff));
 	StatusEffect MORPHINE = register("morphine", new MorphineStatusEffect(StatusEffectType.NEUTRAL, 0xffffff));
-	StatusEffect SANGUINE = register("sanguine", new SanguineInfectionStatusEffect(StatusEffectType.HARMFUL));
+	StatusEffect SANGUINE = register("sanguine_infection", new SanguineInfectionStatusEffect(StatusEffectType.HARMFUL));
 
 	static <T extends StatusEffect> T register(String name, T effect) {
 		STATUS_EFFECTS.put(effect, Constants.id(name));

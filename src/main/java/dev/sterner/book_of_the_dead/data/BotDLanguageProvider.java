@@ -73,5 +73,6 @@ public class BotDLanguageProvider extends FabricLanguageProvider {
 		builder.add(BotDStatusEffects.MORPHINE, "Morphine");
 		builder.add(BotDStatusEffects.ADRENALINE, "Adrenaline");
 		builder.add(BotDStatusEffects.EUTHANASIA, "Euthanasia");
+		builder.add(BotDStatusEffects.SANGUINE, "Sanguine Infection");
 	}
 }
