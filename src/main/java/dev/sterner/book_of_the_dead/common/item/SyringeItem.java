@@ -138,9 +138,11 @@ public class SyringeItem extends Item {
 	public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
 		if(stack.getOrCreateNbt().contains(Constants.Nbt.BLOOD)){
 			NbtCompound nbt = stack.getSubNbt(Constants.Nbt.BLOOD);
-			String name = nbt.getString(Constants.Nbt.NAME);
-			String formattedName = TextUtils.capitalizeString(name);
-			tooltip.add(Text.literal(formattedName).setStyle(Style.EMPTY.withColor(0xAC0014)));
+			if (nbt != null) {
+				String name = nbt.getString(Constants.Nbt.NAME);
+				String formattedName = TextUtils.capitalizeString(name);
+				tooltip.add(Text.literal(formattedName).setStyle(Style.EMPTY.withColor(0xAC0014)));
+			}
 		}
 
 		if(stack.getOrCreateNbt().contains(Constants.Nbt.STATUS_EFFECT_INSTANCE)){
