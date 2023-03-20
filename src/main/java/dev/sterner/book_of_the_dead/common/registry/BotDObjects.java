@@ -47,7 +47,7 @@ public interface BotDObjects {
 	Item CELLAR_KEY = register("cellar_key", new CellarKeyItem(settings()));
 	Item CONTRACT = register("contract", new ContractItem(settings()));
 	Item PACKET = register("packet", new Item(settings()));
-	Item CAGE = register("cage", new Item(settings()));
+	Item CAGE = register("cage", new CageItem(settings()));
 	Item HOOK = register("hook", new Item(settings()));
 	Item METAL_HOOK = register("metal_hook", new Item(settings()));
 	Item OLD_LETTER = register("old_letter", new Item(settings()){

@@ -28,5 +28,11 @@ public class BotDEntityTagProvider extends FabricTagProvider.EntityTypeTagProvid
 				.add(EntityType.CHICKEN)
 				.add(EntityType.PLAYER)
 				.add(BotDEntityTypes.PLAYER_CORPSE_ENTITY);
+
+		getOrCreateTagBuilder(Constants.Tags.CAGEABLE_BLACKLIST)
+				.add(EntityType.PLAYER)
+				.add(EntityType.ENDER_DRAGON)
+				.add(EntityType.ELDER_GUARDIAN)
+				.add(EntityType.WITHER);
 	}
 }
