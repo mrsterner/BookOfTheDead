@@ -1,6 +1,7 @@
 package dev.sterner.book_of_the_dead.common.item;
 
 import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.entity.Entity;
@@ -13,29 +14,26 @@ import net.minecraft.item.ToolMaterial;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.world.World;
 
+import java.util.UUID;
+
 public class AllBlackSwordItem extends SwordItem {
-	public final Multimap<EntityAttribute, EntityAttributeModifier> attributeModifiers;
-	public AllBlackSwordItem(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, Settings settings, boolean allBlack) {
+	private static final EntityAttributeModifier REACH_MODIFIER = new EntityAttributeModifier(UUID.fromString("5fc9d1ae-8e00-449b-be79-b8d31fa10eff"), "Weapon modifier", 1.5, EntityAttributeModifier.Operation.ADDITION);
+
+
+	public AllBlackSwordItem(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, Settings settings) {
 		super(toolMaterial, attackDamage, attackSpeed, settings);
-		ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.builder();
-		/*TODO
-		if(allBlack){
-			builder.put(ReachEntityAttributes.REACH, new EntityAttributeModifier("Attack range", 1.1D, EntityAttributeModifier.Operation.ADDITION));
-			builder.put(ReachEntityAttributes.ATTACK_RANGE, new EntityAttributeModifier("Attack range", 1.1D, EntityAttributeModifier.Operation.ADDITION));
-		}else{
-			builder.put(ReachEntityAttributes.REACH, new EntityAttributeModifier("Attack range", 0.5D, EntityAttributeModifier.Operation.ADDITION));
-			builder.put(ReachEntityAttributes.ATTACK_RANGE, new EntityAttributeModifier("Attack range", 0.5D, EntityAttributeModifier.Operation.ADDITION));
-		}
-
-		 */
-
-		this.attributeModifiers = builder.build();
 	}
 
 	@Override
-	public Multimap<EntityAttribute, EntityAttributeModifier> getAttributeModifiers(EquipmentSlot equipmentSlot) {
-		return equipmentSlot == EquipmentSlot.MAINHAND ? attributeModifiers : super.getAttributeModifiers(equipmentSlot);
+	public Multimap<EntityAttribute, EntityAttributeModifier> getAttributeModifiers(EquipmentSlot slot) {
+		Multimap<EntityAttribute, EntityAttributeModifier> map = LinkedHashMultimap.create(super.getAttributeModifiers(slot));
+		if (slot == EquipmentSlot.MAINHAND) {
+			//map.put(ReachEntityAttributes.ATTACK_RANGE, REACH_MODIFIER);
+		}
+		return map;
 	}
+
+
 
 	@Override
 	public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {

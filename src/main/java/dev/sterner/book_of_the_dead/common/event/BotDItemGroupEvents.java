@@ -15,7 +15,7 @@ public class BotDItemGroupEvents {
 	private static void mainGroup(FabricItemGroupEntries e) {
 		e.addItem(DEBUG_WAND);
 		e.addItem(BOOK_OF_THE_DEAD);
-		e.addItem(BUTCHER_KNIFE);
+		e.addItem(MEAT_CLEAVER);
 		e.addItem(PAPER_AND_QUILL);
 		e.addItem(CARPENTER_TOOLS);
 		e.addItem(CELLAR_KEY);

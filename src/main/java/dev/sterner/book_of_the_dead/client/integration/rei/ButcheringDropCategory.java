@@ -25,7 +25,7 @@ import java.util.List;
 
 public class ButcheringDropCategory implements DisplayCategory<ButcheringDropDisplay> {
 	public static final Text TITLE = Text.translatable("rei.book_of_the_dead.butchering_drops");
-	public static final EntryStack<ItemStack> ICON = EntryStacks.of(BotDObjects.BLOODY_BUTCHER_KNIFE);
+	public static final EntryStack<ItemStack> ICON = EntryStacks.of(BotDObjects.MEAT_CLEAVER);
 
 	@Override
 	public Renderer getIcon() {

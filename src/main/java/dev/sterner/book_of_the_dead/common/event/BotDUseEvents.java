@@ -158,7 +158,7 @@ public class BotDUseEvents {
 	 * @return CONSUME if planks successfully converted to a butcher table
 	 */
 	private static ActionResult createButcherTable(PlayerEntity player, World world, Hand hand, BlockHitResult blockHitResult) {
-		return createDoubleBlock(BotDObjects.BUTCHER_KNIFE, Blocks.DARK_OAK_PLANKS, BotDObjects.BUTCHER_TABLE.getDefaultState(), player, world, hand, blockHitResult);
+		return createDoubleBlock(BotDObjects.CARPENTER_TOOLS, Blocks.DARK_OAK_PLANKS, BotDObjects.BUTCHER_TABLE.getDefaultState(), player, world, hand, blockHitResult);
 	}
 
 	/**

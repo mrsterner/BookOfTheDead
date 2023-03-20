@@ -71,7 +71,7 @@ public class KakuzuBrain {
 		if (brain.hasMemoryModule(MemoryModuleType.VISIBLE_MOBS)) {
 			Optional<VisibleLivingEntitiesCache> visibleLivingEntitiesCache = kakuzu.getBrain().getOptionalMemory(MemoryModuleType.VISIBLE_MOBS);
 			if (visibleLivingEntitiesCache.isPresent()) {
-				return visibleLivingEntitiesCache.get().findClosest(kakuzu.TARGET_FILTER);
+				return visibleLivingEntitiesCache.get().method_38975(kakuzu.TARGET_FILTER);
 			}
 		}
 		return Optional.empty();

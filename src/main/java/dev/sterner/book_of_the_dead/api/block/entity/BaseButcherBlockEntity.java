@@ -94,7 +94,7 @@ public class BaseButcherBlockEntity extends HaulerBlockEntity implements IBlockE
 			if(getCorpseEntity() != null && !getCorpseEntity().isEmpty()){
 				this.refreshButcheringRecipe();
 
-				if (player.getMainHandStack().isOf(BotDObjects.BUTCHER_KNIFE)){
+				if (player.getMainHandStack().isOf(BotDObjects.MEAT_CLEAVER)){
 
 					List<ItemStack> nonEmptyOutput = this.outputs.stream().filter(item -> !item.isEmpty() || !item.isOf(Items.AIR) || item.getCount() != 0).toList();
 					List<Float> nonEmptyChance = this.chances.stream().filter(chance -> chance != 0).toList();

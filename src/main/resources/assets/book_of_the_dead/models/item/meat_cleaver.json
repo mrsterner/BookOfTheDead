@@ -1,0 +1,14 @@
+{
+  "parent": "item/handheld",
+  "textures": {
+    "layer0": "book_of_the_dead:item/meat_cleaver"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "signed": 1
+      },
+      "model": "book_of_the_dead:item/bloody_meat_cleaver"
+    }
+  ]
+}

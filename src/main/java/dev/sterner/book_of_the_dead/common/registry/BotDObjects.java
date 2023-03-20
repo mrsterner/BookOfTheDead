@@ -31,10 +31,9 @@ public interface BotDObjects {
 	Item PAPER_AND_QUILL = register("paper_and_quill", new Item(settings().maxCount(1)));
 	Item CARPENTER_TOOLS = register("carpenter_tools", new Item(settings().maxCount(1).maxDamage(32)));
 
-	Item BUTCHER_KNIFE = register("butcher_knife", new AxeItem(ToolMaterials.NETHERITE, 6, -2, settings()));
-	Item BLOODY_BUTCHER_KNIFE = register("bloody_butcher_knife", new AxeItem(ToolMaterials.NETHERITE, 6, -2, new Item.Settings()));
+	Item MEAT_CLEAVER = register("meat_cleaver", new AxeItem(ToolMaterials.NETHERITE, 6, -2, settings()));
 	Item BOOK_OF_THE_DEAD = register("book_of_the_dead", new BookOfTheDeadItem(Constants.id("book_of_the_dead"), settings()));
-	Item ALL_BLACK = register("all_black", new AllBlackSwordItem(ToolMaterials.NETHERITE, 8, -2, settings(), true));
+	Item ALL_BLACK = register("all_black", new AllBlackSwordItem(ToolMaterials.NETHERITE, 8, -2, settings()));
 
 	Item SYRINGE = register("syringe", new SyringeItem(settings()));
 

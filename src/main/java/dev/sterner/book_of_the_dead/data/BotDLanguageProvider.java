@@ -21,7 +21,7 @@ public class BotDLanguageProvider extends FabricLanguageProvider {
 		builder.add(BotDObjects.HEART, "Heart");
 		builder.add(BotDObjects.BRAIN, "Brain");
 		builder.add(BotDObjects.BOOK_OF_THE_DEAD, "The Book of the Dead");
-		builder.add(BotDObjects.BUTCHER_KNIFE, "Butcher Knife");
+		builder.add(BotDObjects.MEAT_CLEAVER, "Meat Cleaver");
 		builder.add(BotDObjects.CONTRACT, "Contract");
 		builder.add(BotDObjects.PACKET, "Packet");
 		builder.add(BotDObjects.FAT, "Fat");

@@ -22,6 +22,7 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
@@ -39,6 +40,10 @@ public class CageItem extends Item {
 			ItemStack mainHand = user.getMainHandStack();
 			if(!mainHand.getOrCreateNbt().contains(Constants.Nbt.STORED_ENTITY)){
 				NbtCompound nbt = new NbtCompound();
+				mob.extinguish();
+				mob.setFrozenTicks(0);
+				mob.setVelocity(Vec3d.ZERO);
+				mob.fallDistance = 0;
 				mob.saveSelfNbt(nbt);
 				mainHand.getOrCreateNbt().put(Constants.Nbt.STORED_ENTITY, nbt);
 				serverWorld.playSound(null, target.getBlockPos(), SoundEvents.ENTITY_ITEM_PICKUP, target.getSoundCategory(), 0.5f, target.getSoundPitch());

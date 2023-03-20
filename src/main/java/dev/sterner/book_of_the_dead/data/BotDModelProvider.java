@@ -28,8 +28,6 @@ public class BotDModelProvider extends FabricModelProvider {
 		itemModelGenerator.register(BotDObjects.HEART, Models.SINGLE_LAYER_ITEM);
 		itemModelGenerator.register(BotDObjects.BOOK_OF_THE_DEAD, Models.SINGLE_LAYER_ITEM);
 		itemModelGenerator.register(BotDObjects.PACKET, Models.SINGLE_LAYER_ITEM);
-		itemModelGenerator.register(BotDObjects.BUTCHER_KNIFE, Models.HANDHELD);
-		itemModelGenerator.register(BotDObjects.BLOODY_BUTCHER_KNIFE, Models.HANDHELD);
 		itemModelGenerator.register(BotDObjects.CAGE, Models.SINGLE_LAYER_ITEM);
 		itemModelGenerator.register(BotDObjects.HOOK, Models.SINGLE_LAYER_ITEM);
 		itemModelGenerator.register(BotDObjects.METAL_HOOK, Models.SINGLE_LAYER_ITEM);

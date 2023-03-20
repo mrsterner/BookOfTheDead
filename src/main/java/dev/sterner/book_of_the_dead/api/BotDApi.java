@@ -24,7 +24,7 @@ public class BotDApi {
 			return false;
 		}else if(livingEntity.getAttacker() instanceof PlayerEntity player){
 			boolean isInTag = livingEntity.getType().isIn(Constants.Tags.BUTCHERABLE);
-			boolean isItem = (player.getMainHandStack().isOf(BotDObjects.BUTCHER_KNIFE) || player.getMainHandStack().isOf(BotDObjects.BLOODY_BUTCHER_KNIFE) || EnchantmentHelper.getLevel(BotDEnchantments.BUTCHERING, player.getMainHandStack()) != 0);
+			boolean isItem = (player.getMainHandStack().isOf(BotDObjects.MEAT_CLEAVER) || EnchantmentHelper.getLevel(BotDEnchantments.BUTCHERING, player.getMainHandStack()) != 0);
 			return isInTag && isItem;
 		}
 		return false;

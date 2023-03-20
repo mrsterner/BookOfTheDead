@@ -135,6 +135,13 @@ public class BotDClient implements ClientModInitializer {
 			}
 			return itemStack.hasNbt() && itemStack.getOrCreateNbt().contains(Constants.Nbt.BLOOD) ? 1.0F : 0.0F;
 		});
+
+		ModelPredicateProviderRegistry.register(BotDObjects.MEAT_CLEAVER, new Identifier("bloody"), (itemStack, clientWorld, livingEntity, i) -> {
+			if (livingEntity == null) {
+				return 0.0F;
+			}
+			return itemStack.hasNbt() && itemStack.getOrCreateNbt().contains(Constants.Nbt.BLOOD) ? 1.0F : 0.0F;
+		});
 	}
 
 	public static final class ClientTickHandler {

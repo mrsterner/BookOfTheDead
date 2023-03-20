@@ -21,7 +21,7 @@ public class Constants {
 
 	public static final String MODID = "book_of_the_dead";
 
-	public static final ItemGroup BOTD_GROUP = FabricItemGroup.builder(Constants.id("items")).icon(() -> new ItemStack(BotDObjects.BUTCHER_KNIFE)).build();
+	public static final ItemGroup BOTD_GROUP = FabricItemGroup.builder(Constants.id("items")).icon(() -> new ItemStack(BotDObjects.MEAT_CLEAVER)).build();
 
 	public static Identifier id(String string){
 		return new Identifier(MODID, string);
