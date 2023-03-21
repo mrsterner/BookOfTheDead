@@ -25,6 +25,7 @@ public class BotDModelProvider extends FabricModelProvider {
 	public void generateItemModels(ItemModelGenerator itemModelGenerator) {
 		itemModelGenerator.register(BotDObjects.DEBUG_WAND, Models.SINGLE_LAYER_ITEM);
 
+		itemModelGenerator.register(BotDObjects.EYE, Models.SINGLE_LAYER_ITEM);
 		itemModelGenerator.register(BotDObjects.SULFURIC_ACID, Models.SINGLE_LAYER_ITEM);
 		itemModelGenerator.register(BotDObjects.SULFUR, Models.SINGLE_LAYER_ITEM);
 		itemModelGenerator.register(BotDObjects.HEART, Models.SINGLE_LAYER_ITEM);

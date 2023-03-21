@@ -67,6 +67,7 @@ public interface BotDObjects {
 	Item COOKED_FLESH = register("cooked_flesh", new Item(settings().food(FoodComponents.COOKED_PORKCHOP)));
 	Item FAT = register("fat", new Item(settings()));
 	Item SKIN = register("skin", new Item(settings()));
+	Item EYE = register("eye", new Item(settings()));
 	Item BOTTLE_OF_BLOOD = register("bottle_of_blood", new Item(settings()));
 
 	Block VILLAGER_WALL_HEAD = register("villager_wall_head", new BotDWallSkullBlock(BotDSkullBlock.Type.VILLAGER, QuiltBlockSettings.copyOf(Blocks.ZOMBIE_HEAD)), settings(), false);
