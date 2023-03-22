@@ -3,19 +3,13 @@ package dev.sterner.book_of_the_dead.common.component;
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import dev.onyxstudios.cca.api.v3.component.tick.ServerTickingComponent;
 import dev.sterner.book_of_the_dead.common.util.Constants;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.mob.IllagerEntity;
-import net.minecraft.entity.mob.PillagerEntity;
-import net.minecraft.entity.passive.MerchantEntity;
-import net.minecraft.entity.passive.TameableEntity;
-import net.minecraft.entity.passive.VillagerEntity;
-import net.minecraft.entity.passive.WolfEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.math.MathHelper;
 
 import java.util.List;
-import java.util.Set;
 
 public class LivingEntityDataComponent implements AutoSyncedComponent, ServerTickingComponent {
 	public final float[] ENTANGLE_STRENGTH = {0.15f, 0.25f, 0.35f, 0.5f, 0.6f, 0.75f, 0.85f};
@@ -49,27 +43,21 @@ public class LivingEntityDataComponent implements AutoSyncedComponent, ServerTic
 
 	public float getEntangleStrength(LivingEntity source, LivingEntity target, boolean isSource){
 		int i = 0;
-		if(source instanceof PlayerEntity && target instanceof PlayerEntity){
-			i = 6;
-		} else if(source instanceof PlayerEntity playerSource){
-			i++;
-			if(target instanceof TameableEntity tameableEntity && tameableEntity.isOwner(playerSource)){
-				i += 4;
-			}else if(target instanceof MerchantEntity){
-				i++;
-			}
-			if(target instanceof IllagerEntity){
-				i += 2;
-			}
-		} else if(target instanceof PlayerEntity playerSource){
-			i++;
-			if(source instanceof TameableEntity tameableEntity && tameableEntity.isOwner(playerSource)){
-				i += 4;
-			}else if(source instanceof MerchantEntity){
-				i++;
-			}
-			if(source instanceof IllagerEntity){
-				i += 2;
+		List<TagKey<EntityType<?>>> list = List.of(Constants.Tags.SOUL_WEAK, Constants.Tags.SOUL_REGULAR, Constants.Tags.SOUL_STRONG);
+
+		for(TagKey<EntityType<?>> tag : list) {
+			if (tag.equals(Constants.Tags.SOUL_WEAK)) {
+				if (source.getType().isIn(tag) || target.getType().isIn(tag)) {
+					i++;
+				}
+			} else if (tag.equals(Constants.Tags.SOUL_REGULAR)) {
+				if (source.getType().isIn(tag) || target.getType().isIn(tag)) {
+					i += 2;
+				}
+			} else if (tag.equals(Constants.Tags.SOUL_STRONG)) {
+				if (source.getType().isIn(tag) || target.getType().isIn(tag)) {
+					i += 3;
+				}
 			}
 		}
 

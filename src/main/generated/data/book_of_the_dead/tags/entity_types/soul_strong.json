@@ -1,0 +1,18 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:villager",
+    "minecraft:wandering_trader",
+    "minecraft:enderman",
+    "minecraft:piglin",
+    "minecraft:evoker",
+    "minecraft:piglin_brute",
+    "minecraft:vindicator",
+    "minecraft:warden",
+    "minecraft:witch",
+    "minecraft:zombie_villager",
+    "minecraft:sniffer",
+    "minecraft:ender_dragon",
+    "minecraft:wither"
+  ]
+}

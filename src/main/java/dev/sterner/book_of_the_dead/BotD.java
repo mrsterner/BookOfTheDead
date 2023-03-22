@@ -9,6 +9,7 @@ import dev.sterner.book_of_the_dead.common.registry.*;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.resource.ResourceType;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -18,6 +19,7 @@ import org.quiltmc.loader.api.QuiltLoader;
 import org.quiltmc.qsl.base.api.entrypoint.ModInitializer;
 import org.quiltmc.qsl.entity.event.api.EntityReviveEvents;
 import org.quiltmc.qsl.entity.event.api.ServerPlayerEntityCopyCallback;
+import org.quiltmc.qsl.resource.loader.api.ResourceLoader;
 
 import java.util.Optional;
 
@@ -50,6 +52,7 @@ public class BotD implements ModInitializer {
 
 		ServerPlayerEntityCopyCallback.EVENT.register(this::afterRespawn);
 		EntityReviveEvents.BEFORE_TOTEM.register(this::tryUseExtraLives);
+
 	}
 
 	private boolean tryUseExtraLives(LivingEntity livingEntity, DamageSource damageSource) {
