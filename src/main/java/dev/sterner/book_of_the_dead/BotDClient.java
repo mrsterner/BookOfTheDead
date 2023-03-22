@@ -34,12 +34,13 @@ import org.quiltmc.qsl.lifecycle.api.client.event.ClientTickEvents;
 import org.quiltmc.qsl.networking.api.client.ClientPlayNetworking;
 import org.quiltmc.qsl.resource.loader.api.ResourceLoader;
 
+import java.util.List;
+
 public class BotDClient implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient(ModContainer mod) {
 		BotDParticleTypes.init();
-
 
 		BlockRenderLayerMap.put(RenderLayer.getCutout(),
 				BotDObjects.ROPE,
@@ -91,7 +92,13 @@ public class BotDClient implements ClientModInitializer {
 
 		ClientTickEvents.END.register(ClientTickHandler::clientTickEnd);
 
-		for (Item item : BotDObjects.ITEMS.keySet()) {
+		ModelPredicateProviderRegistry.register(BotDObjects.CONTRACT, new Identifier("signed"), (itemStack, clientWorld, livingEntity, i) -> livingEntity == null ? 0 : itemStack.hasNbt() && itemStack.getOrCreateNbt().contains(Constants.Nbt.CONTRACT) ? 1.0F : 0.0F);
+		ModelPredicateProviderRegistry.register(BotDObjects.SYRINGE, new Identifier("filled"), (itemStack, clientWorld, livingEntity, i) -> livingEntity == null ? 0 : itemStack.hasNbt() && itemStack.getOrCreateNbt().contains(Constants.Nbt.STATUS_EFFECT_INSTANCE) ? 1.0F : 0.0F);
+		ModelPredicateProviderRegistry.register(BotDObjects.SYRINGE, new Identifier("blood"), (itemStack, clientWorld, livingEntity, i) -> livingEntity == null ? 0 : itemStack.hasNbt() && itemStack.getOrCreateNbt().contains(Constants.Nbt.BLOOD) ? 1.0F : 0.0F);
+		ModelPredicateProviderRegistry.register(BotDObjects.MEAT_CLEAVER, new Identifier("bloody"), (itemStack, clientWorld, livingEntity, i) -> livingEntity == null ? 0 : itemStack.hasNbt() && itemStack.getOrCreateNbt().contains(Constants.Nbt.BLOOD) ? 1.0F : 0.0F);
+
+
+		for (Item item : List.of(BotDObjects.ALL_BLACK)) {
 			if(item instanceof AllBlackSwordItem){
 				Identifier allBlackId = Registries.ITEM.getId(item);
 				AllBlackSwordItemRenderer allBlackItemRenderer = new AllBlackSwordItemRenderer(allBlackId);
@@ -114,34 +121,6 @@ public class BotDClient implements ClientModInitializer {
 			}
 			return -1;
 		}, BotDObjects.SYRINGE);
-
-		ModelPredicateProviderRegistry.register(BotDObjects.CONTRACT, new Identifier("signed"), (itemStack, clientWorld, livingEntity, i) -> {
-			if (livingEntity == null) {
-				return 0.0F;
-			}
-			return itemStack.hasNbt() && itemStack.getOrCreateNbt().contains(Constants.Nbt.CONTRACT) ? 1.0F : 0.0F;
-		});
-
-		ModelPredicateProviderRegistry.register(BotDObjects.SYRINGE, new Identifier("filled"), (itemStack, clientWorld, livingEntity, i) -> {
-			if (livingEntity == null) {
-				return 0.0F;
-			}
-			return itemStack.hasNbt() && itemStack.getOrCreateNbt().contains(Constants.Nbt.STATUS_EFFECT_INSTANCE) ? 1.0F : 0.0F;
-		});
-
-		ModelPredicateProviderRegistry.register(BotDObjects.SYRINGE, new Identifier("blood"), (itemStack, clientWorld, livingEntity, i) -> {
-			if (livingEntity == null) {
-				return 0.0F;
-			}
-			return itemStack.hasNbt() && itemStack.getOrCreateNbt().contains(Constants.Nbt.BLOOD) ? 1.0F : 0.0F;
-		});
-
-		ModelPredicateProviderRegistry.register(BotDObjects.MEAT_CLEAVER, new Identifier("bloody"), (itemStack, clientWorld, livingEntity, i) -> {
-			if (livingEntity == null) {
-				return 0.0F;
-			}
-			return itemStack.hasNbt() && itemStack.getOrCreateNbt().contains(Constants.Nbt.BLOOD) ? 1.0F : 0.0F;
-		});
 	}
 
 	public static final class ClientTickHandler {

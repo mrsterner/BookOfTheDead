@@ -80,7 +80,6 @@ public interface BotDObjects {
 	Item RETORT_FLASK = register("retort_flask", new BlockItem(RETORT_FLASK_BLOCK, settings()));
 	Item EMERALD_TABLET = register("emerald_tablet", new Item(settings()));
 
-
 	Item POPPY_POD = register("poppy_pod", new Item(settings()));
 	Block POPPY_CROP = register("poppy_crop", new PoppyCropBlock(QuiltBlockSettings.copy(Blocks.WHEAT)), settings(), false);
 	Item POPPY_SEEDS = register("poppy_seeds", new AliasedBlockItem(POPPY_CROP, settings()));
