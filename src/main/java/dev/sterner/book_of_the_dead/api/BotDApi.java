@@ -8,8 +8,10 @@ import dev.sterner.book_of_the_dead.common.registry.BotDEntityTypes;
 import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.network.listener.ClientPlayPacketListener;
 import org.jetbrains.annotations.Nullable;
 
 public class BotDApi {
@@ -30,16 +32,64 @@ public class BotDApi {
 		return false;
 	}
 
+	/**
+	 * If the player is capable of spawning a kakuzu, spawn a kakuzu
+	 * @param player player who is spawning
+	 */
 	public void spawnKakuzuFromPlayer(PlayerEntity player){
 		PlayerDataComponent component = BotDComponents.PLAYER_COMPONENT.get(player);
-		if(component.getExtraLives() > 0 && component.getDispatchedExtraLivesMinions() < 3){
-			component.decreaseExtraLivesBuffLevel();
+		if(component.getKakuzu() > 0 && component.getDispatchedKakuzuMinions() < 3){
+			component.decreaseKakuzuBuffLevel();
 			component.increaseDispatchedMinionBuffLevel();
 			KakuzuEntity kakuzuEntity = new KakuzuEntity(BotDEntityTypes.KAKUZU_ENTITY, player.world);
 			kakuzuEntity.setOwner(player.getUuid());
-			kakuzuEntity.setVariant(component.getExtraLives());
+			kakuzuEntity.setVariant(component.getKakuzu());
 			kakuzuEntity.refreshPositionAndAngles(player.getX(), player.getY(), player.getZ(), player.getYaw(), player.getPitch());
 			player.world.spawnEntity(kakuzuEntity);
 		}
+	}
+
+	/**
+	 * If the player is capable of fusing with its dispatched kakuzu, it will, and it will discard the kakuzu
+	 * @param player player to fuse with
+	 * @param kakuzuEntity kakuzu to enter the player
+	 */
+	public void pickupKakuzu(PlayerEntity player, KakuzuEntity kakuzuEntity){
+		PlayerDataComponent component = BotDComponents.PLAYER_COMPONENT.get(player);
+		if(component.getKakuzu() < 3 && component.getDispatchedKakuzuMinions() > 0){
+			component.increaseKakuzuBuffLevel();
+			component.decreaseDispatchedMinionBuffLevel();
+			kakuzuEntity.remove(Entity.RemovalReason.DISCARDED);
+		}
+	}
+
+	/**
+	 * Determines if the player can have Kakuzu immortality or not
+	 * @param player player
+	 * @return if the player already is a lich or has an entanglement, returns false
+	 */
+	public boolean canHaveKakuzu(PlayerEntity player){
+		PlayerDataComponent component = BotDComponents.PLAYER_COMPONENT.get(player);
+		return !component.getLich() && !component.getEntangled();
+	}
+
+	/**
+	 * Determines if the player can have Lichdom immortality or not
+	 * @param player player
+	 * @return if the player already has kakuzu or has an entanglement, returns false
+	 */
+	public boolean canHaveLichdom(PlayerEntity player){
+		PlayerDataComponent component = BotDComponents.PLAYER_COMPONENT.get(player);
+		return component.getKakuzu() <= 0 && !component.getEntangled();
+	}
+
+	/**
+	 * Determines if the player can have entanglement immortality or not
+	 * @param player player
+	 * @return if the player already has kakuzu or is a lich, returns false
+	 */
+	public boolean canEntangle(PlayerEntity player){
+		PlayerDataComponent component = BotDComponents.PLAYER_COMPONENT.get(player);
+		return component.getKakuzu() <= 0 && !component.getLich();
 	}
 }

@@ -10,6 +10,8 @@ public class LivingEntityDataComponent implements AutoSyncedComponent, ServerTic
 	public LivingEntity livingEntity;
 	private float morphine$accumulatedDamage = 0;
 	private float adrenaline$bonusDamage = 0;
+	private int entangledEntityId = 0;
+	private boolean isDamageSource = false;
 
 	public LivingEntityDataComponent(LivingEntity livingEntity){
 		this.livingEntity = livingEntity;
@@ -24,12 +26,25 @@ public class LivingEntityDataComponent implements AutoSyncedComponent, ServerTic
 	public void readFromNbt(NbtCompound nbt) {
 		setMorphine$accumulatedDamage(nbt.getFloat(Constants.Nbt.MORPHINE));
 		setAdrenaline$bonusDamage(nbt.getFloat(Constants.Nbt.ADRENALINE));
+		setEntangledEntityId(nbt.getInt(Constants.Nbt.ENTANGLED));
+		setDamageSource(nbt.getBoolean(Constants.Nbt.IS_DAMAGE_SOURCE));
 	}
 
 	@Override
 	public void writeToNbt(NbtCompound nbt) {
 		nbt.putFloat(Constants.Nbt.MORPHINE, getMorphine$accumulatedDamage());
 		nbt.putFloat(Constants.Nbt.ADRENALINE, getAdrenaline$bonusDamage());
+		nbt.putInt(Constants.Nbt.ENTANGLED, getEntangledEntityId());
+		nbt.putBoolean(Constants.Nbt.IS_DAMAGE_SOURCE, isDamageSource());
+	}
+
+	public int getEntangledEntityId() {
+		return entangledEntityId;
+	}
+
+	public void setEntangledEntityId(int entangledEntityId) {
+		this.entangledEntityId = entangledEntityId;
+		syncAbility();
 	}
 
 	public float getMorphine$accumulatedDamage() {
@@ -38,7 +53,7 @@ public class LivingEntityDataComponent implements AutoSyncedComponent, ServerTic
 
 	public void setMorphine$accumulatedDamage(float morphine$accumulatedDamage) {
 		this.morphine$accumulatedDamage = morphine$accumulatedDamage;
-		BotDComponents.LIVING_COMPONENT.sync(livingEntity);
+		syncAbility();
 	}
 
 	public void increaseMorphine$accumulatedDamage(float damage){
@@ -51,10 +66,25 @@ public class LivingEntityDataComponent implements AutoSyncedComponent, ServerTic
 
 	public void setAdrenaline$bonusDamage(float adrenaline$bonusDamage) {
 		this.adrenaline$bonusDamage = adrenaline$bonusDamage;
-		BotDComponents.LIVING_COMPONENT.sync(livingEntity);
+		syncAbility();
 	}
 
 	public void increaseAdrenaline$bonusDamage(float damage){
 		setAdrenaline$bonusDamage(getAdrenaline$bonusDamage() + damage);
 	}
+
+	public boolean isDamageSource() {
+		return isDamageSource;
+	}
+
+	public void setDamageSource(boolean damageSource) {
+		isDamageSource = damageSource;
+		syncAbility();
+	}
+
+	private void syncAbility(){
+		BotDComponents.LIVING_COMPONENT.sync(this.livingEntity);
+	}
+
+
 }

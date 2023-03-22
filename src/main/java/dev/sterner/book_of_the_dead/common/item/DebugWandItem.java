@@ -4,6 +4,7 @@ import dev.sterner.book_of_the_dead.BotD;
 import dev.sterner.book_of_the_dead.common.block.entity.ButcherTableBlockEntity;
 import dev.sterner.book_of_the_dead.common.component.BotDComponents;
 import dev.sterner.book_of_the_dead.common.component.CorpseDataComponent;
+import dev.sterner.book_of_the_dead.common.component.LivingEntityDataComponent;
 import dev.sterner.book_of_the_dead.common.entity.PlayerCorpseEntity;
 import dev.sterner.book_of_the_dead.common.registry.BotDEntityTypes;
 import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
@@ -60,7 +61,11 @@ public class DebugWandItem extends Item {
 
 	@Override
 	public ActionResult useOnEntity(ItemStack stack, PlayerEntity user, LivingEntity entity, Hand hand) {
-		entity.addStatusEffect(new StatusEffectInstance(BotDStatusEffects.SANGUINE, 20 * 5));
+		LivingEntityDataComponent source = BotDComponents.LIVING_COMPONENT.get(user);
+		LivingEntityDataComponent target = BotDComponents.LIVING_COMPONENT.get(entity);
+		source.setEntangledEntityId(entity.getId());
+		target.setEntangledEntityId(user.getId());
+
 		return super.useOnEntity(stack, user, entity, hand);
 	}
 }

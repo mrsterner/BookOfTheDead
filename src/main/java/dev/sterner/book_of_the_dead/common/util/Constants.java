@@ -103,5 +103,8 @@ public class Constants {
 		String MODE = "Mode";
         String BLOOD = "Blood";
 		String STORED_ENTITY = "StoredEntity";
-    }
+        String IS_LICH = "IsLich";
+		String ENTANGLED = "Entangled";
+		String IS_DAMAGE_SOURCE = "IsDamageSource";
+	}
 }

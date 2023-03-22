@@ -55,8 +55,8 @@ public class BotD implements ModInitializer {
 	private boolean tryUseExtraLives(LivingEntity livingEntity, DamageSource damageSource) {
 		if(livingEntity instanceof PlayerEntity player){
 			PlayerDataComponent component = BotDComponents.PLAYER_COMPONENT.get(player);
-			if(component.getExtraLives() > 0){
-				component.decreaseExtraLivesBuffLevel();
+			if(component.getKakuzu() > 0){
+				component.decreaseKakuzuBuffLevel();
 				player.setHealth(player.getMaxHealth());
 				player.extinguish();
 				player.clearStatusEffects();

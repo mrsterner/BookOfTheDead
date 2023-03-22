@@ -97,8 +97,8 @@ public class KakuzuEntity extends PathAwareEntity implements SmartBrainOwner<Kak
 	protected ActionResult interactMob(PlayerEntity player, Hand hand) {
 		if(this.getOwner() != null && this.getOwner().equals(player.getUuid())){
 			PlayerDataComponent component = BotDComponents.PLAYER_COMPONENT.get(player);
-			if(component.getExtraLives() < 3 && component.getDispatchedExtraLivesMinions() > 0){
-				component.increaseExtraLivesBuffLevel();
+			if(component.getKakuzu() < 3 && component.getDispatchedKakuzuMinions() > 0){
+				component.increaseKakuzuBuffLevel();
 				component.decreaseDispatchedMinionBuffLevel();
 				this.discard();
 			}

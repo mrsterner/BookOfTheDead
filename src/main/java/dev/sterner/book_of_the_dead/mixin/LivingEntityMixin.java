@@ -12,12 +12,14 @@ import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffectType;
 import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.entity.passive.CowEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.loot.LootTable;
 import net.minecraft.loot.context.LootContext;
 import net.minecraft.loot.context.LootContextTypes;
 import net.minecraft.registry.Registries;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
@@ -183,5 +185,45 @@ public abstract class LivingEntityMixin extends Entity {
 			}
 		}
 		return effect;
+	}
+
+	@ModifyVariable(method = "applyArmorToDamage", at = @At("HEAD"), argsOnly = true)
+	private float book_of_the_dead$handleEntanglement(float amount, DamageSource source) {
+		if (world instanceof ServerWorld serverWorld) {
+			if(amount > 0){
+				LivingEntity livingEntity = LivingEntity.class.cast(this);
+				LivingEntityDataComponent component = BotDComponents.LIVING_COMPONENT.get(livingEntity);
+				if(component.getEntangledEntityId() != 0){
+					Entity targetEntity = livingEntity.world.getEntityById(component.getEntangledEntityId());
+					if(targetEntity instanceof LivingEntity target){
+						if(!serverWorld.isChunkLoaded(target.getChunkPos().x, target.getChunkPos().z)){
+							serverWorld.setChunkForced(target.getChunkPos().x, target.getChunkPos().z, true);
+						}
+						target.damage(source, amount * 0.75f);
+						amount *= 0.25f;
+					}
+				}
+			}
+		}
+		return amount;
+	}
+
+	@Inject(method = "addStatusEffect(Lnet/minecraft/entity/effect/StatusEffectInstance;Lnet/minecraft/entity/Entity;)Z", at = @At("RETURN"))
+	private void book_of_the_dead$handleEntanglement(StatusEffectInstance effect, Entity source, CallbackInfoReturnable<Boolean> cir){
+		if(cir.getReturnValue()){
+			if(world instanceof ServerWorld serverWorld){
+				LivingEntity livingEntity = LivingEntity.class.cast(this);
+				LivingEntityDataComponent component = BotDComponents.LIVING_COMPONENT.get(livingEntity);
+				if(component.getEntangledEntityId() != 0){
+					var targetEntity = livingEntity.world.getEntityById(component.getEntangledEntityId());
+					if(targetEntity instanceof LivingEntity livingTarget){
+						if(!serverWorld.isChunkLoaded(livingTarget.getChunkPos().x, livingTarget.getChunkPos().z)){
+							serverWorld.setChunkForced(livingTarget.getChunkPos().x, livingTarget.getChunkPos().z, true);
+						}
+						livingTarget.addStatusEffect(effect, source);
+					}
+				}
+			}
+		}
 	}
 }

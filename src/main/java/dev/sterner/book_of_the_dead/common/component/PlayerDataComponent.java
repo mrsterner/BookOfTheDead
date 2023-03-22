@@ -2,8 +2,12 @@ package dev.sterner.book_of_the_dead.common.component;
 
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import dev.sterner.book_of_the_dead.common.util.Constants;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.UUID;
 
 public class PlayerDataComponent implements AutoSyncedComponent {
 	private final PlayerEntity player;
@@ -31,8 +35,14 @@ public class PlayerDataComponent implements AutoSyncedComponent {
 	private int statusEffectConversionBuff = 0;
 	private int necroAuraBuff = 0;
 
-	private int extraLives = 0;
-	private int dispatchedExtraLivesMinions = 0;
+	//TODO change name to kakuzu
+	private int kakuzu = 0;
+	private int dispatchedKakuzuMinions = 0;
+
+	private boolean isLich = false;
+
+	private UUID entangledUuid = null;
+
 	private boolean phantomImmunity = false;
 
 	public PlayerDataComponent(PlayerEntity player) {
@@ -54,9 +64,13 @@ public class PlayerDataComponent implements AutoSyncedComponent {
 		nbt.putInt(Constants.Nbt.RESISTANCE_BUFF, getResistanceBuff());
 		nbt.putInt(Constants.Nbt.DEATHS_TOUCH_BUFF, getDeathsTouchBuff());
 		nbt.putInt(Constants.Nbt.NECRO_AURA_BUFF, getNecroAuraBuff());
-		nbt.putInt(Constants.Nbt.EXTRA_LIVES, getExtraLives());
-		nbt.putInt(Constants.Nbt.DISPATCHED_MINIONS, getDispatchedExtraLivesMinions());
+		nbt.putInt(Constants.Nbt.EXTRA_LIVES, getKakuzu());
+		nbt.putInt(Constants.Nbt.DISPATCHED_MINIONS, getDispatchedKakuzuMinions());
 		nbt.putBoolean(Constants.Nbt.PHANTOM_IMMUNITY, getPhantomImmunity());
+		nbt.putBoolean(Constants.Nbt.IS_LICH, getLich());
+		if(getEntangledUuid() != null){
+			nbt.putUuid(Constants.Nbt.UUID, getEntangledUuid());
+		}
 	}
 
 	@Override
@@ -74,9 +88,13 @@ public class PlayerDataComponent implements AutoSyncedComponent {
 		setReputationDebuff(nbt.getInt(Constants.Nbt.RESISTANCE_BUFF));
 		setDeathsTouchBuff(nbt.getInt(Constants.Nbt.DEATHS_TOUCH_BUFF));
 		setNecroAuraBuff(nbt.getInt(Constants.Nbt.NECRO_AURA_BUFF));
-		setExtraLives(nbt.getInt(Constants.Nbt.EXTRA_LIVES));
-		setDispatchedExtraLivesMinions(nbt.getInt(Constants.Nbt.DISPATCHED_MINIONS));
+		setKakuzu(nbt.getInt(Constants.Nbt.EXTRA_LIVES));
+		setDispatchedKakuzuMinions(nbt.getInt(Constants.Nbt.DISPATCHED_MINIONS));
 		setPhantomImmunity(nbt.getBoolean(Constants.Nbt.PHANTOM_IMMUNITY));
+		setLich(nbt.getBoolean(Constants.Nbt.IS_LICH));
+		if(getEntangled()){
+			setEntangled(nbt.getUuid(Constants.Nbt.UUID));
+		}
 	}
 
 	public float getNecroAuraBuffModifier(){
@@ -303,27 +321,27 @@ public class PlayerDataComponent implements AutoSyncedComponent {
 		}
 	}
 
-	public void increaseExtraLivesBuffLevel(){
-		if(getExtraLives() + 1 <= MAX_ABILITY_LEVEL){
-			setExtraLives(getExtraLives() + 1);
+	public void increaseKakuzuBuffLevel(){
+		if(getKakuzu() + 1 <= MAX_ABILITY_LEVEL){
+			setKakuzu(getKakuzu() + 1);
 		}
 	}
 
-	public void decreaseExtraLivesBuffLevel(){
-		if(getExtraLives() - 1 >= 0){
-			setExtraLives(getExtraLives() - 1);
+	public void decreaseKakuzuBuffLevel(){
+		if(getKakuzu() - 1 >= 0){
+			setKakuzu(getKakuzu() - 1);
 		}
 	}
 
 	public void increaseDispatchedMinionBuffLevel(){
-		if(getDispatchedExtraLivesMinions() + 1 <= MAX_ABILITY_LEVEL){
-			setDispatchedExtraLivesMinions(getDispatchedExtraLivesMinions() + 1);
+		if(getDispatchedKakuzuMinions() + 1 <= MAX_ABILITY_LEVEL){
+			setDispatchedKakuzuMinions(getDispatchedKakuzuMinions() + 1);
 		}
 	}
 
 	public void decreaseDispatchedMinionBuffLevel(){
-		if(getDispatchedExtraLivesMinions() - 1 >= 0){
-			setDispatchedExtraLivesMinions(getDispatchedExtraLivesMinions() - 1);
+		if(getDispatchedKakuzuMinions() - 1 >= 0){
+			setDispatchedKakuzuMinions(getDispatchedKakuzuMinions() - 1);
 		}
 	}
 
@@ -454,21 +472,21 @@ public class PlayerDataComponent implements AutoSyncedComponent {
 		this.syncAbility();
 	}
 
-	public int getExtraLives() {
-		return extraLives;
+	public int getKakuzu() {
+		return kakuzu;
 	}
 
-	private void setExtraLives(int extraLives) {
-		this.extraLives = extraLives;
+	private void setKakuzu(int kakuzu) {
+		this.kakuzu = kakuzu;
 		this.syncAbility();
 	}
 
-	public int getDispatchedExtraLivesMinions() {
-		return dispatchedExtraLivesMinions;
+	public int getDispatchedKakuzuMinions() {
+		return dispatchedKakuzuMinions;
 	}
 
-	private void setDispatchedExtraLivesMinions(int dispatchedExtraLivesMinions) {
-		this.dispatchedExtraLivesMinions = dispatchedExtraLivesMinions;
+	private void setDispatchedKakuzuMinions(int dispatchedKakuzuMinions) {
+		this.dispatchedKakuzuMinions = dispatchedKakuzuMinions;
 		this.syncAbility();
 	}
 
@@ -481,7 +499,32 @@ public class PlayerDataComponent implements AutoSyncedComponent {
 		this.syncAbility();
 	}
 
+	public boolean getLich() {
+		return isLich;
+	}
+
+
+	private void setLich(boolean isLich) {
+		this.isLich = isLich;
+		this.syncAbility();
+	}
+
+	public boolean getEntangled() {
+		return entangledUuid != null;
+	}
+
+	@Nullable
+	public UUID getEntangledUuid() {
+		return entangledUuid;
+	}
+
+	private void setEntangled(UUID uuid) {
+		this.entangledUuid = uuid;
+	}
+
 	private void syncAbility(){
 		BotDComponents.PLAYER_COMPONENT.sync(this.player);
 	}
+
+
 }
