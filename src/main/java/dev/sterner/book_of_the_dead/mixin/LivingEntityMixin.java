@@ -199,8 +199,8 @@ public abstract class LivingEntityMixin extends Entity {
 						if(!serverWorld.isChunkLoaded(target.getChunkPos().x, target.getChunkPos().z)){
 							serverWorld.setChunkForced(target.getChunkPos().x, target.getChunkPos().z, true);
 						}
-						target.damage(source, amount * 0.75f);
-						amount *= 0.25f;
+						target.damage(source, amount * component.getEntangleStrength(livingEntity, target, false));
+						amount *= component.getEntangleStrength(livingEntity, target, true);
 					}
 				}
 			}
