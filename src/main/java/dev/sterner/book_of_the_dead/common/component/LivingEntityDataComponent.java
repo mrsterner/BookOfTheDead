@@ -73,7 +73,7 @@ public class LivingEntityDataComponent implements AutoSyncedComponent, ServerTic
 			}
 		}
 
-		float strength = ENTANGLE_STRENGTH[MathHelper.clamp(i, 0, 6)];
+		float strength = ENTANGLE_STRENGTH[MathHelper.clamp(i, 0, ENTANGLE_STRENGTH.length)];
 
 		return isSource ? 1 - strength : strength;
 	}
