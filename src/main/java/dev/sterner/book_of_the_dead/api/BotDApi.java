@@ -1,6 +1,7 @@
 package dev.sterner.book_of_the_dead.api;
 
 import dev.sterner.book_of_the_dead.common.component.BotDComponents;
+import dev.sterner.book_of_the_dead.common.component.LivingEntityDataComponent;
 import dev.sterner.book_of_the_dead.common.component.PlayerDataComponent;
 import dev.sterner.book_of_the_dead.common.entity.KakuzuEntity;
 import dev.sterner.book_of_the_dead.common.registry.BotDEnchantments;
@@ -36,7 +37,7 @@ public class BotDApi {
 	 * If the player is capable of spawning a kakuzu, spawn a kakuzu
 	 * @param player player who is spawning
 	 */
-	public void spawnKakuzuFromPlayer(PlayerEntity player){
+	public static void spawnKakuzuFromPlayer(PlayerEntity player){
 		PlayerDataComponent component = BotDComponents.PLAYER_COMPONENT.get(player);
 		if(component.getKakuzu() > 0 && component.getDispatchedKakuzuMinions() < 3){
 			component.decreaseKakuzuBuffLevel();
@@ -54,7 +55,7 @@ public class BotDApi {
 	 * @param player player to fuse with
 	 * @param kakuzuEntity kakuzu to enter the player
 	 */
-	public void pickupKakuzu(PlayerEntity player, KakuzuEntity kakuzuEntity){
+	public static void pickupKakuzu(PlayerEntity player, KakuzuEntity kakuzuEntity){
 		PlayerDataComponent component = BotDComponents.PLAYER_COMPONENT.get(player);
 		if(component.getKakuzu() < 3 && component.getDispatchedKakuzuMinions() > 0){
 			component.increaseKakuzuBuffLevel();
@@ -68,9 +69,9 @@ public class BotDApi {
 	 * @param player player
 	 * @return if the player already is a lich or has an entanglement, returns false
 	 */
-	public boolean canHaveKakuzu(PlayerEntity player){
+	public static boolean canHaveKakuzu(PlayerEntity player){
 		PlayerDataComponent component = BotDComponents.PLAYER_COMPONENT.get(player);
-		return !component.getLich() && !component.getEntangled();
+		return !component.getLich() && !component.getEntangled() && component.getKakuzu() < 3 && component.getDispatchedKakuzuMinions() < 3;
 	}
 
 	/**
@@ -78,18 +79,22 @@ public class BotDApi {
 	 * @param player player
 	 * @return if the player already has kakuzu or has an entanglement, returns false
 	 */
-	public boolean canHaveLichdom(PlayerEntity player){
+	public static boolean canHaveLichdom(PlayerEntity player){
 		PlayerDataComponent component = BotDComponents.PLAYER_COMPONENT.get(player);
-		return component.getKakuzu() <= 0 && !component.getEntangled();
+		return component.getKakuzu() <= 0 && !component.getEntangled() && !component.getLich();
 	}
 
 	/**
 	 * Determines if the player can have entanglement immortality or not
-	 * @param player player
-	 * @return if the player already has kakuzu or is a lich, returns false
+	 * @param living living
+	 * @return if the player already has kakuzu or is a lich, returns false, living entities can always be entangled
 	 */
-	public boolean canEntangle(PlayerEntity player){
-		PlayerDataComponent component = BotDComponents.PLAYER_COMPONENT.get(player);
-		return component.getKakuzu() <= 0 && !component.getLich();
+	public static boolean canEntangle(LivingEntity living){
+		if(living instanceof PlayerEntity player){
+			PlayerDataComponent component = BotDComponents.PLAYER_COMPONENT.get(player);
+			return component.getKakuzu() <= 0 && !component.getLich() && !component.getEntangled();
+		}
+		LivingEntityDataComponent livingEntityDataComponent = BotDComponents.LIVING_COMPONENT.get(living);
+		return livingEntityDataComponent.getEntangledEntityId() == 0;
 	}
 }

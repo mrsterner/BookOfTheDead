@@ -110,5 +110,6 @@ public class Constants {
         String IS_LICH = "IsLich";
 		String ENTANGLED = "Entangled";
 		String IS_DAMAGE_SOURCE = "IsDamageSource";
+		String ID = "Id";
 	}
 }

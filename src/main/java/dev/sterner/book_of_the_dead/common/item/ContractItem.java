@@ -29,7 +29,6 @@ public class ContractItem extends Item {
 			nbt.putString(Constants.Nbt.NAME, user.getEntityName());
 			nbt.putUuid(Constants.Nbt.UUID, user.getUuid());
 			itemStack.getOrCreateNbt().put(Constants.Nbt.CONTRACT, nbt);
-			System.out.println(itemStack.getNbt());
 		}
 		return super.use(world, user, hand);
 	}
@@ -38,9 +37,12 @@ public class ContractItem extends Item {
 	public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
 		if(stack.hasNbt() && stack.getOrCreateNbt().contains(Constants.Nbt.CONTRACT)){
 			NbtCompound nbt = stack.getSubNbt(Constants.Nbt.CONTRACT);
-			String name = nbt.getString(Constants.Nbt.NAME);
-			String formattedName = TextUtils.capitalizeString(name);
-			tooltip.add(Text.literal(formattedName).setStyle(Style.EMPTY.withColor(0xAC0014)));
+			if (nbt != null) {
+				String name = nbt.getString(Constants.Nbt.NAME);
+				String formattedName = TextUtils.capitalizeString(name);
+				tooltip.add(Text.literal(formattedName).setStyle(Style.EMPTY.withColor(0xAC0014)));
+			}
+
 		}
 		super.appendTooltip(stack, world, tooltip, context);
 	}

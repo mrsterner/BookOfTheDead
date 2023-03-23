@@ -504,7 +504,7 @@ public class PlayerDataComponent implements AutoSyncedComponent {
 	}
 
 
-	private void setLich(boolean isLich) {
+	public void setLich(boolean isLich) {
 		this.isLich = isLich;
 		this.syncAbility();
 	}

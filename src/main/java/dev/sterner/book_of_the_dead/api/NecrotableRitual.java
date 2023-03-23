@@ -5,15 +5,18 @@ import com.mojang.brigadier.ParseResults;
 import dev.sterner.book_of_the_dead.api.interfaces.IRitual;
 import dev.sterner.book_of_the_dead.common.block.entity.PedestalBlockEntity;
 import dev.sterner.book_of_the_dead.common.block.entity.RitualBlockEntity;
+import dev.sterner.book_of_the_dead.common.item.ContractItem;
 import dev.sterner.book_of_the_dead.common.recipe.RitualRecipe;
 import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
 import dev.sterner.book_of_the_dead.common.registry.BotDSoundEvents;
+import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ItemStackParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.recipe.Ingredient;
@@ -43,15 +46,19 @@ public class NecrotableRitual implements IRitual {
 	public Vec3d ritualCenter = null;
 	public RitualRecipe recipe;
 	public int ticker = 0;
-	public UUID user = null;
+	public UUID userUuid = null;
 	public int height = 0;
 	private int index = 0;
 	private boolean canEndRitual = false;
 	private boolean lockTick = false;
+	public int contract = 0;
+	public int contract2 = 0;
 
 	public NecrotableRitual(Identifier id) {
 		this.id = id;
 	}
+
+
 
 	//Called methods from RitualBlockEntity
 
@@ -76,6 +83,12 @@ public class NecrotableRitual implements IRitual {
 
 	@Override
 	public void onStopped(World world, BlockPos blockPos, RitualBlockEntity blockEntity){
+		if(userUuid == null){
+			PlayerEntity player = world.getClosestPlayer(blockPos.getZ(), blockPos.getY(), blockPos.getZ(), 16D, true);
+			if(player != null){
+				userUuid = player.getUuid();
+			}
+		}
 		ticker = 0;
 		index = 0;
 		if(lockTick){
@@ -176,6 +189,16 @@ public class NecrotableRitual implements IRitual {
 					if (ingredient.test(itemStackBlockPosPair.getLeft())) {
 						BlockPos checkPos = itemStackBlockPosPair.getRight().add(blockPos.getX(), blockPos.getY(), blockPos.getZ());
 						if(world.getBlockEntity(checkPos) instanceof PedestalBlockEntity){
+							if(itemStackBlockPosPair.getLeft().isOf(BotDObjects.CONTRACT)){
+								ItemStack contract = itemStackBlockPosPair.getLeft();
+								if(contract.hasNbt() && contract.getOrCreateNbt().contains(Constants.Nbt.CONTRACT)){
+									if(this.contract == 0){
+										this.contract = contract.getOrCreateNbt().getCompound(Constants.Nbt.CONTRACT).getInt(Constants.Nbt.ID);
+									} else if (this.contract2 == 0) {
+										this.contract2 = contract.getOrCreateNbt().getCompound(Constants.Nbt.CONTRACT).getInt(Constants.Nbt.ID);
+									}
+								}
+							}
 							pedestalToActivate.add(checkPos);
 						}
 					}
@@ -283,7 +306,7 @@ public class NecrotableRitual implements IRitual {
 	 * @param blockPos pos of the ritual origin
 	 * @param phase keyword for which phase the command should run in
 	 */
-	public void runCommand(World world, RitualBlockEntity blockEntity, BlockPos blockPos, String phase){
+	private void runCommand(World world, RitualBlockEntity blockEntity, BlockPos blockPos, String phase){
 		MinecraftServer minecraftServer = world.getServer();
 		for (CommandType commandType : blockEntity.ritualRecipe.command) {
 			if (commandType.type.equals(phase)) {
@@ -293,7 +316,7 @@ public class NecrotableRitual implements IRitual {
 	}
 
 	//TODO test this
-	public void runCommand(MinecraftServer minecraftServer, BlockPos blockPos, String command) {
+	private void runCommand(MinecraftServer minecraftServer, BlockPos blockPos, String command) {
 		if (minecraftServer != null && !command.isEmpty()) {
 			String posString = blockPos.getX() + " " + blockPos.getY() + " " + blockPos.getZ();
 			String parsedCommand = command.replaceAll("\\{pos}", posString);
