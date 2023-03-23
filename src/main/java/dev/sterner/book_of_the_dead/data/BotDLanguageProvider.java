@@ -1,9 +1,6 @@
 package dev.sterner.book_of_the_dead.data;
 
-import dev.sterner.book_of_the_dead.common.registry.BotDEnchantments;
-import dev.sterner.book_of_the_dead.common.registry.BotDEntityTypes;
-import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
-import dev.sterner.book_of_the_dead.common.registry.BotDStatusEffects;
+import dev.sterner.book_of_the_dead.common.registry.*;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
@@ -17,7 +14,8 @@ public class BotDLanguageProvider extends FabricLanguageProvider {
 	@Override
 	public void generateTranslations(TranslationBuilder builder) {
 		builder.add(Constants.BOTD_GROUP, "The Book of the Dead");
-
+		builder.add("death.attack.book_of_the_dead.sacrifice", "%1$s was sacrificed");
+		builder.add("death.attack.book_of_the_dead.sanguine", "%1$s was drained");
 		builder.add(BotDStatusEffects.SOUL_SIPHON, "Soul Siphon");
 		builder.add(BotDStatusEffects.SOUL_SICKNESS, "Soul Sickness");
 		builder.add(BotDObjects.EYE, "Eye");

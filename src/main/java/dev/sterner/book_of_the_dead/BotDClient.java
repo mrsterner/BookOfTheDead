@@ -7,7 +7,6 @@ import dev.sterner.book_of_the_dead.client.renderer.entity.KakuzuEntityRenderer;
 import dev.sterner.book_of_the_dead.client.renderer.entity.OldManEntityRenderer;
 import dev.sterner.book_of_the_dead.client.renderer.entity.PlayerCorpseEntityRenderer;
 import dev.sterner.book_of_the_dead.client.renderer.item.AllBlackSwordItemRenderer;
-import dev.sterner.book_of_the_dead.common.item.AllBlackSwordItem;
 import dev.sterner.book_of_the_dead.client.network.BloodSplashParticlePacket;
 import dev.sterner.book_of_the_dead.common.registry.*;
 import dev.sterner.book_of_the_dead.common.util.Constants;
@@ -90,33 +89,34 @@ public class BotDClient implements ClientModInitializer {
 		EntityModelLayerRegistry.registerModelLayer(KakuzuEntityModel.LAYER_LOCATION, KakuzuEntityModel::getTexturedModelData);
 		EntityModelLayerRegistry.registerModelLayer(KakuzuLivingEntityModel.LAYER_LOCATION, KakuzuLivingEntityModel::getTexturedModelData);
 
-		ClientTickEvents.END.register(ClientTickHandler::clientTickEnd);
-
 		ModelPredicateProviderRegistry.register(BotDObjects.CONTRACT, new Identifier("signed"), (itemStack, clientWorld, livingEntity, i) -> livingEntity == null ? 0 : itemStack.hasNbt() && itemStack.getOrCreateNbt().contains(Constants.Nbt.CONTRACT) ? 1.0F : 0.0F);
 		ModelPredicateProviderRegistry.register(BotDObjects.SYRINGE, new Identifier("filled"), (itemStack, clientWorld, livingEntity, i) -> livingEntity == null ? 0 : itemStack.hasNbt() && itemStack.getOrCreateNbt().contains(Constants.Nbt.STATUS_EFFECT_INSTANCE) ? 1.0F : 0.0F);
 		ModelPredicateProviderRegistry.register(BotDObjects.SYRINGE, new Identifier("blood"), (itemStack, clientWorld, livingEntity, i) -> livingEntity == null ? 0 : itemStack.hasNbt() && itemStack.getOrCreateNbt().contains(Constants.Nbt.BLOOD) ? 1.0F : 0.0F);
 		ModelPredicateProviderRegistry.register(BotDObjects.MEAT_CLEAVER, new Identifier("bloody"), (itemStack, clientWorld, livingEntity, i) -> livingEntity == null ? 0 : itemStack.hasNbt() && itemStack.getOrCreateNbt().contains(Constants.Nbt.BLOOD) ? 1.0F : 0.0F);
 
+		ClientTickEvents.END.register(ClientTickHandler::clientTickEnd);
 
 		for (Item item : List.of(BotDObjects.ALL_BLACK)) {
-			if(item instanceof AllBlackSwordItem){
-				Identifier allBlackId = Registries.ITEM.getId(item);
-				AllBlackSwordItemRenderer allBlackItemRenderer = new AllBlackSwordItemRenderer(allBlackId);
-				ResourceLoader.get(ResourceType.CLIENT_RESOURCES).registerReloader(allBlackItemRenderer);
-				BuiltinItemRendererRegistry.INSTANCE.register(item, allBlackItemRenderer);
-				ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> {
-					out.accept(new ModelIdentifier(allBlackId.withPath(allBlackId.getPath() + "_gui"), "inventory"));
-					out.accept(new ModelIdentifier(allBlackId.withPath(allBlackId.getPath() + "_handheld"), "inventory"));
-				});
-			}
+			Identifier allBlackId = Registries.ITEM.getId(item);
+			AllBlackSwordItemRenderer allBlackItemRenderer = new AllBlackSwordItemRenderer(allBlackId);
+			ResourceLoader.get(ResourceType.CLIENT_RESOURCES).registerReloader(allBlackItemRenderer);
+			BuiltinItemRendererRegistry.INSTANCE.register(item, allBlackItemRenderer);
+			ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> {
+				out.accept(new ModelIdentifier(allBlackId.withPath(allBlackId.getPath() + "_gui"), "inventory"));
+				out.accept(new ModelIdentifier(allBlackId.withPath(allBlackId.getPath() + "_handheld"), "inventory"));
+			});
 		}
 
 		ColorProviderRegistry.ITEM.register((itemStack, index) -> {
 			if(index == 0){
 				if(itemStack.hasNbt() && itemStack.getOrCreateNbt().contains(Constants.Nbt.STATUS_EFFECT_INSTANCE)){
 					NbtCompound nbt = itemStack.getSubNbt(Constants.Nbt.STATUS_EFFECT_INSTANCE);
-					StatusEffect effect = Registries.STATUS_EFFECT.get(Identifier.tryParse(nbt.getString(Constants.Nbt.STATUS_EFFECT)));
-					return effect.getColor();
+					if (nbt != null) {
+						StatusEffect effect = Registries.STATUS_EFFECT.get(Identifier.tryParse(nbt.getString(Constants.Nbt.STATUS_EFFECT)));
+						if (effect != null) {
+							return effect.getColor();
+						}
+					}
 				}
 			}
 			return -1;

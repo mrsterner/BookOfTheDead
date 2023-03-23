@@ -14,6 +14,8 @@
   "book_of_the_dead.book_of_the_dead.landing": "This is a book of dead things and stuff",
   "book_of_the_dead.book_of_the_dead.subtitle": "Death of the book",
   "book_of_the_dead.book_of_the_dead:book_of_the_dead": "Book of the Dead",
+  "death.attack.book_of_the_dead.sacrifice": "%1$s was sacrificed",
+  "death.attack.book_of_the_dead.sanguine": "%1$s was drained",
   "effect.book_of_the_dead.adrenaline": "Adrenaline",
   "effect.book_of_the_dead.euthanasia": "Euthanasia",
   "effect.book_of_the_dead.morphine": "Morphine",
