@@ -126,6 +126,10 @@ dependencies {
 
 	modImplementation include("curse.maven:smartbrainlib-661293:${project.brain_version}")
 
+	//Mixin Extras
+	implementation("com.github.LlamaLad7:MixinExtras:${project.mixin_extras}")
+	annotationProcessor("com.github.LlamaLad7:MixinExtras:${project.mixin_extras}")
+
 }
 
 processResources {

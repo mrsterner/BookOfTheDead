@@ -14,9 +14,9 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-public class SoulShatteringStatusEffect extends StatusEffect {
-	public SoulShatteringStatusEffect(StatusEffectType type) {
-		super(type, 0x000000);
+public class SoulSiphonStatusEffect extends StatusEffect {
+	public SoulSiphonStatusEffect(StatusEffectType type) {
+		super(type, 0x91db69);
 	}
 
 	@Override
@@ -48,7 +48,7 @@ public class SoulShatteringStatusEffect extends StatusEffect {
 			double z = living.getZ() + (world.random.nextDouble() * 0.2D) + 0.4D;
 			if(world instanceof ServerWorld serverWorld){
 				serverWorld.spawnParticles(new ItemStackBeamParticleEffect(
-						BotDParticleTypes.ITEM_BEAM_PARTICLE, Items.NETHER_WART_BLOCK.getDefaultStack(),
+						BotDParticleTypes.ITEM_BEAM_PARTICLE, Items.BONE_BLOCK.getDefaultStack(),
 						10), x, y, z, 0, directionVector.x, directionVector.y, directionVector.z, 0.10D);
 			}
 		}

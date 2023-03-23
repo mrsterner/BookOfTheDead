@@ -61,7 +61,7 @@ public class DebugWandItem extends Item {
 		 */
 		LivingEntityDataComponent component = BotDComponents.LIVING_COMPONENT.get(user);
 		component.setRitualPos(user.getPos().add(5,0,5));
-		user.addStatusEffect(new StatusEffectInstance(BotDStatusEffects.SOUL_SHATTERING, 20 * 10));
+		user.addStatusEffect(new StatusEffectInstance(BotDStatusEffects.SOUL_SIPHON, 20 * 10));
 		return super.use(world, user, hand);
 	}
 

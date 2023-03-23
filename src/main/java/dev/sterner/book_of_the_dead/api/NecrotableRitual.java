@@ -248,7 +248,7 @@ public class NecrotableRitual implements IRitual {
 				if (foundEntity != null) {
 					LivingEntityDataComponent livingEntityDataComponent = BotDComponents.LIVING_COMPONENT.get(foundEntity);
 					livingEntityDataComponent.setRitualPos(ritualCenter);
-					foundEntity.addStatusEffect(new StatusEffectInstance(BotDStatusEffects.SOUL_SHATTERING, 20 * 3));
+					foundEntity.addStatusEffect(new StatusEffectInstance(BotDStatusEffects.SOUL_SIPHON, 20 * 3));
 				}
 			}
 			return true;

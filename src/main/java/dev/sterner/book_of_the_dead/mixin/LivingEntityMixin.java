@@ -1,5 +1,6 @@
 package dev.sterner.book_of_the_dead.mixin;
 
+import com.llamalad7.mixinextras.injector.ModifyReceiver;
 import dev.sterner.book_of_the_dead.api.BotDApi;
 import dev.sterner.book_of_the_dead.api.event.OnEntityDeathEvent;
 import dev.sterner.book_of_the_dead.common.component.*;
@@ -14,6 +15,7 @@ import net.minecraft.entity.effect.StatusEffectType;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.passive.CowEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.MilkBucketItem;
 import net.minecraft.loot.LootTable;
 import net.minecraft.loot.context.LootContext;
 import net.minecraft.loot.context.LootContextTypes;
@@ -23,6 +25,8 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
+import org.quiltmc.qsl.entity.effect.api.QuiltLivingEntityStatusEffectExtensions;
+import org.quiltmc.qsl.entity.effect.api.StatusEffectRemovalReason;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -36,7 +40,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Mixin(value = LivingEntity.class, priority = 1001)
-public abstract class LivingEntityMixin extends Entity {
+public abstract class LivingEntityMixin extends Entity implements QuiltLivingEntityStatusEffectExtensions {
 
 	@Unique
 	public List<StatusEffect> statusEffectList = Registries.STATUS_EFFECT.stream().filter(s -> !s.getType().equals(StatusEffectType.HARMFUL)).toList();
@@ -221,13 +225,6 @@ public abstract class LivingEntityMixin extends Entity {
 					}
 				}
 			}
-		}
-	}
-
-	@Inject(method = "removeStatusEffect", at = @At("HEAD"), cancellable = true)
-	private void book_of_the_dead$dontRemoveSoulShattering(StatusEffect type, CallbackInfoReturnable<Boolean> cir){
-		if(type.equals(BotDStatusEffects.SOUL_SHATTERING)){
-			cir.setReturnValue(false);
 		}
 	}
 }

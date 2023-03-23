@@ -18,6 +18,8 @@ public class BotDLanguageProvider extends FabricLanguageProvider {
 	public void generateTranslations(TranslationBuilder builder) {
 		builder.add(Constants.BOTD_GROUP, "The Book of the Dead");
 
+		builder.add(BotDStatusEffects.SOUL_SIPHON, "Soul Siphon");
+		builder.add(BotDStatusEffects.SOUL_SICKNESS, "Soul Sickness");
 		builder.add(BotDObjects.EYE, "Eye");
 		builder.add(BotDObjects.SULFURIC_ACID, "Sulfuric Acid");
 		builder.add(BotDObjects.SULFUR, "Sulfur");
