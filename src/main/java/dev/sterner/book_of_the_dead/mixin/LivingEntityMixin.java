@@ -48,9 +48,6 @@ public abstract class LivingEntityMixin extends Entity {
 	protected abstract void initDataTracker();
 
 	@Shadow
-	protected abstract void dropLoot(DamageSource source, boolean causedByPlayer);
-
-	@Shadow
 	public abstract Identifier getLootTable();
 
 	@Shadow
@@ -224,6 +221,13 @@ public abstract class LivingEntityMixin extends Entity {
 					}
 				}
 			}
+		}
+	}
+
+	@Inject(method = "removeStatusEffect", at = @At("HEAD"), cancellable = true)
+	private void book_of_the_dead$dontRemoveSoulShattering(StatusEffect type, CallbackInfoReturnable<Boolean> cir){
+		if(type.equals(BotDStatusEffects.SOUL_SHATTERING)){
+			cir.setReturnValue(false);
 		}
 	}
 }

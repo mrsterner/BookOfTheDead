@@ -105,7 +105,7 @@ public class RitualBlockEntity extends BaseBlockEntity {
 				}else if(blockEntity.checkTier(blockEntity)){
 					blockEntity.currentNecrotableRitual.recipe = blockEntity.ritualRecipe;
 					if(blockEntity.user != null){
-						blockEntity.currentNecrotableRitual.user = blockEntity.user;
+						blockEntity.currentNecrotableRitual.userUuid = blockEntity.user;
 					}
 					if (blockEntity.startGate) {
 						blockEntity.currentNecrotableRitual.onStart(world, pos, blockEntity);

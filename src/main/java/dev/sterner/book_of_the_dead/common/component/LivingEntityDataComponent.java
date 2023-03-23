@@ -2,12 +2,16 @@ package dev.sterner.book_of_the_dead.common.component;
 
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import dev.onyxstudios.cca.api.v3.component.tick.ServerTickingComponent;
+import dev.sterner.book_of_the_dead.common.util.BotDUtils;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtHelper;
 import net.minecraft.registry.tag.TagKey;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 
 import java.util.List;
 
@@ -17,6 +21,7 @@ public class LivingEntityDataComponent implements AutoSyncedComponent, ServerTic
 	private float morphine$accumulatedDamage = 0;
 	private float adrenaline$bonusDamage = 0;
 	private int entangledEntityId = 0;
+	private Vec3d ritualPos;
 
 	public LivingEntityDataComponent(LivingEntity livingEntity){
 		this.livingEntity = livingEntity;
@@ -32,6 +37,10 @@ public class LivingEntityDataComponent implements AutoSyncedComponent, ServerTic
 		setMorphine$accumulatedDamage(nbt.getFloat(Constants.Nbt.MORPHINE));
 		setAdrenaline$bonusDamage(nbt.getFloat(Constants.Nbt.ADRENALINE));
 		setEntangledEntityId(nbt.getInt(Constants.Nbt.ENTANGLED));
+		if(nbt.contains(Constants.Nbt.RITUAL_POS)){
+			setRitualPos(BotDUtils.toVec3d(nbt.getCompound(Constants.Nbt.RITUAL_POS)));
+		}
+
 	}
 
 	@Override
@@ -39,6 +48,10 @@ public class LivingEntityDataComponent implements AutoSyncedComponent, ServerTic
 		nbt.putFloat(Constants.Nbt.MORPHINE, getMorphine$accumulatedDamage());
 		nbt.putFloat(Constants.Nbt.ADRENALINE, getAdrenaline$bonusDamage());
 		nbt.putInt(Constants.Nbt.ENTANGLED, getEntangledEntityId());
+		if(getRitualPos() != null){
+			nbt.put(Constants.Nbt.RITUAL_POS, BotDUtils.fromVec3d(getRitualPos()));
+		}
+
 	}
 
 	public float getEntangleStrength(LivingEntity source, LivingEntity target, boolean isSource){
@@ -101,9 +114,16 @@ public class LivingEntityDataComponent implements AutoSyncedComponent, ServerTic
 		setAdrenaline$bonusDamage(getAdrenaline$bonusDamage() + damage);
 	}
 
+	public Vec3d getRitualPos() {
+		return ritualPos;
+	}
+
+	public void setRitualPos(Vec3d ritualPos) {
+		this.ritualPos = ritualPos;
+		syncAbility();
+	}
+
 	private void syncAbility(){
 		BotDComponents.LIVING_COMPONENT.sync(this.livingEntity);
 	}
-
-
 }

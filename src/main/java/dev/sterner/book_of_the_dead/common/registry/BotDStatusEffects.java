@@ -1,9 +1,6 @@
 package dev.sterner.book_of_the_dead.common.registry;
 
-import dev.sterner.book_of_the_dead.common.statuseffect.EmptyStatusEffect;
-import dev.sterner.book_of_the_dead.common.statuseffect.EuthanasiaStatusEffect;
-import dev.sterner.book_of_the_dead.common.statuseffect.MorphineStatusEffect;
-import dev.sterner.book_of_the_dead.common.statuseffect.SanguineInfectionStatusEffect;
+import dev.sterner.book_of_the_dead.common.statuseffect.*;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectType;
@@ -21,8 +18,9 @@ public interface BotDStatusEffects {
 	StatusEffect ADRENALINE = register("adrenaline", new EmptyStatusEffect(StatusEffectType.NEUTRAL, 0xffffff));
 	StatusEffect MORPHINE = register("morphine", new MorphineStatusEffect(StatusEffectType.NEUTRAL, 0xffffff));
 	StatusEffect SANGUINE = register("sanguine_infection", new SanguineInfectionStatusEffect(StatusEffectType.HARMFUL));
+    StatusEffect SOUL_SHATTERING = register("soul_shattering", new SoulShatteringStatusEffect(StatusEffectType.HARMFUL));
 
-	static <T extends StatusEffect> T register(String name, T effect) {
+    static <T extends StatusEffect> T register(String name, T effect) {
 		STATUS_EFFECTS.put(effect, Constants.id(name));
 		return effect;
 	}

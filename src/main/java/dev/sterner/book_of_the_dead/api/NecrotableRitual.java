@@ -5,10 +5,13 @@ import com.mojang.brigadier.ParseResults;
 import dev.sterner.book_of_the_dead.api.interfaces.IRitual;
 import dev.sterner.book_of_the_dead.common.block.entity.PedestalBlockEntity;
 import dev.sterner.book_of_the_dead.common.block.entity.RitualBlockEntity;
+import dev.sterner.book_of_the_dead.common.component.BotDComponents;
+import dev.sterner.book_of_the_dead.common.component.LivingEntityDataComponent;
 import dev.sterner.book_of_the_dead.common.item.ContractItem;
 import dev.sterner.book_of_the_dead.common.recipe.RitualRecipe;
 import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
 import dev.sterner.book_of_the_dead.common.registry.BotDSoundEvents;
+import dev.sterner.book_of_the_dead.common.registry.BotDStatusEffects;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -243,7 +246,9 @@ public class NecrotableRitual implements IRitual {
 			for (EntityType<?> entityType : ritualSacrifices) {
 				LivingEntity foundEntity = getClosestEntity(livingEntityList, entityType, blockPos);
 				if (foundEntity != null) {
-					foundEntity.damage(foundEntity.getDamageSources().magic(), Integer.MAX_VALUE);
+					LivingEntityDataComponent livingEntityDataComponent = BotDComponents.LIVING_COMPONENT.get(foundEntity);
+					livingEntityDataComponent.setRitualPos(ritualCenter);
+					foundEntity.addStatusEffect(new StatusEffectInstance(BotDStatusEffects.SOUL_SHATTERING, 20 * 3));
 				}
 			}
 			return true;
