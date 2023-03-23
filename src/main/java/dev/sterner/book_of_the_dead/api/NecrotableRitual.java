@@ -58,8 +58,6 @@ public class NecrotableRitual implements IRitual {
 		this.id = id;
 	}
 
-
-
 	//Called methods from RitualBlockEntity
 
 	@Override
@@ -83,15 +81,16 @@ public class NecrotableRitual implements IRitual {
 
 	@Override
 	public void onStopped(World world, BlockPos blockPos, RitualBlockEntity blockEntity){
-		if(userUuid == null){
-			PlayerEntity player = world.getClosestPlayer(blockPos.getZ(), blockPos.getY(), blockPos.getZ(), 16D, true);
-			if(player != null){
-				userUuid = player.getUuid();
-			}
-		}
 		ticker = 0;
 		index = 0;
 		if(lockTick){
+			if(userUuid == null){
+				PlayerEntity player = world.getClosestPlayer(blockPos.getZ(), blockPos.getY(), blockPos.getZ(), 16D, true);
+				if(player != null){
+					userUuid = player.getUuid();
+				}
+			}
+
 			this.runCommand(world, blockEntity, blockPos, "end");
 			this.summonSummons(world, blockPos, blockEntity);
 			this.summonItems(world, blockPos, blockEntity);
@@ -194,12 +193,10 @@ public class NecrotableRitual implements IRitual {
 						if(world.getBlockEntity(checkPos) instanceof PedestalBlockEntity){
 							if(itemStackBlockPosPair.getLeft().isOf(BotDObjects.CONTRACT)){
 								ItemStack contract = itemStackBlockPosPair.getLeft();
-								if(contract.hasNbt() && contract.getOrCreateNbt().contains(Constants.Nbt.CONTRACT)){
-									if(this.contract == 0){
-										this.contract = contract.getOrCreateNbt().getCompound(Constants.Nbt.CONTRACT).getInt(Constants.Nbt.ID);
-									} else if (this.contract2 == 0) {
-										this.contract2 = contract.getOrCreateNbt().getCompound(Constants.Nbt.CONTRACT).getInt(Constants.Nbt.ID);
-									}
+								if (this.contract == 0) {
+									this.contract = ContractItem.getIdFromContractNbt(contract);
+								} else if (this.contract2 == 0) {
+									this.contract2 = ContractItem.getIdFromContractNbt(contract);
 								}
 							}
 							pedestalToActivate.add(checkPos);

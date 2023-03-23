@@ -1,8 +1,11 @@
 package dev.sterner.book_of_the_dead.common.item;
 
+import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import dev.sterner.book_of_the_dead.common.util.TextUtils;
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -45,5 +48,30 @@ public class ContractItem extends Item {
 
 		}
 		super.appendTooltip(stack, world, tooltip, context);
+	}
+
+	@Nullable
+	public static LivingEntity getLivingFromContractNbt(World world, ItemStack contract){
+		if(contract.isOf(BotDObjects.CONTRACT) && contract.hasNbt() && contract.getOrCreateNbt().contains(Constants.Nbt.CONTRACT)){
+			NbtCompound nbt = contract.getSubNbt(Constants.Nbt.CONTRACT);
+			if (nbt != null) {
+				int id = nbt.getInt(Constants.Nbt.ID);
+				Entity entity = world.getEntityById(id);
+				if(entity instanceof LivingEntity living){
+					return living;
+				}
+			}
+		}
+		return null;
+	}
+
+	public static int getIdFromContractNbt(ItemStack contract){
+		if(contract.isOf(BotDObjects.CONTRACT) && contract.hasNbt() && contract.getOrCreateNbt().contains(Constants.Nbt.CONTRACT)){
+			NbtCompound nbt = contract.getSubNbt(Constants.Nbt.CONTRACT);
+			if (nbt != null) {
+				return nbt.getInt(Constants.Nbt.ID);
+			}
+		}
+		return 0;
 	}
 }
