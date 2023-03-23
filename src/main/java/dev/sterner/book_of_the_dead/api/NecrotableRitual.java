@@ -150,11 +150,14 @@ public class NecrotableRitual implements IRitual {
 	 * @param blockEntity ritualBlockEntity
 	 */
 	private void generateStatusEffects(World world, BlockPos blockPos, RitualBlockEntity blockEntity) {
-		if(user != null){
-			PlayerEntity player = world.getPlayerByUuid(user);
-			if(player != null && recipe.statusEffectInstance != null){
+		int size = 16;
+		if(recipe.statusEffectInstance != null){
+			List<LivingEntity> livingEntityList = world.getEntitiesByClass(LivingEntity.class, new Box(blockPos).expand(size), Entity::isAlive);
+			for(LivingEntity living : livingEntityList){
 				for(StatusEffectInstance instance : recipe.statusEffectInstance){
-					player.addStatusEffect(instance);
+					if(living.canHaveStatusEffect(instance)){
+						living.addStatusEffect(instance);
+					}
 				}
 			}
 		}
