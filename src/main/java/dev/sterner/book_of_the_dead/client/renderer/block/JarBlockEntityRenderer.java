@@ -1,6 +1,8 @@
 package dev.sterner.book_of_the_dead.client.renderer.block;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import dev.sterner.book_of_the_dead.BotDClient;
+import dev.sterner.book_of_the_dead.client.model.BrainEntityModel;
 import dev.sterner.book_of_the_dead.client.model.JarEntityModel;
 import dev.sterner.book_of_the_dead.common.block.JarBlock;
 import dev.sterner.book_of_the_dead.common.block.entity.JarBlockEntity;
@@ -20,17 +22,26 @@ import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Axis;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
 
 public class JarBlockEntityRenderer implements BlockEntityRenderer<JarBlockEntity>, BuiltinItemRendererRegistry.DynamicItemRenderer {
 	private static final float EDGE_SIZE = 1f / 8f;
 	private static final float INNER_SIZE = 1f - (EDGE_SIZE * 2f);
+
 	public static final int BLOOD_COLOR = 0xff0000;
-	private final JarEntityModel jarEntityModel =  new JarEntityModel<>(JarEntityModel.createBodyLayer().createModel());
+	public static final int WATER_COLOR = 0x3f76e4;
+
+	private final JarEntityModel jarEntityModel = new JarEntityModel<>(JarEntityModel.createBodyLayer().createModel());
+	private final BrainEntityModel brainEntityModel = new BrainEntityModel<>(BrainEntityModel.createBodyLayer().createModel());
+
 	private final Identifier TEXTURE = Constants.id("textures/block/jar.png");
 	private final Identifier TEXTURE_ITEM = Constants.id("textures/block/jar_item.png");
 
@@ -38,14 +49,27 @@ public class JarBlockEntityRenderer implements BlockEntityRenderer<JarBlockEntit
 
 	@Override
 	public void render(JarBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
-		if(entity.bloodAmount > 0){
+		if(entity.hasBrain){
 			matrices.push();
-			float g = 0.5F;
-			matrices.scale(g,g,g);
-			matrices.translate(0.5, 0.05, 0.5);
-			renderFluid(matrices, vertexConsumers, light, overlay, entity,null,entity.bloodAmount / 100F);
+			matrices.translate(0.5, -1.0, 0.5);
+			float ticks = (BotDClient.ClientTickHandler.ticksInGame + tickDelta) * 0.05f % 360;
+			matrices.translate(0,0.1 * MathHelper.sin(ticks),0);
+			VertexConsumer buffer = vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(BrainBlockEntityRenderer.TEXTURE));
+			brainEntityModel.render(matrices, buffer, light, overlay, 1,1,1,1);
 			matrices.pop();
 		}
+		if(entity.bloodAmount > 0 || entity.waterAmount > 0){
+			matrices.push();
+			matrices.scale(0.55f, 0.75f, 0.55f);
+			matrices.translate(0.4, -0.05, 0.4);
+			if(entity.bloodAmount > 0){
+				renderFluid(matrices, vertexConsumers, light, overlay, entity,null, (entity.bloodAmount / 100F), false);
+			}else{
+				renderFluid(matrices, vertexConsumers, light, overlay, entity,null, (entity.waterAmount / 100F), true);
+			}
+			matrices.pop();
+		}
+
 
 		matrices.push();
 		float f = 0.5F;
@@ -67,13 +91,29 @@ public class JarBlockEntityRenderer implements BlockEntityRenderer<JarBlockEntit
 		if(stack.getNbt() != null) {
 			nbtCompound = stack.getNbt().getCompound("BlockEntityTag");
 		}
+
+		if(nbtCompound.contains(Constants.Nbt.BRAIN)){
+			matrices.push();
+			matrices.scale(0.85f, 0.85f, 0.85f);
+			matrices.translate(0, -1.55, 0);
+			VertexConsumer buffer = vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(BrainBlockEntityRenderer.TEXTURE));
+			brainEntityModel.render(matrices, buffer, light, overlay, 1,1,1,1);
+			matrices.pop();
+		}
+
 		if(nbtCompound.contains(Constants.Nbt.BLOOD_LEVEL) && nbtCompound.getInt(Constants.Nbt.BLOOD_LEVEL) > 0){
-			float g = 0.5F;
-			matrices.scale(g,g,g);
-			matrices.translate(-0.5, -1.2, -0.5);
-			renderFluid(matrices, vertexConsumers, light, overlay, null, stack, nbtCompound.getInt(Constants.Nbt.BLOOD_LEVEL) / 100F);
+			matrices.scale(0.55f,0.75f,0.55f);
+			matrices.translate(-0.5, -0.75, -0.5);
+			renderFluid(matrices, vertexConsumers, light, overlay, null, stack,  nbtCompound.getInt(Constants.Nbt.BLOOD_LEVEL) / 100F, false);
+		}
+		if(nbtCompound.contains(Constants.Nbt.WATER_LEVEL) && nbtCompound.getInt(Constants.Nbt.WATER_LEVEL) > 0){
+			matrices.scale(0.55f,0.75f,0.55f);
+			matrices.translate(-0.5, -0.75, -0.5);
+			renderFluid(matrices, vertexConsumers, light, overlay, null, stack, (nbtCompound.getInt(Constants.Nbt.WATER_LEVEL) / 100F), true);
 		}
 		matrices.pop();
+
+
 
 		matrices.push();
 		matrices.multiply(Axis.Z_POSITIVE.rotationDegrees(180));
@@ -82,7 +122,7 @@ public class JarBlockEntityRenderer implements BlockEntityRenderer<JarBlockEntit
 		matrices.pop();
 	}
 
-	private void renderFluid(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, @Nullable JarBlockEntity entity, @Nullable ItemStack itemStack, float percent) {
+	private void renderFluid(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, @Nullable JarBlockEntity entity, @Nullable ItemStack itemStack, float percent, boolean isWater) {
 		if (RendererAccessImpl.INSTANCE.getRenderer() != null) {
 			percent = Math.min(1, percent);
 			matrices.push();
@@ -90,8 +130,14 @@ public class JarBlockEntityRenderer implements BlockEntityRenderer<JarBlockEntit
 			MeshBuilder builder = RendererAccessImpl.INSTANCE.getRenderer().meshBuilder();
 			int newColor;
 			if (entity != null || itemStack != null) {
-				newColor = ColorHelper.swapRedBlueIfNeeded(BLOOD_COLOR);
-				sprite = BotDSpriteIdentifiers.BLOOD.getSprite();
+				if(isWater){
+					newColor = ColorHelper.swapRedBlueIfNeeded(WATER_COLOR);
+					sprite = BotDSpriteIdentifiers.WATER.getSprite();
+				}else{
+					newColor = ColorHelper.swapRedBlueIfNeeded(BLOOD_COLOR);
+					sprite = BotDSpriteIdentifiers.BLOOD.getSprite();
+				}
+
 				RenderUtils.emitFluidFace(builder.getEmitter(), sprite, newColor, Direction.UP, 1f, (1f - percent), EDGE_SIZE, INNER_SIZE);
 				RenderUtils.emitFluidFace(builder.getEmitter(), sprite, newColor, Direction.DOWN, 1f, 0f, EDGE_SIZE, INNER_SIZE);
 				RenderUtils.emitFluidFace(builder.getEmitter(), sprite, newColor, Direction.NORTH, percent, 0f, EDGE_SIZE, INNER_SIZE);

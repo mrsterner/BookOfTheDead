@@ -109,7 +109,8 @@ public class Constants {
 		String STORED_ENTITY = "StoredEntity";
         String IS_LICH = "IsLich";
 		String ENTANGLED = "Entangled";
-		String IS_DAMAGE_SOURCE = "IsDamageSource";
 		String ID = "Id";
+        String WATER_LEVEL = "WaterLevel";
+		String BRAIN = "Brain";
 	}
 }

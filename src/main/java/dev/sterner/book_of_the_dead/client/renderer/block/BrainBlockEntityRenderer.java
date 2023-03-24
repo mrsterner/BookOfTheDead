@@ -18,7 +18,7 @@ import net.minecraft.world.World;
 
 public class BrainBlockEntityRenderer implements BlockEntityRenderer<BrainBlockEntity> {
 	public static final EntityModelLayer LAYER_LOCATION = new EntityModelLayer(Constants.id("brain_model"), "main");
-	private final Identifier TEXTURE = Constants.id("textures/entity/brain.png");
+	public static final Identifier TEXTURE = Constants.id("textures/entity/brain.png");
 	private final ModelPart main;
 
 	public BrainBlockEntityRenderer(BlockEntityRendererFactory.Context ctx) {

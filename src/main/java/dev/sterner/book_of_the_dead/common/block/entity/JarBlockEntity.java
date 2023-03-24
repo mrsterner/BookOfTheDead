@@ -1,6 +1,7 @@
 package dev.sterner.book_of_the_dead.common.block.entity;
 
 import dev.sterner.book_of_the_dead.api.block.entity.BaseBlockEntity;
+import dev.sterner.book_of_the_dead.api.interfaces.IBlockEntityInventory;
 import dev.sterner.book_of_the_dead.common.block.JarBlock;
 import dev.sterner.book_of_the_dead.common.registry.BotDBlockEntityTypes;
 import dev.sterner.book_of_the_dead.common.util.Constants;
@@ -19,20 +20,21 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-public class JarBlockEntity extends BaseBlockEntity implements Inventory {
-	private DefaultedList<ItemStack> inventory;
+public class JarBlockEntity extends BaseBlockEntity {
+	public static final int MAX_LIQUID = 100;
 	public int bloodAmount = 0;
+	public int waterAmount = 0;
+	public boolean hasBrain = false;
 
 	public JarBlockEntity(BlockPos pos, BlockState state) {
 		super(BotDBlockEntityTypes.JAR, pos, state);
-		this.inventory = DefaultedList.ofSize(1, ItemStack.EMPTY);
 	}
 
 	public static void tick(World world, BlockPos pos, BlockState tickerState, JarBlockEntity blockEntity) {
 		boolean mark = false;
 		if (world != null && !world.isClient) {
-			if (world.getTime() % 10 == 0 && blockEntity.getBloodyCorpseAbove(world, pos) && tickerState.get(JarBlock.OPEN)) {
-				if(blockEntity.bloodAmount < 100){
+			if (world.getTime() % 10 == 0 && tickerState.get(JarBlock.OPEN) && blockEntity.getBloodyCorpseAbove(world, pos)) {
+				if(blockEntity.bloodAmount < MAX_LIQUID){
 					blockEntity.bloodAmount++;
 					blockEntity.markDirty();
 					mark = true;
@@ -56,81 +58,20 @@ public class JarBlockEntity extends BaseBlockEntity implements Inventory {
 		return false;
 	}
 
-	@Nullable
-	@Override
-	public Packet<ClientPlayPacketListener> toUpdatePacket() {
-		return BlockEntityUpdateS2CPacket.of(this, (BlockEntity b) -> this.toInvetoryNbt());
-	}
-
 	@Override
 	public void readNbt(NbtCompound nbt) {
 		super.readNbt(nbt);
-		this.inventory = DefaultedList.ofSize(this.size(), ItemStack.EMPTY);
-		Inventories.readNbt(nbt, inventory);
 		this.bloodAmount = nbt.getInt(Constants.Nbt.BLOOD_LEVEL);
+		this.waterAmount = nbt.getInt(Constants.Nbt.WATER_LEVEL);
+		this.hasBrain = nbt.getBoolean(Constants.Nbt.BRAIN);
 		markDirty();
 	}
 
 	@Override
 	protected void writeNbt(NbtCompound nbt) {
 		super.writeNbt(nbt);
-		Inventories.writeNbt(nbt, inventory);
 		nbt.putInt(Constants.Nbt.BLOOD_LEVEL, this.bloodAmount);
-	}
-
-	public NbtCompound toInvetoryNbt(){
-		NbtCompound rtn = new NbtCompound();
-		Inventories.writeNbt(rtn, inventory);
-		rtn.putInt(Constants.Nbt.BLOOD_LEVEL, this.bloodAmount);
-		return rtn;
-	}
-
-	@Override
-	public int size() {
-		return inventory.size();
-	}
-
-	@Override
-	public boolean isEmpty() {
-		for (int i = 0; i < size(); i++) {
-			if (getStack(i).isEmpty()) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	@Override
-	public ItemStack getStack(int slot) {
-		return inventory.get(slot);
-	}
-
-	@Override
-	public ItemStack removeStack(int slot, int amount) {
-		return Inventories.splitStack(inventory, slot, amount);
-	}
-
-	@Override
-	public ItemStack removeStack(int slot) {
-		return Inventories.removeStack(inventory, slot);
-	}
-
-	@Override
-	public void setStack(int slot, ItemStack stack) {
-		inventory.set(slot, stack);
-	}
-
-	@Override
-	public boolean canPlayerUse(PlayerEntity player) {
-		return true;
-	}
-
-	@Override
-	public void clear() {
-		inventory.clear();
-	}
-
-	public DefaultedList<ItemStack> getInventory(){
-		return inventory;
+		nbt.putInt(Constants.Nbt.WATER_LEVEL, this.waterAmount);
+		nbt.putBoolean(Constants.Nbt.BRAIN, this.hasBrain);
 	}
 }
