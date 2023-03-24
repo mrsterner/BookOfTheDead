@@ -14,4 +14,5 @@ public interface BotDSpriteIdentifiers {
 
 	SpriteIdentifier BLOOD = new SpriteIdentifier(BLOCK_ATLAS_TEXTURE, Constants.id("block/blood_fluid"));
 	SpriteIdentifier WATER = new SpriteIdentifier(BLOCK_ATLAS_TEXTURE, new Identifier("block/water_still"));
+	SpriteIdentifier WATER_ALPHA = new SpriteIdentifier(BLOCK_ATLAS_TEXTURE, Constants.id("block/water_still"));
 }

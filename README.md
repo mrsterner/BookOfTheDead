@@ -38,7 +38,47 @@ To add butchering recipes, add entity to the butchering tag and make a recipe li
   ]
 }
 ```
+For rituals the following recipe is an example
+```
+{
+  "type": "book_of_the_dead:ritual",
+  "ritual": "book_of_the_dead:basic",
+  "requireBotD": false,
+  "requireEmeraldTablet": true,
+  "duration": 160,
 
+  "inputs": [
+    {
+      "item" : "minecraft:stick"
+    }
+  ],
+  "outputs": [
+    {
+      "item" : "minecraft:stick"
+    }
+  ],
+  "sacrifices": [],
+  "summons": [
+    {
+      "entity": "minecraft:sheep"
+    }
+  ],
+  "commands": [
+    {
+      "command": "execute positioned {pos} run setblock ~ ~10 ~ minecraft:grass_block",
+      "type": "start"
+    }
+  ],
+  "statusEffects": [
+    {
+      "id" : "minecraft:speed",
+      "amplifier" : 1,
+      "duration": 20
+    }
+  ]
+}
+
+```
 
 ## Licence
 * Code

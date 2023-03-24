@@ -41,7 +41,6 @@ public class RitualBlockEntity extends BaseBlockEntity {
 	private boolean loaded = false;
 	public int timer = -20;
 	public long age = 0;
-	public boolean startGate = true;
 	public boolean shouldRun = false;
 	public int clientTime = 0;
 
@@ -107,10 +106,6 @@ public class RitualBlockEntity extends BaseBlockEntity {
 					if(blockEntity.user != null){
 						blockEntity.currentNecrotableRitual.userUuid = blockEntity.user;
 					}
-					if (blockEntity.startGate) {
-						blockEntity.currentNecrotableRitual.onStart(world, pos, blockEntity);
-						blockEntity.startGate = false;
-					}
 					blockEntity.timer++;
 					if (blockEntity.timer >= 0) {
 						blockEntity.currentNecrotableRitual.tick(world, pos, blockEntity);
@@ -165,7 +160,6 @@ public class RitualBlockEntity extends BaseBlockEntity {
 		blockEntity.currentNecrotableRitual = null;
 		blockEntity.user = null;
 		blockEntity.timer = -20;
-		blockEntity.startGate = true;
 		blockEntity.shouldRun = false;
 		blockEntity.markDirty();
 	}
@@ -187,7 +181,6 @@ public class RitualBlockEntity extends BaseBlockEntity {
 		} else {
 			user = null;
 		}
-		this.startGate = nbt.getBoolean(Constants.Nbt.START);
 		this.shouldRun = nbt.getBoolean(Constants.Nbt.SHOULD_RUN);
 		this.hasBotD = nbt.getBoolean(Constants.Nbt.HAS_LEGEMETON);
 		this.hasEmeraldTablet = nbt.getBoolean(Constants.Nbt.HAS_EMERALD_TABLET);
@@ -209,7 +202,6 @@ public class RitualBlockEntity extends BaseBlockEntity {
 		if (user != null) {
 			nbt.putUuid(Constants.Nbt.PLAYER_UUID, user);
 		}
-		nbt.putBoolean(Constants.Nbt.START, this.startGate);
 		nbt.putBoolean(Constants.Nbt.SHOULD_RUN, this.shouldRun);
 		nbt.putBoolean(Constants.Nbt.HAS_LEGEMETON, this.hasBotD);
 		nbt.putBoolean(Constants.Nbt.HAS_EMERALD_TABLET, this.hasEmeraldTablet);

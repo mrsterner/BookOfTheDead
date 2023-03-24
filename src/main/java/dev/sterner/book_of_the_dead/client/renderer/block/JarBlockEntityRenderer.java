@@ -22,10 +22,7 @@ import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
-import net.minecraft.nbt.NbtList;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Axis;
 import net.minecraft.util.math.Direction;
@@ -130,7 +127,7 @@ public class JarBlockEntityRenderer implements BlockEntityRenderer<JarBlockEntit
 					sprite = BotDSpriteIdentifiers.BLOOD.getSprite();
 				}else{
 					newColor = ColorHelper.swapRedBlueIfNeeded(WATER_COLOR);
-					sprite = BotDSpriteIdentifiers.WATER.getSprite();
+					sprite = BotDSpriteIdentifiers.WATER_ALPHA.getSprite();
 				}
 
 				RenderUtils.emitFluidFace(builder.getEmitter(), sprite, newColor, Direction.UP, 1f, (1f - percent), EDGE_SIZE, INNER_SIZE);

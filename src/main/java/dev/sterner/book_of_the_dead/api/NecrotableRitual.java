@@ -64,18 +64,13 @@ public class NecrotableRitual implements IRitual {
 	//Called methods from RitualBlockEntity
 
 	@Override
-	public void onStart(World world, BlockPos blockPos, RitualBlockEntity blockEntity){
-		if(world.getBlockState(blockPos).isOf(BotDObjects.NECRO_TABLE)){
-			ritualCenter = new Vec3d(blockPos.getX(), blockPos.getY(), blockPos.getZ()).add(0.5,0.5,0.5);
-			this.runCommand(world, blockEntity, blockPos, "start");
-		}
-	}
-
-	@Override
 	public void tick(World world, BlockPos blockPos, RitualBlockEntity blockEntity) {
 		ticker++;
 		canEndRitual = this.consumeItems(world, blockPos, blockEntity) && this.consumeSacrifices(world, blockPos, blockEntity);
 		if(canEndRitual || lockTick){
+			if(!this.lockTick){
+				this.runCommand(world, blockEntity, blockPos, "start");
+			}
 			this.lockTick = true;
 			this.runCommand(world, blockEntity, blockPos, "tick");
 			this.generateStatusEffects(world, blockPos, blockEntity);
@@ -325,6 +320,7 @@ public class NecrotableRitual implements IRitual {
 		if (minecraftServer != null && !command.isEmpty()) {
 			String posString = blockPos.getX() + " " + blockPos.getY() + " " + blockPos.getZ();
 			String parsedCommand = command.replaceAll("\\{pos}", posString);
+			System.out.println("Parsed: " + parsedCommand);
 			ServerCommandSource commandSource = minecraftServer.getCommandSource();
 			CommandManager commandManager = minecraftServer.getCommandManager();
 			ParseResults<ServerCommandSource> parseResults = commandManager.getDispatcher().parse(parsedCommand, commandSource);

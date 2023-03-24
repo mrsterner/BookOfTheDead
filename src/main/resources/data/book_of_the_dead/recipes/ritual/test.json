@@ -12,11 +12,26 @@
   ],
   "outputs": [
     {
-      "item" : "minecraft:diamond"
+      "item" : "minecraft:stick"
     }
   ],
   "sacrifices": [],
-  "summons": [],
-  "commands": [],
-  "statusEffects": []
+  "summons": [
+    {
+      "entity": "minecraft:sheep"
+    }
+  ],
+  "commands": [
+    {
+      "command": "execute positioned {pos} run setblock ~ ~10 ~ minecraft:grass_block",
+      "type": "start"
+    }
+  ],
+  "statusEffects": [
+    {
+      "id" : "minecraft:speed",
+      "amplifier" : 1,
+      "duration": 20
+    }
+  ]
 }

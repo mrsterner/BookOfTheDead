@@ -84,7 +84,7 @@ public class RenderUtils {
 	public static void renderMesh(Mesh mesh, MatrixStack matrices, VertexConsumer consumer, int light, int overlay) {
 		for (List<BakedQuad> bakedQuads : ModelHelper.toQuadLists(mesh)) {
 			for (BakedQuad bq : bakedQuads) {
-				consumer.complexBakedQuad(matrices.peek(), bq, new float[]{1f, 1f, 1f, 1f}, 1f, 1f, 1f, new int[]{light, light, light, light}, overlay, true);
+				consumer.complexBakedQuad(matrices.peek(), bq, new float[]{1f, 1f, 1f, 1f}, 1f, 1f, 1f,  new int[]{light, light, light, light}, overlay, true);
 			}
 		}
 	}
