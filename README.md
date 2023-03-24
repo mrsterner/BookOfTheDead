@@ -43,6 +43,8 @@ To add butchering recipes, add entity to the butchering tag and make a recipe li
 * All arrays fit as many entries as you want.
 * The command requires ``execute positioned {pos} run`` to properly parse the command and ``{pos}`` is the rituals center pos. More arguments might be avalible in future updates
 * All items support nbt as shown in the butchering recipe above.
+
+This recipe below will require an emerald tablet to be on the ritual table, it only requires one stick on a pedestal, and it will create a stick, a sheep and a grass block 10 blocks above ritual center. It will also give the Speed effect to all entities nearby for 1 second.
 ```
 {
   "type": "book_of_the_dead:ritual",
