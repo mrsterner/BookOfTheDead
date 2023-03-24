@@ -121,7 +121,7 @@ public class JarBlockEntityRenderer implements BlockEntityRenderer<JarBlockEntit
 			if (entity != null || itemStack != null) {
 				if(liquidType == ACID){
 					newColor = ColorHelper.swapRedBlueIfNeeded(0xfff999);
-					sprite = BotDSpriteIdentifiers.WATER.getSprite();
+					sprite = BotDSpriteIdentifiers.WATER_ALPHA.getSprite();
 				}else if(liquidType == BLOOD){
 					newColor = ColorHelper.swapRedBlueIfNeeded(BLOOD_COLOR);
 					sprite = BotDSpriteIdentifiers.BLOOD.getSprite();

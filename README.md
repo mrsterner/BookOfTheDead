@@ -10,12 +10,11 @@
 [![Downloads](https://img.shields.io/badge/dynamic/json?label=Downloads&style=for-the-badge&color=f16436&query=downloadCount&url=https%3A%2F%2Faddons-ecs.forgesvc.net%2Fapi%2Fv2%2Faddon%2F494721)][curseforge:files]
 </div>
 
-
-
 It is built on the [Quilt][quilt] mod loader and is available for modern
 versions of [Minecraft][minecraft] Java Edition.
-
 # Compat
+
+### Butchering
 To add butchering recipes, add entity to the butchering tag and make a recipe like example below. Up to 8 items can be added in the same recipe. chance is chance for item to actaully drop when a butchering attempt is made, values between 0 and 1, default a 1 (100%)
 ```
 {
@@ -38,7 +37,12 @@ To add butchering recipes, add entity to the butchering tag and make a recipe li
   ]
 }
 ```
-For rituals the following recipe is an example
+### Rituals
+* For rituals the following recipe is an example, ``"ritual": "book_of_the_dead:basic"`` is most likely what you want, other types of rituals is for very specific things like lichdom or entanglement.
+* All durations are in minecraft ticks, and a second is 20 ticks.
+* All arrays fit as many entries as you want.
+* The command requires ``execute positioned {pos} run`` to properly parse the command and ``{pos}`` is the rituals center pos. More arguments might be avalible in future updates
+* All items support nbt as shown in the butchering recipe above.
 ```
 {
   "type": "book_of_the_dead:ritual",
@@ -79,15 +83,6 @@ For rituals the following recipe is an example
 }
 
 ```
-
-## Licence
-* Code
-    - (c) 2022  [MrSterner]
-    - [![License](https://img.shields.io/badge/License-MIT%201.0-cyan.svg?style=flat-square)](https://opensource.org/licenses/MIT)
-* Models and Textures
-    - (c) 2022  [MrSterner]
-    - [![License](https://img.shields.io/badge/License-ARR-red.svg?style=flat-square)](https://opensource.org/licenses/ARR)
-
 
 [curseforge]: https://curseforge.com/minecraft/mc-mods/book_of_the_dead/files
 [curseforge:files]: https://curseforge.com/minecraft/mc-mods/book_of_the_dead/files
