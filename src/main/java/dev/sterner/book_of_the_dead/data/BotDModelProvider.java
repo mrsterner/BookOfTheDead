@@ -27,7 +27,7 @@ public class BotDModelProvider extends FabricModelProvider {
 
 		itemModelGenerator.register(BotDObjects.EYE, Models.SINGLE_LAYER_ITEM);
 		itemModelGenerator.register(BotDObjects.SULFURIC_ACID, Models.SINGLE_LAYER_ITEM);
-		itemModelGenerator.register(BotDObjects.SULFUR, Models.SINGLE_LAYER_ITEM);
+		itemModelGenerator.register(BotDObjects.SULFUR.asItem(), Models.SINGLE_LAYER_ITEM);
 		itemModelGenerator.register(BotDObjects.HEART, Models.SINGLE_LAYER_ITEM);
 		itemModelGenerator.register(BotDObjects.BOOK_OF_THE_DEAD, Models.SINGLE_LAYER_ITEM);
 		itemModelGenerator.register(BotDObjects.PACKET, Models.SINGLE_LAYER_ITEM);

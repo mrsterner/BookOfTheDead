@@ -38,7 +38,6 @@ public interface BotDObjects {
 
 	Item SYRINGE = register("syringe", new SyringeItem(settings()));
 
-	Item SULFUR = register("sulfur", new Item(settings()));
 	Item SULFURIC_ACID = register("sulfuric_acid", new Item(settings()));
 
 	Item MORPHINE = register("morphine", new StatusEffectItem(settings(), BotDStatusEffects.MORPHINE));
@@ -84,6 +83,8 @@ public interface BotDObjects {
 	Block POPPY_CROP = register("poppy_crop", new PoppyCropBlock(QuiltBlockSettings.copy(Blocks.WHEAT)), settings(), false);
 	Item POPPY_SEEDS = register("poppy_seeds", new AliasedBlockItem(POPPY_CROP, settings()));
 
+	Block SULFUR = registerSulfur("sulfur", new SulfurLayerBlock(QuiltBlockSettings.of(Material.SNOW_LAYER)), settings(), true);
+
 	Block HOOK_BLOCK = register("hook_block", new HookBlock(QuiltBlockSettings.of(Material.WOOL).strength(0.2F), false), settings(), false);
 	Block METAL_HOOK_BLOCK = register("metal_hook_block", new HookBlock(QuiltBlockSettings.of(Material.WOOL).strength(0.2F), true), settings(), false);
 	Block JAR = register("jar", new JarBlock(QuiltBlockSettings.of(Material.GLASS).strength(0.3F).sounds(BlockSoundGroup.GLASS)), settings(),true);
@@ -102,6 +103,14 @@ public interface BotDObjects {
 		BLOCKS.put(block, Constants.id(name));
 		if (createItem) {
 			ITEMS.put(new WallStandingBlockItem(block, wall, settings, Direction.DOWN), BLOCKS.get(block));
+		}
+		return block;
+	}
+
+	static <T extends Block> T registerSulfur(String name, T block, Item.Settings settings, boolean createItem) {
+		BLOCKS.put(block, Constants.id(name));
+		if (createItem) {
+			ITEMS.put(new AliasedBlockItem(block, settings), BLOCKS.get(block));
 		}
 		return block;
 	}

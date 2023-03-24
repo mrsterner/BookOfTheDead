@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "book_of_the_dead:block/sulfur"
+  }
+}
