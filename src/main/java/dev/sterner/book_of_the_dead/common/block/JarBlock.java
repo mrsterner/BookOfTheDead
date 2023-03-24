@@ -33,6 +33,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
+import static dev.sterner.book_of_the_dead.common.block.entity.JarBlockEntity.*;
 import static net.minecraft.block.ShulkerBoxBlock.CONTENTS;
 
 public class JarBlock extends BlockWithEntity {
@@ -72,6 +73,7 @@ public class JarBlock extends BlockWithEntity {
 		if(!world.isClient() && hand == Hand.MAIN_HAND){
 			ItemStack stack = player.getMainHandStack();
 			 if(world.getBlockEntity(pos) instanceof JarBlockEntity jarBlockEntity){
+				 System.out.println(jarBlockEntity.liquidType);
 				 if(stack.isEmpty()){
 					 if(player.isSneaking()){
 						 world.setBlockState(pos, state.with(OPEN, !state.get(OPEN)));
@@ -83,36 +85,57 @@ public class JarBlock extends BlockWithEntity {
 					 jarBlockEntity.markDirty();
 					 return ActionResult.CONSUME;
 				 }else if(stack.isOf(Items.GLASS_BOTTLE)){
-					if(jarBlockEntity.bloodAmount >= 25){
-						jarBlockEntity.bloodAmount = jarBlockEntity.bloodAmount - 25;
-						handleBottle(jarBlockEntity, player, hand, BotDObjects.BOTTLE_OF_BLOOD);
-						return ActionResult.CONSUME;
-					}else if(jarBlockEntity.waterAmount >= 25 && !jarBlockEntity.hasBrain){
-						jarBlockEntity.waterAmount = jarBlockEntity.waterAmount - 25;
-						handleBottle(jarBlockEntity, player, hand, Items.POTION);
-						return ActionResult.CONSUME;
-					}
-				}else if(stack.isOf(BotDObjects.BOTTLE_OF_BLOOD) && jarBlockEntity.waterAmount == 0){
-					if(jarBlockEntity.bloodAmount + 25 <= 100){
-						jarBlockEntity.bloodAmount = jarBlockEntity.bloodAmount + 25;
-						handleBottle(jarBlockEntity, player, hand, Items.GLASS_BOTTLE);
-						return ActionResult.CONSUME;
-					}
-				}else if(stack.isOf(Items.POTION) && PotionUtil.getPotion(stack) == Potions.WATER && jarBlockEntity.bloodAmount == 0){
-					if(jarBlockEntity.waterAmount + 25 <= 100){
-						jarBlockEntity.waterAmount = jarBlockEntity.waterAmount + 25;
-						handleBottle(jarBlockEntity, player, hand, Items.GLASS_BOTTLE);
-						return ActionResult.CONSUME;
-					}
-				} else if (stack.isOf(BotDObjects.BRAIN.asItem()) || stack.isOf(BotDObjects.EYE)) {
-					 if(jarBlockEntity.waterAmount == 100){
-						if(!jarBlockEntity.hasBrain){
-							jarBlockEntity.hasBrain = true;
-							player.getMainHandStack().decrement(1);
+					if(jarBlockEntity.liquidAmount >= 25 && !jarBlockEntity.getLiquidType(EMPTY)){
+						Item outStack = switch (jarBlockEntity.liquidType){
+							case BLOOD -> BotDObjects.BOTTLE_OF_BLOOD;
+							case ACID -> BotDObjects.SULFURIC_ACID;
+							default -> Items.POTION;
+						};
+						jarBlockEntity.liquidAmount = jarBlockEntity.liquidAmount - 25;
+						handleBottle(jarBlockEntity, player, hand, outStack);
+						if(jarBlockEntity.liquidAmount <= 0){
+							jarBlockEntity.setLiquidType(EMPTY);
 							jarBlockEntity.markDirty();
-							return ActionResult.CONSUME;
 						}
+
 					}
+				 }else if(stack.isOf(BotDObjects.BOTTLE_OF_BLOOD)){
+					 System.out.println("Blood: " + jarBlockEntity.getLiquidType(EMPTY));
+					 if((jarBlockEntity.getLiquidType(BLOOD) || jarBlockEntity.getLiquidType(EMPTY))){
+						 if(jarBlockEntity.liquidAmount + 25 <= MAX_LIQUID){
+							 jarBlockEntity.setLiquidType(BLOOD);
+							 jarBlockEntity.liquidAmount = jarBlockEntity.liquidAmount + 25;
+							 handleBottle(jarBlockEntity, player, hand, Items.GLASS_BOTTLE);
+							 return ActionResult.CONSUME;
+						 }
+					 }
+				 }else if(stack.isOf(BotDObjects.SULFURIC_ACID)){
+					 if((jarBlockEntity.getLiquidType(ACID) || jarBlockEntity.getLiquidType(EMPTY))){
+						 if(jarBlockEntity.liquidAmount + 25 <= MAX_LIQUID){
+							 jarBlockEntity.setLiquidType(ACID);
+							 jarBlockEntity.liquidAmount = jarBlockEntity.liquidAmount + 25;
+							 handleBottle(jarBlockEntity, player, hand, Items.GLASS_BOTTLE);
+							 return ActionResult.CONSUME;
+						 }
+					 }
+				 }else if(stack.isOf(Items.POTION) && PotionUtil.getPotion(stack) == Potions.WATER){
+					 if((jarBlockEntity.getLiquidType(WATER) || jarBlockEntity.getLiquidType(EMPTY))){
+						 if(jarBlockEntity.liquidAmount + 25 <= MAX_LIQUID){
+							 jarBlockEntity.setLiquidType(WATER);
+							 jarBlockEntity.liquidAmount = jarBlockEntity.liquidAmount + 25;
+							 handleBottle(jarBlockEntity, player, hand, Items.GLASS_BOTTLE);
+							 return ActionResult.CONSUME;
+						 }
+					 }
+				 }else if (stack.isOf(BotDObjects.BRAIN.asItem()) || stack.isOf(BotDObjects.EYE)) {
+					 if(jarBlockEntity.liquidAmount == MAX_LIQUID && jarBlockEntity.getLiquidType(WATER)){
+						 if(!jarBlockEntity.hasBrain){
+							 jarBlockEntity.hasBrain = true;
+							 player.getMainHandStack().decrement(1);
+							 jarBlockEntity.markDirty();
+							 return ActionResult.CONSUME;
+						 }
+					 }
 				}
 			}
 		}

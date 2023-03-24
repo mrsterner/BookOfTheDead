@@ -49,7 +49,6 @@ public class Constants {
 	public interface Nbt {
 		String CORPSE_ENTITY = "CorpseEntity";
         String HOOKED_AGE = "HookedAge";
-        String BLOOD_LEVEL = "BloodLevel";
         String ALL_BLACK = "AllBlack";
         String HAS_LEGEMETON = "HasBotD";
 		String HAS_EMERALD_TABLET = "HasEmeraldTablet";
@@ -83,7 +82,6 @@ public class Constants {
 		String AMPLIFIER = "Amplifier";
 		String MORPHINE = "Morphine";
 		String ADRENALINE = "Adrenaline";
-        String BLOODY = "Bloody";
 		String FILTHY = "Filthy";
 		String CLEANING = "Cleaning";
 		String LATTER = "Latter";
@@ -110,7 +108,9 @@ public class Constants {
         String IS_LICH = "IsLich";
 		String ENTANGLED = "Entangled";
 		String ID = "Id";
-        String WATER_LEVEL = "WaterLevel";
 		String BRAIN = "Brain";
+		String LIQUID_TYPE = "LiquidType";
+		String LIQUID_LEVEL = "LiquidLevel";
+		String BLOOD_LEVEL = "BloodLevel";
 	}
 }

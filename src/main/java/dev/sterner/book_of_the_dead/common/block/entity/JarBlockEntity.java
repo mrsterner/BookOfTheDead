@@ -22,8 +22,13 @@ import org.jetbrains.annotations.Nullable;
 
 public class JarBlockEntity extends BaseBlockEntity {
 	public static final int MAX_LIQUID = 100;
-	public int bloodAmount = 0;
-	public int waterAmount = 0;
+	public int liquidAmount = 0;
+
+	public static final int EMPTY = 0;
+	public static final int WATER = 1;
+	public static final int BLOOD = 2;
+	public static final int ACID = 3;
+	public int liquidType = EMPTY;
 	public boolean hasBrain = false;
 
 	public JarBlockEntity(BlockPos pos, BlockState state) {
@@ -34,8 +39,9 @@ public class JarBlockEntity extends BaseBlockEntity {
 		boolean mark = false;
 		if (world != null && !world.isClient) {
 			if (world.getTime() % 10 == 0 && tickerState.get(JarBlock.OPEN) && blockEntity.getBloodyCorpseAbove(world, pos)) {
-				if(blockEntity.bloodAmount < MAX_LIQUID){
-					blockEntity.bloodAmount++;
+				if(blockEntity.liquidAmount < MAX_LIQUID && (blockEntity.getLiquidType(BLOOD) || blockEntity.getLiquidType(EMPTY))){
+					blockEntity.setLiquidType(BLOOD);
+					blockEntity.liquidAmount++;
 					blockEntity.markDirty();
 					mark = true;
 				}
@@ -58,11 +64,20 @@ public class JarBlockEntity extends BaseBlockEntity {
 		return false;
 	}
 
+	public void setLiquidType(int type) {
+		this.liquidType = type;
+		markDirty();
+	}
+
+	public boolean getLiquidType(int type) {
+		return this.liquidType == type;
+	}
+
 	@Override
 	public void readNbt(NbtCompound nbt) {
 		super.readNbt(nbt);
-		this.bloodAmount = nbt.getInt(Constants.Nbt.BLOOD_LEVEL);
-		this.waterAmount = nbt.getInt(Constants.Nbt.WATER_LEVEL);
+		this.liquidType = nbt.getByte(Constants.Nbt.LIQUID_TYPE);
+		this.liquidAmount = nbt.getInt(Constants.Nbt.LIQUID_LEVEL);
 		this.hasBrain = nbt.getBoolean(Constants.Nbt.BRAIN);
 		markDirty();
 	}
@@ -70,8 +85,8 @@ public class JarBlockEntity extends BaseBlockEntity {
 	@Override
 	protected void writeNbt(NbtCompound nbt) {
 		super.writeNbt(nbt);
-		nbt.putInt(Constants.Nbt.BLOOD_LEVEL, this.bloodAmount);
-		nbt.putInt(Constants.Nbt.WATER_LEVEL, this.waterAmount);
+		nbt.putInt(Constants.Nbt.LIQUID_TYPE, liquidType);
+		nbt.putInt(Constants.Nbt.LIQUID_LEVEL, this.liquidAmount);
 		nbt.putBoolean(Constants.Nbt.BRAIN, this.hasBrain);
 	}
 }

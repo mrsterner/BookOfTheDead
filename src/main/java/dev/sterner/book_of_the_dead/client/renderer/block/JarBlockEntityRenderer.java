@@ -32,6 +32,8 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
 
+import static dev.sterner.book_of_the_dead.common.block.entity.JarBlockEntity.*;
+
 public class JarBlockEntityRenderer implements BlockEntityRenderer<JarBlockEntity>, BuiltinItemRendererRegistry.DynamicItemRenderer {
 	private static final float EDGE_SIZE = 1f / 8f;
 	private static final float INNER_SIZE = 1f - (EDGE_SIZE * 2f);
@@ -58,18 +60,13 @@ public class JarBlockEntityRenderer implements BlockEntityRenderer<JarBlockEntit
 			brainEntityModel.render(matrices, buffer, light, overlay, 1,1,1,1);
 			matrices.pop();
 		}
-		if(entity.bloodAmount > 0 || entity.waterAmount > 0){
+		if(entity.liquidAmount > 0){
 			matrices.push();
 			matrices.scale(0.55f, 0.75f, 0.55f);
 			matrices.translate(0.4, -0.05, 0.4);
-			if(entity.bloodAmount > 0){
-				renderFluid(matrices, vertexConsumers, light, overlay, entity,null, (entity.bloodAmount / 100F), false);
-			}else{
-				renderFluid(matrices, vertexConsumers, light, overlay, entity,null, (entity.waterAmount / 100F), true);
-			}
+			renderFluid(matrices, vertexConsumers, light, overlay, entity,null, (entity.liquidAmount / 100F), entity.liquidType);
 			matrices.pop();
 		}
-
 
 		matrices.push();
 		float f = 0.5F;
@@ -92,7 +89,7 @@ public class JarBlockEntityRenderer implements BlockEntityRenderer<JarBlockEntit
 			nbtCompound = stack.getNbt().getCompound("BlockEntityTag");
 		}
 
-		if(nbtCompound.contains(Constants.Nbt.BRAIN)){
+		if(nbtCompound.contains(Constants.Nbt.BRAIN) && nbtCompound.getBoolean(Constants.Nbt.BRAIN)){
 			matrices.push();
 			matrices.scale(0.85f, 0.85f, 0.85f);
 			matrices.translate(0, -1.55, 0);
@@ -101,15 +98,10 @@ public class JarBlockEntityRenderer implements BlockEntityRenderer<JarBlockEntit
 			matrices.pop();
 		}
 
-		if(nbtCompound.contains(Constants.Nbt.BLOOD_LEVEL) && nbtCompound.getInt(Constants.Nbt.BLOOD_LEVEL) > 0){
+		if(nbtCompound.contains(Constants.Nbt.LIQUID_LEVEL) && nbtCompound.getInt(Constants.Nbt.LIQUID_LEVEL) > 0 && nbtCompound.contains(Constants.Nbt.LIQUID_TYPE) && nbtCompound.getByte(Constants.Nbt.LIQUID_TYPE) != EMPTY){
 			matrices.scale(0.55f,0.75f,0.55f);
 			matrices.translate(-0.5, -0.75, -0.5);
-			renderFluid(matrices, vertexConsumers, light, overlay, null, stack,  nbtCompound.getInt(Constants.Nbt.BLOOD_LEVEL) / 100F, false);
-		}
-		if(nbtCompound.contains(Constants.Nbt.WATER_LEVEL) && nbtCompound.getInt(Constants.Nbt.WATER_LEVEL) > 0){
-			matrices.scale(0.55f,0.75f,0.55f);
-			matrices.translate(-0.5, -0.75, -0.5);
-			renderFluid(matrices, vertexConsumers, light, overlay, null, stack, (nbtCompound.getInt(Constants.Nbt.WATER_LEVEL) / 100F), true);
+			renderFluid(matrices, vertexConsumers, light, overlay, null, stack,  nbtCompound.getInt(Constants.Nbt.LIQUID_LEVEL) / 100F, nbtCompound.getByte(Constants.Nbt.LIQUID_TYPE));
 		}
 		matrices.pop();
 
@@ -122,7 +114,7 @@ public class JarBlockEntityRenderer implements BlockEntityRenderer<JarBlockEntit
 		matrices.pop();
 	}
 
-	private void renderFluid(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, @Nullable JarBlockEntity entity, @Nullable ItemStack itemStack, float percent, boolean isWater) {
+	private void renderFluid(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, @Nullable JarBlockEntity entity, @Nullable ItemStack itemStack, float percent, int liquidType) {
 		if (RendererAccessImpl.INSTANCE.getRenderer() != null) {
 			percent = Math.min(1, percent);
 			matrices.push();
@@ -130,12 +122,15 @@ public class JarBlockEntityRenderer implements BlockEntityRenderer<JarBlockEntit
 			MeshBuilder builder = RendererAccessImpl.INSTANCE.getRenderer().meshBuilder();
 			int newColor;
 			if (entity != null || itemStack != null) {
-				if(isWater){
-					newColor = ColorHelper.swapRedBlueIfNeeded(WATER_COLOR);
+				if(liquidType == ACID){
+					newColor = ColorHelper.swapRedBlueIfNeeded(0xfff999);
 					sprite = BotDSpriteIdentifiers.WATER.getSprite();
-				}else{
+				}else if(liquidType == BLOOD){
 					newColor = ColorHelper.swapRedBlueIfNeeded(BLOOD_COLOR);
 					sprite = BotDSpriteIdentifiers.BLOOD.getSprite();
+				}else{
+					newColor = ColorHelper.swapRedBlueIfNeeded(WATER_COLOR);
+					sprite = BotDSpriteIdentifiers.WATER.getSprite();
 				}
 
 				RenderUtils.emitFluidFace(builder.getEmitter(), sprite, newColor, Direction.UP, 1f, (1f - percent), EDGE_SIZE, INNER_SIZE);
