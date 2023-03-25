@@ -1,7 +1,6 @@
 package dev.sterner.book_of_the_dead.common.rituals;
 
 import dev.sterner.book_of_the_dead.api.BotDApi;
-import dev.sterner.book_of_the_dead.api.NecrotableRitual;
 import dev.sterner.book_of_the_dead.common.block.entity.RitualBlockEntity;
 import dev.sterner.book_of_the_dead.common.component.BotDComponents;
 import dev.sterner.book_of_the_dead.common.component.LivingEntityDataComponent;
@@ -13,7 +12,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 
-public class EntanglementNecrotableRitual extends NecrotableRitual {
+public class EntanglementNecrotableRitual extends BasicNecrotableRitual {
 	public EntanglementNecrotableRitual(Identifier id) {
 		super(id);
 	}
@@ -21,9 +20,9 @@ public class EntanglementNecrotableRitual extends NecrotableRitual {
 	@Override
 	public void onStopped(World world, BlockPos blockPos, RitualBlockEntity blockEntity) {
 		super.onStopped(world, blockPos, blockEntity);
-		if(this.contract != 0 && this.contract2 != 0){
-			Entity entity = world.getEntityById(contract);
-			Entity entity2 = world.getEntityById(contract2);
+		if(this.contract.get(0) != 0 && this.contract.get(1) != 0){
+			Entity entity = world.getEntityById(contract.get(0));
+			Entity entity2 = world.getEntityById(contract.get(1));
 			if(entity instanceof LivingEntity livingEntity && entity2 instanceof LivingEntity livingEntity2){
 				if(world instanceof ServerWorld serverWorld){
 					if(!serverWorld.isChunkLoaded(livingEntity.getChunkPos().x, livingEntity.getChunkPos().z)){

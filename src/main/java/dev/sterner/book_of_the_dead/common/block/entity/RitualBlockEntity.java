@@ -1,7 +1,7 @@
 package dev.sterner.book_of_the_dead.common.block.entity;
 
 import com.google.common.collect.Lists;
-import dev.sterner.book_of_the_dead.api.NecrotableRitual;
+import dev.sterner.book_of_the_dead.common.rituals.BasicNecrotableRitual;
 import dev.sterner.book_of_the_dead.api.block.entity.BaseBlockEntity;
 import dev.sterner.book_of_the_dead.common.recipe.RitualRecipe;
 import dev.sterner.book_of_the_dead.common.registry.*;
@@ -29,7 +29,7 @@ import java.util.*;
 
 public class RitualBlockEntity extends BaseBlockEntity {
 	public static final List<BlockPos> PEDESTAL_POS_LIST;
-	public NecrotableRitual currentNecrotableRitual = null;
+	public BasicNecrotableRitual currentBasicNecrotableRitual = null;
 	public RitualRecipe ritualRecipe = null;
 
 	//NecroTableInfo
@@ -93,25 +93,25 @@ public class RitualBlockEntity extends BaseBlockEntity {
 					}
 				}
 
-				if(blockEntity.ritualRecipe == null || blockEntity.currentNecrotableRitual == null){
+				if(blockEntity.ritualRecipe == null || blockEntity.currentBasicNecrotableRitual == null){
 					blockEntity.ritualRecipe = BotDRecipeTypes.getRiteRecipe(blockEntity);
 					if(blockEntity.ritualRecipe != null){
 						if(blockEntity.checkValidSacrifices(blockEntity.ritualRecipe, world)){
-							blockEntity.currentNecrotableRitual = blockEntity.ritualRecipe.ritual;
+							blockEntity.currentBasicNecrotableRitual = blockEntity.ritualRecipe.ritual;
 						}
 					}
 
 				}else if(blockEntity.checkTier(blockEntity)){
-					blockEntity.currentNecrotableRitual.recipe = blockEntity.ritualRecipe;
+					blockEntity.currentBasicNecrotableRitual.recipe = blockEntity.ritualRecipe;
 					if(blockEntity.user != null){
-						blockEntity.currentNecrotableRitual.userUuid = blockEntity.user;
+						blockEntity.currentBasicNecrotableRitual.userUuid = blockEntity.user;
 					}
 					blockEntity.timer++;
 					if (blockEntity.timer >= 0) {
-						blockEntity.currentNecrotableRitual.tick(world, pos, blockEntity);
+						blockEntity.currentBasicNecrotableRitual.tick(world, pos, blockEntity);
 					}
-					if (blockEntity.timer >= blockEntity.currentNecrotableRitual.recipe.getDuration()) {
-						blockEntity.currentNecrotableRitual.onStopped(world, pos, blockEntity);
+					if (blockEntity.timer >= blockEntity.currentBasicNecrotableRitual.recipe.getDuration()) {
+						blockEntity.currentBasicNecrotableRitual.onStopped(world, pos, blockEntity);
 						blockEntity.reset(blockEntity);
 					}
 				}else{
@@ -157,7 +157,7 @@ public class RitualBlockEntity extends BaseBlockEntity {
 	}
 
 	public void reset(RitualBlockEntity blockEntity){
-		blockEntity.currentNecrotableRitual = null;
+		blockEntity.currentBasicNecrotableRitual = null;
 		blockEntity.user = null;
 		blockEntity.timer = -20;
 		blockEntity.shouldRun = false;
@@ -167,7 +167,7 @@ public class RitualBlockEntity extends BaseBlockEntity {
 	@Override
 	public void readNbt(NbtCompound nbt) {
 		super.readNbt(nbt);
-		currentNecrotableRitual = BotDRegistries.NECROTABLE_RITUALS.get(new Identifier(nbt.getString(Constants.Nbt.NECRO_RITUAL)));
+		currentBasicNecrotableRitual = BotDRegistries.NECROTABLE_RITUALS.get(new Identifier(nbt.getString(Constants.Nbt.NECRO_RITUAL)));
 		if(world != null){
 			Optional<RitualRecipe> optional = world.getRecipeManager().listAllOfType(BotDRecipeTypes.RITUAL_RECIPE_TYPE).stream()
 					.filter(ritualRecipe1 -> ritualRecipe1.id.equals(new Identifier(nbt.getString(Constants.Nbt.RITUAL_RECIPE)))).findFirst();
@@ -190,8 +190,8 @@ public class RitualBlockEntity extends BaseBlockEntity {
 	@Override
 	protected void writeNbt(NbtCompound nbt) {
 		super.writeNbt(nbt);
-		if (currentNecrotableRitual != null) {
-			nbt.putString(Constants.Nbt.NECRO_RITUAL, BotDRegistries.NECROTABLE_RITUALS.getId(currentNecrotableRitual).toString());
+		if (currentBasicNecrotableRitual != null) {
+			nbt.putString(Constants.Nbt.NECRO_RITUAL, BotDRegistries.NECROTABLE_RITUALS.getId(currentBasicNecrotableRitual).toString());
 		}
 		if(ritualRecipe != null){
 			nbt.putString(Constants.Nbt.RITUAL_RECIPE, this.ritualRecipe.id.toString());

@@ -3,7 +3,7 @@ package dev.sterner.book_of_the_dead.common.recipe;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import dev.sterner.book_of_the_dead.api.CommandType;
-import dev.sterner.book_of_the_dead.api.NecrotableRitual;
+import dev.sterner.book_of_the_dead.common.rituals.BasicNecrotableRitual;
 import dev.sterner.book_of_the_dead.api.interfaces.IRecipe;
 import dev.sterner.book_of_the_dead.common.registry.BotDRecipeTypes;
 import dev.sterner.book_of_the_dead.common.registry.BotDRegistries;
@@ -32,7 +32,7 @@ import java.util.stream.IntStream;
 
 public class RitualRecipe implements IRecipe {
 	public final Identifier id;
-	public final NecrotableRitual ritual;
+	public final BasicNecrotableRitual ritual;
 
 	public final DefaultedList<Ingredient> inputs;
 	public final List<ItemStack> outputs;
@@ -45,7 +45,7 @@ public class RitualRecipe implements IRecipe {
 	public final boolean requireEmeraldTablet;
 	public final List<StatusEffectInstance> statusEffectInstance;
 
-	public RitualRecipe(Identifier id, NecrotableRitual ritual, boolean requireBotD, boolean requireEmeraldTablet, int duration, @Nullable DefaultedList<Ingredient> inputs, @Nullable List<ItemStack> outputs, @Nullable List<EntityType<?>> sacrifices, @Nullable List<EntityType<?>> summons, @Nullable List<StatusEffectInstance> statusEffectInstance, Set<CommandType> command) {
+	public RitualRecipe(Identifier id, BasicNecrotableRitual ritual, boolean requireBotD, boolean requireEmeraldTablet, int duration, @Nullable DefaultedList<Ingredient> inputs, @Nullable List<ItemStack> outputs, @Nullable List<EntityType<?>> sacrifices, @Nullable List<EntityType<?>> summons, @Nullable List<StatusEffectInstance> statusEffectInstance, Set<CommandType> command) {
 		this.id = id;
 		this.outputs = outputs;
 		this.inputs = inputs;
@@ -120,7 +120,7 @@ public class RitualRecipe implements IRecipe {
 		@Override
 		public RitualRecipe read(Identifier id, JsonObject json) {
 			//Ritual
-			NecrotableRitual ritual = BotDRegistries.NECROTABLE_RITUALS.get(new Identifier(JsonHelper.getString(json, "ritual")));
+			BasicNecrotableRitual ritual = BotDRegistries.NECROTABLE_RITUALS.get(new Identifier(JsonHelper.getString(json, "ritual")));
 
 			boolean requireBotD = JsonHelper.getBoolean(json, "requireBotD", false);
 			boolean requireEmeraldTablet = JsonHelper.getBoolean(json, "requireEmeraldTablet", false);
@@ -177,7 +177,7 @@ public class RitualRecipe implements IRecipe {
 		@Override
 		public RitualRecipe read(Identifier id, PacketByteBuf buf) {
 			//Ritual
-			NecrotableRitual rite = BotDRegistries.NECROTABLE_RITUALS.get(buf.readIdentifier());
+			BasicNecrotableRitual rite = BotDRegistries.NECROTABLE_RITUALS.get(buf.readIdentifier());
 			boolean requireBotD = buf.readBoolean();
 			boolean requireEmeraldTablet = buf.readBoolean();
 

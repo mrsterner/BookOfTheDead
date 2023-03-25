@@ -1,7 +1,8 @@
-package dev.sterner.book_of_the_dead.api;
+package dev.sterner.book_of_the_dead.common.rituals;
 
 import com.google.common.collect.Lists;
 import com.mojang.brigadier.ParseResults;
+import dev.sterner.book_of_the_dead.api.CommandType;
 import dev.sterner.book_of_the_dead.api.interfaces.IRitual;
 import dev.sterner.book_of_the_dead.common.block.entity.PedestalBlockEntity;
 import dev.sterner.book_of_the_dead.common.block.entity.RitualBlockEntity;
@@ -30,6 +31,7 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.Pair;
+import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
@@ -42,7 +44,7 @@ import java.util.List;
 import java.util.UUID;
 
 
-public class NecrotableRitual implements IRitual {
+public class BasicNecrotableRitual implements IRitual {
 	private final Identifier id;
 	public Vec3d ritualCenter = null;
 	public RitualRecipe recipe;
@@ -50,12 +52,10 @@ public class NecrotableRitual implements IRitual {
 	public UUID userUuid = null;
 	public int height = 0;
 	private int index = 0;
-	private boolean canEndRitual = false;
 	private boolean lockTick = false;
-	public int contract = 0;
-	public int contract2 = 0;
+	public DefaultedList<Integer> contract = DefaultedList.ofSize(8, 0);
 
-	public NecrotableRitual(Identifier id) {
+	public BasicNecrotableRitual(Identifier id) {
 		this.id = id;
 	}
 
@@ -64,7 +64,7 @@ public class NecrotableRitual implements IRitual {
 	@Override
 	public void tick(World world, BlockPos blockPos, RitualBlockEntity blockEntity) {
 		ticker++;
-		canEndRitual = this.consumeItems(world, blockPos, blockEntity) && this.consumeSacrifices(world, blockPos, blockEntity);
+		boolean canEndRitual = this.consumeItems(world, blockPos, blockEntity) && this.consumeSacrifices(world, blockPos, blockEntity);
 		if(canEndRitual || lockTick){
 			if(!this.lockTick){
 				this.runCommand(world, blockEntity, blockPos, "start");
@@ -107,7 +107,7 @@ public class NecrotableRitual implements IRitual {
 		double y = blockPos.getY() + 0.5;
 		double z = blockPos.getZ() + 0.5;
 
-		if (blockEntity.currentNecrotableRitual != null && recipe != null) {
+		if (blockEntity.currentBasicNecrotableRitual != null && recipe != null) {
 			if (world instanceof ServerWorld serverWorld) {
 				serverWorld.playSound(null, x, y, z, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, 1F, 1F);
 			}
@@ -146,8 +146,21 @@ public class NecrotableRitual implements IRitual {
 	 */
 	private void generateStatusEffects(World world, BlockPos blockPos, RitualBlockEntity blockEntity) {
 		int size = 16;
+		List<LivingEntity> livingEntityList = new ArrayList<>();
+		boolean foundContract = false;
 		if(recipe.statusEffectInstance != null){
-			List<LivingEntity> livingEntityList = world.getEntitiesByClass(LivingEntity.class, new Box(blockPos).expand(size), Entity::isAlive);
+			for(Integer id : this.contract){
+				if(id != 0){
+					Entity entity = world.getEntityById(id);
+					if(entity instanceof LivingEntity livingEntity){
+						livingEntityList.add(livingEntity);
+						foundContract = true;
+					}
+				}
+			}
+			if(!foundContract){
+				livingEntityList = world.getEntitiesByClass(LivingEntity.class, new Box(blockPos).expand(size), Entity::isAlive);
+			}
 			for(LivingEntity living : livingEntityList){
 				for(StatusEffectInstance instance : recipe.statusEffectInstance){
 					if(living.canHaveStatusEffect(instance)){
@@ -189,10 +202,11 @@ public class NecrotableRitual implements IRitual {
 						if(world.getBlockEntity(checkPos) instanceof PedestalBlockEntity){
 							if(itemStackBlockPosPair.getLeft().isOf(BotDObjects.CONTRACT)){
 								ItemStack contract = itemStackBlockPosPair.getLeft();
-								if (this.contract == 0) {
-									this.contract = ContractItem.getIdFromContractNbt(contract);
-								} else if (this.contract2 == 0) {
-									this.contract2 = ContractItem.getIdFromContractNbt(contract);
+								for(Integer i : this.contract){
+									if(i == 0){
+										this.contract.set(i, ContractItem.getIdFromContractNbt(contract));
+										break;
+									}
 								}
 							}
 							pedestalToActivate.add(checkPos);
