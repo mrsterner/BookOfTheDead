@@ -6,11 +6,15 @@ import dev.sterner.book_of_the_dead.common.item.StatusEffectItem;
 import dev.sterner.book_of_the_dead.common.recipe.RetortRecipe;
 import dev.sterner.book_of_the_dead.common.registry.BotDBlockEntityTypes;
 import dev.sterner.book_of_the_dead.common.registry.BotDRecipeTypes;
+import dev.sterner.book_of_the_dead.common.util.BotDUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.potion.PotionUtil;
+import net.minecraft.potion.Potions;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.property.Properties;
@@ -30,7 +34,7 @@ public class RetortFlaskBlockEntity extends BaseBlockEntity implements IBlockEnt
 	public int progress = 0;
 	public final int MAX_PROGRESS = 20 * 5;
 	private boolean loaded = false;
-	public boolean hasLiquid = true;
+	public boolean hasLiquid = false;
 
 	public RetortFlaskBlockEntity(BlockPos pos, BlockState state) {
 		super(BotDBlockEntityTypes.RETORT, pos, state);
@@ -40,6 +44,16 @@ public class RetortFlaskBlockEntity extends BaseBlockEntity implements IBlockEnt
 		if (!state.get(Properties.WATERLOGGED)) {
 			ItemStack stack = player.getStackInHand(hand);
 			if (!stack.isEmpty()) {
+				if((stack.isOf(Items.POTION) && PotionUtil.getPotion(stack).equals(Potions.WATER))){
+					BotDUtils.addItemToInventoryAndConsume(player, hand, Items.GLASS_BOTTLE.getDefaultStack());
+					this.hasLiquid = true;
+					return ActionResult.CONSUME;
+				}else if(stack.isOf(Items.WATER_BUCKET)){
+					BotDUtils.addItemToInventoryAndConsume(player, hand, Items.BUCKET.getDefaultStack());
+					this.hasLiquid = true;
+					return ActionResult.CONSUME;
+				}
+				markDirty();
 				int firstEmpty = this.getFirstEmptySlot();
 				if (firstEmpty != -1) {
 					this.setStack(firstEmpty, stack.split(1));
