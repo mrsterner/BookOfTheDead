@@ -69,7 +69,6 @@ public class JarBlock extends BlockWithEntity {
 		if(!world.isClient() && hand == Hand.MAIN_HAND){
 			ItemStack stack = player.getMainHandStack();
 			 if(world.getBlockEntity(pos) instanceof JarBlockEntity jarBlockEntity){
-				 System.out.println(jarBlockEntity.liquidType);
 				 if(stack.isEmpty()){
 					 if(player.isSneaking()){
 						 world.setBlockState(pos, state.with(OPEN, !state.get(OPEN)));
@@ -80,6 +79,8 @@ public class JarBlock extends BlockWithEntity {
 					 }
 					 jarBlockEntity.markDirty();
 					 return ActionResult.CONSUME;
+				 }else if(!state.get(OPEN)){
+					 return ActionResult.PASS;
 				 }else if(stack.isOf(Items.GLASS_BOTTLE)){
 					if(jarBlockEntity.liquidAmount >= 25 && !jarBlockEntity.getLiquidType(EMPTY)){
 						Item outStack = switch (jarBlockEntity.liquidType){
@@ -96,7 +97,6 @@ public class JarBlock extends BlockWithEntity {
 
 					}
 				 }else if(stack.isOf(BotDObjects.BOTTLE_OF_BLOOD)){
-					 System.out.println("Blood: " + jarBlockEntity.getLiquidType(EMPTY));
 					 if((jarBlockEntity.getLiquidType(BLOOD) || jarBlockEntity.getLiquidType(EMPTY))){
 						 if(jarBlockEntity.liquidAmount + 25 <= MAX_LIQUID){
 							 jarBlockEntity.setLiquidType(BLOOD);

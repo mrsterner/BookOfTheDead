@@ -37,7 +37,6 @@ public class Constants {
 
 	public interface Tags {
 		TagKey<EntityType<?>> BUTCHERABLE = TagKey.of(RegistryKeys.ENTITY_TYPE, id("butcherable"));
-        TagKey<Block> EMITS_HEAT = TagKey.of(RegistryKeys.BLOCK, id("emits_heat"));
         TagKey<EntityType<?>> CAGEABLE_BLACKLIST = TagKey.of(RegistryKeys.ENTITY_TYPE, id("cageable_blacklist"));
 
 		TagKey<EntityType<?>> SOUL_WEAK = TagKey.of(RegistryKeys.ENTITY_TYPE, id("soul_weak"));

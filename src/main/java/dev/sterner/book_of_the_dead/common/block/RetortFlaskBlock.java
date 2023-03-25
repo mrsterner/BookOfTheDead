@@ -55,8 +55,6 @@ public class RetortFlaskBlock extends HorizontalFacingBlock implements BlockEnti
 		if (state.get(Properties.WATERLOGGED)) {
 			world.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
 			state = state.with(LIT, false);
-		} else {
-			state = state.with(LIT, world.getBlockState(pos.down()).isIn(Constants.Tags.EMITS_HEAT));
 		}
 		return super.getStateForNeighborUpdate(state, direction, newState, world, pos, posFrom);
 	}

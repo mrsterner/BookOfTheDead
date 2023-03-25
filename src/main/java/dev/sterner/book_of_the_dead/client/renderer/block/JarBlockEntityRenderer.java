@@ -37,9 +37,10 @@ public class JarBlockEntityRenderer implements BlockEntityRenderer<JarBlockEntit
 
 	public static final int BLOOD_COLOR = 0xff0000;
 	public static final int WATER_COLOR = 0x3f76e4;
+	public static final int ACID_COLOR = 0xfffccc;
 
-	private final JarEntityModel jarEntityModel = new JarEntityModel<>(JarEntityModel.createBodyLayer().createModel());
-	private final BrainEntityModel brainEntityModel = new BrainEntityModel<>(BrainEntityModel.createBodyLayer().createModel());
+	private final JarEntityModel jarEntityModel = new JarEntityModel(JarEntityModel.createBodyLayer().createModel());
+	private final BrainEntityModel brainEntityModel = new BrainEntityModel(BrainEntityModel.createBodyLayer().createModel());
 
 	private final Identifier TEXTURE = Constants.id("textures/block/jar.png");
 	private final Identifier TEXTURE_ITEM = Constants.id("textures/block/jar_item.png");
@@ -103,7 +104,6 @@ public class JarBlockEntityRenderer implements BlockEntityRenderer<JarBlockEntit
 		matrices.pop();
 
 
-
 		matrices.push();
 		matrices.multiply(Axis.Z_POSITIVE.rotationDegrees(180));
 		VertexConsumer vertexConsumer = ItemRenderer.getItemGlintConsumer(vertexConsumers, jarEntityModel.getLayer(TEXTURE_ITEM), false, stack.hasGlint());
@@ -120,7 +120,7 @@ public class JarBlockEntityRenderer implements BlockEntityRenderer<JarBlockEntit
 			int newColor;
 			if (entity != null || itemStack != null) {
 				if(liquidType == ACID){
-					newColor = ColorHelper.swapRedBlueIfNeeded(0xfff999);
+					newColor = ColorHelper.swapRedBlueIfNeeded(ACID_COLOR);
 					sprite = BotDSpriteIdentifiers.WATER_ALPHA.getSprite();
 				}else if(liquidType == BLOOD){
 					newColor = ColorHelper.swapRedBlueIfNeeded(BLOOD_COLOR);

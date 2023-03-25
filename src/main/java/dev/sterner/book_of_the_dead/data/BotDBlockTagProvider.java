@@ -18,13 +18,6 @@ public class BotDBlockTagProvider extends FabricTagProvider.BlockTagProvider{
 	@Override
 	protected void configure(HolderLookup.Provider arg) {
 		getOrCreateTagBuilder(BlockTags.CLIMBABLE).add(BotDObjects.ROPE);
-		getOrCreateTagBuilder(Constants.Tags.EMITS_HEAT)
-				.add(Blocks.FIRE)
-				.add(Blocks.MAGMA_BLOCK)
-				.add(Blocks.LAVA)
-				.add(Blocks.LAVA_CAULDRON)
-				.add(Blocks.TORCH)
-				.add(Blocks.CAMPFIRE);
 
 		getOrCreateTagBuilder(BlockTags.INFINIBURN_OVERWORLD)
 				.add(BotDObjects.SULFUR);
