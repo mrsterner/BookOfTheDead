@@ -332,7 +332,6 @@ public class BasicNecrotableRitual implements IRitual {
 		if (minecraftServer != null && !command.isEmpty()) {
 			String posString = blockPos.getX() + " " + blockPos.getY() + " " + blockPos.getZ();
 			String parsedCommand = command.replaceAll("\\{pos}", posString);
-			System.out.println("Parsed: " + parsedCommand);
 			ServerCommandSource commandSource = minecraftServer.getCommandSource();
 			CommandManager commandManager = minecraftServer.getCommandManager();
 			ParseResults<ServerCommandSource> parseResults = commandManager.getDispatcher().parse(parsedCommand, commandSource);

@@ -1,8 +1,8 @@
 package dev.sterner.book_of_the_dead.client.renderer.block;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import dev.sterner.book_of_the_dead.BotDClient;
-import dev.sterner.book_of_the_dead.client.model.LargeCircleEntityModel;
 import dev.sterner.book_of_the_dead.client.renderer.renderlayer.BotDRenderLayer;
 import dev.sterner.book_of_the_dead.common.block.entity.RitualBlockEntity;
 import dev.sterner.book_of_the_dead.common.util.Constants;
@@ -11,15 +11,16 @@ import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Axis;
 import net.minecraft.util.math.MathHelper;
+import org.joml.Matrix4f;
 
 public class RitualBlockEntityRenderer implements BlockEntityRenderer<RitualBlockEntity> {
 	private float alpha = 0;
-	private final Identifier CIRCLE_TEXTURE = Constants.id("textures/entity/circle.png");
-	private final LargeCircleEntityModel<Entity> circleEntityModel =  new LargeCircleEntityModel<>(LargeCircleEntityModel.createBodyLayer().createModel());
+	private final Identifier CIRCLE_NECROMANCY = Constants.id("textures/misc/circle_necromancy.png");
+	private final Identifier CIRCLE_ALCHEMICAL = Constants.id("textures/misc/circle_alchemical.png");
+	private final Identifier CIRCLE_SACRIFICE = Constants.id("textures/misc/circle_sacrifice.png");
 
 	public RitualBlockEntityRenderer(BlockEntityRendererFactory.Context context) {
 	}
@@ -40,18 +41,22 @@ public class RitualBlockEntityRenderer implements BlockEntityRenderer<RitualBloc
 			}
 		}
 		matrices.push();
-		matrices.translate(0.5,-1.25,0.5);
+		matrices.translate(0.5,0.15,0.5);
 		final float rotationModifier = 4F;
 		double ticks = (BotDClient.ClientTickHandler.ticksInGame + tickDelta) * 0.5;
 		float deg =  (float) (ticks / rotationModifier % 360F);
 		matrices.multiply(Axis.Z_POSITIVE.rotationDegrees(MathHelper.sin(deg) / (float) Math.PI));
 		matrices.multiply(Axis.X_POSITIVE.rotationDegrees(MathHelper.cos(deg) / (float) Math.PI));
 		matrices.multiply(Axis.Y_POSITIVE.rotationDegrees(entity.getCachedState().get(HorizontalFacingBlock.FACING).asRotation()));
-		renderCircleLarge(matrices, vertexConsumers.getBuffer(BotDRenderLayer.GLOWING_LAYER.apply(CIRCLE_TEXTURE)), light, overlay);
-		matrices.pop();
-	}
 
-	private void renderCircleLarge(MatrixStack matrices, VertexConsumer buffer, int light, int overlay) {
-		circleEntityModel.render(matrices, buffer, light, overlay, 1,1,1, 1);//TODO alpha to alpha
+		Matrix4f mat = matrices.peek().getModel();
+		VertexConsumer vertexConsumer = vertexConsumers.getBuffer(BotDRenderLayer.GLOWING_LAYER.apply(CIRCLE_ALCHEMICAL));
+		RenderSystem.setShaderTexture(0, CIRCLE_ALCHEMICAL);
+		vertexConsumer.vertex(mat, -2.5F, 0, 2.5F).color(255, 255, 255, 255).uv(0, 1).overlay(overlay).light(light).normal(0, 1, 0).next();//TODO replace 255 with alpha
+		vertexConsumer.vertex(mat, 2.5F, 0, 2.5F).color(255, 255, 255, 255).uv(1, 1).overlay(overlay).light(light).normal(0, 1, 0).next();
+		vertexConsumer.vertex(mat, 2.5F, 0, -2.5F).color(255, 255, 255, 255).uv(1, 0).overlay(overlay).light(light).normal(0, 1, 0).next();
+		vertexConsumer.vertex(mat, -2.5F, 0, -2.5F).color(255, 255, 255, 255).uv(0, 0).overlay(overlay).light(light).normal(0, 1, 0).next();
+
+		matrices.pop();
 	}
 }
