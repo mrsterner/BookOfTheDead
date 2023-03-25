@@ -1,6 +1,5 @@
 package dev.sterner.book_of_the_dead.common.statuseffect;
 
-import dev.sterner.book_of_the_dead.client.network.BloodSplashParticlePacket;
 import dev.sterner.book_of_the_dead.common.registry.BotDDamageTypes;
 import dev.sterner.book_of_the_dead.common.registry.BotDParticleTypes;
 import dev.sterner.book_of_the_dead.common.registry.BotDStatusEffects;

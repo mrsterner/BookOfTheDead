@@ -1,15 +1,11 @@
 package dev.sterner.book_of_the_dead.common.registry;
 
 import dev.sterner.book_of_the_dead.common.util.Constants;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.DamageType;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.BootstrapContext;
-import org.jetbrains.annotations.Nullable;
 
 public class BotDDamageTypes {
 	public static final RegistryKey<DamageType> SANGUINE = register("sanguine");

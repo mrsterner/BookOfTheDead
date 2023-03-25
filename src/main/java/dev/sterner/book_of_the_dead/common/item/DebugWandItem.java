@@ -1,12 +1,7 @@
 package dev.sterner.book_of_the_dead.common.item;
 
-import dev.sterner.book_of_the_dead.BotD;
-import dev.sterner.book_of_the_dead.common.block.entity.ButcherTableBlockEntity;
 import dev.sterner.book_of_the_dead.common.component.BotDComponents;
-import dev.sterner.book_of_the_dead.common.component.CorpseDataComponent;
 import dev.sterner.book_of_the_dead.common.component.LivingEntityDataComponent;
-import dev.sterner.book_of_the_dead.common.entity.PlayerCorpseEntity;
-import dev.sterner.book_of_the_dead.common.registry.BotDEntityTypes;
 import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
 import dev.sterner.book_of_the_dead.common.registry.BotDStatusEffects;
 import net.minecraft.entity.LivingEntity;

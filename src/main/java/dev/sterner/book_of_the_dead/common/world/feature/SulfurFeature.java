@@ -1,6 +1,5 @@
 package dev.sterner.book_of_the_dead.common.world.feature;
 
-import com.mojang.serialization.Codec;
 import dev.sterner.book_of_the_dead.common.block.SulfurLayerBlock;
 import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
 import net.minecraft.block.Block;

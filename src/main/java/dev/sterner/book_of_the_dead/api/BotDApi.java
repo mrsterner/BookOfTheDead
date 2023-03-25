@@ -12,7 +12,6 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.listener.ClientPlayPacketListener;
 import org.jetbrains.annotations.Nullable;
 
 public class BotDApi {

@@ -13,7 +13,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.potion.PotionUtil;
 import net.minecraft.potion.Potions;
 import net.minecraft.sound.SoundCategory;
@@ -31,10 +30,7 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-
 import static dev.sterner.book_of_the_dead.common.block.entity.JarBlockEntity.*;
-import static net.minecraft.block.ShulkerBoxBlock.CONTENTS;
 
 public class JarBlock extends BlockWithEntity {
 	protected static final VoxelShape OPEN_SHAPE = VoxelShapes.union(

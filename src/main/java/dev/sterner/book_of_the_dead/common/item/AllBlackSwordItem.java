@@ -1,6 +1,5 @@
 package dev.sterner.book_of_the_dead.common.item;
 
-import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 import dev.sterner.book_of_the_dead.common.util.Constants;

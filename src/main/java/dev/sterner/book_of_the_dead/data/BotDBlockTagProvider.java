@@ -25,5 +25,11 @@ public class BotDBlockTagProvider extends FabricTagProvider.BlockTagProvider{
 				.add(Blocks.LAVA_CAULDRON)
 				.add(Blocks.TORCH)
 				.add(Blocks.CAMPFIRE);
+
+		getOrCreateTagBuilder(BlockTags.INFINIBURN_OVERWORLD)
+				.add(BotDObjects.SULFUR);
+
+		getOrCreateTagBuilder(BlockTags.PICKAXE_MINEABLE).add(BotDObjects.SULFUR);
+		getOrCreateTagBuilder(BlockTags.SHOVEL_MINEABLE).add(BotDObjects.SULFUR);
 	}
 }

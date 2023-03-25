@@ -9,7 +9,6 @@ import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.*;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKeys;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -26,6 +25,8 @@ import java.util.Map;
 public interface BotDObjects {
 	Map<Block, Identifier> BLOCKS = new LinkedHashMap<>();
 	Map<Item, Identifier> ITEMS = new LinkedHashMap<>();
+
+	Material SULFUR_MATERIAL = new Material.Builder(MapColor.PALE_YELLOW).build();
 
 	Item DEBUG_WAND = register("debug_wand", new DebugWandItem(settings()));
 
@@ -83,7 +84,7 @@ public interface BotDObjects {
 	Block POPPY_CROP = register("poppy_crop", new PoppyCropBlock(QuiltBlockSettings.copy(Blocks.WHEAT)), settings(), false);
 	Item POPPY_SEEDS = register("poppy_seeds", new AliasedBlockItem(POPPY_CROP, settings()));
 
-	Block SULFUR = registerSulfur("sulfur", new SulfurLayerBlock(QuiltBlockSettings.of(Material.SNOW_LAYER)), settings(), true);
+	Block SULFUR = registerSulfur("sulfur", new SulfurLayerBlock(QuiltBlockSettings.of(SULFUR_MATERIAL).requiresTool()), settings(), true);
 
 	Block HOOK_BLOCK = register("hook_block", new HookBlock(QuiltBlockSettings.of(Material.WOOL).strength(0.2F), false), settings(), false);
 	Block METAL_HOOK_BLOCK = register("metal_hook_block", new HookBlock(QuiltBlockSettings.of(Material.WOOL).strength(0.2F), true), settings(), false);

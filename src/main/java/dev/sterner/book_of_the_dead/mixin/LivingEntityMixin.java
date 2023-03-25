@@ -1,6 +1,5 @@
 package dev.sterner.book_of_the_dead.mixin;
 
-import com.llamalad7.mixinextras.injector.ModifyReceiver;
 import dev.sterner.book_of_the_dead.api.BotDApi;
 import dev.sterner.book_of_the_dead.api.event.OnEntityDeathEvent;
 import dev.sterner.book_of_the_dead.common.component.*;
@@ -13,9 +12,7 @@ import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffectType;
 import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.entity.passive.CowEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.MilkBucketItem;
 import net.minecraft.loot.LootTable;
 import net.minecraft.loot.context.LootContext;
 import net.minecraft.loot.context.LootContextTypes;
@@ -26,7 +23,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
 import org.quiltmc.qsl.entity.effect.api.QuiltLivingEntityStatusEffectExtensions;
-import org.quiltmc.qsl.entity.effect.api.StatusEffectRemovalReason;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
