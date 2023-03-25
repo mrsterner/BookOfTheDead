@@ -37,8 +37,8 @@ public class SulfurLayerBlock extends SnowBlock {
 
 	@Override
 	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, RandomGenerator random) {
-		boolean sulf = world.getBlockState(pos.up()).isOf(BotDObjects.SULFUR);
-		if(world.getBlockState(pos.up()).isAir() || sulf){
+		boolean sulfur = world.getBlockState(pos.up()).isOf(BotDObjects.SULFUR);
+		if(world.getBlockState(pos.up()).isAir() || sulfur){
 			boolean bl = false;
 			for(Direction direction : Properties.HORIZONTAL_FACING.getValues()){
 				if(world.getBlockState(pos.offset(direction)).isOf(Blocks.LAVA)){
@@ -47,9 +47,14 @@ public class SulfurLayerBlock extends SnowBlock {
 				}
 			}
 			if(bl){
-				int layer = sulf ? world.getBlockState(pos.up()).get(LAYERS) : 0;
+				int layer = sulfur ? world.getBlockState(pos.up()).get(LAYERS) : 0;
 				layer = MathHelper.clamp(layer, 0, 7);
-				world.setBlockState(pos.up(), BotDObjects.SULFUR.getDefaultState().with(LAYERS, 1 + layer));
+				if(state.get(LAYERS) < MAX_LAYERS){
+					world.setBlockState(pos, BotDObjects.SULFUR.getDefaultState().with(LAYERS, MathHelper.clamp(1 + state.get(LAYERS), 1, 8)));
+				}else{
+					world.setBlockState(pos.up(), BotDObjects.SULFUR.getDefaultState().with(LAYERS, 1 + layer));
+				}
+
 			}
 		}
 	}
