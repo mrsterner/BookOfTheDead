@@ -47,14 +47,11 @@ public class SulfurLayerBlock extends SnowBlock {
 				}
 			}
 			if(bl){
-				int layer = sulfur ? world.getBlockState(pos.up()).get(LAYERS) : 0;
-				layer = MathHelper.clamp(layer, 0, 7);
 				if(state.get(LAYERS) < MAX_LAYERS){
 					world.setBlockState(pos, BotDObjects.SULFUR.getDefaultState().with(LAYERS, MathHelper.clamp(1 + state.get(LAYERS), 1, 8)));
-				}else{
-					world.setBlockState(pos.up(), BotDObjects.SULFUR.getDefaultState().with(LAYERS, 1 + layer));
+				}else if(sulfur && world.getBlockState(pos.up()).get(LAYERS) <= 3){
+					world.setBlockState(pos.up(), BotDObjects.SULFUR.getDefaultState().with(LAYERS, 1 + world.getBlockState(pos.up()).get(LAYERS)));
 				}
-
 			}
 		}
 	}

@@ -34,18 +34,35 @@ public class SulfurFeature extends Feature<DefaultFeatureConfig> {
 		if (!world.getBlockState(lavaBlockPos).isOf(Blocks.LAVA)) {
 			return false;
 		}
+		double skipChance = 0.05;
+		int radiusSquared = radius * radius; // squared radius for faster distance calculations
+
 		// Replace solid blocks around the lava block with sulfur blocks
 		int minY = lavaBlockPos.getY() - 2;
 		for (int x = lavaBlockPos.getX() - radius; x <= lavaBlockPos.getX() + radius; x++) {
 			for (int y = minY; y <= lavaBlockPos.getY() + 2; y++) {
 				for (int z = lavaBlockPos.getZ() - radius; z <= lavaBlockPos.getZ() + radius; z++) {
 					BlockPos placedPos = new BlockPos(x, y, z);
-					BlockState state = world.getBlockState(placedPos);
-					BlockState belowState = world.getBlockState(placedPos.down());
 
-					if (state.isAir() && belowState.isSolidBlock(world, placedPos.down())) {
-						world.setBlockState(placedPos.down(), BotDObjects.SULFUR.getDefaultState().with(SulfurLayerBlock.LAYERS, 8), Block.NOTIFY_ALL);
-						world.setBlockState(placedPos.down().down(), BotDObjects.SULFUR.getDefaultState().with(SulfurLayerBlock.LAYERS, 8), Block.NOTIFY_ALL);
+					// Calculate the distance between the current block and the lava block
+					double dx = placedPos.getX() - lavaBlockPos.getX();
+					double dy = placedPos.getY() - lavaBlockPos.getY();
+					double dz = placedPos.getZ() - lavaBlockPos.getZ();
+					double distanceSquared = dx * dx + dy * dy + dz * dz;
+
+					// Only place sulfur blocks within the circular area
+					if (distanceSquared <= radiusSquared && random.nextDouble() > skipChance) {
+						BlockState state = world.getBlockState(placedPos);
+						BlockState belowState = world.getBlockState(placedPos.down());
+
+						if (state.isAir() && belowState.isSolidBlock(world, placedPos.down())) {
+							if (random.nextBoolean()) {
+								int i = random.nextInt(2);
+								world.setBlockState(placedPos, BotDObjects.SULFUR.getDefaultState().with(SulfurLayerBlock.LAYERS, 1 + i), Block.NOTIFY_ALL);
+							}
+							world.setBlockState(placedPos.down(), BotDObjects.SULFUR.getDefaultState().with(SulfurLayerBlock.LAYERS, 8), Block.NOTIFY_ALL);
+							world.setBlockState(placedPos.down().down(), BotDObjects.SULFUR.getDefaultState().with(SulfurLayerBlock.LAYERS, 8), Block.NOTIFY_ALL);
+						}
 					}
 				}
 			}
