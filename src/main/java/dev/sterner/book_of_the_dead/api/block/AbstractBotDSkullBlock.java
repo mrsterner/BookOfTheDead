@@ -2,7 +2,9 @@ package dev.sterner.book_of_the_dead.api.block;
 
 import dev.sterner.book_of_the_dead.common.block.BotDSkullBlock;
 import dev.sterner.book_of_the_dead.common.block.entity.BotDSkullBlockEntity;
-import net.minecraft.block.*;
+import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.ai.pathing.NavigationType;
 import net.minecraft.item.Equippable;

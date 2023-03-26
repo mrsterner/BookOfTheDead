@@ -19,16 +19,16 @@ public interface IRecipe extends Recipe<Inventory> {
 	}
 
 	@Override
-	default ItemStack craft(Inventory inventory, DynamicRegistryManager registryManager){
+	default ItemStack craft(Inventory inventory, DynamicRegistryManager registryManager) {
 		return ItemStack.EMPTY;
 	}
 
-    @Override
-	default ItemStack getResult(DynamicRegistryManager registryManager){
+	@Override
+	default ItemStack getResult(DynamicRegistryManager registryManager) {
 		return ItemStack.EMPTY;
 	}
 
-    @Override
+	@Override
 	default String getGroup() {
 		return getId().toString();
 	}

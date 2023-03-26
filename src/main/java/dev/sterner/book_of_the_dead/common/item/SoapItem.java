@@ -7,7 +7,9 @@ import dev.sterner.book_of_the_dead.common.block.entity.ButcherTableBlockEntity;
 import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.*;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUsageContext;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.UseAction;
@@ -17,6 +19,7 @@ import net.minecraft.world.World;
 
 public class SoapItem extends Item {
 	private static final int MAX_USE_TIME = 7200;
+
 	public SoapItem(Settings settings) {
 		super(settings.maxDamage(8));
 	}
@@ -27,8 +30,8 @@ public class SoapItem extends Item {
 		BlockPos blockPos = context.getBlockPos();
 		PlayerEntity player = context.getPlayer();
 		BlockState state = world.getBlockState(blockPos);
-		if(context.getHand() == Hand.MAIN_HAND && world.getBlockState(blockPos).isOf(BotDObjects.BUTCHER_TABLE) && world.getBlockEntity(blockPos) instanceof ButcherTableBlockEntity be){
-			if(world.getBlockState(blockPos).get(HorizontalDoubleBlock.HHALF) == HorizontalDoubleBlockHalf.LEFT){
+		if (context.getHand() == Hand.MAIN_HAND && world.getBlockState(blockPos).isOf(BotDObjects.BUTCHER_TABLE) && world.getBlockEntity(blockPos) instanceof ButcherTableBlockEntity be) {
+			if (world.getBlockState(blockPos).get(HorizontalDoubleBlock.HHALF) == HorizontalDoubleBlockHalf.LEFT) {
 				be = ButcherBlock.getNeighbourButcherBlockEntity(world, state, blockPos);
 			}
 			if (player != null && be != null && (be.getFilthLevel() > 0) && be.latter <= 0) {

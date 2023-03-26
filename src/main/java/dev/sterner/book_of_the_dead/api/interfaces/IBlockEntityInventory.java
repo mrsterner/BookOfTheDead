@@ -26,7 +26,9 @@ public interface IBlockEntityInventory extends Inventory {
 			setStack(i, ItemStack.EMPTY);
 		}
 		markDirty();
-	}	DefaultedList<ItemStack> getItems();
+	}
+
+	DefaultedList<ItemStack> getItems();
 
 	default ItemStack getStack(Item item) {
 		for (int i = 0; i < size(); i++) {

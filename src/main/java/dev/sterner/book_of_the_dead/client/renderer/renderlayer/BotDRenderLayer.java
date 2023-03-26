@@ -40,9 +40,9 @@ public class BotDRenderLayer extends RenderLayer {
 	}
 
 	public static void addGlintTypes(Object2ObjectLinkedOpenHashMap<RenderLayer, BufferBuilder> map, RenderLayer renderLayer) {
-			if (!map.containsKey(renderLayer)){
-				map.put(renderLayer, new BufferBuilder(renderLayer.getExpectedBufferSize()));
-			}
+		if (!map.containsKey(renderLayer)) {
+			map.put(renderLayer, new BufferBuilder(renderLayer.getExpectedBufferSize()));
+		}
 	}
 
 	public static final Function<Identifier, RenderLayer> GLOWING_LAYER = Util.memoize(texture -> {

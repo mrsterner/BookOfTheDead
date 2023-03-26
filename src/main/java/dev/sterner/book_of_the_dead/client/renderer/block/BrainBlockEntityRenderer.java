@@ -29,7 +29,7 @@ public class BrainBlockEntityRenderer implements BlockEntityRenderer<BrainBlockE
 	@Override
 	public void render(BrainBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
 		World world = entity.getWorld();
-		if(world != null){
+		if (world != null) {
 			BlockState blockState = entity.getCachedState();
 			matrices.push();
 			float f = blockState.get(HorizontalFacingBlock.FACING).asRotation();

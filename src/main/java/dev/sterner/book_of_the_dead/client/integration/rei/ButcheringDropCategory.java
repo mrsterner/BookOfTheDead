@@ -55,11 +55,11 @@ public class ButcheringDropCategory implements DisplayCategory<ButcheringDropDis
 		Point startPoint = new Point(bounds.getCenterX() - 64, bounds.getCenterY() - 8);
 
 		List<Widget> widgets = new ArrayList<>();
-		bounds.grow(5,5);
+		bounds.grow(5, 5);
 		widgets.add(Widgets.createRecipeBase(bounds));
 		widgets.add(Widgets.createDrawableWidget((helper, matrices, mouseX, mouseY, delta) -> {
 			if (target instanceof LivingEntity livingEntity) {
-				RenderUtils.drawEntity(0,0,20, mouseX, mouseY, livingEntity, targetBounds);
+				RenderUtils.drawEntity(0, 0, 20, mouseX, mouseY, livingEntity, targetBounds);
 			}
 		}));
 
@@ -87,9 +87,6 @@ public class ButcheringDropCategory implements DisplayCategory<ButcheringDropDis
 				}
 			}
 		}
-
-
-
 
 
 		return widgets;

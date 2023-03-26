@@ -100,7 +100,7 @@ public class RetortRecipe implements IRecipe {
 		public RetortRecipe read(Identifier id, JsonObject json) {
 			Ingredient[] ingredients = readIngredients(JsonHelper.getArray(json, "ingredients"));
 			Item outputItem = Registries.ITEM.getOrEmpty(new Identifier(JsonHelper.getString(json, "outputItem"))).orElseThrow(() -> new JsonSyntaxException("No such item " + JsonHelper.getString(json, "outputItem")));
-			ItemStack output = new ItemStack(outputItem, JsonHelper.getInt(json,"outputCount", 1));
+			ItemStack output = new ItemStack(outputItem, JsonHelper.getInt(json, "outputCount", 1));
 			int color = Integer.parseInt(JsonHelper.getString(json, "color").substring(2), 16);
 			return new RetortRecipe(id, color, ingredients, output);
 		}

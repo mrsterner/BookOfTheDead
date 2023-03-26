@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import dev.sterner.book_of_the_dead.common.block.NecroTableBlock;
 import dev.sterner.book_of_the_dead.common.block.entity.NecroTableBlockEntity;
 import dev.sterner.book_of_the_dead.common.util.Constants;
-import net.minecraft.block.*;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.model.*;
 import net.minecraft.client.render.RenderLayer;
@@ -14,7 +14,8 @@ import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.*;
+import net.minecraft.util.math.Axis;
+import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 
 public class NecroTableBlockEntityRenderer<T extends BlockEntity> implements BlockEntityRenderer<T> {
@@ -34,9 +35,9 @@ public class NecroTableBlockEntityRenderer<T extends BlockEntity> implements Blo
 	@Override
 	public void render(T entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
 		World world = entity.getWorld();
-		if(world != null){
+		if (world != null) {
 			BlockState blockState = entity.getCachedState();
-			if(entity instanceof NecroTableBlockEntity necroTableBlockEntity){
+			if (entity instanceof NecroTableBlockEntity necroTableBlockEntity) {
 
 
 				matrices.push();
@@ -47,22 +48,22 @@ public class NecroTableBlockEntityRenderer<T extends BlockEntity> implements Blo
 				matrices.multiply(Axis.Y_POSITIVE.rotationDegrees(-f));
 				matrices.translate(-0.5, -0.5, -0.5);
 
-				if(direction == Direction.SOUTH){
-					matrices.translate(0,-1.5,0.5);
-				}else if(direction == Direction.WEST){
-					matrices.translate(0,-1.5,1.5);
+				if (direction == Direction.SOUTH) {
+					matrices.translate(0, -1.5, 0.5);
+				} else if (direction == Direction.WEST) {
+					matrices.translate(0, -1.5, 1.5);
 					matrices.multiply(Axis.Y_POSITIVE.rotationDegrees(180));
-				}else if(direction == Direction.NORTH){
-					matrices.translate(2,-1.5,0.5);
-				}else if(direction == Direction.EAST){
-					matrices.translate(0,-1.5,-0.5);
+				} else if (direction == Direction.NORTH) {
+					matrices.translate(2, -1.5, 0.5);
+				} else if (direction == Direction.EAST) {
+					matrices.translate(0, -1.5, -0.5);
 					matrices.multiply(Axis.Y_POSITIVE.rotationDegrees(180));
 				}
 
-				if(necroTableBlockEntity.hasEmeraldTablet){
+				if (necroTableBlockEntity.hasEmeraldTablet) {
 					renderTablet(matrices, vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(TEXTURE)), light, overlay);
 				}
-				if(necroTableBlockEntity.hasBotD){
+				if (necroTableBlockEntity.hasBotD) {
 					renderBook(matrices, vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(TEXTURE)), light, overlay);
 				}
 				render(matrices, vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(TEXTURE)), light, overlay);
@@ -75,7 +76,7 @@ public class NecroTableBlockEntityRenderer<T extends BlockEntity> implements Blo
 		base.render(matrixStack, vertexConsumer, packedLight, packedOverlay, 1, 1, 1, 1);
 		candle.render(matrixStack, vertexConsumer, packedLight, packedOverlay, 1, 1, 1, 1);
 		slate.render(matrixStack, vertexConsumer, packedLight, packedOverlay, 1, 1, 1, 1);
-		cruse.render(matrixStack, vertexConsumer, packedLight, packedOverlay,1, 1, 1, 1);
+		cruse.render(matrixStack, vertexConsumer, packedLight, packedOverlay, 1, 1, 1, 1);
 		paper.render(matrixStack, vertexConsumer, packedLight, packedOverlay, 1, 1, 1, 1);
 		ink.render(matrixStack, vertexConsumer, packedLight, packedOverlay, 1, 1, 1, 1);
 	}

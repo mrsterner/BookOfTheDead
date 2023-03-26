@@ -47,7 +47,7 @@ public class BaseButcherBlockEntity extends HaulerBlockEntity implements IBlockE
 	public NbtCompound storedCorpseNbt = new NbtCompound();
 	public LivingEntity storedLiving = null;
 	public DefaultedList<ItemStack> outputs = DefaultedList.ofSize(8, ItemStack.EMPTY);
-	public DefaultedList<Float> chances  = DefaultedList.ofSize(8, 1F);
+	public DefaultedList<Float> chances = DefaultedList.ofSize(8, 1F);
 	public ButcheringRecipe butcheringRecipe = null;
 	public boolean resetRecipe = true;
 
@@ -66,16 +66,16 @@ public class BaseButcherBlockEntity extends HaulerBlockEntity implements IBlockE
 		}
 	}
 
-	public void refreshButcheringRecipe(){
-		if(getCorpseEntity() != null){
-			if(this.outputs.size() > 0 && this.outputs.get(0).isOf(Items.AIR) && resetRecipe){
+	public void refreshButcheringRecipe() {
+		if (getCorpseEntity() != null) {
+			if (this.outputs.size() > 0 && this.outputs.get(0).isOf(Items.AIR) && resetRecipe) {
 				Optional<Entity> entity = EntityType.getEntityFromNbt(getCorpseEntity(), world);
-				if(entity.isPresent() && !world.isClient()){
+				if (entity.isPresent() && !world.isClient()) {
 					butcheringRecipe = world.getRecipeManager().listAllOfType(BotDRecipeTypes.BUTCHERING_RECIPE_TYPE)
 							.stream().filter(type -> type.entityType == entity.get().getType()).findFirst().orElse(null);
-					if(butcheringRecipe != null){
+					if (butcheringRecipe != null) {
 						DefaultedList<Pair<ItemStack, Float>> outputsWithChance = DefaultedList.ofSize(butcheringRecipe.getOutputs().size(), Pair.of(ItemStack.EMPTY, 1f));
-						for(int i = 0; i < butcheringRecipe.getOutputs().size(); i++){
+						for (int i = 0; i < butcheringRecipe.getOutputs().size(); i++) {
 							outputsWithChance.set(i, Pair.of(butcheringRecipe.getOutputs().get(i).getFirst().copy(), butcheringRecipe.getOutputs().get(i).getSecond()));
 						}
 						craftRecipe(outputsWithChance);
@@ -87,29 +87,29 @@ public class BaseButcherBlockEntity extends HaulerBlockEntity implements IBlockE
 	}
 
 	public ActionResult onUse(World world, BlockState state, BlockPos pos, PlayerEntity player, Hand hand, double probability, double particleOffset, boolean isNeighbour) {
-		if(hand == Hand.MAIN_HAND){
-			if(placeCorpseOnTable(world, pos, state, player, isNeighbour)){
+		if (hand == Hand.MAIN_HAND) {
+			if (placeCorpseOnTable(world, pos, state, player, isNeighbour)) {
 				return ActionResult.CONSUME;
 			}
-			if(getCorpseEntity() != null && !getCorpseEntity().isEmpty()){
+			if (getCorpseEntity() != null && !getCorpseEntity().isEmpty()) {
 				this.refreshButcheringRecipe();
 
-				if (player.getMainHandStack().isOf(BotDObjects.MEAT_CLEAVER)){
+				if (player.getMainHandStack().isOf(BotDObjects.MEAT_CLEAVER)) {
 
 					List<ItemStack> nonEmptyOutput = this.outputs.stream().filter(item -> !item.isEmpty() || !item.isOf(Items.AIR) || item.getCount() != 0).toList();
 					List<Float> nonEmptyChance = this.chances.stream().filter(chance -> chance != 0).toList();
-					if(nonEmptyOutput.size() > 0){
+					if (nonEmptyOutput.size() > 0) {
 						double sanitaryModifier = 1.5 - (getFilthLevel() + 1) / 6d;
 						float butcherLevel = BotDComponents.PLAYER_COMPONENT.maybeGet(player).map(PlayerDataComponent::getButcheringModifier).orElse(0F);
 						double magicNumber = probability + 0.5D * butcherLevel * sanitaryModifier;//TODO implement index lookup instead of weird math: float[] CHANCE = {0, 0.15f, 0.25f, 0.35f};
 
 						nonEmptyOutput.get(0).setCount(world.getRandom().nextDouble() < magicNumber * nonEmptyChance.get(0) ? 1 : 0);
-						if(getHeadVisible() && !isNeighbour && this.butcheringRecipe.headDrop.getFirst() != ItemStack.EMPTY){
+						if (getHeadVisible() && !isNeighbour && this.butcheringRecipe.headDrop.getFirst() != ItemStack.EMPTY) {
 							this.setHeadVisible(false);
 							ItemStack head = this.butcheringRecipe.headDrop.getFirst();
 							head.setCount(world.getRandom().nextDouble() < magicNumber * this.butcheringRecipe.headDrop.getSecond() ? 1 : 0);
 							ItemScatterer.spawn(world, pos.getX() + 0.5, pos.getY() + 1.2, pos.getZ() + 0.5, head);
-						}else{
+						} else {
 							dismemberAtRandom(world);
 							ItemScatterer.spawn(world, pos.getX() + 0.5, pos.getY() + 1.2, pos.getZ() + 0.5, nonEmptyOutput.get(0));
 						}
@@ -120,13 +120,13 @@ public class BaseButcherBlockEntity extends HaulerBlockEntity implements IBlockE
 						this.chances.set(0, 0F);
 						this.outputs.set(0, ItemStack.EMPTY);
 						nonEmptyOutput = this.outputs.stream().filter(item -> !item.isEmpty() || !item.isOf(Items.AIR) || item.getCount() != 0).toList();
-						if(nonEmptyOutput.isEmpty()){
+						if (nonEmptyOutput.isEmpty()) {
 							this.reset();
 						}
 						this.makeARuckus(world, player, hand, pos, particleOffset);
 						markDirty();
 						return ActionResult.CONSUME;
-					}else {
+					} else {
 						this.makeARuckus(world, player, hand, pos, particleOffset);
 						this.reset();
 					}
@@ -139,25 +139,25 @@ public class BaseButcherBlockEntity extends HaulerBlockEntity implements IBlockE
 
 	private boolean placeCorpseOnTable(World world, BlockPos pos, BlockState state, PlayerEntity player, boolean isNeighbour) {
 		Optional<IHauler> optionalIHauler = IHauler.of(player);
-		if(optionalIHauler.isPresent() && getCorpseEntity().isEmpty()){
-			if(optionalIHauler.get().getCorpseEntity() != null){
+		if (optionalIHauler.isPresent() && getCorpseEntity().isEmpty()) {
+			if (optionalIHauler.get().getCorpseEntity() != null) {
 				NbtCompound nbtCompound = optionalIHauler.get().getCorpseEntity();
-				if(!nbtCompound.isEmpty()){
+				if (!nbtCompound.isEmpty()) {
 					this.setCorpse(nbtCompound);
 					this.setAllVisible();
 					optionalIHauler.get().clearCorpseData();
 
 					Direction targetDirection = state.get(FACING).rotateClockwise(Direction.Axis.Y);
-					if(!isNeighbour){
+					if (!isNeighbour) {
 						targetDirection = targetDirection.getOpposite();
 					}
 
-					if(state.isOf(BotDObjects.BUTCHER_TABLE)){
+					if (state.isOf(BotDObjects.BUTCHER_TABLE)) {
 						this.spawnMuckParticles((ServerWorld) world, pos);
 						this.spawnMuckParticles((ServerWorld) world, pos.offset(targetDirection));
 					}
 
-					world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 1,1);
+					world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 1, 1);
 					markDirty();
 					return true;
 				}
@@ -179,9 +179,9 @@ public class BaseButcherBlockEntity extends HaulerBlockEntity implements IBlockE
 				0.15F);
 	}
 
-	private void makeARuckus(World world, PlayerEntity player, Hand hand, BlockPos pos, double particleOffset){
-		world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.BLOCK_HONEY_BLOCK_BREAK, SoundCategory.PLAYERS, 2,1);
-		world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_PLAYER_ATTACK_CRIT, SoundCategory.PLAYERS, 0.75f,1);
+	private void makeARuckus(World world, PlayerEntity player, Hand hand, BlockPos pos, double particleOffset) {
+		world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.BLOCK_HONEY_BLOCK_BREAK, SoundCategory.PLAYERS, 2, 1);
+		world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_PLAYER_ATTACK_CRIT, SoundCategory.PLAYERS, 0.75f, 1);
 		PlayerLookup.tracking(player).forEach(track -> BloodSplashParticlePacket.send(track, pos.getX(), pos.getY() + particleOffset, pos.getZ()));
 		BloodSplashParticlePacket.send(player, pos.getX(), pos.getY() + particleOffset, pos.getZ());
 		player.swingHand(hand, true);
@@ -197,7 +197,7 @@ public class BaseButcherBlockEntity extends HaulerBlockEntity implements IBlockE
 		}
 	}
 
-	public void reset(){
+	public void reset() {
 		this.clear();
 		this.setCorpse(new NbtCompound());
 		this.butcheringRecipe = null;
@@ -209,7 +209,7 @@ public class BaseButcherBlockEntity extends HaulerBlockEntity implements IBlockE
 	public void makeFilth(@NotNull World world) {
 	}
 
-	public int getFilthLevel(){
+	public int getFilthLevel() {
 		return 0;
 	}
 
@@ -218,7 +218,7 @@ public class BaseButcherBlockEntity extends HaulerBlockEntity implements IBlockE
 		super.writeNbt(nbt);
 		Inventories.writeNbt(nbt, outputs);
 		this.writeChancesNbt(nbt, chances);
-		if(!storedCorpseNbt.isEmpty()){
+		if (!storedCorpseNbt.isEmpty()) {
 			nbt.put(Constants.Nbt.CORPSE_ENTITY, getCorpseEntity());
 		}
 		nbt.putBoolean("Refresh", this.resetRecipe);
@@ -245,7 +245,7 @@ public class BaseButcherBlockEntity extends HaulerBlockEntity implements IBlockE
 
 	public void readChanceNbt(NbtCompound nbt, DefaultedList<Float> floats) {
 		NbtList nbtList = nbt.getList("Floats", NbtElement.COMPOUND_TYPE);
-		for(int i = 0; i < nbtList.size(); ++i) {
+		for (int i = 0; i < nbtList.size(); ++i) {
 			NbtCompound nbtCompound = nbtList.getCompound(i);
 			float j = nbtCompound.getFloat("Float");
 			floats.set(i, j);
@@ -267,11 +267,11 @@ public class BaseButcherBlockEntity extends HaulerBlockEntity implements IBlockE
 		return storedCorpseNbt;
 	}
 
-	public void setCorpse(NbtCompound nbtCompound){
+	public void setCorpse(NbtCompound nbtCompound) {
 		this.storedCorpseNbt = nbtCompound;
-		if(!nbtCompound.isEmpty() && world != null){
+		if (!nbtCompound.isEmpty() && world != null) {
 			Optional<Entity> living = EntityType.getEntityFromNbt(nbtCompound, world);
-			if(living.isPresent() && living.get() instanceof LivingEntity livingEntity){
+			if (living.isPresent() && living.get() instanceof LivingEntity livingEntity) {
 				this.storedLiving = livingEntity;
 			}
 		}

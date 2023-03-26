@@ -50,7 +50,7 @@ public class BotDEvents {
 	 */
 	private static TriState dontRemoveEffect(@NotNull LivingEntity living, @NotNull StatusEffectInstance instance, @NotNull StatusEffectRemovalReason statusEffectRemovalReason) {
 		boolean bl = instance.getEffectType().equals(BotDStatusEffects.SOUL_SIPHON) || instance.getEffectType().equals(BotDStatusEffects.SOUL_SICKNESS);
-		if(!statusEffectRemovalReason.equals(StatusEffectRemovalReason.EXPIRED) && bl){
+		if (!statusEffectRemovalReason.equals(StatusEffectRemovalReason.EXPIRED) && bl) {
 			return TriState.FALSE;
 		}
 		return TriState.TRUE;
@@ -60,9 +60,9 @@ public class BotDEvents {
 	 * If the Player has Kakuzu souls, try kill one instead of killing the player.
 	 */
 	private static boolean tryUseExtraLives(LivingEntity livingEntity, DamageSource damageSource) {
-		if(livingEntity instanceof PlayerEntity player){
+		if (livingEntity instanceof PlayerEntity player) {
 			PlayerDataComponent component = BotDComponents.PLAYER_COMPONENT.get(player);
-			if(component.getKakuzu() > 0){
+			if (component.getKakuzu() > 0) {
 				component.decreaseKakuzuBuffLevel();
 				player.setHealth(player.getMaxHealth());
 				player.extinguish();
@@ -70,7 +70,7 @@ public class BotDEvents {
 				player.setVelocity(Vec3d.ZERO);
 				player.fallDistance = 0;
 				player.setFrozenTicks(0);
-				player.getWorld().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENTITY_WITHER_SPAWN, SoundCategory.PLAYERS, 0.5f,0.75f);
+				player.getWorld().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENTITY_WITHER_SPAWN, SoundCategory.PLAYERS, 0.5f, 0.75f);
 				return true;
 			}
 		}
@@ -82,7 +82,7 @@ public class BotDEvents {
 	 */
 	private static void afterRespawn(ServerPlayerEntity serverPlayerEntity, ServerPlayerEntity serverPlayerEntity1, boolean b) {
 		Optional<CorpseDataComponent> component = BotDComponents.CORPSE_COMPONENT.maybeGet(serverPlayerEntity);
-		if(component.isPresent() && component.get().isCorpse){
+		if (component.isPresent() && component.get().isCorpse) {
 			component.get().isCorpse(false);
 		}
 	}

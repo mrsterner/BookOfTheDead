@@ -23,11 +23,11 @@ public class HookBlockEntityRenderer implements BlockEntityRenderer<HookBlockEnt
 		this.dispatcher = ctx.getEntityRendererDispatcher();
 	}
 
-	public float getRot(BlockEntity entity){
+	public float getRot(BlockEntity entity) {
 		World world = entity.getWorld();
 		if (world != null) {
 			BlockState blockState = world.getBlockState(entity.getPos());
-			if(blockState.getBlock() instanceof HorizontalFacingBlock){
+			if (blockState.getBlock() instanceof HorizontalFacingBlock) {
 				return blockState.get(HorizontalFacingBlock.FACING).asRotation();
 			}
 		}
@@ -39,9 +39,9 @@ public class HookBlockEntityRenderer implements BlockEntityRenderer<HookBlockEnt
 		matrices.push();
 		IHauler.of(entity).ifPresent(hauler -> {
 			NbtCompound renderedEntity = hauler.getCorpseEntity();
-			if(renderedEntity != null && !renderedEntity.isEmpty()){
+			if (renderedEntity != null && !renderedEntity.isEmpty()) {
 				EntityType.getEntityFromNbt(renderedEntity, entity.getWorld()).ifPresent(type -> {
-					if(type instanceof LivingEntity livingEntity){
+					if (type instanceof LivingEntity livingEntity) {
 						livingEntity.hurtTime = 0;
 						livingEntity.deathTime = 0;
 						livingEntity.bodyYaw = 0;
@@ -49,10 +49,10 @@ public class HookBlockEntityRenderer implements BlockEntityRenderer<HookBlockEnt
 						livingEntity.prevPitch = 20;
 						livingEntity.headYaw = 0;
 						dispatcher.setRenderShadows(false);
-						matrices.translate(0.5,-livingEntity.getHeight() * 0.5,0.5);
+						matrices.translate(0.5, -livingEntity.getHeight() * 0.5, 0.5);
 						matrices.multiply(Axis.Y_POSITIVE.rotationDegrees(-getRot(entity)));
-						matrices.translate(0,0,0.2);
-						dispatcher.render(livingEntity, 0,0,0,0, tickDelta, matrices, vertexConsumers, light);
+						matrices.translate(0, 0, 0.2);
+						dispatcher.render(livingEntity, 0, 0, 0, 0, tickDelta, matrices, vertexConsumers, light);
 					}
 				});
 			}

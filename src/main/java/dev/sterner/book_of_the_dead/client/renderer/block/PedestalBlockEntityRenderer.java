@@ -16,6 +16,7 @@ import net.minecraft.util.math.MathHelper;
 public class PedestalBlockEntityRenderer implements BlockEntityRenderer<PedestalBlockEntity> {
 	private final BlockEntityRenderDispatcher dispatcher;
 	private final TextRenderer textRenderer;
+
 	public PedestalBlockEntityRenderer(BlockEntityRendererFactory.Context context) {
 		dispatcher = context.getRenderDispatcher();
 		textRenderer = context.getTextRenderer();
@@ -23,11 +24,11 @@ public class PedestalBlockEntityRenderer implements BlockEntityRenderer<Pedestal
 
 	@Override
 	public void render(PedestalBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
-		if(!entity.getStack().isEmpty() && entity.getWorld() != null) {
+		if (!entity.getStack().isEmpty() && entity.getWorld() != null) {
 			matrices.push();
 			double yOffset = MathHelper.sin((entity.getWorld().getTime() + tickDelta) / 10F) / 10D;
 			matrices.translate(0.5D, 1.15D + yOffset, 0.5D);
-			float angle = (float)((entity.getWorld().getTime() + tickDelta) / 20F + yOffset);
+			float angle = (float) ((entity.getWorld().getTime() + tickDelta) / 20F + yOffset);
 			matrices.multiply(Axis.Y_POSITIVE.rotation(angle));
 			ItemRenderer itemRenderer = MinecraftClient.getInstance().getItemRenderer();
 			itemRenderer.renderItem(entity.getStack(), ModelTransformationMode.GROUND, false, matrices, vertexConsumers, light, overlay, itemRenderer.getHeldItemModel(entity.getStack(), null, null, 0));

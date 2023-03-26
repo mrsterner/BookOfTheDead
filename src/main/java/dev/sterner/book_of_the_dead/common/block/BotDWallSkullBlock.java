@@ -50,7 +50,7 @@ public class BotDWallSkullBlock extends AbstractBotDSkullBlock {
 		BlockPos blockPos = ctx.getBlockPos();
 		Direction[] directions = ctx.getPlacementDirections();
 
-		for(Direction direction : directions) {
+		for (Direction direction : directions) {
 			if (direction.getAxis().isHorizontal()) {
 				Direction direction2 = direction.getOpposite();
 				blockState = blockState.with(FACING, direction2);

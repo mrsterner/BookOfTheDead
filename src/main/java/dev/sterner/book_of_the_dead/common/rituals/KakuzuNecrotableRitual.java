@@ -19,11 +19,11 @@ public class KakuzuNecrotableRitual extends BasicNecrotableRitual {
 	@Override
 	public void onStopped(World world, BlockPos blockPos, RitualBlockEntity blockEntity) {
 		super.onStopped(world, blockPos, blockEntity);
-		if(contract.get(0) != 0){
+		if (contract.get(0) != 0) {
 			Entity entity = world.getEntityById(contract.get(0));
-			if(entity instanceof PlayerEntity player){
+			if (entity instanceof PlayerEntity player) {
 				PlayerDataComponent component = BotDComponents.PLAYER_COMPONENT.get(player);
-				if(BotDApi.canHaveKakuzu(player)){
+				if (BotDApi.canHaveKakuzu(player)) {
 					component.increaseKakuzuBuffLevel();
 				}
 			}

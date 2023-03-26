@@ -34,7 +34,7 @@ public class BloodSplashParticlePacket {
 		ClientWorld world = client.world;
 		client.execute(() -> {
 			var rand = world.random;
-			for(int i = 0; i < 24; ++i) {
+			for (int i = 0; i < 24; ++i) {
 				double x = posX + (rand.nextDouble() * 2.0 - 1.0) * 1 * 0.5;
 				double y = posY + 0.05 + rand.nextDouble();
 				double z = posZ + (rand.nextDouble() * 2.0 - 1.0) * 1 * 0.5;
@@ -42,7 +42,7 @@ public class BloodSplashParticlePacket {
 				double dx = (rand.nextFloat() / 2.0F);
 				double dy = 5.0E-5;
 				double dz = (rand.nextFloat() / 2.0F);
-				world.addParticle(BotDParticleTypes.SPLASHING_BLOOD, x + 0.5, y + 1.0, z + 0.5, dx,dy,dz);
+				world.addParticle(BotDParticleTypes.SPLASHING_BLOOD, x + 0.5, y + 1.0, z + 0.5, dx, dy, dz);
 			}
 		});
 	}

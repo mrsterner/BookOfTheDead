@@ -32,7 +32,7 @@ public class PlayerCorpseEntityRenderer extends LivingEntityRenderer<PlayerCorps
 
 	@Override
 	public void render(PlayerCorpseEntity livingEntity, float yaw, float tickDelta, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int light) {
-		if(livingEntity.getSkinProfile() != null){
+		if (livingEntity.getSkinProfile() != null) {
 			PlayerEntity player = livingEntity.getWorld().getPlayerByUuid(livingEntity.getSkinProfile().getId());
 
 			if (player instanceof AbstractClientPlayerEntity && DefaultSkinHelper.getModel(player.getUuid()).equals("slim")) {
@@ -65,17 +65,16 @@ public class PlayerCorpseEntityRenderer extends LivingEntityRenderer<PlayerCorps
 	}
 
 
-
 	@Override
 	public Identifier getTexture(PlayerCorpseEntity entity) {
-		if(entity.getSkinProfile() != null){
+		if (entity.getSkinProfile() != null) {
 			MinecraftClient minecraftClient = MinecraftClient.getInstance();
 			Map<MinecraftProfileTexture.Type, MinecraftProfileTexture> map = minecraftClient.getSkinProvider().getTextures(entity.getSkinProfile());
 			if (map.containsKey(MinecraftProfileTexture.Type.SKIN)) {
 				return minecraftClient.getSkinProvider().loadSkin(map.get(MinecraftProfileTexture.Type.SKIN), MinecraftProfileTexture.Type.SKIN);
-			}else{
+			} else {
 				PlayerEntity player = entity.world.getPlayerByUuid(entity.getSkinProfile().getId());
-				if(player instanceof AbstractClientPlayerEntity abstractClientPlayerEntity){
+				if (player instanceof AbstractClientPlayerEntity abstractClientPlayerEntity) {
 					return abstractClientPlayerEntity.getSkinTexture();
 				}
 			}

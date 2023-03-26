@@ -18,9 +18,9 @@ import java.util.Optional;
 public class EntityRenderDispatcherMixin {
 
 	@Inject(method = "renderShadow", at = @At(value = "HEAD"), cancellable = true)
-	private static void book_of_the_dead$renderShadow(MatrixStack matrices, VertexConsumerProvider vertexConsumers, Entity entity, float opacity, float tickDelta, WorldView world, float radius, CallbackInfo ci){
+	private static void book_of_the_dead$renderShadow(MatrixStack matrices, VertexConsumerProvider vertexConsumers, Entity entity, float opacity, float tickDelta, WorldView world, float radius, CallbackInfo ci) {
 		Optional<CorpseDataComponent> component = BotDComponents.CORPSE_COMPONENT.maybeGet(entity);
-		if(component.isPresent() && component.get().isCorpse){
+		if (component.isPresent() && component.get().isCorpse) {
 			ci.cancel();
 		}
 	}

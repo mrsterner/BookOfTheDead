@@ -34,7 +34,7 @@ public class BloodSlimeOverlayFeatureRenderer<T extends LivingEntity> extends Fe
 			} else {
 				vertexConsumer = vertexConsumerProvider.getBuffer(RenderLayer.getEntityTranslucent(this.getTexture(livingEntity)));
 			}
-			matrixStack.translate(0,1.5,0);
+			matrixStack.translate(0, 1.5, 0);
 			this.getContextModel().copyStateTo(this.model);
 			this.model.animateModel(livingEntity, f, g, h);
 			this.model.setAngles(livingEntity, f, g, j, k, l);

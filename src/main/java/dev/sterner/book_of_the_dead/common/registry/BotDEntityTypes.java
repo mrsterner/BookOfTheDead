@@ -19,7 +19,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public interface BotDEntityTypes {
-    Map<EntityType<?>, Identifier> ENTITY_TYPES = new LinkedHashMap<>();
+	Map<EntityType<?>, Identifier> ENTITY_TYPES = new LinkedHashMap<>();
 
 	EntityType<OldManEntity> OLD_MAN_ENTITY =
 			register(

@@ -24,6 +24,7 @@ public class AllBlackSwordItemRenderer implements BuiltinItemRendererRegistry.Dy
 	private ItemRenderer itemRenderer;
 	private BakedModel inventoryAllblackModel;
 	private BakedModel worldAllblackModel;
+
 	public AllBlackSwordItemRenderer(Identifier allblackId) {
 		this.id = new Identifier(allblackId.getNamespace(), allblackId.getPath() + "_renderer");
 		this.allblackId = allblackId;

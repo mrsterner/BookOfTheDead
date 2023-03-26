@@ -28,7 +28,7 @@ public class JarBlockEntity extends BaseBlockEntity {
 		boolean mark = false;
 		if (world != null && !world.isClient) {
 			if (world.getTime() % 10 == 0 && tickerState.get(JarBlock.OPEN) && blockEntity.getBloodyCorpseAbove(world, pos)) {
-				if(blockEntity.liquidAmount < MAX_LIQUID && (blockEntity.getLiquidType(BLOOD) || blockEntity.getLiquidType(EMPTY))){
+				if (blockEntity.liquidAmount < MAX_LIQUID && (blockEntity.getLiquidType(BLOOD) || blockEntity.getLiquidType(EMPTY))) {
 					blockEntity.setLiquidType(BLOOD);
 					blockEntity.liquidAmount++;
 					blockEntity.markDirty();
@@ -36,16 +36,16 @@ public class JarBlockEntity extends BaseBlockEntity {
 				}
 			}
 		}
-		if(mark){
+		if (mark) {
 			markDirty(world, pos, tickerState);
 		}
 	}
 
-	private boolean getBloodyCorpseAbove(World world, BlockPos pos){
+	private boolean getBloodyCorpseAbove(World world, BlockPos pos) {
 		for (double y = 0; y <= Constants.Values.JAR_COLLECTION_RANGE; ++y) {
-			BlockPos potentialCorpse = new BlockPos(pos.getX(), (int)(pos.getY() + y), pos.getZ());
-			if(world.getBlockEntity(potentialCorpse) instanceof HookBlockEntity hookBlockEntity){
-				if(hookBlockEntity.hookedAge < Constants.Values.BLEEDING){
+			BlockPos potentialCorpse = new BlockPos(pos.getX(), (int) (pos.getY() + y), pos.getZ());
+			if (world.getBlockEntity(potentialCorpse) instanceof HookBlockEntity hookBlockEntity) {
+				if (hookBlockEntity.hookedAge < Constants.Values.BLEEDING) {
 					return true;
 				}
 			}

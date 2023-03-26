@@ -30,10 +30,10 @@ public class EnterPlayerOnDemandTask extends ExtendedBehaviour<KakuzuEntity> {
 
 	@Override
 	protected boolean shouldRun(ServerWorld world, KakuzuEntity entity) {
-		if(BrainUtils.hasMemory(entity, BotDMemoryModuleTypes.OWNER_PLAYER)){
+		if (BrainUtils.hasMemory(entity, BotDMemoryModuleTypes.OWNER_PLAYER)) {
 			PlayerEntity player = BrainUtils.getMemory(entity, BotDMemoryModuleTypes.OWNER_PLAYER);
 			return entity.squaredDistanceTo(player) < 64 && entity.isEnterOwnerFlag() && super.shouldRun(world, entity);
-		}else{
+		} else {
 			return false;
 		}
 	}
@@ -45,7 +45,7 @@ public class EnterPlayerOnDemandTask extends ExtendedBehaviour<KakuzuEntity> {
 
 	@Override
 	protected void keepRunning(ServerWorld world, KakuzuEntity entity, long gameTime) {
-		if(BrainUtils.hasMemory(entity, BotDMemoryModuleTypes.OWNER_PLAYER)) {
+		if (BrainUtils.hasMemory(entity, BotDMemoryModuleTypes.OWNER_PLAYER)) {
 			PlayerEntity player = BrainUtils.getMemory(entity, BotDMemoryModuleTypes.OWNER_PLAYER);
 			if (player != null) {
 				BrainUtils.setMemory(entity, MemoryModuleType.WALK_TARGET, new WalkTarget(player, this.speedModifier.apply(entity, player.getPos()), 0));

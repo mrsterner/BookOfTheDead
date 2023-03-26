@@ -1,14 +1,17 @@
 package dev.sterner.book_of_the_dead;
 
 import dev.sterner.book_of_the_dead.client.model.*;
+import dev.sterner.book_of_the_dead.client.network.BloodSplashParticlePacket;
 import dev.sterner.book_of_the_dead.client.renderer.block.*;
 import dev.sterner.book_of_the_dead.client.renderer.entity.BloodSlimeEntityRenderer;
 import dev.sterner.book_of_the_dead.client.renderer.entity.KakuzuEntityRenderer;
 import dev.sterner.book_of_the_dead.client.renderer.entity.OldManEntityRenderer;
 import dev.sterner.book_of_the_dead.client.renderer.entity.PlayerCorpseEntityRenderer;
 import dev.sterner.book_of_the_dead.client.renderer.item.AllBlackSwordItemRenderer;
-import dev.sterner.book_of_the_dead.client.network.BloodSplashParticlePacket;
-import dev.sterner.book_of_the_dead.common.registry.*;
+import dev.sterner.book_of_the_dead.common.registry.BotDBlockEntityTypes;
+import dev.sterner.book_of_the_dead.common.registry.BotDEntityTypes;
+import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
+import dev.sterner.book_of_the_dead.common.registry.BotDParticleTypes;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
@@ -107,8 +110,8 @@ public class BotDClient implements ClientModInitializer {
 		}
 
 		ColorProviderRegistry.ITEM.register((itemStack, index) -> {
-			if(index == 0){
-				if(itemStack.hasNbt() && itemStack.getOrCreateNbt().contains(Constants.Nbt.STATUS_EFFECT_INSTANCE)){
+			if (index == 0) {
+				if (itemStack.hasNbt() && itemStack.getOrCreateNbt().contains(Constants.Nbt.STATUS_EFFECT_INSTANCE)) {
 					NbtCompound nbt = itemStack.getSubNbt(Constants.Nbt.STATUS_EFFECT_INSTANCE);
 					if (nbt != null) {
 						StatusEffect effect = Registries.STATUS_EFFECT.get(Identifier.tryParse(nbt.getString(Constants.Nbt.STATUS_EFFECT)));

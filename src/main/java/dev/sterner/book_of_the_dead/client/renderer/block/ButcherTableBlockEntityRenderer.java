@@ -1,8 +1,8 @@
 package dev.sterner.book_of_the_dead.client.renderer.block;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import dev.sterner.book_of_the_dead.api.enums.HorizontalDoubleBlockHalf;
 import dev.sterner.book_of_the_dead.api.block.HorizontalDoubleBlock;
+import dev.sterner.book_of_the_dead.api.enums.HorizontalDoubleBlockHalf;
 import dev.sterner.book_of_the_dead.api.interfaces.IHauler;
 import dev.sterner.book_of_the_dead.common.block.NecroTableBlock;
 import dev.sterner.book_of_the_dead.common.block.entity.ButcherTableBlockEntity;
@@ -65,17 +65,17 @@ public class ButcherTableBlockEntityRenderer implements BlockEntityRenderer<Butc
 	@Override
 	public void render(ButcherTableBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
 		World world = entity.getWorld();
-		if(world != null && world.getBlockState(entity.getPos()).isOf(BotDObjects.BUTCHER_TABLE)){
+		if (world != null && world.getBlockState(entity.getPos()).isOf(BotDObjects.BUTCHER_TABLE)) {
 			matrices.push();
 			renderEntityOnTable(entity, tickDelta, matrices, vertexConsumers, light);
 			matrices.pop();
 
 			matrices.push();
-			switch (entity.getCachedState().get(FACING)){
-				case NORTH -> matrices.translate(0.35,0.05,0.6);
-				case SOUTH -> matrices.translate(-0.35,0.05,-0.6);
-				case WEST -> matrices.translate(0.6,0.05,-0.35);
-				case EAST -> matrices.translate(-0.6,0.05,0.35);
+			switch (entity.getCachedState().get(FACING)) {
+				case NORTH -> matrices.translate(0.35, 0.05, 0.6);
+				case SOUTH -> matrices.translate(-0.35, 0.05, -0.6);
+				case WEST -> matrices.translate(0.6, 0.05, -0.35);
+				case EAST -> matrices.translate(-0.6, 0.05, 0.35);
 			}
 			matrices.translate(0, HEIGHT[entity.bloodLevel], 0);
 			renderBloodLevel(entity, matrices, vertexConsumers, light, overlay);
@@ -84,7 +84,7 @@ public class ButcherTableBlockEntityRenderer implements BlockEntityRenderer<Butc
 
 			BlockState blockState = entity.getCachedState();
 			renderBubbleEffect(world, entity, entity.getPos());
-			if(blockState.get(HorizontalDoubleBlock.HHALF) == HorizontalDoubleBlockHalf.RIGHT){
+			if (blockState.get(HorizontalDoubleBlock.HHALF) == HorizontalDoubleBlockHalf.RIGHT) {
 				matrices.push();
 				float f = blockState.get(NecroTableBlock.FACING).asRotation();
 				Direction direction = blockState.get(NecroTableBlock.FACING);
@@ -93,23 +93,23 @@ public class ButcherTableBlockEntityRenderer implements BlockEntityRenderer<Butc
 				matrices.multiply(Axis.Y_POSITIVE.rotationDegrees(-f));
 				matrices.translate(-0.5, -0.5, -0.5);
 
-				if(direction == Direction.SOUTH){
-					matrices.translate(-0.5,-1.5,0.5);
-				}else if(direction == Direction.WEST){
+				if (direction == Direction.SOUTH) {
+					matrices.translate(-0.5, -1.5, 0.5);
+				} else if (direction == Direction.WEST) {
 					matrices.multiply(Axis.Y_POSITIVE.rotationDegrees(180));
-					matrices.translate(-0.5,-1.5,-1.5);
-				}else if(direction == Direction.NORTH){
-					matrices.translate(1.5,-1.5,0.5);
-				}else if(direction == Direction.EAST){
+					matrices.translate(-0.5, -1.5, -1.5);
+				} else if (direction == Direction.NORTH) {
+					matrices.translate(1.5, -1.5, 0.5);
+				} else if (direction == Direction.EAST) {
 					matrices.multiply(Axis.Y_POSITIVE.rotationDegrees(180));
-					matrices.translate(-0.5,-1.5,0.5);
+					matrices.translate(-0.5, -1.5, 0.5);
 				}
 				var buffer = vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(TEXTURE));
 				render(matrices, buffer, light, overlay);
-				if(entity.getFilthLevel() > 2){
-					filth.render(matrices, buffer, light, overlay,1, 1, 1, 1);
-				}else if(entity.getFilthLevel() > 0){
-					blood.render(matrices, buffer, light, overlay,1, 1, 1, 1);
+				if (entity.getFilthLevel() > 2) {
+					filth.render(matrices, buffer, light, overlay, 1, 1, 1, 1);
+				} else if (entity.getFilthLevel() > 0) {
+					blood.render(matrices, buffer, light, overlay, 1, 1, 1, 1);
 				}
 
 				matrices.pop();
@@ -118,7 +118,7 @@ public class ButcherTableBlockEntityRenderer implements BlockEntityRenderer<Butc
 	}
 
 	private void renderBloodLevel(ButcherTableBlockEntity entity, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
-		if(entity.getCachedState().get(HorizontalDoubleBlock.HHALF) == HorizontalDoubleBlockHalf.RIGHT && entity.bloodLevel > 0){
+		if (entity.getCachedState().get(HorizontalDoubleBlock.HHALF) == HorizontalDoubleBlockHalf.RIGHT && entity.bloodLevel > 0) {
 			Sprite sprite = BotDSpriteIdentifiers.BLOOD.getSprite();
 
 			float sizeFactor = 0.25F;
@@ -142,7 +142,7 @@ public class ButcherTableBlockEntityRenderer implements BlockEntityRenderer<Butc
 		BlockPos neighbourPos = pos.offset(targetDirection);
 
 
-		if(entity.latter > 0){
+		if (entity.latter > 0) {
 			float width = 0.5f;
 			world.addParticle((ParticleEffect) BotDParticleTypes.SOAP_BUBBLE,
 					pos.getX() + 0.5 + MathHelper.nextDouble(world.random, -width, width),
@@ -165,9 +165,9 @@ public class ButcherTableBlockEntityRenderer implements BlockEntityRenderer<Butc
 	private void renderEntityOnTable(ButcherTableBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
 		IHauler.of(entity).ifPresent(hauler -> {
 			NbtCompound renderedEntity = hauler.getCorpseEntity();
-			if(renderedEntity != null && !renderedEntity.isEmpty() && entity.getWorld() != null){
+			if (renderedEntity != null && !renderedEntity.isEmpty() && entity.getWorld() != null) {
 				EntityType.getEntityFromNbt(renderedEntity, entity.getWorld()).ifPresent(type -> {
-					if(type instanceof LivingEntity livingEntity){
+					if (type instanceof LivingEntity livingEntity) {
 						livingEntity.hurtTime = 0;
 						livingEntity.deathTime = 0;
 						livingEntity.bodyYaw = 0;
@@ -179,18 +179,18 @@ public class ButcherTableBlockEntityRenderer implements BlockEntityRenderer<Butc
 
 						matrices.multiply(Axis.Y_POSITIVE.rotationDegrees(getRot(entity) + 90));
 						matrices.multiply(Axis.X_POSITIVE.rotationDegrees(-90));
-						if(livingEntity instanceof AnimalEntity){
-							matrices.translate(0.75,1.0,0.0);
-							matrices.multiply(Axis.Y_POSITIVE.rotationDegrees( 90));
+						if (livingEntity instanceof AnimalEntity) {
+							matrices.translate(0.75, 1.0, 0.0);
+							matrices.multiply(Axis.Y_POSITIVE.rotationDegrees(90));
 							matrices.multiply(Axis.X_POSITIVE.rotationDegrees(-90));
 						}
 
 						EntityRenderer<? super LivingEntity> entityRenderer = dispatcher.getRenderer(livingEntity);
-						if(entityRenderer instanceof LivingEntityRenderer<?,?> livingEntityRenderer){
+						if (entityRenderer instanceof LivingEntityRenderer<?, ?> livingEntityRenderer) {
 							handleVisibilities(livingEntityRenderer, hauler);
 						}
-						dispatcher.render(livingEntity, 0,0,0,0, tickDelta, matrices, vertexConsumers, light);
-						if(entityRenderer instanceof LivingEntityRenderer<?,?> livingEntityRenderer){
+						dispatcher.render(livingEntity, 0, 0, 0, 0, tickDelta, matrices, vertexConsumers, light);
+						if (entityRenderer instanceof LivingEntityRenderer<?, ?> livingEntityRenderer) {
 							resetVisibility(livingEntityRenderer);
 						}
 
@@ -205,29 +205,29 @@ public class ButcherTableBlockEntityRenderer implements BlockEntityRenderer<Butc
 	private void setupTransforms(MatrixStack matrices, BlockState blockState) {
 		Direction dir = blockState.get(HorizontalFacingBlock.FACING);
 		switch (dir) {
-			case NORTH -> matrices.translate(-1.0,1.15,0.5);
-			case SOUTH -> matrices.translate(2.0,1.15,0.5);
-			case EAST -> matrices.translate(0.5,1.15,-1.0);
-			case WEST -> matrices.translate(0.5,1.15,2.0);
+			case NORTH -> matrices.translate(-1.0, 1.15, 0.5);
+			case SOUTH -> matrices.translate(2.0, 1.15, 0.5);
+			case EAST -> matrices.translate(0.5, 1.15, -1.0);
+			case WEST -> matrices.translate(0.5, 1.15, 2.0);
 		}
 	}
 
-	private void resetVisibility(LivingEntityRenderer<?,?> livingEntityRenderer) {
+	private void resetVisibility(LivingEntityRenderer<?, ?> livingEntityRenderer) {
 		EntityModel<? extends LivingEntity> model = livingEntityRenderer.getModel();
-		if(model instanceof QuadrupedEntityModel<?> quadrupedEntityModel){
+		if (model instanceof QuadrupedEntityModel<?> quadrupedEntityModel) {
 			quadrupedEntityModel.head.visible = true;
 			quadrupedEntityModel.rightHindLeg.visible = true;
 			quadrupedEntityModel.leftHindLeg.visible = true;
 			quadrupedEntityModel.rightFrontLeg.visible = true;
 			quadrupedEntityModel.leftFrontLeg.visible = true;
-		} else if(model instanceof BipedEntityModel<?> bipedEntityModel){
+		} else if (model instanceof BipedEntityModel<?> bipedEntityModel) {
 			bipedEntityModel.head.visible = true;
 			bipedEntityModel.rightLeg.visible = true;
 			bipedEntityModel.leftLeg.visible = true;
 			bipedEntityModel.rightArm.visible = true;
 			bipedEntityModel.leftArm.visible = true;
 
-		} else if(model instanceof VillagerResemblingModel<?> villagerResemblingModel){
+		} else if (model instanceof VillagerResemblingModel<?> villagerResemblingModel) {
 			villagerResemblingModel.getHead().visible = true;
 			villagerResemblingModel.getPart().getChild(EntityModelPartNames.RIGHT_LEG).visible = true;
 			villagerResemblingModel.getPart().getChild(EntityModelPartNames.LEFT_LEG).visible = true;
@@ -235,22 +235,22 @@ public class ButcherTableBlockEntityRenderer implements BlockEntityRenderer<Butc
 		}
 	}
 
-	private void handleVisibilities(LivingEntityRenderer<?,?> livingEntityRenderer, IHauler entity) {
+	private void handleVisibilities(LivingEntityRenderer<?, ?> livingEntityRenderer, IHauler entity) {
 		EntityModel<? extends LivingEntity> model = livingEntityRenderer.getModel();
-		if(model instanceof QuadrupedEntityModel<?> quadrupedEntityModel){
+		if (model instanceof QuadrupedEntityModel<?> quadrupedEntityModel) {
 			quadrupedEntityModel.head.visible = entity.getHeadVisible();
 			quadrupedEntityModel.rightHindLeg.visible = entity.getRLegVisible();
 			quadrupedEntityModel.leftHindLeg.visible = entity.getLLegVisible();
 			quadrupedEntityModel.rightFrontLeg.visible = entity.getRArmVisible();
 			quadrupedEntityModel.leftFrontLeg.visible = entity.getLArmVisible();
-		} else if(model instanceof BipedEntityModel<?> bipedEntityModel){
+		} else if (model instanceof BipedEntityModel<?> bipedEntityModel) {
 			bipedEntityModel.head.visible = entity.getHeadVisible();
 			bipedEntityModel.rightLeg.visible = entity.getRLegVisible();
 			bipedEntityModel.leftLeg.visible = entity.getLLegVisible();
 			bipedEntityModel.rightArm.visible = entity.getRArmVisible();
 			bipedEntityModel.leftArm.visible = entity.getLArmVisible();
 
-		} else if(model instanceof VillagerResemblingModel<?> villagerResemblingModel){
+		} else if (model instanceof VillagerResemblingModel<?> villagerResemblingModel) {
 			villagerResemblingModel.getHead().visible = entity.getHeadVisible();
 			villagerResemblingModel.getPart().getChild(EntityModelPartNames.RIGHT_LEG).visible = entity.getRLegVisible();
 			villagerResemblingModel.getPart().getChild(EntityModelPartNames.LEFT_LEG).visible = entity.getLLegVisible();
@@ -261,19 +261,20 @@ public class ButcherTableBlockEntityRenderer implements BlockEntityRenderer<Butc
 	private void render(MatrixStack matrices, VertexConsumer buffer, int light, int overlay) {
 		table.render(matrices, buffer, light, overlay, 1, 1, 1, 1);
 		bucket.render(matrices, buffer, light, overlay, 1, 1, 1, 1);
-		stol.render(matrices, buffer, light, overlay,1, 1, 1, 1);
+		stol.render(matrices, buffer, light, overlay, 1, 1, 1, 1);
 	}
-	public int getRot(ButcherTableBlockEntity entity){
+
+	public int getRot(ButcherTableBlockEntity entity) {
 		World world = entity.getWorld();
 		BlockPos blockPos = entity.getPos();
 		if (world != null) {
 			BlockState blockState = world.getBlockState(blockPos);
-			if(blockState.isOf(BotDObjects.BUTCHER_TABLE)){
-				return switch (blockState.get(FACING)){
+			if (blockState.isOf(BotDObjects.BUTCHER_TABLE)) {
+				return switch (blockState.get(FACING)) {
 					case EAST -> 90;
-					case NORTH ->  180;
-					case WEST ->  270;
-					default ->  0;
+					case NORTH -> 180;
+					case WEST -> 270;
+					default -> 0;
 				};
 			}
 		}

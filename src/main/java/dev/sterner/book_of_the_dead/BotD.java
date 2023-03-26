@@ -7,6 +7,7 @@ import dev.sterner.book_of_the_dead.common.registry.*;
 import org.quiltmc.loader.api.ModContainer;
 import org.quiltmc.loader.api.QuiltLoader;
 import org.quiltmc.qsl.base.api.entrypoint.ModInitializer;
+
 public class BotD implements ModInitializer {
 
 	private static final boolean DEBUG_MODE = true;

@@ -38,13 +38,13 @@ public class RetortFlaskBlockEntityRenderer<T extends BlockEntity> implements Bl
 	@Override
 	public void render(T entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
 		World world = entity.getWorld();
-		if(world != null){
+		if (world != null) {
 			BlockState blockState = entity.getCachedState();
-			if(entity instanceof RetortFlaskBlockEntity retortFlaskBlockEntity) {
-				if(retortFlaskBlockEntity.hasLiquid){
+			if (entity instanceof RetortFlaskBlockEntity retortFlaskBlockEntity) {
+				if (retortFlaskBlockEntity.hasLiquid) {
 					matrices.push();
 					float g = 0.5F;
-					matrices.scale(g,g,g);
+					matrices.scale(g, g, g);
 					matrices.translate(0.5, 0.3, 0.5);
 					renderFluid(matrices, vertexConsumers, light, overlay, 0.75f, retortFlaskBlockEntity.color);
 					matrices.pop();

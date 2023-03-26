@@ -50,7 +50,7 @@ public class PlayerCorpseEntity extends MobEntity {
 
 	public void setSkinProfile(@Nullable GameProfile profile) {
 		NbtCompound nbt = new NbtCompound();
-		if(profile != null){
+		if (profile != null) {
 			NbtHelper.writeGameProfile(nbt, profile);
 		}
 		this.dataTracker.set(GAME_PROFILE, nbt);

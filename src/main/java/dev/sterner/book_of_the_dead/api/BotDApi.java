@@ -18,13 +18,14 @@ public class BotDApi {
 
 	/**
 	 * Check if a killed entity should become a corpse or not with the EntityTag, Enchantment and ItemStack
+	 *
 	 * @param livingEntity killed entity
 	 * @return true if killed entity should become a corpse
 	 */
-	public static boolean isButchering(@Nullable LivingEntity livingEntity){
-		if(livingEntity == null){
+	public static boolean isButchering(@Nullable LivingEntity livingEntity) {
+		if (livingEntity == null) {
 			return false;
-		}else if(livingEntity.getAttacker() instanceof PlayerEntity player){
+		} else if (livingEntity.getAttacker() instanceof PlayerEntity player) {
 			boolean isInTag = livingEntity.getType().isIn(Constants.Tags.BUTCHERABLE);
 			boolean isItem = (player.getMainHandStack().isOf(BotDObjects.MEAT_CLEAVER) || EnchantmentHelper.getLevel(BotDEnchantments.BUTCHERING, player.getMainHandStack()) != 0);
 			return isInTag && isItem;
@@ -34,11 +35,12 @@ public class BotDApi {
 
 	/**
 	 * If the player is capable of spawning a kakuzu, spawn a kakuzu
+	 *
 	 * @param player player who is spawning
 	 */
-	public static void spawnKakuzuFromPlayer(PlayerEntity player){
+	public static void spawnKakuzuFromPlayer(PlayerEntity player) {
 		PlayerDataComponent component = BotDComponents.PLAYER_COMPONENT.get(player);
-		if(component.getKakuzu() > 0 && component.getDispatchedKakuzuMinions() < 3){
+		if (component.getKakuzu() > 0 && component.getDispatchedKakuzuMinions() < 3) {
 			component.decreaseKakuzuBuffLevel();
 			component.increaseDispatchedMinionBuffLevel();
 			KakuzuEntity kakuzuEntity = new KakuzuEntity(BotDEntityTypes.KAKUZU_ENTITY, player.world);
@@ -51,12 +53,13 @@ public class BotDApi {
 
 	/**
 	 * If the player is capable of fusing with its dispatched kakuzu, it will, and it will discard the kakuzu
-	 * @param player player to fuse with
+	 *
+	 * @param player       player to fuse with
 	 * @param kakuzuEntity kakuzu to enter the player
 	 */
-	public static void pickupKakuzu(PlayerEntity player, KakuzuEntity kakuzuEntity){
+	public static void pickupKakuzu(PlayerEntity player, KakuzuEntity kakuzuEntity) {
 		PlayerDataComponent component = BotDComponents.PLAYER_COMPONENT.get(player);
-		if(component.getKakuzu() < 3 && component.getDispatchedKakuzuMinions() > 0){
+		if (component.getKakuzu() < 3 && component.getDispatchedKakuzuMinions() > 0) {
 			component.increaseKakuzuBuffLevel();
 			component.decreaseDispatchedMinionBuffLevel();
 			kakuzuEntity.remove(Entity.RemovalReason.DISCARDED);
@@ -65,31 +68,34 @@ public class BotDApi {
 
 	/**
 	 * Determines if the player can have Kakuzu immortality or not
+	 *
 	 * @param player player
 	 * @return if the player already is a lich or has an entanglement, returns false
 	 */
-	public static boolean canHaveKakuzu(PlayerEntity player){
+	public static boolean canHaveKakuzu(PlayerEntity player) {
 		PlayerDataComponent component = BotDComponents.PLAYER_COMPONENT.get(player);
 		return !component.getLich() && !component.getEntangled() && component.getKakuzu() < 3 && component.getDispatchedKakuzuMinions() < 3;
 	}
 
 	/**
 	 * Determines if the player can have Lichdom immortality or not
+	 *
 	 * @param player player
 	 * @return if the player already has kakuzu or has an entanglement, returns false
 	 */
-	public static boolean canHaveLichdom(PlayerEntity player){
+	public static boolean canHaveLichdom(PlayerEntity player) {
 		PlayerDataComponent component = BotDComponents.PLAYER_COMPONENT.get(player);
 		return component.getKakuzu() <= 0 && !component.getEntangled() && !component.getLich();
 	}
 
 	/**
 	 * Determines if the player can have entanglement immortality or not
+	 *
 	 * @param living living
 	 * @return if the player already has kakuzu or is a lich, returns false, living entities can always be entangled
 	 */
-	public static boolean canEntangle(LivingEntity living){
-		if(living instanceof PlayerEntity player){
+	public static boolean canEntangle(LivingEntity living) {
+		if (living instanceof PlayerEntity player) {
 			PlayerDataComponent component = BotDComponents.PLAYER_COMPONENT.get(player);
 			return component.getKakuzu() <= 0 && !component.getLich() && !component.getEntangled();
 		}

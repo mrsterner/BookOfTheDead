@@ -9,7 +9,7 @@ import net.minecraft.client.render.entity.model.SinglePartEntityModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
 
-public class BloodSlimeEntityModel <T extends Entity> extends SinglePartEntityModel<T> {
+public class BloodSlimeEntityModel<T extends Entity> extends SinglePartEntityModel<T> {
 	public static final EntityModelLayer LAYER_LOCATION = new EntityModelLayer(Constants.id("blood_slime"), "main");
 	public static final EntityModelLayer OUTER_LAYER_LOCATION = new EntityModelLayer(Constants.id("blood_slime"), "extra");
 	private final ModelPart root;

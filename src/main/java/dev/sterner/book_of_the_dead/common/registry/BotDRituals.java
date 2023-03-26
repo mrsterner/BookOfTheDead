@@ -24,7 +24,7 @@ public interface BotDRituals {
 		return necroRitual;
 	}
 
-	static void init(){
+	static void init() {
 		NECROTABLE_RITUAL.keySet().forEach(ritual -> Registry.register(BotDRegistries.NECROTABLE_RITUALS, NECROTABLE_RITUAL.get(ritual), ritual));
 	}
 }

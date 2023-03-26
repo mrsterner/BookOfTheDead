@@ -67,7 +67,7 @@ public class PlayerDataComponent implements AutoSyncedComponent {
 		nbt.putInt(Constants.Nbt.DISPATCHED_MINIONS, getDispatchedKakuzuMinions());
 		nbt.putBoolean(Constants.Nbt.PHANTOM_IMMUNITY, getPhantomImmunity());
 		nbt.putBoolean(Constants.Nbt.IS_LICH, getLich());
-		if(getEntangledUuid() != null){
+		if (getEntangledUuid() != null) {
 			nbt.putUuid(Constants.Nbt.UUID, getEntangledUuid());
 		}
 	}
@@ -91,265 +91,265 @@ public class PlayerDataComponent implements AutoSyncedComponent {
 		setDispatchedKakuzuMinions(nbt.getInt(Constants.Nbt.DISPATCHED_MINIONS));
 		setPhantomImmunity(nbt.getBoolean(Constants.Nbt.PHANTOM_IMMUNITY));
 		setLich(nbt.getBoolean(Constants.Nbt.IS_LICH));
-		if(getEntangled()){
+		if (getEntangled()) {
 			setEntangled(nbt.getUuid(Constants.Nbt.UUID));
 		}
 	}
 
-	public float getNecroAuraBuffModifier(){
+	public float getNecroAuraBuffModifier() {
 		return PlayerAbilityData.NECRO_AURA[getNecroAuraBuff()];
 	}
 
-	public float getStatusEffectConversionBuffModifier(){
+	public float getStatusEffectConversionBuffModifier() {
 		return PlayerAbilityData.STATUS_EFFECT_CONVERSION[getStatusEffectConversionBuff()];
 	}
 
-	public float getDeathsTouchBuffModifier(){
+	public float getDeathsTouchBuffModifier() {
 		return PlayerAbilityData.DEATHS_TOUCH[getDeathsTouchBuff()];
 	}
 
-	public float getResistanceBuffModifier(){
+	public float getResistanceBuffModifier() {
 		return PlayerAbilityData.INCREASE_RESISTANCE[getResistanceBuff()];
 	}
 
-	public float getUndeadAggressionBuffModifier(){
+	public float getUndeadAggressionBuffModifier() {
 		return PlayerAbilityData.UNDEAD_AGGRESSION_DECREASE[getUndeadAggressionBuff()];
 	}
 
-	public float getInsanityDebuffModifier(){
+	public float getInsanityDebuffModifier() {
 		return PlayerAbilityData.INSANITY[getInsanityDebuff()];
 	}
 
-	public float getMobSpawnDebuffModifier(){
+	public float getMobSpawnDebuffModifier() {
 		return PlayerAbilityData.MOB_SPAWN[getMobSpawnRateDebuff()];
 	}
 
-	public float getReputationDebuffModifier(){
+	public float getReputationDebuffModifier() {
 		return PlayerAbilityData.REPUTATION[getReputationDebuff()];
 	}
 
-	public float getAggressionDebuffModifier(){
+	public float getAggressionDebuffModifier() {
 		return PlayerAbilityData.AGGRESSION[getAggressionDebuff()];
 	}
 
-	public float getExperienceDebuffModifier(){
+	public float getExperienceDebuffModifier() {
 		return PlayerAbilityData.EXPERIENCE_DECREASES[getExperienceDebuff()];
 	}
 
-	public float getSaturationDebuffModifier(){
+	public float getSaturationDebuffModifier() {
 		return PlayerAbilityData.SATURATION_DECREASES[getSaturationDebuff()];
 	}
 
-	public float getHealthDebuffModifier(){
+	public float getHealthDebuffModifier() {
 		return PlayerAbilityData.HEALTH_DECREASES[getHealthDebuff()];
 	}
 
-	public float getButcheringModifier(){
+	public float getButcheringModifier() {
 		return PlayerAbilityData.BUTCHERING_MODIFIERS[getButcheringLevel()];
 	}
 
-	public float getNecromancerModifier(){
+	public float getNecromancerModifier() {
 		return PlayerAbilityData.NECROMANCER_MODIFIERS[getNecromancerLevel()];
 	}
 
-	public void increaseButcheringLevel(int amount){
-		if(getButcheringLevel() + amount <= MAX_BUTCHERING_LEVEL){
+	public void increaseButcheringLevel(int amount) {
+		if (getButcheringLevel() + amount <= MAX_BUTCHERING_LEVEL) {
 			setButcheringLevel(getButcheringLevel() + amount);
 		}
 	}
 
-	public void decreaseButcheringLevel(int amount){
-		if(getButcheringLevel() - amount >= 0){
+	public void decreaseButcheringLevel(int amount) {
+		if (getButcheringLevel() - amount >= 0) {
 			setButcheringLevel(getButcheringLevel() - amount);
 		}
 	}
 
-	public void increaseNecromancerLevel(int amount){
-		if(getNecromancerLevel() + amount <= MAX_NECROMANCER_LEVEL){
+	public void increaseNecromancerLevel(int amount) {
+		if (getNecromancerLevel() + amount <= MAX_NECROMANCER_LEVEL) {
 			setNecromancerLevel(getNecromancerLevel() + amount);
 		}
 	}
 
-	public void decreaseNecromancerLevel(int amount){
-		if(getNecromancerLevel() - amount >= 0){
+	public void decreaseNecromancerLevel(int amount) {
+		if (getNecromancerLevel() - amount >= 0) {
 			setNecromancerLevel(getNecromancerLevel() - amount);
 		}
 	}
 
-	public void increaseHealthDebuffLevel(){
-		if(getHealthDebuff() + 1 <= MAX_ABILITY_LEVEL){
+	public void increaseHealthDebuffLevel() {
+		if (getHealthDebuff() + 1 <= MAX_ABILITY_LEVEL) {
 			setHealthDebuff(getHealthDebuff() + 1);
 		}
 	}
 
-	public void decreaseHealthDebuffLevel(){
-		if(getHealthDebuff() - 1 >= 0){
+	public void decreaseHealthDebuffLevel() {
+		if (getHealthDebuff() - 1 >= 0) {
 			setHealthDebuff(getHealthDebuff() - 1);
 		}
 	}
 
-	public void increaseSaturationDebuffLevel(){
-		if(getSaturationDebuff() + 1 <= MAX_ABILITY_LEVEL){
+	public void increaseSaturationDebuffLevel() {
+		if (getSaturationDebuff() + 1 <= MAX_ABILITY_LEVEL) {
 			setSaturationDebuff(getSaturationDebuff() + 1);
 		}
 	}
 
-	public void decreaseSaturationDebuffLevel(){
-		if(getSaturationDebuff() - 1 >= 0){
+	public void decreaseSaturationDebuffLevel() {
+		if (getSaturationDebuff() - 1 >= 0) {
 			setSaturationDebuff(getSaturationDebuff() - 1);
 		}
 	}
 
-	public void increaseExperienceDebuffLevel(){
-		if(getExperienceDebuff() + 1 <= MAX_ABILITY_LEVEL){
+	public void increaseExperienceDebuffLevel() {
+		if (getExperienceDebuff() + 1 <= MAX_ABILITY_LEVEL) {
 			setExperienceDebuff(getExperienceDebuff() + 1);
 		}
 	}
 
-	public void decreaseExperienceDebuffLevel(){
-		if(getExperienceDebuff() - 1 >= 0){
+	public void decreaseExperienceDebuffLevel() {
+		if (getExperienceDebuff() - 1 >= 0) {
 			setExperienceDebuff(getExperienceDebuff() - 1);
 		}
 	}
 
-	public void increaseAggressionDebuffLevel(){
-		if(getAggressionDebuff() + 1 <= MAX_ABILITY_LEVEL){
+	public void increaseAggressionDebuffLevel() {
+		if (getAggressionDebuff() + 1 <= MAX_ABILITY_LEVEL) {
 			setAggressionDebuff(getAggressionDebuff() + 1);
 		}
 	}
 
-	public void decreaseAggressionDebuffLevel(){
-		if(getAggressionDebuff() - 1 >= 0){
+	public void decreaseAggressionDebuffLevel() {
+		if (getAggressionDebuff() - 1 >= 0) {
 			setAggressionDebuff(getAggressionDebuff() - 1);
 		}
 	}
 
-	public void increaseReputationDebuffLevel(){
-		if(getReputationDebuff() + 1 <= MAX_ABILITY_LEVEL){
+	public void increaseReputationDebuffLevel() {
+		if (getReputationDebuff() + 1 <= MAX_ABILITY_LEVEL) {
 			setReputationDebuff(getReputationDebuff() + 1);
 		}
 	}
 
-	public void decreaseReputationDebuffLevel(){
-		if(getReputationDebuff() - 1 >= 0){
+	public void decreaseReputationDebuffLevel() {
+		if (getReputationDebuff() - 1 >= 0) {
 			setReputationDebuff(getReputationDebuff() - 1);
 		}
 	}
 
-	public void increaseMobSpawnDebuffLevel(){
-		if(getMobSpawnRateDebuff() + 1 <= MAX_ABILITY_LEVEL){
+	public void increaseMobSpawnDebuffLevel() {
+		if (getMobSpawnRateDebuff() + 1 <= MAX_ABILITY_LEVEL) {
 			setMobSpawnRateDebuff(getMobSpawnRateDebuff() + 1);
 		}
 	}
 
-	public void decreaseMobSpawnDebuffLevel(){
-		if(getMobSpawnRateDebuff() - 1 >= 0){
+	public void decreaseMobSpawnDebuffLevel() {
+		if (getMobSpawnRateDebuff() - 1 >= 0) {
 			setMobSpawnRateDebuff(getMobSpawnRateDebuff() - 1);
 		}
 	}
 
-	public void increaseInsanityDebuffLevel(){
-		if(getInsanityDebuff() + 1 <= MAX_INSANITY_LEVEL){
+	public void increaseInsanityDebuffLevel() {
+		if (getInsanityDebuff() + 1 <= MAX_INSANITY_LEVEL) {
 			setInsanityDebuff(getInsanityDebuff() + 1);
 		}
 	}
 
-	public void decreaseInsanityDebuffLevel(){
-		if(getInsanityDebuff() - 1 >= 0){
+	public void decreaseInsanityDebuffLevel() {
+		if (getInsanityDebuff() - 1 >= 0) {
 			setInsanityDebuff(getInsanityDebuff() - 1);
 		}
 	}
 
-	public void increaseUndeadAggressionBuffLevel(){
-		if(getUndeadAggressionBuff() + 1 <= MAX_ABILITY_LEVEL){
+	public void increaseUndeadAggressionBuffLevel() {
+		if (getUndeadAggressionBuff() + 1 <= MAX_ABILITY_LEVEL) {
 			setUndeadAggressionBuff(getUndeadAggressionBuff() + 1);
 		}
 	}
 
-	public void decreaseUndeadAggressionBuffLevel(){
-		if(getUndeadAggressionBuff() - 1 >= 0){
+	public void decreaseUndeadAggressionBuffLevel() {
+		if (getUndeadAggressionBuff() - 1 >= 0) {
 			setUndeadAggressionBuff(getUndeadAggressionBuff() - 1);
 		}
 	}
 
-	public void increaseResistanceBuffLevel(){
-		if(getResistanceBuff() + 1 <= MAX_ABILITY_LEVEL){
+	public void increaseResistanceBuffLevel() {
+		if (getResistanceBuff() + 1 <= MAX_ABILITY_LEVEL) {
 			setResistanceBuff(getResistanceBuff() + 1);
 		}
 	}
 
-	public void decreaseResistanceBuffLevel(){
-		if(getResistanceBuff() - 1 >= 0){
+	public void decreaseResistanceBuffLevel() {
+		if (getResistanceBuff() - 1 >= 0) {
 			setResistanceBuff(getResistanceBuff() - 1);
 		}
 	}
 
-	public void increaseDeathsTouchBuffLevel(){
-		if(getDeathsTouchBuff() + 1 <= MAX_ABILITY_LEVEL){
+	public void increaseDeathsTouchBuffLevel() {
+		if (getDeathsTouchBuff() + 1 <= MAX_ABILITY_LEVEL) {
 			setDeathsTouchBuff(getDeathsTouchBuff() + 1);
 		}
 	}
 
-	public void decreaseDeathsTouchBuffLevel(){
-		if(getDeathsTouchBuff() - 1 >= 0){
+	public void decreaseDeathsTouchBuffLevel() {
+		if (getDeathsTouchBuff() - 1 >= 0) {
 			setDeathsTouchBuff(getDeathsTouchBuff() - 1);
 		}
 	}
 
-	public void increaseStatusEffectConversionBuffLevel(){
-		if(getStatusEffectConversionBuff() + 1 <= MAX_ABILITY_LEVEL){
+	public void increaseStatusEffectConversionBuffLevel() {
+		if (getStatusEffectConversionBuff() + 1 <= MAX_ABILITY_LEVEL) {
 			setStatusEffectConversionBuff(getStatusEffectConversionBuff() + 1);
 		}
 	}
 
-	public void decreaseStatusEffectConversionBuffLevel(){
-		if(getStatusEffectConversionBuff() - 1 >= 0){
+	public void decreaseStatusEffectConversionBuffLevel() {
+		if (getStatusEffectConversionBuff() - 1 >= 0) {
 			setStatusEffectConversionBuff(getStatusEffectConversionBuff() - 1);
 		}
 	}
 
-	public void increaseNecroAuraBuffLevel(){
-		if(getNecroAuraBuff() + 1 <= MAX_ABILITY_LEVEL){
+	public void increaseNecroAuraBuffLevel() {
+		if (getNecroAuraBuff() + 1 <= MAX_ABILITY_LEVEL) {
 			setNecroAuraBuff(getNecroAuraBuff() + 1);
 		}
 	}
 
-	public void decreaseNecroAuraBuffLevel(){
-		if(getNecroAuraBuff() - 1 >= 0){
+	public void decreaseNecroAuraBuffLevel() {
+		if (getNecroAuraBuff() - 1 >= 0) {
 			setNecroAuraBuff(getNecroAuraBuff() - 1);
 		}
 	}
 
-	public void increaseKakuzuBuffLevel(){
-		if(getKakuzu() + 1 <= MAX_ABILITY_LEVEL){
+	public void increaseKakuzuBuffLevel() {
+		if (getKakuzu() + 1 <= MAX_ABILITY_LEVEL) {
 			setKakuzu(getKakuzu() + 1);
 		}
 	}
 
-	public void decreaseKakuzuBuffLevel(){
-		if(getKakuzu() - 1 >= 0){
+	public void decreaseKakuzuBuffLevel() {
+		if (getKakuzu() - 1 >= 0) {
 			setKakuzu(getKakuzu() - 1);
 		}
 	}
 
-	public void increaseDispatchedMinionBuffLevel(){
-		if(getDispatchedKakuzuMinions() + 1 <= MAX_ABILITY_LEVEL){
+	public void increaseDispatchedMinionBuffLevel() {
+		if (getDispatchedKakuzuMinions() + 1 <= MAX_ABILITY_LEVEL) {
 			setDispatchedKakuzuMinions(getDispatchedKakuzuMinions() + 1);
 		}
 	}
 
-	public void decreaseDispatchedMinionBuffLevel(){
-		if(getDispatchedKakuzuMinions() - 1 >= 0){
+	public void decreaseDispatchedMinionBuffLevel() {
+		if (getDispatchedKakuzuMinions() - 1 >= 0) {
 			setDispatchedKakuzuMinions(getDispatchedKakuzuMinions() - 1);
 		}
 	}
 
 
-	public int getButcheringLevel(){
+	public int getButcheringLevel() {
 		return butcheringLevel;
 	}
 
-	private void setButcheringLevel(int butcheringLevel){
+	private void setButcheringLevel(int butcheringLevel) {
 		this.butcheringLevel = butcheringLevel;
 		this.syncAbility();
 	}
@@ -521,7 +521,7 @@ public class PlayerDataComponent implements AutoSyncedComponent {
 		this.entangledUuid = uuid;
 	}
 
-	private void syncAbility(){
+	private void syncAbility() {
 		BotDComponents.PLAYER_COMPONENT.sync(this.player);
 	}
 

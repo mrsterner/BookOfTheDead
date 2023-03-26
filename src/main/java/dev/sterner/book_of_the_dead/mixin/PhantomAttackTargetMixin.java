@@ -17,9 +17,9 @@ import java.util.List;
 public class PhantomAttackTargetMixin {
 
 	@Inject(method = "canStart", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/mob/PhantomEntity;setTarget(Lnet/minecraft/entity/LivingEntity;)V"), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
-	private void book_of_the_dead$stopPhantomAttack(CallbackInfoReturnable<Boolean> cir, List<PlayerEntity> list, Iterator var2, PlayerEntity playerEntity){
+	private void book_of_the_dead$stopPhantomAttack(CallbackInfoReturnable<Boolean> cir, List<PlayerEntity> list, Iterator var2, PlayerEntity playerEntity) {
 		PlayerDataComponent component = BotDComponents.PLAYER_COMPONENT.get(playerEntity);
-		if(component.getPhantomImmunity()){
+		if (component.getPhantomImmunity()) {
 			cir.setReturnValue(false);
 		}
 	}

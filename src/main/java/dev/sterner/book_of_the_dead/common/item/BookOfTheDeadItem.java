@@ -16,6 +16,7 @@ import java.util.List;
 
 public class BookOfTheDeadItem extends Item {
 	private final Identifier id;
+
 	public BookOfTheDeadItem(Identifier id, Settings settings) {
 		super(settings);
 		this.id = id;

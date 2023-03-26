@@ -28,6 +28,7 @@ import static net.minecraft.state.property.Properties.LIT;
 
 public class RetortFlaskBlock extends HorizontalFacingBlock implements BlockEntityProvider {
 	protected static final VoxelShape SHAPE = VoxelShapes.union(createCuboidShape(4.5, 4, 4.5, 11.5, 12, 11.5));
+
 	public RetortFlaskBlock(Settings settings) {
 		super(settings.nonOpaque());
 		this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.NORTH).with(Properties.WATERLOGGED, false).with(LIT, false));
@@ -42,7 +43,7 @@ public class RetortFlaskBlock extends HorizontalFacingBlock implements BlockEnti
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		if (!world.isClient()) {
-			if(world.getBlockEntity(pos) instanceof RetortFlaskBlockEntity retortFlaskBlockEntity){
+			if (world.getBlockEntity(pos) instanceof RetortFlaskBlockEntity retortFlaskBlockEntity) {
 				return retortFlaskBlockEntity.onUse(world, state, pos, player, hand);
 			}
 		}

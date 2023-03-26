@@ -18,13 +18,13 @@ public class ExperienceOrbEntityMixin {
 	private static final ThreadLocal<PlayerEntity> book_of_the_dead$PLAYER_ENTITY_THREAD_LOCAL = new ThreadLocal<>();
 
 	@Inject(method = "onPlayerCollision", at = @At("HEAD"))
-	private void book_of_the_dead$onPlayerCollision(PlayerEntity player, CallbackInfo ci){
+	private void book_of_the_dead$onPlayerCollision(PlayerEntity player, CallbackInfo ci) {
 		book_of_the_dead$PLAYER_ENTITY_THREAD_LOCAL.set(player);
 	}
 
 	@ModifyArg(method = "onPlayerCollision", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;addExperience(I)V"))
-	private int book_of_the_dead$debuffExperience(int experience){
+	private int book_of_the_dead$debuffExperience(int experience) {
 		PlayerDataComponent component = BotDComponents.PLAYER_COMPONENT.get(book_of_the_dead$PLAYER_ENTITY_THREAD_LOCAL.get());
-		return (int)(component.getExperienceDebuffModifier() * experience);
+		return (int) (component.getExperienceDebuffModifier() * experience);
 	}
 }

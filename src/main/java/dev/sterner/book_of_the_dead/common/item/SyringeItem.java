@@ -14,7 +14,10 @@ import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffectUtil;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.*;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUsage;
+import net.minecraft.item.ItemUsageContext;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.Registries;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -42,8 +45,8 @@ public class SyringeItem extends Item {
 		BlockPos blockPos = context.getBlockPos();
 		World world = context.getWorld();
 		BlockState state = world.getBlockState(blockPos);
-		if(state.isOf(BotDObjects.RETORT_FLASK_BLOCK) && world.getBlockEntity(blockPos) instanceof RetortFlaskBlockEntity blockEntity){
-			if(blockEntity.getItems().get(0).getItem() instanceof StatusEffectItem statusEffectItem){
+		if (state.isOf(BotDObjects.RETORT_FLASK_BLOCK) && world.getBlockEntity(blockPos) instanceof RetortFlaskBlockEntity blockEntity) {
+			if (blockEntity.getItems().get(0).getItem() instanceof StatusEffectItem statusEffectItem) {
 				writeStatusEffectNbt(stack, new StatusEffectInstance(statusEffectItem.getStatusEffect(), 20 * 60, 1));
 				blockEntity.reset();
 			}
@@ -54,33 +57,33 @@ public class SyringeItem extends Item {
 
 	@Override
 	public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
-		PlayerEntity playerEntity = user instanceof PlayerEntity ? (PlayerEntity)user : null;
+		PlayerEntity playerEntity = user instanceof PlayerEntity ? (PlayerEntity) user : null;
 		if (playerEntity instanceof ServerPlayerEntity) {
-			Criteria.CONSUME_ITEM.trigger((ServerPlayerEntity)playerEntity, stack);
+			Criteria.CONSUME_ITEM.trigger((ServerPlayerEntity) playerEntity, stack);
 		}
 		boolean emptySyringe = false;
 
 		if (!world.isClient && playerEntity != null) {
 			StatusEffectInstance instance = readStatusEffectNbt(stack);
-			if(instance != null){
+			if (instance != null) {
 				user.addStatusEffect(new StatusEffectInstance(instance));
 				playerEntity.incrementStat(Stats.USED.getOrCreateStat(this));
 				if (!playerEntity.getAbilities().creativeMode) {
 					stack.decrement(1);
 				}
 				emptySyringe = true;
-			}else if(stack.getOrCreateNbt().contains(Constants.Nbt.BLOOD)){
+			} else if (stack.getOrCreateNbt().contains(Constants.Nbt.BLOOD)) {
 				//TODO Inject Blood for some reason
 				playerEntity.addStatusEffect(new StatusEffectInstance(BotDStatusEffects.SANGUINE, 20 * 20));
 				emptySyringe = true;
-			}else{
+			} else {
 				NbtCompound nbt = new NbtCompound();
 				nbt.putString(Constants.Nbt.NAME, playerEntity.getEntityName());
 				nbt.putUuid(Constants.Nbt.UUID, playerEntity.getUuid());
 				stack.getOrCreateNbt().put(Constants.Nbt.BLOOD, nbt);
 				playerEntity.damage(BotDDamageTypes.getDamageSource(world, BotDDamageTypes.SANGUINE), 4f);
 			}
-			if(emptySyringe){
+			if (emptySyringe) {
 				if (!playerEntity.getAbilities().creativeMode) {
 					if (stack.isEmpty()) {
 						return new ItemStack(BotDObjects.SYRINGE);
@@ -94,12 +97,12 @@ public class SyringeItem extends Item {
 	}
 
 	@Nullable
-	public static StatusEffectInstance readStatusEffectNbt(ItemStack stack){
-		if(stack.hasNbt() && stack.getOrCreateNbt().contains(Constants.Nbt.STATUS_EFFECT_INSTANCE)){
+	public static StatusEffectInstance readStatusEffectNbt(ItemStack stack) {
+		if (stack.hasNbt() && stack.getOrCreateNbt().contains(Constants.Nbt.STATUS_EFFECT_INSTANCE)) {
 			NbtCompound nbt = stack.getSubNbt(Constants.Nbt.STATUS_EFFECT_INSTANCE);
-			if(nbt != null){
+			if (nbt != null) {
 				StatusEffect effect = Registries.STATUS_EFFECT.get(Identifier.tryParse(nbt.getString(Constants.Nbt.STATUS_EFFECT)));
-				if(effect != null){
+				if (effect != null) {
 					return new StatusEffectInstance(effect, nbt.getInt(Constants.Nbt.DURATION), nbt.getInt(Constants.Nbt.AMPLIFIER));
 				}
 			}
@@ -107,10 +110,10 @@ public class SyringeItem extends Item {
 		return null;
 	}
 
-	public static void writeStatusEffectNbt(ItemStack stack, StatusEffectInstance instance){
+	public static void writeStatusEffectNbt(ItemStack stack, StatusEffectInstance instance) {
 		NbtCompound nbt = new NbtCompound();
 		Identifier identifier = Registries.STATUS_EFFECT.getId(instance.getEffectType());
-		if(identifier != null){
+		if (identifier != null) {
 			nbt.putString(Constants.Nbt.STATUS_EFFECT, identifier.toString());
 			nbt.putInt(Constants.Nbt.DURATION, instance.getDuration());
 			nbt.putInt(Constants.Nbt.AMPLIFIER, instance.getAmplifier());
@@ -135,7 +138,7 @@ public class SyringeItem extends Item {
 
 	@Override
 	public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-		if(stack.getOrCreateNbt().contains(Constants.Nbt.BLOOD)){
+		if (stack.getOrCreateNbt().contains(Constants.Nbt.BLOOD)) {
 			NbtCompound nbt = stack.getSubNbt(Constants.Nbt.BLOOD);
 			if (nbt != null) {
 				String name = nbt.getString(Constants.Nbt.NAME);
@@ -144,9 +147,9 @@ public class SyringeItem extends Item {
 			}
 		}
 
-		if(stack.getOrCreateNbt().contains(Constants.Nbt.STATUS_EFFECT_INSTANCE)){
+		if (stack.getOrCreateNbt().contains(Constants.Nbt.STATUS_EFFECT_INSTANCE)) {
 			StatusEffectInstance instance = readStatusEffectNbt(stack);
-			if(instance != null){
+			if (instance != null) {
 				StatusEffect statusEffect = instance.getEffectType();
 
 				MutableText mutableText = Text.translatable(instance.getTranslationKey());

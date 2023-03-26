@@ -33,12 +33,12 @@ public class ButcherBlock extends HorizontalDoubleBlock implements BlockEntityPr
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		if (!world.isClient()) {
-			if(world.getBlockEntity(pos) instanceof ButcherTableBlockEntity butcherTableBlockEntity){
-				if(state.get(HorizontalDoubleBlock.HHALF) == HorizontalDoubleBlockHalf.RIGHT){
+			if (world.getBlockEntity(pos) instanceof ButcherTableBlockEntity butcherTableBlockEntity) {
+				if (state.get(HorizontalDoubleBlock.HHALF) == HorizontalDoubleBlockHalf.RIGHT) {
 					return butcherTableBlockEntity.onUse(world, state, pos, player, hand, false);
-				}else{
+				} else {
 					ButcherTableBlockEntity nButch = getNeighbourButcherBlockEntity(world, state, pos);
-					if(nButch != null){
+					if (nButch != null) {
 						return nButch.onUse(world, state, pos, player, hand, true);
 					}
 				}
@@ -64,10 +64,10 @@ public class ButcherBlock extends HorizontalDoubleBlock implements BlockEntityPr
 		return SHAPE;
 	}
 
-	public static ButcherTableBlockEntity getNeighbourButcherBlockEntity(World world, BlockState blockState, BlockPos blockPos){
+	public static ButcherTableBlockEntity getNeighbourButcherBlockEntity(World world, BlockState blockState, BlockPos blockPos) {
 		Direction targetDirection = blockState.get(FACING).rotateClockwise(Direction.Axis.Y);
 		blockPos = blockPos.offset(targetDirection);
-		if(world.getBlockEntity(blockPos) instanceof ButcherTableBlockEntity butcherTableBlockEntity1){
+		if (world.getBlockEntity(blockPos) instanceof ButcherTableBlockEntity butcherTableBlockEntity1) {
 			return butcherTableBlockEntity1;
 		}
 		return null;

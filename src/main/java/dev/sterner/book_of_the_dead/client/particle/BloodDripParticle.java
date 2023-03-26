@@ -54,7 +54,7 @@ public class BloodDripParticle extends SpriteBillboardParticle {
 				if (this.fluid != Fluids.EMPTY) {
 					BlockPos blockPos = BlockPos.create(this.x, this.y, this.z);
 					FluidState fluidState = this.world.getFluidState(blockPos);
-					if (fluidState.getFluid() == this.fluid && this.y < (double)((float)blockPos.getY() + fluidState.getHeight(this.world, blockPos))) {
+					if (fluidState.getFluid() == this.fluid && this.y < (double) ((float) blockPos.getY() + fluidState.getHeight(this.world, blockPos))) {
 						this.markDead();
 					}
 				}
@@ -94,7 +94,7 @@ public class BloodDripParticle extends SpriteBillboardParticle {
 			DefaultParticleType defaultParticleType, ClientWorld world, double d, double e, double f, double g, double h, double i
 	) {
 		BloodDripParticle blockLeakParticle = new BloodDripParticle.Landing(world, d, e, f, Fluids.EMPTY);
-		blockLeakParticle.maxAge = (int)(128.0 / (Math.random() * 0.8 + 0.2));
+		blockLeakParticle.maxAge = (int) (128.0 / (Math.random() * 0.8 + 0.2));
 		blockLeakParticle.setColor(0.67F, 0.04F, 0.05F);
 		return blockLeakParticle;
 	}
@@ -129,7 +129,7 @@ public class BloodDripParticle extends SpriteBillboardParticle {
 	@ClientOnly
 	static class Falling extends BloodDripParticle {
 		Falling(ClientWorld clientWorld, double d, double e, double f, Fluid fluid) {
-			this(clientWorld, d, e, f, fluid, (int)(64.0 / (Math.random() * 0.8 + 0.2)));
+			this(clientWorld, d, e, f, fluid, (int) (64.0 / (Math.random() * 0.8 + 0.2)));
 		}
 
 		Falling(ClientWorld world, double x, double y, double z, Fluid fluid, int maxAge) {
@@ -184,7 +184,7 @@ public class BloodDripParticle extends SpriteBillboardParticle {
 	static class Landing extends BloodDripParticle {
 		Landing(ClientWorld clientWorld, double d, double e, double f, Fluid fluid) {
 			super(clientWorld, d, e, f, fluid);
-			this.maxAge = (int)(16.0 / (Math.random() * 0.8 + 0.2));
+			this.maxAge = (int) (16.0 / (Math.random() * 0.8 + 0.2));
 		}
 	}
 }

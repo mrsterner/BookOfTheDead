@@ -52,7 +52,7 @@ public class NecroTableBlock extends HorizontalFacingBlock implements BlockEntit
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		if (!world.isClient()) {
-			if(world.getBlockEntity(pos) instanceof NecroTableBlockEntity necroTableBlockEntity){
+			if (world.getBlockEntity(pos) instanceof NecroTableBlockEntity necroTableBlockEntity) {
 				return necroTableBlockEntity.onUse(world, state, pos, player, hand);
 			}
 		}
@@ -62,21 +62,21 @@ public class NecroTableBlock extends HorizontalFacingBlock implements BlockEntit
 	@Override
 	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
 		Direction direction = state.get(HorizontalFacingBlock.FACING);
-		var NS = VoxelShapes.combine(NORTH_SHAPE.offset(0.5D,0,0), SOUTH_SHAPE.offset(-0.5D,0,0), BooleanBiFunction.OR);
-		var EW = VoxelShapes.combine(EAST_SHAPE.offset(0D,0,0.5), WEST_SHAPE.offset(0D,0,-0.5), BooleanBiFunction.OR);
+		var NS = VoxelShapes.combine(NORTH_SHAPE.offset(0.5D, 0, 0), SOUTH_SHAPE.offset(-0.5D, 0, 0), BooleanBiFunction.OR);
+		var EW = VoxelShapes.combine(EAST_SHAPE.offset(0D, 0, 0.5), WEST_SHAPE.offset(0D, 0, -0.5), BooleanBiFunction.OR);
 		return switch (direction) {
 			case EAST, WEST -> EW;
-			default ->  NS;
+			default -> NS;
 		};
 	}
 
 	@Override
 	public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-		if(world.getBlockEntity(pos) instanceof NecroTableBlockEntity be){
-			if(be.hasBotD){
+		if (world.getBlockEntity(pos) instanceof NecroTableBlockEntity be) {
+			if (be.hasBotD) {
 				ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), BotDObjects.BOOK_OF_THE_DEAD.getDefaultStack());
 			}
-			if(be.hasEmeraldTablet){
+			if (be.hasEmeraldTablet) {
 				ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), BotDObjects.EMERALD_TABLET.getDefaultStack());
 			}
 		}
@@ -86,7 +86,7 @@ public class NecroTableBlock extends HorizontalFacingBlock implements BlockEntit
 	@Override
 	public void randomDisplayTick(BlockState state, World world, BlockPos pos, RandomGenerator random) {
 		if (state.get(LIT)) {
-			Vec3d[] vec3ds = switch (state.get(FACING)){
+			Vec3d[] vec3ds = switch (state.get(FACING)) {
 				case NORTH -> NORTH_PARTICLES;
 				case SOUTH -> SOUTH_PARTICLES;
 				case WEST -> WEST_PARTICLES;

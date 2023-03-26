@@ -16,22 +16,21 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class VillagerHostilesSensorMixin {
 
 	@Inject(at = @At("HEAD"), method = "matches", cancellable = true)
-	private void book_of_the_dead$matches(LivingEntity entity, LivingEntity target, CallbackInfoReturnable<Boolean> cir){
+	private void book_of_the_dead$matches(LivingEntity entity, LivingEntity target, CallbackInfoReturnable<Boolean> cir) {
 		if (target instanceof PlayerEntity player && ((VillagerEntity) entity).getReputation(player) < -100) {
 			PlayerDataComponent component = BotDComponents.PLAYER_COMPONENT.get(player);
-			if(component.getReputationDebuffModifier() <= PlayerAbilityData.REPUTATION[2]){
+			if (component.getReputationDebuffModifier() <= PlayerAbilityData.REPUTATION[2]) {
 				cir.setReturnValue(true);
 			}
 		}
 	}
 
 
-
 	@Inject(method = "isCloseEnoughForDanger", at = @At("HEAD"), cancellable = true)
-	private void book_of_the_dead$getNearestHostile(LivingEntity villager, LivingEntity target, CallbackInfoReturnable<Boolean> cir){
+	private void book_of_the_dead$getNearestHostile(LivingEntity villager, LivingEntity target, CallbackInfoReturnable<Boolean> cir) {
 		if (target instanceof PlayerEntity player && ((VillagerEntity) villager).getReputation(player) < -100) {
 			PlayerDataComponent component = BotDComponents.PLAYER_COMPONENT.get(player);
-			if(component.getReputationDebuffModifier() <= PlayerAbilityData.REPUTATION[2]) {
+			if (component.getReputationDebuffModifier() <= PlayerAbilityData.REPUTATION[2]) {
 				cir.setReturnValue(target.squaredDistanceTo(villager) <= 12 * 12);
 			}
 		}

@@ -30,7 +30,7 @@ public class KakuzuSpecificSensor extends ExtendedSensor<KakuzuEntity> {
 	protected void sense(ServerWorld world, KakuzuEntity entity) {
 		Box box = entity.getBoundingBox().expand(this.getHorizontalExpansion(), this.getHeightExpansion(), this.getHorizontalExpansion());
 		List<PlayerEntity> list = world.getEntitiesByClass(PlayerEntity.class, box, LivingEntity::isAlive);
-		if(entity.getOwner() != null){
+		if (entity.getOwner() != null) {
 			PlayerEntity player = world.getPlayerByUuid(entity.getOwner());
 			if (player != null && list.contains(player)) {
 				Brain<?> brain = entity.getBrain();

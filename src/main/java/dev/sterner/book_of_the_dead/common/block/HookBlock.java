@@ -41,7 +41,7 @@ public class HookBlock extends HorizontalFacingBlock implements BlockEntityProvi
 	@Override
 	public void randomDisplayTick(BlockState state, World world, BlockPos pos, RandomGenerator random) {
 		super.randomDisplayTick(state, world, pos, random);
-		if(world.getBlockEntity(pos) instanceof HookBlockEntity hookBlockEntity && !hookBlockEntity.getCorpseEntity().isEmpty() && hookBlockEntity.hookedAge < Constants.Values.BLEEDING){
+		if (world.getBlockEntity(pos) instanceof HookBlockEntity hookBlockEntity && !hookBlockEntity.getCorpseEntity().isEmpty() && hookBlockEntity.hookedAge < Constants.Values.BLEEDING) {
 			for (int i = 0; i < random.nextInt(1) + 1; ++i) {
 				this.trySpawnDripParticles(world, pos, state);
 			}
@@ -87,7 +87,7 @@ public class HookBlock extends HorizontalFacingBlock implements BlockEntityProvi
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		if (!world.isClient()) {
-			if(world.getBlockEntity(pos) instanceof HookBlockEntity hookBlockEntity){
+			if (world.getBlockEntity(pos) instanceof HookBlockEntity hookBlockEntity) {
 				return hookBlockEntity.onUse(world, state, pos, player, hand, false);
 			}
 		}
@@ -125,7 +125,7 @@ public class HookBlock extends HorizontalFacingBlock implements BlockEntityProvi
 
 	@Override
 	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-		if(world.getBlockEntity(pos) instanceof HookBlockEntity hookBlockEntity && !hookBlockEntity.getCorpseEntity().isEmpty()){
+		if (world.getBlockEntity(pos) instanceof HookBlockEntity hookBlockEntity && !hookBlockEntity.getCorpseEntity().isEmpty()) {
 			return HOOKED_SHAPE;
 		}
 		return SHAPE;

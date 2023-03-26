@@ -29,11 +29,11 @@ public interface BotDWorldGenerators {
 	static void init() {
 		STRUCTURE_TYPES.keySet().forEach(structureType -> Registry.register(Registries.STRUCTURE_TYPE, STRUCTURE_TYPES.get(structureType), structureType));
 
-		final String[] types = new String[] {"plains"};
+		final String[] types = new String[]{"plains"};
 		for (String type : types) {
 			DynamicRegistrySetupCallback.EVENT.register(registryManager ->
 					registryManager.registerEntryAdded(RegistryKeys.STRUCTURE_POOL, ((rawId, id, pool) -> {
-						if (id.equals(new Identifier("minecraft", "village/"+type+"/houses"))) {
+						if (id.equals(new Identifier("minecraft", "village/" + type + "/houses"))) {
 							pool.elements.add(StructurePoolElement.ofSingle(Constants.MODID + ":village/" + type + "/houses/" + type + "_old_house").apply(StructurePool.Projection.RIGID));
 						}
 					}))

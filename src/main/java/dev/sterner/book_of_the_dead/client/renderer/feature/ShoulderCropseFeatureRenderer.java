@@ -35,18 +35,18 @@ public class ShoulderCropseFeatureRenderer extends FeatureRenderer<AbstractClien
 	public void render(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, AbstractClientPlayerEntity entity, float limbAngle, float limbDistance, float tickDelta, float animationProgress, float headYaw, float headPitch) {
 		matrices.push();
 		IHauler.of(entity).ifPresent(hauler -> {
-			if(!hauler.getCorpseEntity().isEmpty()){
+			if (!hauler.getCorpseEntity().isEmpty()) {
 				NbtCompound nbtCompound2 = hauler.getCorpseEntity();
 				EntityType.getEntityFromNbt(nbtCompound2, entity.world).ifPresent(type -> {
-					if(type instanceof LivingEntity livingEntity && dispatcher != null){
+					if (type instanceof LivingEntity livingEntity && dispatcher != null) {
 						livingEntity.hurtTime = 0;
 						livingEntity.deathTime = 0;
 						dispatcher.setRenderShadows(false);
 						matrices.push();
 						matrices.multiply(Axis.X_POSITIVE.rotationDegrees(entity.isInSneakingPose() ? 20 : 0));
-						if(livingEntity instanceof AnimalEntity){
+						if (livingEntity instanceof AnimalEntity) {
 							renderQuadraped(matrices, vertexConsumers, light, livingEntity);
-						}else{
+						} else {
 							renderHumanoid(matrices, vertexConsumers, light, livingEntity);
 						}
 						matrices.pop();
@@ -56,44 +56,45 @@ public class ShoulderCropseFeatureRenderer extends FeatureRenderer<AbstractClien
 		});
 		matrices.pop();
 	}
-	public void renderQuadraped(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, LivingEntity livingEntity){
+
+	public void renderQuadraped(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, LivingEntity livingEntity) {
 		matrices.push();
 		matrices.multiply(Axis.X_NEGATIVE.rotationDegrees(90));
-		if(livingEntity.isBaby()){
-			matrices.translate(0,-1,0);
-		}else{
+		if (livingEntity.isBaby()) {
+			matrices.translate(0, -1, 0);
+		} else {
 			float f = 0.75f;
-			matrices.scale(f,f,f);
-			matrices.translate(0,-1.5,0);
+			matrices.scale(f, f, f);
+			matrices.translate(0, -1.5, 0);
 		}
 		dispatcher.render(livingEntity, 0, 0, 0, 0, 0, matrices, vertexConsumers, light);
 		matrices.pop();
 
 		matrices.push();
-		matrices.translate(0,-0.5,0.6);
+		matrices.translate(0, -0.5, 0.6);
 		float g = 1.1f;
-		matrices.scale(g,g,g);
-		this.model.render(matrices, vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(BAG)),light, OverlayTexture.DEFAULT_UV, 1,1,1,1);
+		matrices.scale(g, g, g);
+		this.model.render(matrices, vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(BAG)), light, OverlayTexture.DEFAULT_UV, 1, 1, 1, 1);
 		matrices.pop();
 	}
 
-	public void renderHumanoid(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, LivingEntity livingEntity){
+	public void renderHumanoid(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, LivingEntity livingEntity) {
 		matrices.push();
-		if(livingEntity.isBaby()){
-			matrices.translate(0,-0.25,0.5);
-		}else{
+		if (livingEntity.isBaby()) {
+			matrices.translate(0, -0.25, 0.5);
+		} else {
 			float f = 0.75f;
-			matrices.scale(f,f,f);
-			matrices.translate(0,-1.0,0.5);
+			matrices.scale(f, f, f);
+			matrices.translate(0, -1.0, 0.5);
 		}
 		dispatcher.render(livingEntity, 0, 0, 0, 0, 0, matrices, vertexConsumers, light);
 		matrices.pop();
 
 		matrices.push();
-		matrices.translate(0,-0.5,0.6);
+		matrices.translate(0, -0.5, 0.6);
 		float g = 1.1f;
-		matrices.scale(g,g,g);
-		this.model.render(matrices, vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(BAG)),light, OverlayTexture.DEFAULT_UV, 1,1,1,1);
+		matrices.scale(g, g, g);
+		this.model.render(matrices, vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(BAG)), light, OverlayTexture.DEFAULT_UV, 1, 1, 1, 1);
 		matrices.pop();
 	}
 }

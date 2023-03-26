@@ -162,7 +162,7 @@ public class RecipeUtils {
 		final int duration = JsonHelper.getInt(object, "duration");
 		final int amplifier = JsonHelper.getInt(object, "amplifier");
 		StatusEffect statusEffect = Registries.STATUS_EFFECT.get(id);
-		if(statusEffect != null){
+		if (statusEffect != null) {
 			return new StatusEffectInstance(statusEffect, duration, amplifier);
 		}
 		return null;

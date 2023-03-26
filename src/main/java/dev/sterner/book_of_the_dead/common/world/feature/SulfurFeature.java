@@ -61,7 +61,7 @@ public class SulfurFeature extends Feature<DefaultFeatureConfig> {
 								world.setBlockState(placedPos, BotDObjects.SULFUR.getDefaultState().with(SulfurLayerBlock.LAYERS, 1 + i), Block.NOTIFY_ALL);
 							}
 							world.setBlockState(placedPos.down(), BotDObjects.SULFUR.getDefaultState().with(SulfurLayerBlock.LAYERS, 8), Block.NOTIFY_ALL);
-							if(random.nextBoolean()){
+							if (random.nextBoolean()) {
 								world.setBlockState(placedPos.down().down(), BotDObjects.SULFUR.getDefaultState().with(SulfurLayerBlock.LAYERS, 8), Block.NOTIFY_ALL);
 							}
 

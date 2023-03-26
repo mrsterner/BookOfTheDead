@@ -4,7 +4,10 @@ import dev.sterner.book_of_the_dead.BotD;
 import dev.sterner.book_of_the_dead.common.block.*;
 import dev.sterner.book_of_the_dead.common.item.*;
 import dev.sterner.book_of_the_dead.common.util.Constants;
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.MapColor;
+import net.minecraft.block.Material;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.*;
 import net.minecraft.registry.Registries;
@@ -53,7 +56,7 @@ public interface BotDObjects {
 	Item CAGE = register("cage", new CageItem(settings()));
 	Item HOOK = register("hook", new Item(settings()));
 	Item METAL_HOOK = register("metal_hook", new Item(settings()));
-	Item OLD_LETTER = register("old_letter", new Item(settings()){
+	Item OLD_LETTER = register("old_letter", new Item(settings()) {
 		@Override
 		public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
 			tooltip.add(Text.translatable("tooltip.book_of_the_dead.from_archive"));
@@ -88,12 +91,12 @@ public interface BotDObjects {
 
 	Block HOOK_BLOCK = register("hook_block", new HookBlock(QuiltBlockSettings.of(Material.WOOL).strength(0.2F), false), settings(), false);
 	Block METAL_HOOK_BLOCK = register("metal_hook_block", new HookBlock(QuiltBlockSettings.of(Material.WOOL).strength(0.2F), true), settings(), false);
-	Block JAR = register("jar", new JarBlock(QuiltBlockSettings.of(Material.GLASS).strength(0.3F).sounds(BlockSoundGroup.GLASS)), settings(),true);
-	Block NECRO_TABLE = register("necro", new NecroTableBlock(QuiltBlockSettings.copy(Blocks.DEEPSLATE)), settings(),false);
-	Block BUTCHER_TABLE = register("butcher", new ButcherBlock(QuiltBlockSettings.copy(Blocks.DARK_OAK_PLANKS)), settings(),false);
+	Block JAR = register("jar", new JarBlock(QuiltBlockSettings.of(Material.GLASS).strength(0.3F).sounds(BlockSoundGroup.GLASS)), settings(), true);
+	Block NECRO_TABLE = register("necro", new NecroTableBlock(QuiltBlockSettings.copy(Blocks.DEEPSLATE)), settings(), false);
+	Block BUTCHER_TABLE = register("butcher", new ButcherBlock(QuiltBlockSettings.copy(Blocks.DARK_OAK_PLANKS)), settings(), false);
 	Block RITUAL = register("ritual", new RitualBlock(QuiltBlockSettings.copy(Blocks.DEEPSLATE_BRICKS)), settings(), BotD.isDebugMode());
-	Block PEDESTAL = register("pedestal", new PedestalBlock(QuiltBlockSettings.copy(Blocks.DEEPSLATE_BRICKS)), settings(),true);
-	Block REINFORCED_DOOR = register("reinforced_door", new ReinforcedDoorBlock(QuiltBlockSettings.copyOf(Blocks.OAK_DOOR)),settings(), BotD.isDebugMode());
+	Block PEDESTAL = register("pedestal", new PedestalBlock(QuiltBlockSettings.copy(Blocks.DEEPSLATE_BRICKS)), settings(), true);
+	Block REINFORCED_DOOR = register("reinforced_door", new ReinforcedDoorBlock(QuiltBlockSettings.copyOf(Blocks.OAK_DOOR)), settings(), BotD.isDebugMode());
 	Block REINFORCED_BLOCK = register("reinforced_block", new ReinforcedBlock(QuiltBlockSettings.copyOf(Blocks.REINFORCED_DEEPSLATE)), settings(), BotD.isDebugMode());
 
 	static Item.Settings settings() {

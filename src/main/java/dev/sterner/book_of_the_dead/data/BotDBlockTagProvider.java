@@ -8,7 +8,7 @@ import net.minecraft.registry.tag.BlockTags;
 
 import java.util.concurrent.CompletableFuture;
 
-public class BotDBlockTagProvider extends FabricTagProvider.BlockTagProvider{
+public class BotDBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 	public BotDBlockTagProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
 		super(output, registriesFuture);
 	}

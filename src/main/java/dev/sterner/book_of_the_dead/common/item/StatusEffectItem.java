@@ -11,7 +11,7 @@ public class StatusEffectItem extends Item {
 		this.effect = effect;
 	}
 
-	public StatusEffect getStatusEffect(){
+	public StatusEffect getStatusEffect() {
 		return effect;
 	}
 }

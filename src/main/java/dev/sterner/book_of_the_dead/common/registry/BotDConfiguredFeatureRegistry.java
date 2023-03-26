@@ -22,8 +22,10 @@ public interface BotDConfiguredFeatureRegistry {
 		CONFIGURED_FEATURES.put(Constants.id(id), feature);
 		return feature;
 	}
+
 	static void init(Registry<ConfiguredFeature<?, ?>> configured) {
-		CONFIGURED_FEATURES.forEach((id, feature) -> {Registry.register(configured, id, feature);
+		CONFIGURED_FEATURES.forEach((id, feature) -> {
+			Registry.register(configured, id, feature);
 			CONFIGURED_FEATURE_KEYS.put(feature, configured.getKey(feature).orElseThrow());
 		});
 	}

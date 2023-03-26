@@ -14,9 +14,10 @@ public class BotDUtils {
 
 	/**
 	 * Try to add an itemStack to a players Hand, otherwise drops the item
+	 *
 	 * @param player player
-	 * @param hand hand to receive item
-	 * @param toAdd item to add
+	 * @param hand   hand to receive item
+	 * @param toAdd  item to add
 	 */
 	public static void addItemToInventoryAndConsume(PlayerEntity player, Hand hand, ItemStack toAdd) {
 		boolean shouldAdd = false;

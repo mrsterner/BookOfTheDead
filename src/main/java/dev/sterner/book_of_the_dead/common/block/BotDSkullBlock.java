@@ -1,7 +1,10 @@
 package dev.sterner.book_of_the_dead.common.block;
 
 import dev.sterner.book_of_the_dead.api.block.AbstractBotDSkullBlock;
-import net.minecraft.block.*;
+import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.ShapeContext;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.state.StateManager;
@@ -39,7 +42,7 @@ public class BotDSkullBlock extends AbstractBotDSkullBlock {
 
 	@Override
 	public BlockState getPlacementState(ItemPlacementContext ctx) {
-		return this.getDefaultState().with(ROTATION, Integer.valueOf(MathHelper.floor((double)(ctx.getPlayerYaw() * 16.0F / 360.0F) + 0.5) & 15));
+		return this.getDefaultState().with(ROTATION, Integer.valueOf(MathHelper.floor((double) (ctx.getPlayerYaw() * 16.0F / 360.0F) + 0.5) & 15));
 	}
 
 	@Override
@@ -67,5 +70,5 @@ public class BotDSkullBlock extends AbstractBotDSkullBlock {
 
 	public enum Type implements BotDSkullBlock.BotDType {
 		VILLAGER
-    }
+	}
 }

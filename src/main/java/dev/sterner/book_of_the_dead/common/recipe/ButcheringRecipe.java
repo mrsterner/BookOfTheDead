@@ -71,7 +71,7 @@ public class ButcheringRecipe implements IRecipe {
 				throw new JsonParseException("Too many outputs for Butchering recipe");
 			}
 			Pair<ItemStack, Float> headDrop = Pair.of(ItemStack.EMPTY, 1.0f);
-			if(JsonHelper.hasArray(json, "head")){
+			if (JsonHelper.hasArray(json, "head")) {
 				JsonArray headArray = JsonHelper.getArray(json, "head");
 				headDrop = RecipeUtils.deserializeStackPairs(headArray).get(0);
 			}

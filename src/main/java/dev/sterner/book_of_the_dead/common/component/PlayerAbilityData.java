@@ -47,7 +47,7 @@ public class PlayerAbilityData {
 					armor.removeModifier(mod);
 				}
 			}
-			if(!remove && RESISTANCE_SET.contains(attributeMod)){
+			if (!remove && RESISTANCE_SET.contains(attributeMod)) {
 				armor.addPersistentModifier(attributeMod);
 			}
 		}
@@ -59,7 +59,7 @@ public class PlayerAbilityData {
 					health.removeModifier(mod);
 				}
 			}
-			if(!remove && HEALTH_DECREASE_SET.contains(attributeMod)) {
+			if (!remove && HEALTH_DECREASE_SET.contains(attributeMod)) {
 				health.addPersistentModifier(attributeMod);
 			}
 		}
@@ -70,8 +70,8 @@ public class PlayerAbilityData {
 		RESISTANCE_2 = new EntityAttributeModifier(UUID.fromString("0d278102-1e00-4296-ae46-7406a4dd9ceb"), "Resistance Lvl 2", INCREASE_RESISTANCE[2], EntityAttributeModifier.Operation.ADDITION);
 		RESISTANCE_3 = new EntityAttributeModifier(UUID.fromString("56b73540-12f7-4e72-854d-c49a53d7df6f"), "Resistance Lvl 3", INCREASE_RESISTANCE[3], EntityAttributeModifier.Operation.ADDITION);
 
-		HEALTH_DECREASE_1 = new EntityAttributeModifier(UUID.fromString("853df0ee-6867-4952-957a-963a1cf4eba7"), "Health Decrease Lvl 1", - HEALTH_DECREASES[1], EntityAttributeModifier.Operation.ADDITION);
-		HEALTH_DECREASE_2 = new EntityAttributeModifier(UUID.fromString("2c298f92-6f8a-4cae-9a16-d577d20cc946"), "Health Decrease Lvl 2", - HEALTH_DECREASES[2], EntityAttributeModifier.Operation.ADDITION);
-		HEALTH_DECREASE_3 = new EntityAttributeModifier(UUID.fromString("5fcfc969-e2d8-4719-b5af-1d2ef9291617"), "Health Decrease Lvl 3", - HEALTH_DECREASES[3], EntityAttributeModifier.Operation.ADDITION);
+		HEALTH_DECREASE_1 = new EntityAttributeModifier(UUID.fromString("853df0ee-6867-4952-957a-963a1cf4eba7"), "Health Decrease Lvl 1", -HEALTH_DECREASES[1], EntityAttributeModifier.Operation.ADDITION);
+		HEALTH_DECREASE_2 = new EntityAttributeModifier(UUID.fromString("2c298f92-6f8a-4cae-9a16-d577d20cc946"), "Health Decrease Lvl 2", -HEALTH_DECREASES[2], EntityAttributeModifier.Operation.ADDITION);
+		HEALTH_DECREASE_3 = new EntityAttributeModifier(UUID.fromString("5fcfc969-e2d8-4719-b5af-1d2ef9291617"), "Health Decrease Lvl 3", -HEALTH_DECREASES[3], EntityAttributeModifier.Operation.ADDITION);
 	}
 }

@@ -19,6 +19,7 @@ import net.minecraft.world.WorldView;
 public class HorizontalDoubleBlock extends HorizontalFacingBlock {
 	public static final DirectionProperty FACING = HorizontalFacingBlock.FACING;
 	public static final EnumProperty<HorizontalDoubleBlockHalf> HHALF = EnumProperty.of("half", HorizontalDoubleBlockHalf.class);
+
 	public HorizontalDoubleBlock(Settings settings) {
 		super(settings.nonOpaque());
 		this.stateManager
@@ -29,11 +30,11 @@ public class HorizontalDoubleBlock extends HorizontalFacingBlock {
 
 	@Override
 	public boolean canPlaceAt(BlockState state, WorldView world, BlockPos pos) {
-		if(state.get(HHALF) == HorizontalDoubleBlockHalf.LEFT){
+		if (state.get(HHALF) == HorizontalDoubleBlockHalf.LEFT) {
 			Direction targetDirection = state.get(FACING).rotateClockwise(Direction.Axis.Y);
 			BlockPos targetPos = pos.offset(targetDirection);
 			return world.getBlockState(targetPos).isOf(this);
-		}else{
+		} else {
 			Direction targetDirection = state.get(FACING).rotateCounterclockwise(Direction.Axis.Y);
 			BlockPos targetPos = pos.offset(targetDirection);
 			return world.getBlockState(targetPos).isOf(this);
@@ -43,10 +44,10 @@ public class HorizontalDoubleBlock extends HorizontalFacingBlock {
 	@Override
 	public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
 		BlockPos targetPos;
-		if(state.get(HHALF) == HorizontalDoubleBlockHalf.LEFT){
+		if (state.get(HHALF) == HorizontalDoubleBlockHalf.LEFT) {
 			Direction targetDirection = state.get(FACING).rotateClockwise(Direction.Axis.Y);
 			targetPos = pos.offset(targetDirection);
-		}else{
+		} else {
 			Direction targetDirection = state.get(FACING).rotateCounterclockwise(Direction.Axis.Y);
 			targetPos = pos.offset(targetDirection);
 		}

@@ -4,7 +4,9 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import dev.sterner.book_of_the_dead.common.entity.OldManEntity;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.client.model.*;
-import net.minecraft.client.render.entity.model.*;
+import net.minecraft.client.render.entity.model.BipedEntityModel;
+import net.minecraft.client.render.entity.model.EntityModelLayer;
+import net.minecraft.client.render.entity.model.EntityModelPartNames;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
 

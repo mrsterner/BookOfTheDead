@@ -22,7 +22,7 @@ public class StrollFlyTask<E extends PathAwareEntity> extends ExtendedBehaviour<
 	protected Predicate<E> avoidWaterPredicate = (entity) -> true;
 	protected BiPredicate<E, Vec3d> positionPredicate = (entity, pos) -> true;
 
-    public StrollFlyTask() {
+	public StrollFlyTask() {
 	}
 
 	protected List<Pair<MemoryModuleType<?>, MemoryModuleState>> getMemoryRequirements() {

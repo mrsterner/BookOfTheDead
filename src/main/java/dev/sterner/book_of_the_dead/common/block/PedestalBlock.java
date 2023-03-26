@@ -45,21 +45,20 @@ public class PedestalBlock extends Block implements BlockEntityProvider {
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		ItemStack playerStack = player.getStackInHand(hand);
 		BlockEntity entityCheck = world.getBlockEntity(pos);
-		if(entityCheck instanceof PedestalBlockEntity entity) {
-			if(!entity.isCrafting()) {
-				if(!playerStack.isEmpty()) {
+		if (entityCheck instanceof PedestalBlockEntity entity) {
+			if (!entity.isCrafting()) {
+				if (!playerStack.isEmpty()) {
 					ItemStack entityStack = entity.getStack();
-					if(!entityStack.isItemEqualIgnoreDamage(playerStack)) {
-						if(!world.isClient) {
+					if (!entityStack.isItemEqualIgnoreDamage(playerStack)) {
+						if (!world.isClient) {
 							ItemStack newStack = playerStack.copy();
 							newStack.setCount(1);
 							entity.setStack(newStack);
 							playerStack.decrement(1);
-							if(!entityStack.isEmpty()) {
-								if(playerStack.isEmpty()) {
+							if (!entityStack.isEmpty()) {
+								if (playerStack.isEmpty()) {
 									player.setStackInHand(hand, entityStack);
-								}
-								else if(!player.getInventory().insertStack(entityStack)) {
+								} else if (!player.getInventory().insertStack(entityStack)) {
 									player.dropItem(entityStack, false, true);
 								}
 							}
@@ -67,11 +66,10 @@ public class PedestalBlock extends Block implements BlockEntityProvider {
 						return ActionResult.success(world.isClient);
 					}
 					return ActionResult.FAIL;
-				}
-				else {
-					if(!entity.getStack().isEmpty()) {
-						if(!world.isClient) {
-							if(!player.getInventory().insertStack(entity.getStack().copy())) {
+				} else {
+					if (!entity.getStack().isEmpty()) {
+						if (!world.isClient) {
+							if (!player.getInventory().insertStack(entity.getStack().copy())) {
 								player.dropItem(entity.getStack().copy(), false, true);
 							}
 							entity.setStack(ItemStack.EMPTY);
@@ -92,7 +90,7 @@ public class PedestalBlock extends Block implements BlockEntityProvider {
 
 	@Override
 	public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-		if(world.getBlockEntity(pos) instanceof PedestalBlockEntity be){
+		if (world.getBlockEntity(pos) instanceof PedestalBlockEntity be) {
 			ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), be.getStack());
 		}
 		super.onBreak(world, pos, state, player);

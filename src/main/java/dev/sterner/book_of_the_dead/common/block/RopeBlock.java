@@ -1,6 +1,8 @@
 package dev.sterner.book_of_the_dead.common.block;
 
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.ShapeContext;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
@@ -20,6 +22,7 @@ public class RopeBlock extends Block {
 	protected static final VoxelShape MIDDLE_SHAPE = Block.createCuboidShape(6.5, 0.0, 6.5, 9.5, 16.0, 9.5);
 	protected static final VoxelShape BOTTOM_SHAPE = Block.createCuboidShape(6.5, 2.0, 6.5, 9.5, 16.0, 9.5);
 	public static final EnumProperty<Rope> ROPE = EnumProperty.of("rope", Rope.class);
+
 	public RopeBlock(Settings settings) {
 		super(settings);
 		this.stateManager.getDefaultState().with(ROPE, Rope.BOTTOM);

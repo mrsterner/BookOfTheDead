@@ -21,7 +21,7 @@ public class LivingEntityDataComponent implements AutoSyncedComponent, ServerTic
 	private int entangledEntityId = 0;
 	private Vec3d ritualPos;
 
-	public LivingEntityDataComponent(LivingEntity livingEntity){
+	public LivingEntityDataComponent(LivingEntity livingEntity) {
 		this.livingEntity = livingEntity;
 	}
 
@@ -35,7 +35,7 @@ public class LivingEntityDataComponent implements AutoSyncedComponent, ServerTic
 		setMorphine$accumulatedDamage(nbt.getFloat(Constants.Nbt.MORPHINE));
 		setAdrenaline$bonusDamage(nbt.getFloat(Constants.Nbt.ADRENALINE));
 		setEntangledEntityId(nbt.getInt(Constants.Nbt.ENTANGLED));
-		if(nbt.contains(Constants.Nbt.RITUAL_POS)){
+		if (nbt.contains(Constants.Nbt.RITUAL_POS)) {
 			setRitualPos(BotDUtils.toVec3d(nbt.getCompound(Constants.Nbt.RITUAL_POS)));
 		}
 
@@ -46,17 +46,17 @@ public class LivingEntityDataComponent implements AutoSyncedComponent, ServerTic
 		nbt.putFloat(Constants.Nbt.MORPHINE, getMorphine$accumulatedDamage());
 		nbt.putFloat(Constants.Nbt.ADRENALINE, getAdrenaline$bonusDamage());
 		nbt.putInt(Constants.Nbt.ENTANGLED, getEntangledEntityId());
-		if(getRitualPos() != null){
+		if (getRitualPos() != null) {
 			nbt.put(Constants.Nbt.RITUAL_POS, BotDUtils.fromVec3d(getRitualPos()));
 		}
 
 	}
 
-	public float getEntangleStrength(LivingEntity source, LivingEntity target, boolean isSource){
+	public float getEntangleStrength(LivingEntity source, LivingEntity target, boolean isSource) {
 		int i = 0;
 		List<TagKey<EntityType<?>>> list = List.of(Constants.Tags.SOUL_WEAK, Constants.Tags.SOUL_REGULAR, Constants.Tags.SOUL_STRONG);
 
-		for(TagKey<EntityType<?>> tag : list) {
+		for (TagKey<EntityType<?>> tag : list) {
 			if (tag.equals(Constants.Tags.SOUL_WEAK)) {
 				if (source.getType().isIn(tag) || target.getType().isIn(tag)) {
 					i++;
@@ -95,7 +95,7 @@ public class LivingEntityDataComponent implements AutoSyncedComponent, ServerTic
 		syncAbility();
 	}
 
-	public void increaseMorphine$accumulatedDamage(float damage){
+	public void increaseMorphine$accumulatedDamage(float damage) {
 		this.setMorphine$accumulatedDamage(getMorphine$accumulatedDamage() + damage);
 	}
 
@@ -108,7 +108,7 @@ public class LivingEntityDataComponent implements AutoSyncedComponent, ServerTic
 		syncAbility();
 	}
 
-	public void increaseAdrenaline$bonusDamage(float damage){
+	public void increaseAdrenaline$bonusDamage(float damage) {
 		setAdrenaline$bonusDamage(getAdrenaline$bonusDamage() + damage);
 	}
 
@@ -121,7 +121,7 @@ public class LivingEntityDataComponent implements AutoSyncedComponent, ServerTic
 		syncAbility();
 	}
 
-	private void syncAbility(){
+	private void syncAbility() {
 		BotDComponents.LIVING_COMPONENT.sync(this.livingEntity);
 	}
 }

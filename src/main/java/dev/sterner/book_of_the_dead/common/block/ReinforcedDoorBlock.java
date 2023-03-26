@@ -18,7 +18,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 
 public class ReinforcedDoorBlock extends DoorBlock {
-	public static final BooleanProperty LOCKED =  BooleanProperty.of("locked");
+	public static final BooleanProperty LOCKED = BooleanProperty.of("locked");
+
 	public ReinforcedDoorBlock(Settings settings) {
 		super(settings.strength(-1.0F, 3600000.0F), BlockSetType.SPRUCE);
 		this.stateManager.getDefaultState().with(LOCKED, true);
@@ -26,11 +27,11 @@ public class ReinforcedDoorBlock extends DoorBlock {
 
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-		if(player.getMainHandStack().isOf(BotDObjects.CELLAR_KEY)){
+		if (player.getMainHandStack().isOf(BotDObjects.CELLAR_KEY)) {
 			world.setBlockState(pos, state.cycle(LOCKED));
-			world.playSound(null, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 1,1);
+			world.playSound(null, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 1, 1);
 			return ActionResult.CONSUME;
-		}else if (state.get(LOCKED)) {
+		} else if (state.get(LOCKED)) {
 			player.sendMessage(Text.translatable("info.book_of_the_dead.door_locked"), true);
 			return ActionResult.PASS;
 		}

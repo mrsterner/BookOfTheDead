@@ -39,7 +39,7 @@ public class BotDSkullBlockEntityRenderer implements BlockEntityRenderer<BotDSku
 	}
 
 	public BotDSkullBlockEntityRenderer() {
-		MODELS = Map.of(BotDSkullBlock.Type.VILLAGER ,new BotDSkullBlockEntityModel(BotDSkullBlockEntityModel.getSkullTexturedModelData().createModel()));
+		MODELS = Map.of(BotDSkullBlock.Type.VILLAGER, new BotDSkullBlockEntityModel(BotDSkullBlockEntityModel.getSkullTexturedModelData().createModel()));
 	}
 
 	@Override
@@ -54,8 +54,8 @@ public class BotDSkullBlockEntityRenderer implements BlockEntityRenderer<BotDSku
 		BlockState blockState = entity.getCachedState();
 		boolean bl = blockState.getBlock() instanceof BotDWallSkullBlock;
 		Direction direction = bl ? blockState.get(BotDWallSkullBlock.FACING) : null;
-		float h = 22.5F * (float)(bl ? (2 + direction.getHorizontal()) * 4 : blockState.get(BotDSkullBlock.ROTATION));
-		BotDSkullBlock.BotDType skullType = ((AbstractBotDSkullBlock)blockState.getBlock()).getSkullType();
+		float h = 22.5F * (float) (bl ? (2 + direction.getHorizontal()) * 4 : blockState.get(BotDSkullBlock.ROTATION));
+		BotDSkullBlock.BotDType skullType = ((AbstractBotDSkullBlock) blockState.getBlock()).getSkullType();
 		BotDSkullBlockEntityModel skullBlockEntityModel = this.MODELS.get(skullType);
 		RenderLayer renderLayer = getRenderLayer(skullType);
 		renderSkull(direction, h, matrices, vertexConsumers, light, skullBlockEntityModel, renderLayer);
@@ -67,7 +67,7 @@ public class BotDSkullBlockEntityRenderer implements BlockEntityRenderer<BotDSku
 			matrices.translate(0.5, 0.0, 0.5);
 		} else {
 			float f = 0.25F;
-			matrices.translate((0.5F - (float)direction.getOffsetX() * f), f, (double)(0.5F - (float)direction.getOffsetZ() * f));
+			matrices.translate((0.5F - (float) direction.getOffsetX() * f), f, (double) (0.5F - (float) direction.getOffsetZ() * f));
 		}
 
 		matrices.scale(-1.0F, -1.0F, 1.0F);
@@ -81,7 +81,6 @@ public class BotDSkullBlockEntityRenderer implements BlockEntityRenderer<BotDSku
 		Identifier identifier = TEXTURES.get(type);
 		return RenderLayer.getEntityCutoutNoCullZOffset(identifier);
 	}
-
 
 
 }

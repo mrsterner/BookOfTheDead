@@ -65,12 +65,12 @@ public class BloodSlimeEntity extends MobEntity implements Monster {
 		if (this.onGround && !this.onGroundLastTick) {
 			int i = 2;
 
-			for(int j = 0; j < i * 8; ++j) {
+			for (int j = 0; j < i * 8; ++j) {
 				float f = this.random.nextFloat() * (float) (Math.PI * 2);
 				float g = this.random.nextFloat() * 0.5F + 0.5F;
-				float h = MathHelper.sin(f) * (float)i * 0.5F * g;
-				float k = MathHelper.cos(f) * (float)i * 0.5F * g;
-				this.world.addParticle(this.getParticles(), this.getX() + (double)h, this.getY(), this.getZ() + (double)k, 0.0, 0.0, 0.0);
+				float h = MathHelper.sin(f) * (float) i * 0.5F * g;
+				float k = MathHelper.cos(f) * (float) i * 0.5F * g;
+				this.world.addParticle(this.getParticles(), this.getX() + (double) h, this.getY(), this.getZ() + (double) k, 0.0, 0.0, 0.0);
 			}
 
 			this.playSound(this.getSquishSound(), this.getSoundVolume(), ((this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F) / 0.8F);
@@ -105,7 +105,7 @@ public class BloodSlimeEntity extends MobEntity implements Monster {
 	}
 
 	protected float getDamageAmount() {
-		return (float)this.getAttributeValue(EntityAttributes.GENERIC_ATTACK_DAMAGE);
+		return (float) this.getAttributeValue(EntityAttributes.GENERIC_ATTACK_DAMAGE);
 	}
 
 	@Override
@@ -124,7 +124,7 @@ public class BloodSlimeEntity extends MobEntity implements Monster {
 	protected void damage(LivingEntity target) {
 		if (this.isAlive()) {
 			int i = 2;
-			if (this.squaredDistanceTo(target) < 0.6 * (double)i * 0.6 * (double)i
+			if (this.squaredDistanceTo(target) < 0.6 * (double) i * 0.6 * (double) i
 					&& this.canSee(target)
 					&& target.damage(this.getDamageSources().mobAttack(this), this.getDamageAmount())) {
 				this.playSound(SoundEvents.ENTITY_SLIME_ATTACK, 1.0F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
@@ -209,7 +209,7 @@ public class BloodSlimeEntity extends MobEntity implements Monster {
 				this.slime.lookAtEntity(livingEntity, 10.0F, 10.0F);
 			}
 
-			((SlimeMoveControl)this.slime.getMoveControl()).look(this.slime.getYaw(), this.slime.canAttack());
+			((SlimeMoveControl) this.slime.getMoveControl()).look(this.slime.getYaw(), this.slime.canAttack());
 		}
 	}
 
@@ -238,7 +238,7 @@ public class BloodSlimeEntity extends MobEntity implements Monster {
 				this.slime.getJumpControl().setActive();
 			}
 
-			((SlimeMoveControl)this.slime.getMoveControl()).move(1.2);
+			((SlimeMoveControl) this.slime.getMoveControl()).move(1.2);
 		}
 	}
 
@@ -257,7 +257,7 @@ public class BloodSlimeEntity extends MobEntity implements Monster {
 
 		@Override
 		public void tick() {
-			((SlimeMoveControl)this.slime.getMoveControl()).move(1.0);
+			((SlimeMoveControl) this.slime.getMoveControl()).move(1.0);
 		}
 	}
 
@@ -282,10 +282,10 @@ public class BloodSlimeEntity extends MobEntity implements Monster {
 		public void tick() {
 			if (--this.timer <= 0) {
 				this.timer = this.getTickCount(40 + this.slime.getRandom().nextInt(60));
-				this.targetYaw = (float)this.slime.getRandom().nextInt(360);
+				this.targetYaw = (float) this.slime.getRandom().nextInt(360);
 			}
 
-			((SlimeMoveControl)this.slime.getMoveControl()).look(this.targetYaw, false);
+			((SlimeMoveControl) this.slime.getMoveControl()).look(this.targetYaw, false);
 		}
 	}
 
@@ -321,7 +321,7 @@ public class BloodSlimeEntity extends MobEntity implements Monster {
 			} else {
 				this.state = MoveControl.State.WAIT;
 				if (this.entity.isOnGround()) {
-					this.entity.setMovementSpeed((float)(this.speed * this.entity.getAttributeValue(EntityAttributes.GENERIC_MOVEMENT_SPEED)));
+					this.entity.setMovementSpeed((float) (this.speed * this.entity.getAttributeValue(EntityAttributes.GENERIC_MOVEMENT_SPEED)));
 					if (this.ticksUntilJump-- <= 0) {
 						this.ticksUntilJump = this.slime.getTicksUntilNextJump();
 						if (this.jumpOften) {
@@ -338,7 +338,7 @@ public class BloodSlimeEntity extends MobEntity implements Monster {
 						this.entity.setMovementSpeed(0.0F);
 					}
 				} else {
-					this.entity.setMovementSpeed((float)(this.speed * this.entity.getAttributeValue(EntityAttributes.GENERIC_MOVEMENT_SPEED)));
+					this.entity.setMovementSpeed((float) (this.speed * this.entity.getAttributeValue(EntityAttributes.GENERIC_MOVEMENT_SPEED)));
 				}
 
 			}

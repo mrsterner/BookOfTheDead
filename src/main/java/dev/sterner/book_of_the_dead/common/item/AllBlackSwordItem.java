@@ -33,11 +33,10 @@ public class AllBlackSwordItem extends SwordItem {
 	}
 
 
-
 	@Override
 	public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
 		super.inventoryTick(stack, world, entity, slot, selected);
-		if(!stack.hasNbt()){
+		if (!stack.hasNbt()) {
 			NbtCompound tag = stack.getOrCreateNbt();
 			tag.putInt(Constants.Nbt.ALL_BLACK, 0);
 			stack.setNbt(tag);

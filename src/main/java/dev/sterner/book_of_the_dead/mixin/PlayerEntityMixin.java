@@ -36,7 +36,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IHauler 
 
 	@Inject(method = "writeCustomDataToNbt", at = @At("TAIL"))
 	private void book_of_the_dead$writeCustomDataToNbt(NbtCompound compoundTag, CallbackInfo info) {
-		if(storedCorpseEntity != null){
+		if (storedCorpseEntity != null) {
 			compoundTag.put(Constants.Nbt.CORPSE_ENTITY, getCorpseEntity());
 		}
 	}
@@ -44,7 +44,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IHauler 
 	@Inject(method = "readCustomDataFromNbt", at = @At("TAIL"))
 	public void book_of_the_dead$readCustomDataFromNbt(NbtCompound compoundTag, CallbackInfo info) {
 		EntityType.getEntityFromNbt(compoundTag.getCompound(Constants.Nbt.CORPSE_ENTITY), this.world).ifPresent(type -> {
-			if(type instanceof LivingEntity livingEntity){
+			if (type instanceof LivingEntity livingEntity) {
 				setCorpseEntity(livingEntity);
 			}
 		});

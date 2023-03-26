@@ -45,35 +45,34 @@ public class JarBlockEntityRenderer implements BlockEntityRenderer<JarBlockEntit
 	private final Identifier TEXTURE = Constants.id("textures/block/jar.png");
 
 
-
 	@Override
 	public void render(JarBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
-		if(entity.hasBrain){
+		if (entity.hasBrain) {
 			matrices.push();
 			matrices.translate(0.5, -1.0, 0.5);
 			float ticks = (BotDClient.ClientTickHandler.ticksInGame + tickDelta) * 0.05f % 360;
-			matrices.translate(0,0.1 * MathHelper.sin(ticks),0);
+			matrices.translate(0, 0.1 * MathHelper.sin(ticks), 0);
 			VertexConsumer buffer = vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(BrainBlockEntityRenderer.TEXTURE));
-			brainEntityModel.render(matrices, buffer, light, overlay, 1,1,1,1);
+			brainEntityModel.render(matrices, buffer, light, overlay, 1, 1, 1, 1);
 			matrices.pop();
 		}
-		if(entity.liquidAmount > 0){
+		if (entity.liquidAmount > 0) {
 			matrices.push();
 			matrices.scale(0.55f, 0.75f, 0.55f);
 			matrices.translate(0.4, -0.05, 0.4);
-			renderFluid(matrices, vertexConsumers, light, overlay, entity,null, (entity.liquidAmount / 100F), entity.liquidType);
+			renderFluid(matrices, vertexConsumers, light, overlay, entity, null, (entity.liquidAmount / 100F), entity.liquidType);
 			matrices.pop();
 		}
 
 		matrices.push();
 		float f = 0.5F;
-		matrices.translate(f,3 * f + 0.0001,f);
+		matrices.translate(f, 3 * f + 0.0001, f);
 		matrices.multiply(Axis.Z_POSITIVE.rotationDegrees(180));
-		matrices.translate(0,1,0);
-		if(entity.getWorld() != null && entity.getWorld().getBlockState(entity.getPos()).isOf(BotDObjects.JAR) && entity.getWorld().getBlockState(entity.getPos()).get(JarBlock.OPEN)){
-			jarEntityModel.renderNoCap(matrices, vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(TEXTURE)),light, overlay, 1,1,1,1);
-		}else{
-			jarEntityModel.render(matrices, vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(TEXTURE)),light, overlay, 1,1,1,1);
+		matrices.translate(0, 1, 0);
+		if (entity.getWorld() != null && entity.getWorld().getBlockState(entity.getPos()).isOf(BotDObjects.JAR) && entity.getWorld().getBlockState(entity.getPos()).get(JarBlock.OPEN)) {
+			jarEntityModel.renderNoCap(matrices, vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(TEXTURE)), light, overlay, 1, 1, 1, 1);
+		} else {
+			jarEntityModel.render(matrices, vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(TEXTURE)), light, overlay, 1, 1, 1, 1);
 		}
 		matrices.pop();
 	}
@@ -82,23 +81,23 @@ public class JarBlockEntityRenderer implements BlockEntityRenderer<JarBlockEntit
 	public void render(ItemStack stack, ModelTransformationMode mode, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
 		matrices.push();
 		NbtCompound nbtCompound = new NbtCompound();
-		if(stack.getNbt() != null) {
+		if (stack.getNbt() != null) {
 			nbtCompound = stack.getNbt().getCompound("BlockEntityTag");
 		}
 
-		if(nbtCompound.contains(Constants.Nbt.BRAIN) && nbtCompound.getBoolean(Constants.Nbt.BRAIN)){
+		if (nbtCompound.contains(Constants.Nbt.BRAIN) && nbtCompound.getBoolean(Constants.Nbt.BRAIN)) {
 			matrices.push();
 			matrices.scale(0.85f, 0.85f, 0.85f);
 			matrices.translate(0, -1.55, 0);
 			VertexConsumer buffer = vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(BrainBlockEntityRenderer.TEXTURE));
-			brainEntityModel.render(matrices, buffer, light, overlay, 1,1,1,1);
+			brainEntityModel.render(matrices, buffer, light, overlay, 1, 1, 1, 1);
 			matrices.pop();
 		}
 
-		if(nbtCompound.contains(Constants.Nbt.LIQUID_LEVEL) && nbtCompound.getInt(Constants.Nbt.LIQUID_LEVEL) > 0 && nbtCompound.contains(Constants.Nbt.LIQUID_TYPE) && nbtCompound.getByte(Constants.Nbt.LIQUID_TYPE) != EMPTY){
-			matrices.scale(0.55f,0.75f,0.55f);
+		if (nbtCompound.contains(Constants.Nbt.LIQUID_LEVEL) && nbtCompound.getInt(Constants.Nbt.LIQUID_LEVEL) > 0 && nbtCompound.contains(Constants.Nbt.LIQUID_TYPE) && nbtCompound.getByte(Constants.Nbt.LIQUID_TYPE) != EMPTY) {
+			matrices.scale(0.55f, 0.75f, 0.55f);
 			matrices.translate(-0.5, -0.75, -0.5);
-			renderFluid(matrices, vertexConsumers, light, overlay, null, stack,  nbtCompound.getInt(Constants.Nbt.LIQUID_LEVEL) / 100F, nbtCompound.getByte(Constants.Nbt.LIQUID_TYPE));
+			renderFluid(matrices, vertexConsumers, light, overlay, null, stack, nbtCompound.getInt(Constants.Nbt.LIQUID_LEVEL) / 100F, nbtCompound.getByte(Constants.Nbt.LIQUID_TYPE));
 		}
 		matrices.pop();
 
@@ -118,13 +117,13 @@ public class JarBlockEntityRenderer implements BlockEntityRenderer<JarBlockEntit
 			MeshBuilder builder = RendererAccessImpl.INSTANCE.getRenderer().meshBuilder();
 			int newColor;
 			if (entity != null || itemStack != null) {
-				if(liquidType == ACID){
+				if (liquidType == ACID) {
 					newColor = ColorHelper.swapRedBlueIfNeeded(ACID_COLOR);
 					sprite = BotDSpriteIdentifiers.WATER_ALPHA.getSprite();
-				}else if(liquidType == BLOOD){
+				} else if (liquidType == BLOOD) {
 					newColor = ColorHelper.swapRedBlueIfNeeded(BLOOD_COLOR);
 					sprite = BotDSpriteIdentifiers.BLOOD.getSprite();
-				}else{
+				} else {
 					newColor = ColorHelper.swapRedBlueIfNeeded(WATER_COLOR);
 					sprite = BotDSpriteIdentifiers.WATER_ALPHA.getSprite();
 				}

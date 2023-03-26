@@ -20,7 +20,7 @@ public class KakuzuEntityRenderer extends MobEntityRenderer<KakuzuEntity, Kakuzu
 
 	@Override
 	public void render(KakuzuEntity mobEntity, float yaw, float tickDelta, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int light) {
-		if(mobEntity != null && mobEntity.world != null){
+		if (mobEntity != null && mobEntity.world != null) {
 			this.model.one.visible = false;
 			this.model.two.visible = false;
 			this.model.three.visible = false;

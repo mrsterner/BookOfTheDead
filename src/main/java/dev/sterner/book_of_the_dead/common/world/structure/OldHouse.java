@@ -46,7 +46,6 @@ public class OldHouse extends StructureFeature {
 	}
 
 
-
 	@Override
 	public Optional<GenerationStub> findGenerationPos(GenerationContext context) {
 		int startY = this.startHeight.get(context.random(), new HeightContext(context.chunkGenerator(), context.world()));

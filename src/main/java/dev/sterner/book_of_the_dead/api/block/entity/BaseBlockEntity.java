@@ -25,7 +25,7 @@ public abstract class BaseBlockEntity extends BlockEntity {
 			world.updateListeners(pos, this.getCachedState(), this.getCachedState(), Block.NOTIFY_LISTENERS);
 			this.toUpdatePacket();
 		}
-		if(world instanceof ServerWorld serverWorld){
+		if (world instanceof ServerWorld serverWorld) {
 			serverWorld.getChunkManager().markForUpdate(pos);
 		}
 	}

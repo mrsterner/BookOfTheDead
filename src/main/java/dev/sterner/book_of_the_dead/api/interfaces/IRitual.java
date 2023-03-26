@@ -7,16 +7,17 @@ import net.minecraft.world.World;
 public interface IRitual {
 
 	/**
-	 * @param world world
-	 * @param blockPos ritual origin
+	 * @param world       world
+	 * @param blockPos    ritual origin
 	 * @param blockEntity ritualBlockEntity
 	 */
 	void tick(World world, BlockPos blockPos, RitualBlockEntity blockEntity);
 
 	/**
 	 * Should run once after ritual has ended
-	 * @param world world
-	 * @param blockPos ritual origin
+	 *
+	 * @param world       world
+	 * @param blockPos    ritual origin
 	 * @param blockEntity ritualBlockEntity
 	 */
 	void onStopped(World world, BlockPos blockPos, RitualBlockEntity blockEntity);

@@ -16,19 +16,20 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(TargetGoal.class)
 public abstract class TargetGoalMixin extends TrackTargetGoal {
 
-	@Shadow protected LivingEntity targetEntity;
+	@Shadow
+	protected LivingEntity targetEntity;
 
 	public TargetGoalMixin(MobEntity mob, boolean checkVisibility) {
 		super(mob, checkVisibility);
 	}
 
 	@Inject(method = "start", at = @At("HEAD"), cancellable = true)
-	private void book_of_the_dead$decreaseDetectionRange(CallbackInfo ci){
-		if(targetEntity instanceof PlayerEntity player){
+	private void book_of_the_dead$decreaseDetectionRange(CallbackInfo ci) {
+		if (targetEntity instanceof PlayerEntity player) {
 			PlayerDataComponent component = BotDComponents.PLAYER_COMPONENT.get(player);
 			double range = getFollowRange() * component.getUndeadAggressionBuffModifier();
 			boolean bl = this.mob.squaredDistanceTo(player) > range * range;
-			if (bl){
+			if (bl) {
 				this.stop();
 				ci.cancel();
 			}

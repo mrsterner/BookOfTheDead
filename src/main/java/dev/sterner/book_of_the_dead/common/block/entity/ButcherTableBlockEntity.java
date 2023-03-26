@@ -3,7 +3,8 @@ package dev.sterner.book_of_the_dead.common.block.entity;
 import dev.sterner.book_of_the_dead.api.block.HorizontalDoubleBlock;
 import dev.sterner.book_of_the_dead.api.block.entity.BaseButcherBlockEntity;
 import dev.sterner.book_of_the_dead.api.enums.HorizontalDoubleBlockHalf;
-import dev.sterner.book_of_the_dead.common.registry.*;
+import dev.sterner.book_of_the_dead.common.registry.BotDBlockEntityTypes;
+import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
 import dev.sterner.book_of_the_dead.common.util.BotDUtils;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.block.BlockState;
@@ -32,9 +33,9 @@ public class ButcherTableBlockEntity extends BaseButcherBlockEntity {
 	}
 
 	public static void tick(World world, BlockPos pos, BlockState state, ButcherTableBlockEntity blockEntity) {
-		if(blockEntity.latter > 0){
+		if (blockEntity.latter > 0) {
 			blockEntity.progressCleaning();
-			if(world.getTime() % 20 == 0){
+			if (world.getTime() % 20 == 0) {
 				blockEntity.latter--;
 				blockEntity.markDirty();
 			}
@@ -42,8 +43,8 @@ public class ButcherTableBlockEntity extends BaseButcherBlockEntity {
 	}
 
 	public ActionResult onUse(World world, BlockState state, BlockPos pos, PlayerEntity player, Hand hand, boolean isNeighbour) {
-		if(hand == Hand.MAIN_HAND && player.getMainHandStack().isOf(Items.GLASS_BOTTLE) && state.get(HorizontalDoubleBlock.HHALF) == HorizontalDoubleBlockHalf.RIGHT){
-			if(bloodLevel > 0){
+		if (hand == Hand.MAIN_HAND && player.getMainHandStack().isOf(Items.GLASS_BOTTLE) && state.get(HorizontalDoubleBlock.HHALF) == HorizontalDoubleBlockHalf.RIGHT) {
+			if (bloodLevel > 0) {
 				BotDUtils.addItemToInventoryAndConsume(player, hand, BotDObjects.BOTTLE_OF_BLOOD.getDefaultStack());
 				bloodLevel--;
 				markDirty();
@@ -82,11 +83,11 @@ public class ButcherTableBlockEntity extends BaseButcherBlockEntity {
 	@Override
 	public void makeFilth(@NotNull World world) {
 		RandomGenerator randomGenerator = world.getRandom();
-		if(randomGenerator.nextDouble() > 0.75d){
-			if(getFilthLevel() < MAX_FILTH){
+		if (randomGenerator.nextDouble() > 0.75d) {
+			if (getFilthLevel() < MAX_FILTH) {
 				setFilthLevel(getFilthLevel() + 1);
 			}
-			if(bloodLevel < MAX_BLOOD_LEVEL){
+			if (bloodLevel < MAX_BLOOD_LEVEL) {
 				bloodLevel++;
 				markDirty();
 			}
@@ -101,12 +102,12 @@ public class ButcherTableBlockEntity extends BaseButcherBlockEntity {
 		this.cleaningProgress = cleaningProgress;
 	}
 
-	public void progressCleaning(){
-		if(getFilthLevel() > 0){
-			if(getCleaningProgress() < MAX_CLEANING_PROGRESS){
+	public void progressCleaning() {
+		if (getFilthLevel() > 0) {
+			if (getCleaningProgress() < MAX_CLEANING_PROGRESS) {
 				setCleaningProgress(getCleaningProgress() + 1);
 			}
-			if(getCleaningProgress() >= MAX_CLEANING_PROGRESS){
+			if (getCleaningProgress() >= MAX_CLEANING_PROGRESS) {
 				setFilthLevel(getFilthLevel() - 1);
 				setCleaningProgress(0);
 			}

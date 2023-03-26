@@ -9,7 +9,7 @@ import net.minecraft.client.render.entity.model.EntityModelLoader;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
 
-public class BrainFeatureRenderer <T extends LivingEntity> extends FeatureRenderer<T, BipedEntityModel<T>> {
+public class BrainFeatureRenderer<T extends LivingEntity> extends FeatureRenderer<T, BipedEntityModel<T>> {
 	private final EntityRenderDispatcher dispatcher;
 
 	public BrainFeatureRenderer(FeatureRendererContext<T, BipedEntityModel<T>> context, EntityModelLoader loader, EntityRenderDispatcher dispatcher) {

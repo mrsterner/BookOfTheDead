@@ -65,8 +65,8 @@ public class BasicNecrotableRitual implements IRitual {
 	public void tick(World world, BlockPos blockPos, RitualBlockEntity blockEntity) {
 		ticker++;
 		boolean canEndRitual = this.consumeItems(world, blockPos, blockEntity) && this.consumeSacrifices(world, blockPos, blockEntity);
-		if(canEndRitual || lockTick){
-			if(!this.lockTick){
+		if (canEndRitual || lockTick) {
+			if (!this.lockTick) {
 				this.runCommand(world, blockEntity, blockPos, "start");
 			}
 			this.lockTick = true;
@@ -76,13 +76,13 @@ public class BasicNecrotableRitual implements IRitual {
 	}
 
 	@Override
-	public void onStopped(World world, BlockPos blockPos, RitualBlockEntity blockEntity){
+	public void onStopped(World world, BlockPos blockPos, RitualBlockEntity blockEntity) {
 		ticker = 0;
 		index = 0;
-		if(lockTick){
-			if(userUuid == null){
+		if (lockTick) {
+			if (userUuid == null) {
 				PlayerEntity player = world.getClosestPlayer(blockPos.getZ(), blockPos.getY(), blockPos.getZ(), 16D, true);
-				if(player != null){
+				if (player != null) {
 					userUuid = player.getUuid();
 				}
 			}
@@ -98,8 +98,9 @@ public class BasicNecrotableRitual implements IRitual {
 
 	/**
 	 * Drops all resulting items at ritual origin
-	 * @param world world
-	 * @param blockPos ritual origin
+	 *
+	 * @param world       world
+	 * @param blockPos    ritual origin
 	 * @param blockEntity ritualBlockEntity
 	 */
 	private void summonItems(World world, BlockPos blockPos, RitualBlockEntity blockEntity) {
@@ -121,15 +122,16 @@ public class BasicNecrotableRitual implements IRitual {
 
 	/**
 	 * Spawns all entities which was specified in the ritual recipe at ritual origin
-	 * @param world world
-	 * @param blockPos ritual origin
+	 *
+	 * @param world       world
+	 * @param blockPos    ritual origin
 	 * @param blockEntity ritualBlockEntity
 	 */
 	private void summonSummons(World world, BlockPos blockPos, RitualBlockEntity blockEntity) {
-		if(blockEntity.ritualRecipe.summons != null){
-			for(EntityType<?> entityType : blockEntity.ritualRecipe.summons){
+		if (blockEntity.ritualRecipe.summons != null) {
+			for (EntityType<?> entityType : blockEntity.ritualRecipe.summons) {
 				var entity = entityType.create(world);
-				if(entity instanceof LivingEntity livingEntity){
+				if (entity instanceof LivingEntity livingEntity) {
 					Vec3i worldPos = new Vec3i(blockPos.getX(), blockPos.getY(), blockPos.getZ());
 					livingEntity.refreshPositionAndAngles(new BlockPos(worldPos), world.random.nextFloat(), world.random.nextFloat());
 					world.spawnEntity(livingEntity);
@@ -140,30 +142,31 @@ public class BasicNecrotableRitual implements IRitual {
 
 	/**
 	 * Adds all statusEffects to the user of the ritual
-	 * @param world world
-	 * @param blockPos ritual origin
+	 *
+	 * @param world       world
+	 * @param blockPos    ritual origin
 	 * @param blockEntity ritualBlockEntity
 	 */
 	private void generateStatusEffects(World world, BlockPos blockPos, RitualBlockEntity blockEntity) {
 		int size = 16;
 		List<LivingEntity> livingEntityList = new ArrayList<>();
 		boolean foundContract = false;
-		if(recipe.statusEffectInstance != null){
-			for(Integer id : this.contract){
-				if(id != 0){
+		if (recipe.statusEffectInstance != null) {
+			for (Integer id : this.contract) {
+				if (id != 0) {
 					Entity entity = world.getEntityById(id);
-					if(entity instanceof LivingEntity livingEntity){
+					if (entity instanceof LivingEntity livingEntity) {
 						livingEntityList.add(livingEntity);
 						foundContract = true;
 					}
 				}
 			}
-			if(!foundContract){
+			if (!foundContract) {
 				livingEntityList = world.getEntitiesByClass(LivingEntity.class, new Box(blockPos).expand(size), Entity::isAlive);
 			}
-			for(LivingEntity living : livingEntityList){
-				for(StatusEffectInstance instance : recipe.statusEffectInstance){
-					if(living.canHaveStatusEffect(instance)){
+			for (LivingEntity living : livingEntityList) {
+				for (StatusEffectInstance instance : recipe.statusEffectInstance) {
+					if (living.canHaveStatusEffect(instance)) {
 						living.addStatusEffect(instance);
 					}
 				}
@@ -177,33 +180,34 @@ public class BasicNecrotableRitual implements IRitual {
 
 	/**
 	 * Check if the pedestals have appropriate items matching recipe and consumes them in succession
-	 * @param world world
-	 * @param blockPos ritual origin
+	 *
+	 * @param world       world
+	 * @param blockPos    ritual origin
 	 * @param blockEntity ritualBlockEntity
 	 * @return true if all items where consumed
 	 */
 	private boolean consumeItems(World world, BlockPos blockPos, RitualBlockEntity blockEntity) {
-		if(blockEntity.ritualRecipe.inputs != null && blockEntity.ritualRecipe.inputs.isEmpty()) return true;
+		if (blockEntity.ritualRecipe.inputs != null && blockEntity.ritualRecipe.inputs.isEmpty()) return true;
 		double x = blockPos.getX() + 0.5;
 		double y = blockPos.getY() + 0.5 + height;
 		double z = blockPos.getZ() + 0.5;
 		List<BlockPos> pedestalToActivate = new ArrayList<>();
 		List<Pair<ItemStack, BlockPos>> stream = blockEntity.getPedestalInfo(world).stream().filter(itemStackBlockPosPair -> !itemStackBlockPosPair.getLeft().isEmpty()).toList();
 		int dividedTime = recipe.getDuration();
-		if(stream.size() > 0){
+		if (stream.size() > 0) {
 			dividedTime = (dividedTime / (stream.size() + 1));
 		}
 
 		for (Pair<ItemStack, BlockPos> itemStackBlockPosPair : stream) {
 			if (recipe.inputs != null) {
-				for(Ingredient ingredient : recipe.inputs){
+				for (Ingredient ingredient : recipe.inputs) {
 					if (ingredient.test(itemStackBlockPosPair.getLeft())) {
 						BlockPos checkPos = itemStackBlockPosPair.getRight().add(blockPos.getX(), blockPos.getY(), blockPos.getZ());
-						if(world.getBlockEntity(checkPos) instanceof PedestalBlockEntity){
-							if(itemStackBlockPosPair.getLeft().isOf(BotDObjects.CONTRACT)){
+						if (world.getBlockEntity(checkPos) instanceof PedestalBlockEntity) {
+							if (itemStackBlockPosPair.getLeft().isOf(BotDObjects.CONTRACT)) {
 								ItemStack contract = itemStackBlockPosPair.getLeft();
-								for(Integer i : this.contract){
-									if(i == 0){
+								for (Integer i : this.contract) {
+									if (i == 0) {
 										this.contract.set(i, ContractItem.getIdFromContractNbt(contract));
 										break;
 									}
@@ -215,8 +219,8 @@ public class BasicNecrotableRitual implements IRitual {
 				}
 			}
 		}
-		if(ticker == 1 || (ticker + 1) % dividedTime == 0){
-			if(index < pedestalToActivate.size() && world.getBlockEntity(pedestalToActivate.get(index)) instanceof PedestalBlockEntity pedestalBlockEntity){
+		if (ticker == 1 || (ticker + 1) % dividedTime == 0) {
+			if (index < pedestalToActivate.size() && world.getBlockEntity(pedestalToActivate.get(index)) instanceof PedestalBlockEntity pedestalBlockEntity) {
 				world.playSound(null, pedestalToActivate.get(index).getX(), pedestalToActivate.get(index).getY(), pedestalToActivate.get(index).getZ(), BotDSoundEvents.MISC_ITEM_BEAM, SoundCategory.BLOCKS, 0.75f, 0.75f * world.random.nextFloat() / 2);
 				pedestalBlockEntity.setCrafting(true);
 				pedestalBlockEntity.duration = dividedTime;
@@ -225,7 +229,7 @@ public class BasicNecrotableRitual implements IRitual {
 			index++;
 		}
 
-		if(world instanceof ServerWorld serverWorld) {
+		if (world instanceof ServerWorld serverWorld) {
 			this.generateFX(serverWorld, x, y, z);
 		}
 		return index == pedestalToActivate.size() + 1;
@@ -233,8 +237,9 @@ public class BasicNecrotableRitual implements IRitual {
 
 	/**
 	 * Check and kill sacrifices around the ritual origin depending on recipe
-	 * @param world world
-	 * @param blockPos origin
+	 *
+	 * @param world       world
+	 * @param blockPos    origin
 	 * @param blockEntity ritualBlockEntity
 	 * @return true if sacrifice was successful
 	 */
@@ -265,9 +270,10 @@ public class BasicNecrotableRitual implements IRitual {
 
 	/**
 	 * Gets closes entity of a specific type
+	 *
 	 * @param entityList list of entities to test
-	 * @param type entityType to look for
-	 * @param pos position to measure distance from
+	 * @param type       entityType to look for
+	 * @param pos        position to measure distance from
 	 * @return Entity closest to pos from entityList
 	 */
 	public <T extends LivingEntity> T getClosestEntity(List<? extends T> entityList, EntityType<?> type, BlockPos pos) {
@@ -285,17 +291,18 @@ public class BasicNecrotableRitual implements IRitual {
 
 	/**
 	 * Handles the output items sound and particle effect
+	 *
 	 * @param serverWorld serverWorld
-	 * @param x coordinate for sound and particle
-	 * @param y coordinate for sound and particle
-	 * @param z coordinate for sound and particle
+	 * @param x           coordinate for sound and particle
+	 * @param y           coordinate for sound and particle
+	 * @param z           coordinate for sound and particle
 	 */
 	private void generateFX(ServerWorld serverWorld, double x, double y, double z) {
-		if(ticker % 5 == 0 && ticker < recipe.getDuration() - 40){
-			serverWorld.playSound(null, x,y,z, SoundEvents.BLOCK_CAMPFIRE_CRACKLE, SoundCategory.BLOCKS, 10,0.5f);
+		if (ticker % 5 == 0 && ticker < recipe.getDuration() - 40) {
+			serverWorld.playSound(null, x, y, z, SoundEvents.BLOCK_CAMPFIRE_CRACKLE, SoundCategory.BLOCKS, 10, 0.5f);
 		}
 		if (recipe.outputs != null) {
-			for(ItemStack output : recipe.outputs){
+			for (ItemStack output : recipe.outputs) {
 				for (int i = 0; i < recipe.outputs.size() * 2; i++) {
 					serverWorld.spawnParticles(new ItemStackParticleEffect(ParticleTypes.ITEM, output),
 							x + ((serverWorld.random.nextDouble() / 2) - 0.25),
@@ -313,12 +320,13 @@ public class BasicNecrotableRitual implements IRitual {
 
 	/**
 	 * Runs a command depending on which key phrase is used, "start", "tick", "end"
-	 * @param world world
+	 *
+	 * @param world       world
 	 * @param blockEntity ritualBlockEntity
-	 * @param blockPos pos of the ritual origin
-	 * @param phase keyword for which phase the command should run in
+	 * @param blockPos    pos of the ritual origin
+	 * @param phase       keyword for which phase the command should run in
 	 */
-	private void runCommand(World world, RitualBlockEntity blockEntity, BlockPos blockPos, String phase){
+	private void runCommand(World world, RitualBlockEntity blockEntity, BlockPos blockPos, String phase) {
 		MinecraftServer minecraftServer = world.getServer();
 		for (CommandType commandType : blockEntity.ritualRecipe.command) {
 			if (commandType.type.equals(phase)) {

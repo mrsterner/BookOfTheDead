@@ -38,7 +38,7 @@ public class CageItem extends Item {
 	public ActionResult useOnEntity(ItemStack stack, PlayerEntity user, LivingEntity target, Hand hand) {
 		if (target instanceof MobEntity mob && user.getWorld() instanceof ServerWorld serverWorld && !mob.getType().isIn(Constants.Tags.CAGEABLE_BLACKLIST)) {
 			ItemStack mainHand = user.getMainHandStack();
-			if(!mainHand.getOrCreateNbt().contains(Constants.Nbt.STORED_ENTITY)){
+			if (!mainHand.getOrCreateNbt().contains(Constants.Nbt.STORED_ENTITY)) {
 				NbtCompound nbt = new NbtCompound();
 				mob.extinguish();
 				mob.setFrozenTicks(0);
@@ -86,7 +86,7 @@ public class CageItem extends Item {
 
 	@Override
 	public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-		if(stack.hasNbt() && stack.getOrCreateNbt().contains(Constants.Nbt.STORED_ENTITY)){
+		if (stack.hasNbt() && stack.getOrCreateNbt().contains(Constants.Nbt.STORED_ENTITY)) {
 			Text name;
 			NbtCompound entityCompound = stack.getNbt().getCompound(Constants.Nbt.STORED_ENTITY);
 			if (entityCompound.contains("CustomName")) {

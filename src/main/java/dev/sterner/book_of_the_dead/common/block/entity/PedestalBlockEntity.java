@@ -32,18 +32,18 @@ public class PedestalBlockEntity extends BaseBlockEntity {
 
 	public static void tick(World world, BlockPos blockPos, BlockState blockState, PedestalBlockEntity blockEntity) {
 		if (world != null && blockEntity.isCrafting()) {
-			if(!blockEntity.getStack().isEmpty() && blockEntity.hasRitualPos() && blockEntity.duration > 0){
+			if (!blockEntity.getStack().isEmpty() && blockEntity.hasRitualPos() && blockEntity.duration > 0) {
 				blockEntity.duration--;
-				if(blockEntity.duration == 0){
+				if (blockEntity.duration == 0) {
 					blockEntity.craftingFinished = true;
 				}
-				Vec3d b = blockEntity.ritualCenter.subtract(new Vec3d(blockPos.getX(), blockPos.getY(), blockPos.getZ()).add(0.5,1.5 - blockEntity.targetY,0.5));
+				Vec3d b = blockEntity.ritualCenter.subtract(new Vec3d(blockPos.getX(), blockPos.getY(), blockPos.getZ()).add(0.5, 1.5 - blockEntity.targetY, 0.5));
 				Vec3d directionVector = new Vec3d(b.getX(), b.getY(), b.getZ());
 
 				double x = blockPos.getX() + (world.random.nextDouble() * 0.2D) + 0.4D;
 				double y = blockPos.getY() + (world.random.nextDouble() * 0.2D) + 1.2D;
 				double z = blockPos.getZ() + (world.random.nextDouble() * 0.2D) + 0.4D;
-				if(world instanceof ServerWorld serverWorld && !blockEntity.getStack().isEmpty()){
+				if (world instanceof ServerWorld serverWorld && !blockEntity.getStack().isEmpty()) {
 					serverWorld.spawnParticles(
 							new ItemStackBeamParticleEffect(
 									BotDParticleTypes.ITEM_BEAM_PARTICLE,
@@ -51,7 +51,7 @@ public class PedestalBlockEntity extends BaseBlockEntity {
 									10),
 							x, y, z, 0, directionVector.x, directionVector.y, directionVector.z, 0.10D);
 				}
-				if(blockEntity.craftingFinished){
+				if (blockEntity.craftingFinished) {
 					blockEntity.setStack(Items.AIR.getDefaultStack());
 					blockEntity.setCrafting(false);
 					blockEntity.setCraftingFinished(false);
@@ -80,7 +80,7 @@ public class PedestalBlockEntity extends BaseBlockEntity {
 		nbt.put(Constants.Nbt.PEDESTAL_ITEM, this.stack.writeNbt(new NbtCompound()));
 		nbt.putBoolean(Constants.Nbt.CRAFTING, this.isCrafting());
 		nbt.putBoolean(Constants.Nbt.CRAFTING_FINISHED, craftingFinished);
-		if(hasRitualPos()){
+		if (hasRitualPos()) {
 			nbt.put(Constants.Nbt.RITUAL_POS, BotDUtils.fromVec3d(this.ritualCenter));
 		}
 		nbt.putInt(Constants.Nbt.DURATION, this.duration);
@@ -97,7 +97,7 @@ public class PedestalBlockEntity extends BaseBlockEntity {
 
 	public void setStack(ItemStack stack) {
 		this.stack = stack;
-		if(this.world != null && !this.world.isClient) {
+		if (this.world != null && !this.world.isClient) {
 			this.sync(world, pos);
 		}
 	}

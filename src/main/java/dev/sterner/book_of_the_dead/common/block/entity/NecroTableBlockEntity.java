@@ -1,7 +1,8 @@
 package dev.sterner.book_of_the_dead.common.block.entity;
 
 import dev.sterner.book_of_the_dead.api.block.entity.BaseBlockEntity;
-import dev.sterner.book_of_the_dead.common.registry.*;
+import dev.sterner.book_of_the_dead.common.registry.BotDBlockEntityTypes;
+import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
@@ -31,27 +32,27 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 
 	public ActionResult onUse(World world, BlockState state, BlockPos pos, PlayerEntity player, Hand hand) {
 		if (world != null && world.getBlockEntity(pos) instanceof NecroTableBlockEntity necroTableBlockEntity) {
-			if(player.getMainHandStack().isEmpty() && hand == Hand.MAIN_HAND){
-				if(player.isSneaking()){
-					if(necroTableBlockEntity.hasBotD){
+			if (player.getMainHandStack().isEmpty() && hand == Hand.MAIN_HAND) {
+				if (player.isSneaking()) {
+					if (necroTableBlockEntity.hasBotD) {
 						player.setStackInHand(hand, BotDObjects.BOOK_OF_THE_DEAD.getDefaultStack());
 						necroTableBlockEntity.hasBotD = false;
 						this.playItemSound(world, pos);
-					}else if(necroTableBlockEntity.hasEmeraldTablet){
+					} else if (necroTableBlockEntity.hasEmeraldTablet) {
 						player.setStackInHand(hand, BotDObjects.EMERALD_TABLET.getDefaultStack());
 						necroTableBlockEntity.hasEmeraldTablet = false;
 						this.playItemSound(world, pos);
 					}
 					necroTableBlockEntity.markDirty();
-				}else{
+				} else {
 					sendInfoToRitualBlock(world, player, pos, hasBotD, hasEmeraldTablet);
 				}
-			}else if(player.getMainHandStack().isOf(BotDObjects.BOOK_OF_THE_DEAD)){
+			} else if (player.getMainHandStack().isOf(BotDObjects.BOOK_OF_THE_DEAD)) {
 				necroTableBlockEntity.hasBotD = true;
 				player.getMainHandStack().decrement(1);
 				this.playItemSound(world, pos);
 				necroTableBlockEntity.markDirty();
-			}else if(player.getMainHandStack().isOf(BotDObjects.EMERALD_TABLET)){
+			} else if (player.getMainHandStack().isOf(BotDObjects.EMERALD_TABLET)) {
 				necroTableBlockEntity.hasEmeraldTablet = true;
 				player.getMainHandStack().decrement(1);
 				this.playItemSound(world, pos);
@@ -61,18 +62,18 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 		return ActionResult.PASS;
 	}
 
-	private void playItemSound(World world, BlockPos pos){
+	private void playItemSound(World world, BlockPos pos) {
 		world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.5f, ((world.getRandom().nextFloat() - world.getRandom().nextFloat()) * 0.7F + 1.0F) * 2.0F);
 	}
 
 	private void sendInfoToRitualBlock(World world, PlayerEntity player, BlockPos pos, boolean hasBotD, boolean hasEmeraldTablet) {
 		label1:
-		if(ritualPos == null){
-			for(Direction dir : HorizontalFacingBlock.FACING.getValues()){
-				for(int i = 0; i < 8; i++){
+		if (ritualPos == null) {
+			for (Direction dir : HorizontalFacingBlock.FACING.getValues()) {
+				for (int i = 0; i < 8; i++) {
 					BlockPos checkedPos = pos.offset(dir, i);
 					BlockState block = world.getBlockState(checkedPos);
-					if(block.isOf(BotDObjects.RITUAL)){
+					if (block.isOf(BotDObjects.RITUAL)) {
 						ritualPos = checkedPos;
 						break label1;
 					}
@@ -80,7 +81,7 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 			}
 		}
 
-		if(ritualPos != null){
+		if (ritualPos != null) {
 			if (world.getBlockEntity(ritualPos) instanceof RitualBlockEntity ritualBlockEntity) {
 				ritualBlockEntity.shouldRun = true;
 				ritualBlockEntity.hasBotD = hasBotD;
@@ -107,7 +108,7 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 		super.writeNbt(nbt);
 		nbt.putBoolean(Constants.Nbt.HAS_LEGEMETON, this.hasBotD);
 		nbt.putBoolean(Constants.Nbt.HAS_EMERALD_TABLET, this.hasEmeraldTablet);
-		if(this.ritualPos != null){
+		if (this.ritualPos != null) {
 			nbt.put(Constants.Nbt.RITUAL_POS, NbtHelper.fromBlockPos(this.ritualPos));
 		}
 	}

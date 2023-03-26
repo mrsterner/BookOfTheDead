@@ -24,17 +24,17 @@ public class HookBlockEntity extends BaseButcherBlockEntity {
 		if (world != null && !world.isClient) {
 			if (world.getTime() % 20 == 0 && !blockEntity.storedCorpseNbt.isEmpty()) {
 				mark = true;
-				if(blockEntity.hookedAge < Constants.Values.BLEEDING){
+				if (blockEntity.hookedAge < Constants.Values.BLEEDING) {
 					blockEntity.hookedAge++;
-				}else{
+				} else {
 					blockEntity.hookedAge = Constants.Values.BLEEDING;
 				}
 			}
-			if(blockEntity.storedCorpseNbt.isEmpty()){
+			if (blockEntity.storedCorpseNbt.isEmpty()) {
 				blockEntity.hookedAge = 0;
 			}
 		}
-		if(mark){
+		if (mark) {
 			markDirty(world, pos, tickerState);
 		}
 	}

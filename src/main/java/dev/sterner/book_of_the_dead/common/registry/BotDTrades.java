@@ -17,13 +17,13 @@ import org.quiltmc.qsl.villager.api.TradeOfferHelper;
 public interface BotDTrades {
 	Int2ObjectMap<TradeOffers.Factory[]> OLD_MAN_TRADES = new Int2ObjectArrayMap<>();
 
-	TradeOffers.Factory BOOK_OF_THE_DEAD_OFFER = new ItemToItemOffer(new ItemStack(BotDObjects.BOOK_OF_THE_DEAD), BotDObjects.OLD_LETTER, 1,10, 0.2F);
-	TradeOffers.Factory CELLAR_KEY_OFFER = new EmeraldToItemOffer(new ItemStack(BotDObjects.CELLAR_KEY), 24, 1,10, 0.2F);
+	TradeOffers.Factory BOOK_OF_THE_DEAD_OFFER = new ItemToItemOffer(new ItemStack(BotDObjects.BOOK_OF_THE_DEAD), BotDObjects.OLD_LETTER, 1, 10, 0.2F);
+	TradeOffers.Factory CELLAR_KEY_OFFER = new EmeraldToItemOffer(new ItemStack(BotDObjects.CELLAR_KEY), 24, 1, 10, 0.2F);
 
 
 	static void init() {
 		TradeOfferHelper.registerVillagerOffers(VillagerProfession.LIBRARIAN, 1, factories -> {
-			factories.add(new EmeraldToItemOffer(new ItemStack(BotDObjects.OLD_LETTER, 1), 10, 10 ,5, 0.2F));
+			factories.add(new EmeraldToItemOffer(new ItemStack(BotDObjects.OLD_LETTER, 1), 10, 10, 5, 0.2F));
 		});
 	}
 

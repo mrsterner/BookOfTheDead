@@ -7,7 +7,9 @@ import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.YOffset;
-import net.minecraft.world.gen.decorator.*;
+import net.minecraft.world.gen.decorator.BiomePlacementModifier;
+import net.minecraft.world.gen.decorator.HeightRangePlacementModifier;
+import net.minecraft.world.gen.decorator.InSquarePlacementModifier;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.PlacedFeature;
 import org.quiltmc.qsl.registry.api.event.DynamicRegistryManagerSetupContext;
@@ -38,13 +40,13 @@ public interface BotDPlacedFeatureRegistry {
 								HeightRangePlacementModifier.trapezoid(YOffset.fixed(-56), YOffset.fixed(24)),
 								BiomePlacementModifier.getInstance()
 						)))
-				);
+		);
 
 
 		BiomeModifications.create(Constants.id("worldgen")).add(ModificationPhase.ADDITIONS, (b) -> true, context -> context.getGenerationSettings().addFeature(GenerationStep.Feature.TOP_LAYER_MODIFICATION, BotDPlacedFeatureRegistry.SULFUR_FEATURE));
 	}
 
-	static void init(){
+	static void init() {
 		BiomeModifications.addFeature(BiomeSelectors.foundInOverworld(), GenerationStep.Feature.LOCAL_MODIFICATIONS, SULFUR_FEATURE);
 	}
 }

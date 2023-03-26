@@ -21,7 +21,8 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
-import net.minecraft.entity.mob.*;
+import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.ActionResult;
@@ -58,20 +59,20 @@ public class KakuzuEntity extends PathAwareEntity implements SmartBrainOwner<Kak
 		this.setPathfindingPenalty(PathNodeType.DANGER_FIRE, -1.0F);
 	}
 
-	public void setVariant(int variant){
+	public void setVariant(int variant) {
 		this.getDataTracker().set(VARIANT, variant);
 	}
 
-	public int getVariant(){
+	public int getVariant() {
 		return this.getDataTracker().get(VARIANT);
 	}
 
-	public void setOwner(UUID uuid){
+	public void setOwner(UUID uuid) {
 		this.getDataTracker().set(OWNER, Optional.ofNullable(uuid));
 	}
 
 	@Nullable
-	public UUID getOwner(){
+	public UUID getOwner() {
 		return this.getDataTracker().get(OWNER).orElse(null);
 	}
 
@@ -95,9 +96,9 @@ public class KakuzuEntity extends PathAwareEntity implements SmartBrainOwner<Kak
 
 	@Override
 	protected ActionResult interactMob(PlayerEntity player, Hand hand) {
-		if(this.getOwner() != null && this.getOwner().equals(player.getUuid())){
+		if (this.getOwner() != null && this.getOwner().equals(player.getUuid())) {
 			PlayerDataComponent component = BotDComponents.PLAYER_COMPONENT.get(player);
-			if(component.getKakuzu() < 3 && component.getDispatchedKakuzuMinions() > 0){
+			if (component.getKakuzu() < 3 && component.getDispatchedKakuzuMinions() > 0) {
 				component.increaseKakuzuBuffLevel();
 				component.decreaseDispatchedMinionBuffLevel();
 				this.discard();
@@ -161,27 +162,27 @@ public class KakuzuEntity extends PathAwareEntity implements SmartBrainOwner<Kak
 		return (this.dataTracker.get(MODE) & 1 << index) != 0;
 	}
 
-	public boolean isIdleFlag(){
+	public boolean isIdleFlag() {
 		return getModeFlag(IDLE);
 	}
 
-	public void setIdleFlag(boolean idle){
+	public void setIdleFlag(boolean idle) {
 		setModeFlag(IDLE, idle);
 	}
 
-	public boolean isAttackingFlag(){
+	public boolean isAttackingFlag() {
 		return getModeFlag(ATTACK);
 	}
 
-	public void setAttackingFlag(boolean attacking){
+	public void setAttackingFlag(boolean attacking) {
 		setModeFlag(ATTACK, attacking);
 	}
 
-	public boolean isEnterOwnerFlag(){
+	public boolean isEnterOwnerFlag() {
 		return getModeFlag(ENTER_OWNER);
 	}
 
-	public void setEnterOwnerFlag(boolean enterOwner){
+	public void setEnterOwnerFlag(boolean enterOwner) {
 		setModeFlag(ENTER_OWNER, enterOwner);
 	}
 
@@ -189,7 +190,7 @@ public class KakuzuEntity extends PathAwareEntity implements SmartBrainOwner<Kak
 	public void readCustomDataFromNbt(NbtCompound nbt) {
 		super.readCustomDataFromNbt(nbt);
 		setVariant(nbt.getInt(Constants.Nbt.VARIANT));
-		if(nbt.contains(Constants.Nbt.OWNER)){
+		if (nbt.contains(Constants.Nbt.OWNER)) {
 			setOwner(nbt.getUuid(Constants.Nbt.OWNER));
 		}
 		dataTracker.set(MODE, (nbt.getByte(Constants.Nbt.MODE)));
@@ -199,7 +200,7 @@ public class KakuzuEntity extends PathAwareEntity implements SmartBrainOwner<Kak
 	public void writeCustomDataToNbt(NbtCompound nbt) {
 		super.writeCustomDataToNbt(nbt);
 		nbt.putInt(Constants.Nbt.VARIANT, getVariant());
-		if(getOwner() != null){
+		if (getOwner() != null) {
 			nbt.putUuid(Constants.Nbt.OWNER, getOwner());
 		}
 		nbt.putByte(Constants.Nbt.MODE, dataTracker.get(MODE));

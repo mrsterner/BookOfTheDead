@@ -13,7 +13,7 @@ public class CorpseDataComponent implements AutoSyncedComponent {
 		this.livingEntity = livingEntity;
 	}
 
-	public void isCorpse(boolean isCorpse){
+	public void isCorpse(boolean isCorpse) {
 		this.isCorpse = isCorpse;
 		BotDComponents.CORPSE_COMPONENT.sync(this.livingEntity);
 	}

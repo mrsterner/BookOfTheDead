@@ -9,9 +9,9 @@ import net.minecraft.world.World;
 
 public class BotDDamageTypes {
 	public static final RegistryKey<DamageType> SANGUINE = register("sanguine");
-    public static final RegistryKey<DamageType> SACRIFICE = register("sacrifice");
+	public static final RegistryKey<DamageType> SACRIFICE = register("sacrifice");
 
-    public static RegistryKey<DamageType> register(String name) {
+	public static RegistryKey<DamageType> register(String name) {
 		return RegistryKey.of(RegistryKeys.DAMAGE_TYPE, Constants.id(name));
 	}
 

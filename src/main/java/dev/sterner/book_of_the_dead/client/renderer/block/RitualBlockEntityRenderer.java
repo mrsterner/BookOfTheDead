@@ -28,24 +28,24 @@ public class RitualBlockEntityRenderer implements BlockEntityRenderer<RitualBloc
 
 	@Override
 	public void render(RitualBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
-		if(entity.shouldRun){
-			alpha = ((float)entity.clientTime + tickDelta - 1.0F) / 20.0F * 1.6F;
+		if (entity.shouldRun) {
+			alpha = ((float) entity.clientTime + tickDelta - 1.0F) / 20.0F * 1.6F;
 			alpha = MathHelper.sqrt(alpha);
 			if (alpha > 1.0F) {
 				alpha = 1.0F;
 			}
-		}else{
-			if(alpha < 0.02){
+		} else {
+			if (alpha < 0.02) {
 				alpha = 0;
-			}else {
+			} else {
 				alpha = alpha - 0.01f;
 			}
 		}
 		matrices.push();
-		matrices.translate(0.5,0.15,0.5);
+		matrices.translate(0.5, 0.15, 0.5);
 		final float rotationModifier = 4F;
 		double ticks = (BotDClient.ClientTickHandler.ticksInGame + tickDelta) * 0.5;
-		float deg =  (float) (ticks / rotationModifier % 360F);
+		float deg = (float) (ticks / rotationModifier % 360F);
 		matrices.multiply(Axis.Z_POSITIVE.rotationDegrees(MathHelper.sin(deg) / (float) Math.PI));
 		matrices.multiply(Axis.X_POSITIVE.rotationDegrees(MathHelper.cos(deg) / (float) Math.PI));
 		matrices.multiply(Axis.Y_POSITIVE.rotationDegrees(entity.getCachedState().get(HorizontalFacingBlock.FACING).asRotation()));

@@ -27,15 +27,15 @@ public class ExtraHeartsFeatureRenderer extends FeatureRenderer<AbstractClientPl
 	@Override
 	public void render(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, AbstractClientPlayerEntity entity, float limbAngle, float limbDistance, float tickDelta, float animationProgress, float headYaw, float headPitch) {
 		BotDComponents.PLAYER_COMPONENT.maybeGet(entity).ifPresent(component -> {
-			if(component.getKakuzu() > 0){
+			if (component.getKakuzu() > 0) {
 				matrices.push();
 				matrices.multiply(Axis.X_POSITIVE.rotationDegrees(entity.isInSneakingPose() ? 20 : 0));
-				matrices.translate(0, entity.isInSneakingPose() ? 1.70 : 1.55,0.0);
+				matrices.translate(0, entity.isInSneakingPose() ? 1.70 : 1.55, 0.0);
 				matrices.multiply(Axis.Y_POSITIVE.rotationDegrees(180f));
 				this.model.one.visible = component.getKakuzu() >= 1;
 				this.model.two.visible = component.getKakuzu() >= 2;
 				this.model.three.visible = component.getKakuzu() >= 3;
-				this.model.render(matrices, vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(KAKUZU)),light, OverlayTexture.DEFAULT_UV, 1,1,1,1);
+				this.model.render(matrices, vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(KAKUZU)), light, OverlayTexture.DEFAULT_UV, 1, 1, 1, 1);
 				matrices.pop();
 			}
 		});

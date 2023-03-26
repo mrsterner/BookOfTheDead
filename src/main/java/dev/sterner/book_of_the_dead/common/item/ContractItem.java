@@ -26,7 +26,7 @@ public class ContractItem extends Item {
 
 	@Override
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-		if(!world.isClient() && hand == Hand.MAIN_HAND){
+		if (!world.isClient() && hand == Hand.MAIN_HAND) {
 			ItemStack itemStack = user.getMainHandStack();
 			NbtCompound nbt = new NbtCompound();
 			nbt.putString(Constants.Nbt.NAME, user.getEntityName());
@@ -38,7 +38,7 @@ public class ContractItem extends Item {
 
 	@Override
 	public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-		if(stack.hasNbt() && stack.getOrCreateNbt().contains(Constants.Nbt.CONTRACT)){
+		if (stack.hasNbt() && stack.getOrCreateNbt().contains(Constants.Nbt.CONTRACT)) {
 			NbtCompound nbt = stack.getSubNbt(Constants.Nbt.CONTRACT);
 			if (nbt != null) {
 				String name = nbt.getString(Constants.Nbt.NAME);
@@ -51,13 +51,13 @@ public class ContractItem extends Item {
 	}
 
 	@Nullable
-	public static LivingEntity getLivingFromContractNbt(World world, ItemStack contract){
-		if(contract.isOf(BotDObjects.CONTRACT) && contract.hasNbt() && contract.getOrCreateNbt().contains(Constants.Nbt.CONTRACT)){
+	public static LivingEntity getLivingFromContractNbt(World world, ItemStack contract) {
+		if (contract.isOf(BotDObjects.CONTRACT) && contract.hasNbt() && contract.getOrCreateNbt().contains(Constants.Nbt.CONTRACT)) {
 			NbtCompound nbt = contract.getSubNbt(Constants.Nbt.CONTRACT);
 			if (nbt != null) {
 				int id = nbt.getInt(Constants.Nbt.ID);
 				Entity entity = world.getEntityById(id);
-				if(entity instanceof LivingEntity living){
+				if (entity instanceof LivingEntity living) {
 					return living;
 				}
 			}
@@ -65,8 +65,8 @@ public class ContractItem extends Item {
 		return null;
 	}
 
-	public static int getIdFromContractNbt(ItemStack contract){
-		if(contract.isOf(BotDObjects.CONTRACT) && contract.hasNbt() && contract.getOrCreateNbt().contains(Constants.Nbt.CONTRACT)){
+	public static int getIdFromContractNbt(ItemStack contract) {
+		if (contract.isOf(BotDObjects.CONTRACT) && contract.hasNbt() && contract.getOrCreateNbt().contains(Constants.Nbt.CONTRACT)) {
 			NbtCompound nbt = contract.getSubNbt(Constants.Nbt.CONTRACT);
 			if (nbt != null) {
 				return nbt.getInt(Constants.Nbt.ID);

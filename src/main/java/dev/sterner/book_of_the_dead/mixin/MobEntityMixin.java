@@ -47,15 +47,15 @@ public abstract class MobEntityMixin extends LivingEntity {
 
 	@Inject(method = "interact", at = @At("HEAD"), cancellable = true)
 	public void book_of_the_dead$interact(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
-		MobEntity mob = (MobEntity) (Object)this;
+		MobEntity mob = (MobEntity) (Object) this;
 		Optional<CorpseDataComponent> component = BotDComponents.CORPSE_COMPONENT.maybeGet(mob);
 		if (this.deathTime > 20 && component.isPresent() && component.get().isCorpse) {
-			if(!world.isClient() && player.isSneaking() && player.getMainHandStack().isEmpty()){
+			if (!world.isClient() && player.isSneaking() && player.getMainHandStack().isEmpty()) {
 				MobEntity mobEntity = (MobEntity) (Object) this;
 				IHauler.of(player).ifPresent(hauler -> {
-					if(hauler.getCorpseEntity().isEmpty()){
+					if (hauler.getCorpseEntity().isEmpty()) {
 						BlockPos pos = mobEntity.getBlockPos();
-						world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 1,1);
+						world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 1, 1);
 						hauler.setCorpseEntity(mobEntity);
 						mobEntity.remove(Entity.RemovalReason.DISCARDED);
 					}

@@ -3,10 +3,10 @@ package dev.sterner.book_of_the_dead.common.recipe;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import dev.sterner.book_of_the_dead.api.CommandType;
-import dev.sterner.book_of_the_dead.common.rituals.BasicNecrotableRitual;
 import dev.sterner.book_of_the_dead.api.interfaces.IRecipe;
 import dev.sterner.book_of_the_dead.common.registry.BotDRecipeTypes;
 import dev.sterner.book_of_the_dead.common.registry.BotDRegistries;
+import dev.sterner.book_of_the_dead.common.rituals.BasicNecrotableRitual;
 import dev.sterner.book_of_the_dead.common.util.RecipeUtils;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.effect.StatusEffect;
@@ -14,7 +14,9 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.recipe.*;
+import net.minecraft.recipe.Ingredient;
+import net.minecraft.recipe.RecipeSerializer;
+import net.minecraft.recipe.RecipeType;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
@@ -59,7 +61,7 @@ public class RitualRecipe implements IRecipe {
 		this.summons = summons;
 	}
 
-	public int getDuration(){
+	public int getDuration() {
 		return this.duration;
 	}
 
@@ -127,26 +129,26 @@ public class RitualRecipe implements IRecipe {
 
 			//Inputs
 			DefaultedList<Ingredient> inputs = DefaultedList.of();
-			if(JsonHelper.hasArray(json, "inputs")) {
+			if (JsonHelper.hasArray(json, "inputs")) {
 				inputs = RecipeUtils.deserializeIngredients(JsonHelper.getArray(json, "inputs"));
 			}
 
 			//Outputs
 			DefaultedList<ItemStack> outputs = DefaultedList.of();
-			if(JsonHelper.hasArray(json, "outputs")) {
+			if (JsonHelper.hasArray(json, "outputs")) {
 				outputs = RecipeUtils.deserializeStacks(JsonHelper.getArray(json, "outputs"));
 			}
 
 			//Sacrifices
 			List<EntityType<?>> sacrifices = List.of();
-			if(JsonHelper.hasArray(json, "summons")) {
+			if (JsonHelper.hasArray(json, "summons")) {
 				var sacrificeArray = JsonHelper.getArray(json, "sacrifices");
 				sacrifices = RecipeUtils.deserializeEntityTypes(sacrificeArray);
 			}
 
 			//Summons
 			List<EntityType<?>> summons = List.of();
-			if(JsonHelper.hasArray(json, "summons")) {
+			if (JsonHelper.hasArray(json, "summons")) {
 				var summonArray = JsonHelper.getArray(json, "summons");
 				summons = RecipeUtils.deserializeEntityTypes(summonArray);
 			}
@@ -156,7 +158,7 @@ public class RitualRecipe implements IRecipe {
 
 			//StatusEffect
 			List<StatusEffectInstance> statusEffectInstanceList = List.of();
-			if(JsonHelper.hasArray(json, "statusEffects")){
+			if (JsonHelper.hasArray(json, "statusEffects")) {
 				var statusList = JsonHelper.getArray(json, "statusEffects");
 				statusEffectInstanceList = RecipeUtils.deserializeStatusEffects(statusList);
 			}
@@ -164,14 +166,13 @@ public class RitualRecipe implements IRecipe {
 
 			//Command
 			Set<CommandType> commands = Set.of();
-			if(JsonHelper.hasArray(json, "commands")) {
+			if (JsonHelper.hasArray(json, "commands")) {
 				JsonArray commandArray = JsonHelper.getArray(json, "commands");
 				commands = RecipeUtils.deserializeCommands(commandArray);
 			}
 
 			return new RitualRecipe(id, ritual, requireBotD, requireEmeraldTablet, duration, inputs, outputs, sacrifices, summons, statusEffectInstanceList, commands);
 		}
-
 
 
 		@Override

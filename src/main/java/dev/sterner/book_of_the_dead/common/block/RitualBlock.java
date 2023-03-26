@@ -45,7 +45,7 @@ public class RitualBlock extends BlockWithEntity {
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		if (!world.isClient()) {
-			if(world.getBlockEntity(pos) instanceof RitualBlockEntity ritualBlockEntity){
+			if (world.getBlockEntity(pos) instanceof RitualBlockEntity ritualBlockEntity) {
 				return ritualBlockEntity.onUse(world, state, pos, player, hand);
 			}
 		}
@@ -60,19 +60,19 @@ public class RitualBlock extends BlockWithEntity {
 
 	@Override
 	public void randomDisplayTick(BlockState state, World world, BlockPos pos, net.minecraft.util.random.RandomGenerator random) {
-		if(world.getBlockEntity(pos) instanceof RitualBlockEntity ritualBlockEntity) {
+		if (world.getBlockEntity(pos) instanceof RitualBlockEntity ritualBlockEntity) {
 			List<Pair<ItemStack, BlockPos>> pedestalInfo = ritualBlockEntity.getPedestalInfo(world);
 			List<BlockPos> blockPosList = pedestalInfo.stream().map(Pair::getRight).toList();
 
-			for(BlockPos pedestalPos : RitualBlockEntity.PEDESTAL_POS_LIST){
-				if(!blockPosList.contains(pedestalPos)){
+			for (BlockPos pedestalPos : RitualBlockEntity.PEDESTAL_POS_LIST) {
+				if (!blockPosList.contains(pedestalPos)) {
 					BlockPos specificPos = pedestalPos.add(pos);
-					if(world.getBlockState(specificPos).isOf(Blocks.AIR)){
-						for(int i = 0; i  < 4; i++) {
-							double x = (double)specificPos.getX() + 0.5D;
-							double y = (double)specificPos.getY() + 0.0625D;
-							double z = (double)specificPos.getZ() + 0.5D;
-							world.addParticle(ParticleTypes.WITCH, x, y, z, 0,0.1,0);
+					if (world.getBlockState(specificPos).isOf(Blocks.AIR)) {
+						for (int i = 0; i < 4; i++) {
+							double x = (double) specificPos.getX() + 0.5D;
+							double y = (double) specificPos.getY() + 0.0625D;
+							double z = (double) specificPos.getZ() + 0.5D;
+							world.addParticle(ParticleTypes.WITCH, x, y, z, 0, 0.1, 0);
 						}
 					}
 				}

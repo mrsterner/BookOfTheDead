@@ -28,8 +28,8 @@ public class TrackTargetGoalMixin {
 	protected MobEntity mob;
 
 	@Inject(method = "getFollowRange", at = @At("HEAD"), cancellable = true)
-	private void book_of_the_dead$increaseDetectionRange(CallbackInfoReturnable<Double> cir){
-		if(this.target instanceof PlayerEntity player && this.mob instanceof HostileEntity && !this.mob.isUndead()){
+	private void book_of_the_dead$increaseDetectionRange(CallbackInfoReturnable<Double> cir) {
+		if (this.target instanceof PlayerEntity player && this.mob instanceof HostileEntity && !this.mob.isUndead()) {
 			PlayerDataComponent component = BotDComponents.PLAYER_COMPONENT.get(player);
 			cir.setReturnValue(cir.getReturnValueD() * (double) component.getAggressionDebuffModifier());
 		}

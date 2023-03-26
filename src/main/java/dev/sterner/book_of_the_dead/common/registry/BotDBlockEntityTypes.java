@@ -63,11 +63,10 @@ public interface BotDBlockEntityTypes {
 			).build());
 
 
-    static <T extends BlockEntity> BlockEntityType<T> register(String name, BlockEntityType<T> type) {
+	static <T extends BlockEntity> BlockEntityType<T> register(String name, BlockEntityType<T> type) {
 		BLOCK_ENTITY_TYPES.put(type, Constants.id(name));
 		return type;
 	}
-
 
 
 	static void init() {

@@ -41,21 +41,21 @@ public interface BotDRecipeTypes {
 	};
 
 
-	static void init(){
+	static void init() {
 		Registry.register(Registries.RECIPE_SERIALIZER, Constants.id("butchering"), BUTCHERING_RECIPE_SERIALIZER);
-		Registry.register(Registries.RECIPE_TYPE,Constants.id("butchering"), BUTCHERING_RECIPE_TYPE);
+		Registry.register(Registries.RECIPE_TYPE, Constants.id("butchering"), BUTCHERING_RECIPE_TYPE);
 
 		Registry.register(Registries.RECIPE_SERIALIZER, Constants.id("ritual"), RITUAL_RECIPE_SERIALIZER);
-		Registry.register(Registries.RECIPE_TYPE,Constants.id("ritual"), RITUAL_RECIPE_TYPE);
+		Registry.register(Registries.RECIPE_TYPE, Constants.id("ritual"), RITUAL_RECIPE_TYPE);
 
 		Registry.register(Registries.RECIPE_SERIALIZER, Constants.id("retort"), RETORT_RECIPE_SERIALIZER);
-		Registry.register(Registries.RECIPE_TYPE,Constants.id("retort"), RETORT_RECIPE_TYPE);
+		Registry.register(Registries.RECIPE_TYPE, Constants.id("retort"), RETORT_RECIPE_TYPE);
 	}
 
 
 	static RitualRecipe getRiteRecipe(RitualBlockEntity ritualBlockEntity) {
 		World world = ritualBlockEntity.getWorld();
-		if(world == null){
+		if (world == null) {
 			return null;
 		}
 		return world.getRecipeManager().listAllOfType(RITUAL_RECIPE_TYPE).stream()

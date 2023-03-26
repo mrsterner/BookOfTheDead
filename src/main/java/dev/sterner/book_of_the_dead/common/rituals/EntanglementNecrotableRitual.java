@@ -20,21 +20,21 @@ public class EntanglementNecrotableRitual extends BasicNecrotableRitual {
 	@Override
 	public void onStopped(World world, BlockPos blockPos, RitualBlockEntity blockEntity) {
 		super.onStopped(world, blockPos, blockEntity);
-		if(this.contract.get(0) != 0 && this.contract.get(1) != 0){
+		if (this.contract.get(0) != 0 && this.contract.get(1) != 0) {
 			Entity entity = world.getEntityById(contract.get(0));
 			Entity entity2 = world.getEntityById(contract.get(1));
-			if(entity instanceof LivingEntity livingEntity && entity2 instanceof LivingEntity livingEntity2){
-				if(world instanceof ServerWorld serverWorld){
-					if(!serverWorld.isChunkLoaded(livingEntity.getChunkPos().x, livingEntity.getChunkPos().z)){
+			if (entity instanceof LivingEntity livingEntity && entity2 instanceof LivingEntity livingEntity2) {
+				if (world instanceof ServerWorld serverWorld) {
+					if (!serverWorld.isChunkLoaded(livingEntity.getChunkPos().x, livingEntity.getChunkPos().z)) {
 						serverWorld.setChunkForced(livingEntity.getChunkPos().x, livingEntity.getChunkPos().z, true);
 					}
-					if(!serverWorld.isChunkLoaded(livingEntity2.getChunkPos().x, livingEntity2.getChunkPos().z)){
+					if (!serverWorld.isChunkLoaded(livingEntity2.getChunkPos().x, livingEntity2.getChunkPos().z)) {
 						serverWorld.setChunkForced(livingEntity2.getChunkPos().x, livingEntity2.getChunkPos().z, true);
 					}
 				}
 				LivingEntityDataComponent livingComponent = BotDComponents.LIVING_COMPONENT.get(livingEntity);
 				LivingEntityDataComponent livingComponent2 = BotDComponents.LIVING_COMPONENT.get(livingEntity2);
-				if(BotDApi.canEntangle(livingEntity) && BotDApi.canEntangle(livingEntity2)){
+				if (BotDApi.canEntangle(livingEntity) && BotDApi.canEntangle(livingEntity2)) {
 					livingComponent.setEntangledEntityId(livingEntity2.getId());
 					livingComponent2.setEntangledEntityId(livingEntity.getId());
 				}

@@ -4,7 +4,10 @@ import dev.sterner.book_of_the_dead.common.block.entity.JarBlockEntity;
 import dev.sterner.book_of_the_dead.common.registry.BotDBlockEntityTypes;
 import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
 import dev.sterner.book_of_the_dead.common.util.BotDUtils;
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.BlockWithEntity;
+import net.minecraft.block.ShapeContext;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
@@ -34,15 +37,15 @@ import static dev.sterner.book_of_the_dead.common.block.entity.JarBlockEntity.*;
 
 public class JarBlock extends BlockWithEntity {
 	protected static final VoxelShape OPEN_SHAPE = VoxelShapes.union(
-			createCuboidShape(4,0,4,12,10,5),
-			createCuboidShape(4,0,4,5,10,12),
+			createCuboidShape(4, 0, 4, 12, 10, 5),
+			createCuboidShape(4, 0, 4, 5, 10, 12),
 			createCuboidShape(4, 0, 11, 12, 10, 12),
-			createCuboidShape(11, 0, 5, 12 ,10, 12),
+			createCuboidShape(11, 0, 5, 12, 10, 12),
 
-			createCuboidShape(4.5,12,4.5,11.5,14,5.5),
-			createCuboidShape(4.5,12,4.5,5.5,14,11.5),
-			createCuboidShape(4.5,12,10.5,11.5,14,11.5),
-			createCuboidShape(10.5,12,4.5,11.5,14,11.5)
+			createCuboidShape(4.5, 12, 4.5, 11.5, 14, 5.5),
+			createCuboidShape(4.5, 12, 4.5, 5.5, 14, 11.5),
+			createCuboidShape(4.5, 12, 10.5, 11.5, 14, 11.5),
+			createCuboidShape(10.5, 12, 4.5, 11.5, 14, 11.5)
 	);
 
 	protected static final VoxelShape CLOSED_SHAPE = VoxelShapes.union(createCuboidShape(5, 14, 5, 11, 16, 11));
@@ -50,9 +53,8 @@ public class JarBlock extends BlockWithEntity {
 
 	public JarBlock(Settings settings) {
 		super(settings);
-		this.setDefaultState(this.stateManager.getDefaultState().with(OPEN,false));
+		this.setDefaultState(this.stateManager.getDefaultState().with(OPEN, false));
 	}
-
 
 
 	@Nullable
@@ -63,79 +65,79 @@ public class JarBlock extends BlockWithEntity {
 
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-		if(!world.isClient() && hand == Hand.MAIN_HAND){
+		if (!world.isClient() && hand == Hand.MAIN_HAND) {
 			ItemStack stack = player.getMainHandStack();
-			 if(world.getBlockEntity(pos) instanceof JarBlockEntity jarBlockEntity){
-				 if(stack.isEmpty()){
-					 if(player.isSneaking()){
-						 world.setBlockState(pos, state.with(OPEN, !state.get(OPEN)));
-						 world.playSound(null, player.getBlockPos(), SoundEvents.ITEM_BOTTLE_FILL, SoundCategory.PLAYERS, 1, 0.5f);
-					 }else if(jarBlockEntity.hasBrain){
-						 ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(BotDObjects.BRAIN));
-						 jarBlockEntity.hasBrain = false;
-					 }
-					 jarBlockEntity.markDirty();
-					 return ActionResult.CONSUME;
-				 }else if(!state.get(OPEN)){
-					 return ActionResult.PASS;
-				 }else if(stack.isOf(Items.GLASS_BOTTLE)){
-					if(jarBlockEntity.liquidAmount >= 25 && !jarBlockEntity.getLiquidType(EMPTY)){
-						Item outStack = switch (jarBlockEntity.liquidType){
+			if (world.getBlockEntity(pos) instanceof JarBlockEntity jarBlockEntity) {
+				if (stack.isEmpty()) {
+					if (player.isSneaking()) {
+						world.setBlockState(pos, state.with(OPEN, !state.get(OPEN)));
+						world.playSound(null, player.getBlockPos(), SoundEvents.ITEM_BOTTLE_FILL, SoundCategory.PLAYERS, 1, 0.5f);
+					} else if (jarBlockEntity.hasBrain) {
+						ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(BotDObjects.BRAIN));
+						jarBlockEntity.hasBrain = false;
+					}
+					jarBlockEntity.markDirty();
+					return ActionResult.CONSUME;
+				} else if (!state.get(OPEN)) {
+					return ActionResult.PASS;
+				} else if (stack.isOf(Items.GLASS_BOTTLE)) {
+					if (jarBlockEntity.liquidAmount >= 25 && !jarBlockEntity.getLiquidType(EMPTY)) {
+						Item outStack = switch (jarBlockEntity.liquidType) {
 							case BLOOD -> BotDObjects.BOTTLE_OF_BLOOD;
 							case ACID -> BotDObjects.SULFURIC_ACID;
 							default -> Items.POTION;
 						};
 						jarBlockEntity.liquidAmount = jarBlockEntity.liquidAmount - 25;
 						handleBottle(jarBlockEntity, player, hand, outStack);
-						if(jarBlockEntity.liquidAmount <= 0){
+						if (jarBlockEntity.liquidAmount <= 0) {
 							jarBlockEntity.setLiquidType(EMPTY);
 							jarBlockEntity.markDirty();
 						}
 
 					}
-				 }else if(stack.isOf(BotDObjects.BOTTLE_OF_BLOOD)){
-					 if((jarBlockEntity.getLiquidType(BLOOD) || jarBlockEntity.getLiquidType(EMPTY))){
-						 if(jarBlockEntity.liquidAmount + 25 <= MAX_LIQUID){
-							 jarBlockEntity.setLiquidType(BLOOD);
-							 jarBlockEntity.liquidAmount = jarBlockEntity.liquidAmount + 25;
-							 handleBottle(jarBlockEntity, player, hand, Items.GLASS_BOTTLE);
-							 return ActionResult.CONSUME;
-						 }
-					 }
-				 }else if(stack.isOf(BotDObjects.SULFURIC_ACID)){
-					 if((jarBlockEntity.getLiquidType(ACID) || jarBlockEntity.getLiquidType(EMPTY))){
-						 if(jarBlockEntity.liquidAmount + 25 <= MAX_LIQUID){
-							 jarBlockEntity.setLiquidType(ACID);
-							 jarBlockEntity.liquidAmount = jarBlockEntity.liquidAmount + 25;
-							 handleBottle(jarBlockEntity, player, hand, Items.GLASS_BOTTLE);
-							 return ActionResult.CONSUME;
-						 }
-					 }
-				 }else if(stack.isOf(Items.POTION) && PotionUtil.getPotion(stack) == Potions.WATER){
-					 if((jarBlockEntity.getLiquidType(WATER) || jarBlockEntity.getLiquidType(EMPTY))){
-						 if(jarBlockEntity.liquidAmount + 25 <= MAX_LIQUID){
-							 jarBlockEntity.setLiquidType(WATER);
-							 jarBlockEntity.liquidAmount = jarBlockEntity.liquidAmount + 25;
-							 handleBottle(jarBlockEntity, player, hand, Items.GLASS_BOTTLE);
-							 return ActionResult.CONSUME;
-						 }
-					 }
-				 }else if (stack.isOf(BotDObjects.BRAIN.asItem()) || stack.isOf(BotDObjects.EYE)) {
-					 if(jarBlockEntity.liquidAmount == MAX_LIQUID && jarBlockEntity.getLiquidType(WATER)){
-						 if(!jarBlockEntity.hasBrain){
-							 jarBlockEntity.hasBrain = true;
-							 player.getMainHandStack().decrement(1);
-							 jarBlockEntity.markDirty();
-							 return ActionResult.CONSUME;
-						 }
-					 }
+				} else if (stack.isOf(BotDObjects.BOTTLE_OF_BLOOD)) {
+					if ((jarBlockEntity.getLiquidType(BLOOD) || jarBlockEntity.getLiquidType(EMPTY))) {
+						if (jarBlockEntity.liquidAmount + 25 <= MAX_LIQUID) {
+							jarBlockEntity.setLiquidType(BLOOD);
+							jarBlockEntity.liquidAmount = jarBlockEntity.liquidAmount + 25;
+							handleBottle(jarBlockEntity, player, hand, Items.GLASS_BOTTLE);
+							return ActionResult.CONSUME;
+						}
+					}
+				} else if (stack.isOf(BotDObjects.SULFURIC_ACID)) {
+					if ((jarBlockEntity.getLiquidType(ACID) || jarBlockEntity.getLiquidType(EMPTY))) {
+						if (jarBlockEntity.liquidAmount + 25 <= MAX_LIQUID) {
+							jarBlockEntity.setLiquidType(ACID);
+							jarBlockEntity.liquidAmount = jarBlockEntity.liquidAmount + 25;
+							handleBottle(jarBlockEntity, player, hand, Items.GLASS_BOTTLE);
+							return ActionResult.CONSUME;
+						}
+					}
+				} else if (stack.isOf(Items.POTION) && PotionUtil.getPotion(stack) == Potions.WATER) {
+					if ((jarBlockEntity.getLiquidType(WATER) || jarBlockEntity.getLiquidType(EMPTY))) {
+						if (jarBlockEntity.liquidAmount + 25 <= MAX_LIQUID) {
+							jarBlockEntity.setLiquidType(WATER);
+							jarBlockEntity.liquidAmount = jarBlockEntity.liquidAmount + 25;
+							handleBottle(jarBlockEntity, player, hand, Items.GLASS_BOTTLE);
+							return ActionResult.CONSUME;
+						}
+					}
+				} else if (stack.isOf(BotDObjects.BRAIN.asItem()) || stack.isOf(BotDObjects.EYE)) {
+					if (jarBlockEntity.liquidAmount == MAX_LIQUID && jarBlockEntity.getLiquidType(WATER)) {
+						if (!jarBlockEntity.hasBrain) {
+							jarBlockEntity.hasBrain = true;
+							player.getMainHandStack().decrement(1);
+							jarBlockEntity.markDirty();
+							return ActionResult.CONSUME;
+						}
+					}
 				}
 			}
 		}
 		return super.onUse(state, world, pos, player, hand, hit);
 	}
 
-	public void handleBottle(JarBlockEntity jarBlockEntity, PlayerEntity player, Hand hand, Item item){
+	public void handleBottle(JarBlockEntity jarBlockEntity, PlayerEntity player, Hand hand, Item item) {
 		player.world.playSound(null, player.getBlockPos(), SoundEvents.ITEM_BOTTLE_FILL, SoundCategory.PLAYERS, 1, 0.5f);
 		BotDUtils.addItemToInventoryAndConsume(player, hand, item.getDefaultStack());
 		jarBlockEntity.markDirty();
@@ -148,7 +150,7 @@ public class JarBlock extends BlockWithEntity {
 			if (!world.isClient) {
 				ItemStack itemStack = new ItemStack(this);
 				jarBlockEntity.writeNbtToStack(itemStack);
-				ItemEntity itemEntity = new ItemEntity(world, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.5D, itemStack);
+				ItemEntity itemEntity = new ItemEntity(world, (double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D, (double) pos.getZ() + 0.5D, itemStack);
 				itemEntity.setToDefaultPickupDelay();
 				world.spawnEntity(itemEntity);
 			}

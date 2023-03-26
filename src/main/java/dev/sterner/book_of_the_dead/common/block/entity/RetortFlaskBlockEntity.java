@@ -44,11 +44,11 @@ public class RetortFlaskBlockEntity extends BaseBlockEntity implements IBlockEnt
 		if (!state.get(Properties.WATERLOGGED)) {
 			ItemStack stack = player.getStackInHand(hand);
 			if (!stack.isEmpty()) {
-				if((stack.isOf(Items.POTION) && PotionUtil.getPotion(stack).equals(Potions.WATER))){
+				if ((stack.isOf(Items.POTION) && PotionUtil.getPotion(stack).equals(Potions.WATER))) {
 					BotDUtils.addItemToInventoryAndConsume(player, hand, Items.GLASS_BOTTLE.getDefaultStack());
 					this.hasLiquid = true;
 					return ActionResult.CONSUME;
-				}else if(stack.isOf(Items.WATER_BUCKET)){
+				} else if (stack.isOf(Items.WATER_BUCKET)) {
 					BotDUtils.addItemToInventoryAndConsume(player, hand, Items.BUCKET.getDefaultStack());
 					this.hasLiquid = true;
 					return ActionResult.CONSUME;
@@ -58,23 +58,23 @@ public class RetortFlaskBlockEntity extends BaseBlockEntity implements IBlockEnt
 				if (firstEmpty != -1) {
 					this.setStack(firstEmpty, stack.split(1));
 					this.sync(world, pos);
-					world.playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS,1, 0.5f);
+					world.playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, 1, 0.5f);
 					return ActionResult.CONSUME;
 				}
-			}else{
-				if(progress >= MAX_PROGRESS){
-					for(ItemStack item : inventory){
-						if(item.getItem() instanceof StatusEffectItem){
+			} else {
+				if (progress >= MAX_PROGRESS) {
+					for (ItemStack item : inventory) {
+						if (item.getItem() instanceof StatusEffectItem) {
 							inventory.clear();
 						}
 					}
 					ItemScatterer.spawn(world, pos, inventory);
-					world.playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS,1, 1);
+					world.playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, 1, 1);
 					this.reset();
-				}else{
-					if(player.isSneaking()){
+				} else {
+					if (player.isSneaking()) {
 						ItemScatterer.spawn(world, pos, inventory);
-						world.playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS,1, 1);
+						world.playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, 1, 1);
 					}
 				}
 			}
@@ -93,11 +93,11 @@ public class RetortFlaskBlockEntity extends BaseBlockEntity implements IBlockEnt
 			blockEntity.heatTimer = MathHelper.clamp(blockEntity.heatTimer + (state.get(Properties.LIT) && blockEntity.hasLiquid ? 1 : -1), 0, 160);
 			if (!world.isClient) {
 				if (blockEntity.hasLiquid && blockEntity.heatTimer > 20) {
-					if(blockEntity.retortRecipe != null ){
-						if(blockEntity.progress < blockEntity.MAX_PROGRESS){
+					if (blockEntity.retortRecipe != null) {
+						if (blockEntity.progress < blockEntity.MAX_PROGRESS) {
 							blockEntity.progress++;
 						}
-						if(blockEntity.progress >= blockEntity.MAX_PROGRESS){
+						if (blockEntity.progress >= blockEntity.MAX_PROGRESS) {
 							blockEntity.craft(blockEntity.retortRecipe.output);
 							blockEntity.setColor(blockEntity.retortRecipe.color);
 						}

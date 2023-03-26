@@ -18,10 +18,10 @@ public interface BotDStatusEffects {
 	StatusEffect ADRENALINE = register("adrenaline", new EmptyStatusEffect(StatusEffectType.NEUTRAL, 0xffffff));
 	StatusEffect MORPHINE = register("morphine", new MorphineStatusEffect(StatusEffectType.NEUTRAL, 0xffffff));
 	StatusEffect SANGUINE = register("sanguine_infection", new SanguineInfectionStatusEffect(StatusEffectType.HARMFUL));
-    StatusEffect SOUL_SIPHON = register("soul_siphon", new SoulSiphonStatusEffect(StatusEffectType.HARMFUL));
+	StatusEffect SOUL_SIPHON = register("soul_siphon", new SoulSiphonStatusEffect(StatusEffectType.HARMFUL));
 	StatusEffect SOUL_SICKNESS = register("soul_sickness", new SoulSicknessStatusEffect(StatusEffectType.HARMFUL));
 
-    static <T extends StatusEffect> T register(String name, T effect) {
+	static <T extends StatusEffect> T register(String name, T effect) {
 		STATUS_EFFECTS.put(effect, Constants.id(name));
 		return effect;
 	}

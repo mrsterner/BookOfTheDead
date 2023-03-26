@@ -29,25 +29,25 @@ public class RenderUtils {
 		float f;
 
 		float g;
-		if(bounds != null){
+		if (bounds != null) {
 			f = (float) Math.atan((bounds.getCenterX() - mouseX) / 40.0F);
 			g = (float) Math.atan((bounds.getCenterY() - mouseY) / 40.0F);
-		}else{
+		} else {
 			f = (float) Math.atan((x - mouseX) / 40.0F);
 			g = (float) Math.atan((y - mouseY) / 40.0F);
 		}
 		MatrixStack matrixStack = RenderSystem.getModelViewStack();
 		matrixStack.push();
-		if(bounds != null) {
+		if (bounds != null) {
 			matrixStack.translate(bounds.getCenterX(), bounds.getCenterY() + 20, 1050.0);
-		}else{
+		} else {
 			matrixStack.translate(x, y + 20, 1050.0);
 		}
 		matrixStack.scale(1.0F, 1.0F, -1.0F);
 		RenderSystem.applyModelViewMatrix();
 		MatrixStack matrixStack2 = new MatrixStack();
 		matrixStack2.translate(0.0, 0.0, 1000.0);
-		matrixStack2.scale((float)size, (float)size, (float)size);
+		matrixStack2.scale((float) size, (float) size, (float) size);
 		Quaternionf quaternionf = new Quaternionf().rotateZ((float) Math.PI);
 		Quaternionf quaternionf2 = new Quaternionf().rotateX(g * 20.0F * (float) (Math.PI / 180.0));
 		quaternionf.mul(quaternionf2);
@@ -84,7 +84,7 @@ public class RenderUtils {
 	public static void renderMesh(Mesh mesh, MatrixStack matrices, VertexConsumer consumer, int light, int overlay) {
 		for (List<BakedQuad> bakedQuads : ModelHelper.toQuadLists(mesh)) {
 			for (BakedQuad bq : bakedQuads) {
-				consumer.complexBakedQuad(matrices.peek(), bq, new float[]{1f, 1f, 1f, 1f}, 1f, 1f, 1f,  new int[]{light, light, light, light}, overlay, true);
+				consumer.complexBakedQuad(matrices.peek(), bq, new float[]{1f, 1f, 1f, 1f}, 1f, 1f, 1f, new int[]{light, light, light, light}, overlay, true);
 			}
 		}
 	}

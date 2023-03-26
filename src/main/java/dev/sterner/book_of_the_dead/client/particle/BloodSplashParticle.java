@@ -20,7 +20,7 @@ public class BloodSplashParticle extends SpriteBillboardParticle {
 		this.velocityY = (this.random.nextFloat() * 0.2F + 0.05F);
 		this.scale /= 2;
 		this.scale *= this.random.nextFloat() * 2.0F + 0.2F;
-		this.maxAge = (int)(64.0 / (Math.random() * 0.8 + 0.2));
+		this.maxAge = (int) (64.0 / (Math.random() * 0.8 + 0.2));
 
 		this.sampleU = this.random.nextFloat() * 3.0F;
 		this.sampleV = this.random.nextFloat() * 3.0F;

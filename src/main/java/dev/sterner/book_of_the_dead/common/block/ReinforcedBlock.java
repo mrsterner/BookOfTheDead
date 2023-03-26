@@ -8,6 +8,7 @@ import net.minecraft.util.StringIdentifiable;
 
 public class ReinforcedBlock extends Block {
 	public static final EnumProperty<ReinforcedType> REINFORCED_TYPE = EnumProperty.of("reinforced_type", ReinforcedType.class);
+
 	public ReinforcedBlock(Settings settings) {
 		super(settings.strength(-1.0F, 3600000.0F));
 		this.setDefaultState(this.stateManager.getDefaultState().with(REINFORCED_TYPE, ReinforcedType.DEEPSLATE_TILES));

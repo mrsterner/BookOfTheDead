@@ -15,7 +15,7 @@ public interface BotDFeatureRegistry {
 		return Registry.register(Registries.FEATURE, id, feature);
 	}
 
-	static void init(){
+	static void init() {
 
 	}
 }

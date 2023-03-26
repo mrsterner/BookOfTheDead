@@ -3,11 +3,14 @@ package dev.sterner.book_of_the_dead.common.item;
 import dev.sterner.book_of_the_dead.common.block.ReinforcedBlock;
 import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
 import net.minecraft.advancement.criterion.Criteria;
-import net.minecraft.block.*;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.enums.DoubleBlockHalf;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.*;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUsage;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -18,7 +21,6 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-
 
 import static dev.sterner.book_of_the_dead.common.block.ReinforcedBlock.REINFORCED_TYPE;
 
@@ -39,9 +41,9 @@ public class CellarKeyItem extends Item {
 		boolean consume = false;
 		if (!world.isClient) {
 			consume = this.getAndConvertReinforcedBlocks(world, user);
-			if(consume){
+			if (consume) {
 				world.playSound(null, user.getBlockPos(), SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.PLAYERS, 0.1f, (user.getRandom().nextFloat() - user.getRandom().nextFloat()) * 0.35F + 0.9F);
-			}else{
+			} else {
 				world.playSound(null, user.getBlockPos(), SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.PLAYERS);
 			}
 		}
@@ -51,15 +53,15 @@ public class CellarKeyItem extends Item {
 	private boolean getAndConvertReinforcedBlocks(World world, LivingEntity user) {
 		boolean consumeKey = false;
 		int range = 4;
-		for(int x = -range; x < range; x++){
-			for(int y = -range; y < range; y++){
-				for(int z = -range; z < range; z++){
-					BlockPos blockPos = user.getBlockPos().add(x,y,z);
+		for (int x = -range; x < range; x++) {
+			for (int y = -range; y < range; y++) {
+				for (int z = -range; z < range; z++) {
+					BlockPos blockPos = user.getBlockPos().add(x, y, z);
 					BlockState checkedState = world.getBlockState(blockPos);
-					if(checkedState.isOf(BotDObjects.REINFORCED_BLOCK)){
-						if(checkedState.get(REINFORCED_TYPE) == ReinforcedBlock.ReinforcedType.DEEPSLATE_TILES){
+					if (checkedState.isOf(BotDObjects.REINFORCED_BLOCK)) {
+						if (checkedState.get(REINFORCED_TYPE) == ReinforcedBlock.ReinforcedType.DEEPSLATE_TILES) {
 							world.setBlockState(blockPos, Blocks.DEEPSLATE_TILES.getDefaultState());
-						}else if(checkedState.get(REINFORCED_TYPE) == ReinforcedBlock.ReinforcedType.SPRUCE_PLANKS){
+						} else if (checkedState.get(REINFORCED_TYPE) == ReinforcedBlock.ReinforcedType.SPRUCE_PLANKS) {
 							world.setBlockState(blockPos, Blocks.SPRUCE_PLANKS.getDefaultState());
 						}
 						consumeKey = true;

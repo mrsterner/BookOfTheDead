@@ -8,7 +8,7 @@ import static dev.sterner.book_of_the_dead.common.registry.BotDObjects.*;
 
 public class BotDItemGroupEvents {
 
-	public static void init(){
+	public static void init() {
 		ItemGroupEvents.modifyEntriesEvent(Constants.BOTD_GROUP).register(BotDItemGroupEvents::mainGroup);
 	}
 
