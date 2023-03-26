@@ -64,6 +64,7 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 	public static void tick(World world, BlockPos pos, BlockState blockState, NecroTableBlockEntity blockEntity) {
 		if (world != null && !world.isClient()) {
 			if (!blockEntity.loaded) {
+				blockEntity.reset(blockEntity);
 				blockEntity.markDirty();
 				blockEntity.loaded = true;
 			}
@@ -74,7 +75,7 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 
 				if (blockEntity.ritualRecipe == null || blockEntity.currentBasicNecrotableRitual == null) {
 					blockEntity.ritualRecipe = BotDRecipeTypes.getRiteRecipe(blockEntity);
-
+					blockEntity.markDirty();
 					if (blockEntity.ritualRecipe != null) {
 						if (blockEntity.checkValidSacrifices(blockEntity.ritualRecipe, world)) {
 							blockEntity.currentBasicNecrotableRitual = blockEntity.ritualRecipe.ritual;
@@ -91,6 +92,7 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 						blockEntity.currentBasicNecrotableRitual.onStopped(world, blockEntity.ritualPos, blockEntity);
 						blockEntity.reset(blockEntity);
 					}
+
 				} else {
 					blockEntity.reset(blockEntity);
 				}
@@ -98,9 +100,8 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 		}
 		if (world != null) {
 			if (blockEntity.shouldRun) {
-				if (world.isClient()) {
-					blockEntity.clientTime++;
-				}
+				blockEntity.clientTime++;
+				blockEntity.markDirty();
 			}
 		}
 	}
@@ -123,7 +124,7 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 	}
 
 	public ActionResult onUse(World world, BlockState state, BlockPos pos, PlayerEntity player, Hand hand) {
-		if (world != null && world.getBlockEntity(pos) instanceof NecroTableBlockEntity necroTableBlockEntity) {
+		if (world != null && world.getBlockEntity(pos) instanceof NecroTableBlockEntity necroTableBlockEntity && !shouldRun) {
 			if (player.getMainHandStack().isEmpty() && hand == Hand.MAIN_HAND) {
 				if (player.isSneaking()) {
 					if (necroTableBlockEntity.hasBotD) {
@@ -170,7 +171,7 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 		List<PedestalInfo> pairs = new ArrayList<>();
 		for (BlockPos pos : PEDESTAL_POS_LIST) {
 			if (world.getBlockState(pos).isOf(BotDObjects.PEDESTAL) && world.getBlockEntity(pos) instanceof PedestalBlockEntity pedestalBlockEntity) {
-				pairs.add(PedestalInfo.of(pedestalBlockEntity.getStack(), pos));
+				pairs.add(new PedestalInfo(pedestalBlockEntity.getStack(), pos));
 			}
 		}
 		return pairs;
@@ -209,6 +210,7 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 		blockEntity.timer = -20;
 		blockEntity.shouldRun = false;
 		blockEntity.pedestalToActivate.clear();
+		blockEntity.ritualRecipe = null;
 		blockEntity.markDirty();
 	}
 
@@ -244,7 +246,6 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 		this.clientTime = nbt.getInt(Constants.Nbt.CLIENT_TIMER);
 		this.age = nbt.getLong(Constants.Nbt.AGE);
 		this.shouldRun = nbt.getBoolean(Constants.Nbt.SHOULD_RUN);
-
 		markDirty();
 	}
 

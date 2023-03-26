@@ -61,7 +61,7 @@ public interface BotDRecipeTypes {
 		}
 		return world.getRecipeManager().listAllOfType(RITUAL_RECIPE_TYPE).stream()
 				.filter(r -> RecipeUtils.containsAllIngredients(r.inputs.stream()
-						.filter(ingredient -> !ingredient.isEmpty()).collect(Collectors.toList()), ritualBlockEntity.getPedestalInfo(world).stream().map(PedestalInfo::getStack).toList()))
+						.filter(ingredient -> !ingredient.isEmpty()).collect(Collectors.toList()), ritualBlockEntity.getPedestalInfo(world).stream().map(PedestalInfo::stack).toList()))
 				.findFirst().orElse(null);
 	}
 

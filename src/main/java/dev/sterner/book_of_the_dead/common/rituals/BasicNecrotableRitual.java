@@ -46,7 +46,6 @@ public class BasicNecrotableRitual implements IRitual {
 	public boolean canCollectPedestals = true;
 	public int ticker = 0;
 	public UUID userUuid = null;
-	public int height = 0;
 	private boolean lockTick = false;
 	public DefaultedList<Integer> contract = DefaultedList.ofSize(8, 0);
 
@@ -190,11 +189,11 @@ public class BasicNecrotableRitual implements IRitual {
 
 
 		if (blockEntity.pedestalToActivate.isEmpty() && canCollectPedestals){
-			List<PedestalInfo> infoStream = blockEntity.getPedestalInfo(world).stream().filter(itemStackBlockPosPair -> !itemStackBlockPosPair.getStack().isEmpty()).toList();
+			List<PedestalInfo> infoStream = blockEntity.getPedestalInfo(world).stream().filter(itemStackBlockPosPair -> !itemStackBlockPosPair.stack().isEmpty()).toList();
 			for (PedestalInfo info : infoStream) {
 				for (Ingredient ingredient : blockEntity.ritualRecipe.inputs) {
-					if (ingredient.test(info.getStack())) {
-						BlockPos checkPos = info.getBlockPos();
+					if (ingredient.test(info.stack())) {
+						BlockPos checkPos = info.pos();
 						if (world.getBlockEntity(checkPos) instanceof PedestalBlockEntity) {
 							blockEntity.pedestalToActivate.add(info);
 						}
@@ -206,7 +205,7 @@ public class BasicNecrotableRitual implements IRitual {
 			generateFX(blockEntity, world, blockPos.getX(), blockPos.getY(), blockPos.getY());
 			generatePedestalParticleBeam(blockEntity, world, blockEntity.pedestalToActivate.get(0));
 			if(pedestalTicker > 20 * 4){
-				if(world.getBlockEntity(blockEntity.pedestalToActivate.get(0).getBlockPos()) instanceof PedestalBlockEntity pedestalBlockEntity){
+				if(world.getBlockEntity(blockEntity.pedestalToActivate.get(0).pos()) instanceof PedestalBlockEntity pedestalBlockEntity){
 					pedestalBlockEntity.setStack(ItemStack.EMPTY);
 					pedestalBlockEntity.markDirty();
 				}
@@ -222,19 +221,19 @@ public class BasicNecrotableRitual implements IRitual {
 	}
 
 	private void generatePedestalParticleBeam(NecroTableBlockEntity blockEntity, World world, PedestalInfo next) {
-		BlockPos pos = next.getBlockPos();
+		BlockPos pos = next.pos();
 		Vec3d blockPosInD = new Vec3d(blockEntity.ritualPos.getX(), blockEntity.ritualPos.getY(), blockEntity.ritualPos.getZ());
-		Vec3d b = blockPosInD.subtract(new Vec3d(pos.getX(), pos.getY(), pos.getZ())).add(0.5,0.5,0.5);
+		Vec3d b = blockPosInD.subtract(new Vec3d(pos.getX(), pos.getY(), pos.getZ()));
 		Vec3d directionVector = new Vec3d(b.getX(), b.getY(), b.getZ());
 
 		double x = pos.getX() + (world.random.nextDouble() * 0.2D) + 0.4D;
 		double y = pos.getY() + (world.random.nextDouble() * 0.2D) + 1.2D;
 		double z = pos.getZ() + (world.random.nextDouble() * 0.2D) + 0.4D;
-		if (world instanceof ServerWorld serverWorld && !next.getStack().isEmpty()) {
+		if (world instanceof ServerWorld serverWorld && !next.stack().isEmpty()) {
 			serverWorld.spawnParticles(
 					new ItemStackBeamParticleEffect(
 							BotDParticleTypes.ITEM_BEAM_PARTICLE,
-							next.getStack(),
+							next.stack(),
 							10),
 					x, y, z, 0, directionVector.x, directionVector.y, directionVector.z, 0.10D);
 		}
@@ -337,8 +336,8 @@ public class BasicNecrotableRitual implements IRitual {
 	private void runCommand(World world, NecroTableBlockEntity blockEntity, BlockPos blockPos, String phase) {
 		MinecraftServer minecraftServer = world.getServer();
 		for (CommandType commandType : blockEntity.ritualRecipe.command) {
-			if (commandType.type.equals(phase)) {
-				runCommand(minecraftServer, blockPos, commandType.command);
+			if (commandType.type().equals(phase)) {
+				runCommand(minecraftServer, blockPos, commandType.command());
 			}
 		}
 	}

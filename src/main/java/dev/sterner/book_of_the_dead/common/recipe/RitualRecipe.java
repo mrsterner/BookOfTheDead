@@ -281,8 +281,8 @@ public class RitualRecipe implements IRecipe {
 			//Commands
 			buf.writeVarInt(recipe.command.size());
 			for (CommandType commandType : recipe.command) {
-				buf.writeString(commandType.getCommand());
-				buf.writeString(commandType.getType());
+				buf.writeString(commandType.command());
+				buf.writeString(commandType.type());
 			}
 		}
 

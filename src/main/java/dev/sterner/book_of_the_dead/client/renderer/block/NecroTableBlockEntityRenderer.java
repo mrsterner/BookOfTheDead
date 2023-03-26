@@ -1,5 +1,6 @@
 package dev.sterner.book_of_the_dead.client.renderer.block;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import dev.sterner.book_of_the_dead.BotDClient;
@@ -24,27 +25,27 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import org.joml.Matrix4f;
+import org.lwjgl.opengl.GL11;
+import org.quiltmc.loader.api.minecraft.ClientOnly;
 
+@ClientOnly
 public class NecroTableBlockEntityRenderer<T extends BlockEntity> implements BlockEntityRenderer<T> {
 	public static final EntityModelLayer LAYER_LOCATION = new EntityModelLayer(Constants.id("necro_model"), "main");
 	private final Identifier TEXTURE = Constants.id("textures/entity/necro_table.png");
-
 	private float alpha = 0;
-
 	private final ModelPart base;
 	private final ModelPart book;
 	private final ModelPart candle;
 	private final ModelPart slate;
 	private final ModelPart cruse;
 	private final ModelPart paper;
-	private final ModelPart cicle;
 	private final ModelPart ink;
 	private final ModelPart tablet;
 
 	@Override
 	public void render(T entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
 		World world = entity.getWorld();
-		if (world != null) {
+		if (world != null && world.isClient) {
 			BlockState blockState = entity.getCachedState();
 			if (entity instanceof NecroTableBlockEntity necroTableBlockEntity) {
 
@@ -78,19 +79,7 @@ public class NecroTableBlockEntityRenderer<T extends BlockEntity> implements Blo
 				render(matrices, vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(TEXTURE)), light, overlay);
 				matrices.pop();
 
-				if (necroTableBlockEntity.shouldRun) {
-					alpha = ((float) necroTableBlockEntity.clientTime + tickDelta - 1.0F) / 20.0F * 1.6F;
-					alpha = MathHelper.sqrt(alpha);
-					if (alpha > 1.0F) {
-						alpha = 1.0F;
-					}
-				} else {
-					if (alpha < 0.02) {
-						alpha = 0;
-					} else {
-						alpha = alpha - 0.01f;
-					}
-				}
+
 				matrices.push();
 				matrices.translate(0.5, 0.15, 0.5);
 
@@ -108,20 +97,31 @@ public class NecroTableBlockEntityRenderer<T extends BlockEntity> implements Blo
 				matrices.multiply(Axis.X_POSITIVE.rotationDegrees(MathHelper.cos(deg) / (float) Math.PI));
 				matrices.multiply(Axis.Y_POSITIVE.rotationDegrees(entity.getCachedState().get(HorizontalFacingBlock.FACING).asRotation()));
 
+				if(necroTableBlockEntity.shouldRun){
+					alpha = ((float)necroTableBlockEntity.clientTime + tickDelta - 1.0F) / 20.0F * 1.6F;
+					alpha = MathHelper.sqrt(alpha);
+					if (alpha > 1.0F) {
+						alpha = 1.0F;
+					}
+				}else{
+					if(alpha < 0.02){
+						alpha = 0;
+					}else {
+						alpha = alpha - 0.01f;
+					}
+				}
+
 				Matrix4f mat = matrices.peek().getModel();
 				RitualRecipe recipe = necroTableBlockEntity.ritualRecipe;
 				Identifier texture;
-				if (recipe == null) {
-					texture = Constants.id("textures/misc/circle_necromancy.png");
-				} else {
+				if(recipe != null){
 					texture = recipe.texture;
+					VertexConsumer vertexConsumer = vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(texture));
+					vertexConsumer.vertex(mat, -2.5F, 0, 2.5F).color(1f, 1f, 1f, alpha).uv(0, 1).overlay(overlay).light(light).normal(0, 1, 0).next();
+					vertexConsumer.vertex(mat, 2.5F, 0, 2.5F).color(1f, 1f, 1f, alpha).uv(1, 1).overlay(overlay).light(light).normal(0, 1, 0).next();
+					vertexConsumer.vertex(mat, 2.5F, 0, -2.5F).color(1f, 1f, 1f, alpha).uv(1, 0).overlay(overlay).light(light).normal(0, 1, 0).next();
+					vertexConsumer.vertex(mat, -2.5F, 0, -2.5F).color(1f, 1f, 1f, alpha).uv(0, 0).overlay(overlay).light(light).normal(0, 1, 0).next();
 				}
-				VertexConsumer vertexConsumer = vertexConsumers.getBuffer(BotDRenderLayer.GLOWING_LAYER.apply(texture));
-				RenderSystem.setShaderTexture(0, texture);
-				vertexConsumer.vertex(mat, -2.5F, 0, 2.5F).color(255, 255, 255, 255).uv(0, 1).overlay(overlay).light(light).normal(0, 1, 0).next();//TODO replace 255 with alpha
-				vertexConsumer.vertex(mat, 2.5F, 0, 2.5F).color(255, 255, 255, 255).uv(1, 1).overlay(overlay).light(light).normal(0, 1, 0).next();
-				vertexConsumer.vertex(mat, 2.5F, 0, -2.5F).color(255, 255, 255, 255).uv(1, 0).overlay(overlay).light(light).normal(0, 1, 0).next();
-				vertexConsumer.vertex(mat, -2.5F, 0, -2.5F).color(255, 255, 255, 255).uv(0, 0).overlay(overlay).light(light).normal(0, 1, 0).next();
 
 				matrices.pop();
 			}
@@ -145,7 +145,6 @@ public class NecroTableBlockEntityRenderer<T extends BlockEntity> implements Blo
 		book.render(matrixStack, vertexConsumer, packedLight, packedOverlay, 1, 1, 1, 1);
 	}
 
-
 	public NecroTableBlockEntityRenderer(BlockEntityRendererFactory.Context ctx) {
 		ModelPart modelPart = ctx.getLayerModelPart(LAYER_LOCATION);
 		this.base = modelPart.getChild("base");
@@ -154,7 +153,6 @@ public class NecroTableBlockEntityRenderer<T extends BlockEntity> implements Blo
 		this.slate = modelPart.getChild("slate");
 		this.cruse = modelPart.getChild("cruse");
 		this.paper = modelPart.getChild("paper");
-		this.cicle = modelPart.getChild("cicle");
 		this.ink = modelPart.getChild("ink");
 		this.tablet = modelPart.getChild("tablet");
 	}
@@ -177,9 +175,6 @@ public class NecroTableBlockEntityRenderer<T extends BlockEntity> implements Blo
 		ModelPartData paper = ModelPartData.addChild("paper", ModelPartBuilder.create().uv(64, 75).cuboid(-11.5F, -16.5F, -8.8F, 4.0F, 1.0F, 6.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, 24.0F, 0.0F));
 		ModelPartData cube_r1 = paper.addChild("cube_r1", ModelPartBuilder.create().uv(64, 68).cuboid(0.0F, -0.5F, -2.0F, 4.0F, 1.0F, 6.0F, new Dilation(0.0F)), ModelTransform.of(-6.5F, -16.0F, -5.8F, 0.0F, 0.3054F, 0.0F));
 		ModelPartData cube_r2 = paper.addChild("cube_r2", ModelPartBuilder.create().uv(64, 68).cuboid(-2.0F, -0.5F, -2.7F, 4.0F, 1.0F, 6.0F, new Dilation(0.0F)), ModelTransform.of(-7.5F, -15.8F, -4.8F, 0.0F, 0.0873F, 0.0F));
-		ModelPartData cicle = ModelPartData.addChild("cicle", ModelPartBuilder.create(), ModelTransform.pivot(0.0F, 19.0F, 0.0F));
-		ModelPartData small = cicle.addChild("small", ModelPartBuilder.create().uv(82, 110).cuboid(-13.0F, -23.0F, -1.0F, 10.0F, 0.0F, 10.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, 0.0F, 0.0F));
-		ModelPartData big = cicle.addChild("big", ModelPartBuilder.create().uv(62, 89).cuboid(-16.0F, -20.0F, -4.0F, 16.0F, 0.0F, 16.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, 0.0F, 0.0F));
 		ModelPartData ink = ModelPartData.addChild("ink", ModelPartBuilder.create().uv(80, 61).cuboid(1.0F, -19.0F, -8.0F, 3.0F, 3.0F, 3.0F, new Dilation(0.0F)).uv(90, 65).cuboid(1.5F, -20.0F, -7.5F, 2.0F, 1.0F, 2.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, 24.0F, 0.0F));
 		ModelPartData cube_r3 = ink.addChild("cube_r3", ModelPartBuilder.create().uv(98, 60).cuboid(-0.5F, -2.5F, 0.0F, 7.0F, 5.0F, 0.0F, new Dilation(0.0F)), ModelTransform.of(2.5F, -22.5F, -6.5F, 0.0F, -0.4363F, 0.0F));
 		ModelPartData tablet = ModelPartData.addChild("tablet", ModelPartBuilder.create(), ModelTransform.pivot(0.0F, 24.0F, 0.0F));
@@ -187,6 +182,4 @@ public class NecroTableBlockEntityRenderer<T extends BlockEntity> implements Blo
 
 		return TexturedModelData.of(meshdefinition, 128, 128);
 	}
-
-
 }

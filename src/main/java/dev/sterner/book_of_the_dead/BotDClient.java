@@ -88,6 +88,7 @@ public class BotDClient implements ClientModInitializer {
 		EntityModelLayerRegistry.registerModelLayer(BrainBlockEntityRenderer.LAYER_LOCATION, BrainBlockEntityRenderer::getTexturedModelData);
 		EntityModelLayerRegistry.registerModelLayer(KakuzuEntityModel.LAYER_LOCATION, KakuzuEntityModel::getTexturedModelData);
 		EntityModelLayerRegistry.registerModelLayer(KakuzuLivingEntityModel.LAYER_LOCATION, KakuzuLivingEntityModel::getTexturedModelData);
+		EntityModelLayerRegistry.registerModelLayer(CircleEntityModel.LAYER_LOCATION, CircleEntityModel::getTexturedModelData);
 
 		ModelPredicateProviderRegistry.register(BotDObjects.CONTRACT, new Identifier("signed"), (itemStack, clientWorld, livingEntity, i) -> livingEntity == null ? 0 : itemStack.hasNbt() && itemStack.getOrCreateNbt().contains(Constants.Nbt.CONTRACT) ? 1.0F : 0.0F);
 		ModelPredicateProviderRegistry.register(BotDObjects.SYRINGE, new Identifier("filled"), (itemStack, clientWorld, livingEntity, i) -> livingEntity == null ? 0 : itemStack.hasNbt() && itemStack.getOrCreateNbt().contains(Constants.Nbt.STATUS_EFFECT_INSTANCE) ? 1.0F : 0.0F);
