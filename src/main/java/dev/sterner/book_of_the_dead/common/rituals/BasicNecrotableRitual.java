@@ -11,6 +11,7 @@ import dev.sterner.book_of_the_dead.common.block.entity.PedestalBlockEntity;
 import dev.sterner.book_of_the_dead.common.component.BotDComponents;
 import dev.sterner.book_of_the_dead.common.component.LivingEntityDataComponent;
 import dev.sterner.book_of_the_dead.common.registry.BotDParticleTypes;
+import dev.sterner.book_of_the_dead.common.registry.BotDSoundEvents;
 import dev.sterner.book_of_the_dead.common.registry.BotDStatusEffects;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -41,7 +42,6 @@ import java.util.*;
 
 public class BasicNecrotableRitual implements IRitual {
 	private final Identifier id;
-	public Vec3d ritualCenter = null;
 	public int pedestalTicker = 0;
 	public boolean canCollectPedestals = true;
 	public int ticker = 0;
@@ -202,7 +202,12 @@ public class BasicNecrotableRitual implements IRitual {
 			}
 		} else if (!blockEntity.pedestalToActivate.isEmpty()){
 			pedestalTicker++;
-			generateFX(blockEntity, world, blockPos.getX(), blockPos.getY(), blockPos.getY());
+			if(world instanceof ServerWorld serverWorld) {
+				this.generateFX(serverWorld, blockEntity, blockPos.getX() + 0.5, blockPos.getY() + 0.5, blockPos.getZ() + 0.5);
+			}
+			if(pedestalTicker == 1) {
+				world.playSound(null, blockEntity.pedestalToActivate.get(0).pos().getX(), blockEntity.pedestalToActivate.get(0).pos().getY(), blockEntity.pedestalToActivate.get(0).pos().getZ(), BotDSoundEvents.MISC_ITEM_BEAM, SoundCategory.BLOCKS, 0.5f, 0.75f * world.random.nextFloat() / 2);
+			}
 			generatePedestalParticleBeam(blockEntity, world, blockEntity.pedestalToActivate.get(0));
 			if(pedestalTicker > 20 * 4){
 				if(world.getBlockEntity(blockEntity.pedestalToActivate.get(0).pos()) instanceof PedestalBlockEntity pedestalBlockEntity){
@@ -220,20 +225,20 @@ public class BasicNecrotableRitual implements IRitual {
 		return false;
 	}
 
-	private void generatePedestalParticleBeam(NecroTableBlockEntity blockEntity, World world, PedestalInfo next) {
-		BlockPos pos = next.pos();
-		Vec3d blockPosInD = new Vec3d(blockEntity.ritualPos.getX(), blockEntity.ritualPos.getY(), blockEntity.ritualPos.getZ());
+	private void generatePedestalParticleBeam(NecroTableBlockEntity blockEntity, World world, PedestalInfo pedestalInfo) {
+		BlockPos pos = pedestalInfo.pos();
+		Vec3d blockPosInD = new Vec3d(blockEntity.ritualPos.getX(), blockEntity.ritualPos.getY() - 1.0, blockEntity.ritualPos.getZ());
 		Vec3d b = blockPosInD.subtract(new Vec3d(pos.getX(), pos.getY(), pos.getZ()));
 		Vec3d directionVector = new Vec3d(b.getX(), b.getY(), b.getZ());
 
 		double x = pos.getX() + (world.random.nextDouble() * 0.2D) + 0.4D;
 		double y = pos.getY() + (world.random.nextDouble() * 0.2D) + 1.2D;
 		double z = pos.getZ() + (world.random.nextDouble() * 0.2D) + 0.4D;
-		if (world instanceof ServerWorld serverWorld && !next.stack().isEmpty()) {
+		if (world instanceof ServerWorld serverWorld && !pedestalInfo.stack().isEmpty()) {
 			serverWorld.spawnParticles(
 					new ItemStackBeamParticleEffect(
 							BotDParticleTypes.ITEM_BEAM_PARTICLE,
-							next.stack(),
+							pedestalInfo.stack(),
 							10),
 					x, y, z, 0, directionVector.x, directionVector.y, directionVector.z, 0.10D);
 		}
@@ -263,7 +268,7 @@ public class BasicNecrotableRitual implements IRitual {
 				LivingEntity foundEntity = getClosestEntity(livingEntityList, entityType, blockPos);
 				if (foundEntity != null) {
 					LivingEntityDataComponent livingEntityDataComponent = BotDComponents.LIVING_COMPONENT.get(foundEntity);
-					livingEntityDataComponent.setRitualPos(ritualCenter);
+					livingEntityDataComponent.setRitualPos(new Vec3d(blockPos.getX(), blockPos.getY(), blockPos.getZ()));
 					foundEntity.addStatusEffect(new StatusEffectInstance(BotDStatusEffects.SOUL_SIPHON, 20 * 3));
 				}
 			}
@@ -296,33 +301,30 @@ public class BasicNecrotableRitual implements IRitual {
 	/**
 	 * Handles the output items sound and particle effect
 	 *
-	 * @param world world
+	 * @param serverWorld serverWorld
 	 * @param x           coordinate for sound and particle
 	 * @param y           coordinate for sound and particle
 	 * @param z           coordinate for sound and particle
 	 */
-	private void generateFX(NecroTableBlockEntity blockEntity, World world, double x, double y, double z) {
-		if(world instanceof ServerWorld serverWorld){
-			if (ticker % 5 == 0 && ticker < blockEntity.ritualRecipe.getDuration() - 40) {
-				serverWorld.playSound(null, x, y, z, SoundEvents.BLOCK_CAMPFIRE_CRACKLE, SoundCategory.BLOCKS, 10, 0.5f);
-			}
-			if (blockEntity.ritualRecipe.outputs != null) {
-				for (ItemStack output : blockEntity.ritualRecipe.outputs) {
-					for (int i = 0; i < blockEntity.ritualRecipe.outputs.size() * 2; i++) {
-						serverWorld.spawnParticles(new ItemStackParticleEffect(ParticleTypes.ITEM, output),
-								x + ((serverWorld.random.nextDouble() / 2) - 0.25),
-								y + ((serverWorld.random.nextDouble() / 2) - 0.25),
-								z + ((serverWorld.random.nextDouble() / 2) - 0.25),
-								0,
-								1 * ((serverWorld.random.nextDouble() / 2) - 0.25),
-								1 * ((serverWorld.random.nextDouble() / 2) - 0.25),
-								1 * ((serverWorld.random.nextDouble() / 2) - 0.25),
-								0);
-					}
+	private void generateFX(ServerWorld serverWorld, NecroTableBlockEntity blockEntity, double x, double y, double z) {
+		if(ticker % 5 == 0 && ticker < blockEntity.ritualRecipe.getDuration() - 40){
+			serverWorld.playSound(null, x,y,z, SoundEvents.BLOCK_CAMPFIRE_CRACKLE, SoundCategory.BLOCKS, 10,0.5f);
+		}
+		if (blockEntity.ritualRecipe.outputs != null) {
+			for(ItemStack output : blockEntity.ritualRecipe.outputs){
+				for (int i = 0; i < blockEntity.ritualRecipe.outputs.size() * 2; i++) {
+					serverWorld.spawnParticles(new ItemStackParticleEffect(ParticleTypes.ITEM, output),
+							x + ((serverWorld.random.nextDouble() / 2) - 0.25),
+							y + ((serverWorld.random.nextDouble() / 2) - 0.25),
+							z + ((serverWorld.random.nextDouble() / 2) - 0.25),
+							0,
+							1 * ((serverWorld.random.nextDouble() / 2) - 0.25),
+							1 * ((serverWorld.random.nextDouble() / 2) - 0.25),
+							1 * ((serverWorld.random.nextDouble() / 2) - 0.25),
+							0);
 				}
 			}
 		}
-
 	}
 
 	/**

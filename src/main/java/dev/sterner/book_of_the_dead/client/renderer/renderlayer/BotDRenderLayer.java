@@ -45,17 +45,34 @@ public class BotDRenderLayer extends RenderLayer {
 		}
 	}
 
+	/*
+	private static final BiFunction<Identifier, Boolean, RenderLayer> ENTITY_TRANSLUCENT = Util.memoize(
+		(BiFunction)((texture, affectsOutline) -> {
+			RenderLayer.MultiPhaseParameters multiPhaseParameters = RenderLayer.MultiPhaseParameters.builder()
+				.shader(ENTITY_TRANSLUCENT_SHADER)
+				.texture(new RenderPhase.Texture(texture, false, false))
+				.transparency(TRANSLUCENT_TRANSPARENCY)
+				.cull(DISABLE_CULLING)
+				.lightmap(ENABLE_LIGHTMAP)
+				.overlay(ENABLE_OVERLAY_COLOR)
+				.build(affectsOutline);
+			return of(
+				"entity_translucent", VertexFormats.POSITION_COLOR_TEXTURE_OVERLAY_LIGHT_NORMAL, VertexFormat.DrawMode.QUADS, 256, true, true, multiPhaseParameters
+			);
+		})
+	);
+	 */
+
 	public static final Function<Identifier, RenderLayer> GLOWING_LAYER = Util.memoize(texture -> {
 		MultiPhaseParameters multiPhaseParameters = MultiPhaseParameters.builder()
 				.texture(new RenderPhase.Texture(texture, false, false))
-				.transparency(Transparency.ADDITIVE_TRANSPARENCY)
+				.transparency(TRANSLUCENT_TRANSPARENCY)
 				.cull(DISABLE_CULLING)
 				.lightmap(ENABLE_LIGHTMAP)
-				.overlay(DISABLE_OVERLAY_COLOR)
-				.layering(VIEW_OFFSET_Z_LAYERING)
+				.overlay(ENABLE_OVERLAY_COLOR)
 				.shader(ENERGY_SWIRL_SHADER)
 				.build(true);
-		return RenderLayer.of("glowing_layer", VertexFormats.POSITION_COLOR_TEXTURE_OVERLAY_LIGHT_NORMAL, VertexFormat.DrawMode.QUADS, 256, false, false, multiPhaseParameters);
+		return RenderLayer.of("glowing_layer", VertexFormats.POSITION_COLOR_TEXTURE_OVERLAY_LIGHT_NORMAL, VertexFormat.DrawMode.QUADS, 256, true, true, multiPhaseParameters);
 	});
 
 	private static RenderLayer buildGlintRenderLayer() {

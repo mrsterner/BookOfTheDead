@@ -81,6 +81,9 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 							blockEntity.currentBasicNecrotableRitual = blockEntity.ritualRecipe.ritual;
 						}
 					}
+					if(blockEntity.ritualRecipe == null){
+						blockEntity.reset(blockEntity);
+					}
 
 				} else if (blockEntity.checkTier(blockEntity)) {
 					int craftingTime = blockEntity.ritualRecipe.inputs.stream().filter(ingredient -> !ingredient.isEmpty()).toList().size() * 20 * 4 + 20 * 2;
@@ -211,6 +214,7 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 		blockEntity.shouldRun = false;
 		blockEntity.pedestalToActivate.clear();
 		blockEntity.ritualRecipe = null;
+		blockEntity.clientTime = 0;
 		blockEntity.markDirty();
 	}
 
