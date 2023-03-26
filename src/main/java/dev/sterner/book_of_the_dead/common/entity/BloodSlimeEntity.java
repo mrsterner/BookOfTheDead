@@ -152,7 +152,7 @@ public class BloodSlimeEntity extends MobEntity implements Monster {
 	@Override
 	protected void jump() {
 		Vec3d vec3d = this.getVelocity();
-		this.setVelocity(vec3d.x, (double)this.getJumpVelocity(), vec3d.z);
+		this.setVelocity(vec3d.x, this.getJumpVelocity(), vec3d.z);
 		this.velocityDirty = true;
 	}
 

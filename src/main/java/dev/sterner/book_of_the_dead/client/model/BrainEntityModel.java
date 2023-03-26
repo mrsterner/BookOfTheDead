@@ -4,10 +4,8 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.client.model.*;
 import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.entity.model.EntityModel;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.Entity;
 
 public class BrainEntityModel extends Model {
 

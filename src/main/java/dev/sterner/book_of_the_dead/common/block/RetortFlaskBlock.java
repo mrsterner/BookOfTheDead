@@ -1,7 +1,6 @@
 package dev.sterner.book_of_the_dead.common.block;
 
 import dev.sterner.book_of_the_dead.common.block.entity.RetortFlaskBlockEntity;
-import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;

@@ -43,7 +43,6 @@ public class JarBlockEntityRenderer implements BlockEntityRenderer<JarBlockEntit
 	private final BrainEntityModel brainEntityModel = new BrainEntityModel(BrainEntityModel.createBodyLayer().createModel());
 
 	private final Identifier TEXTURE = Constants.id("textures/block/jar.png");
-	private final Identifier TEXTURE_ITEM = Constants.id("textures/block/jar_item.png");
 
 
 
@@ -106,7 +105,7 @@ public class JarBlockEntityRenderer implements BlockEntityRenderer<JarBlockEntit
 
 		matrices.push();
 		matrices.multiply(Axis.Z_POSITIVE.rotationDegrees(180));
-		VertexConsumer vertexConsumer = ItemRenderer.getItemGlintConsumer(vertexConsumers, jarEntityModel.getLayer(TEXTURE_ITEM), false, stack.hasGlint());
+		VertexConsumer vertexConsumer = ItemRenderer.getItemGlintConsumer(vertexConsumers, jarEntityModel.getLayer(TEXTURE), false, stack.hasGlint());
 		jarEntityModel.render(matrices, vertexConsumer, light, overlay, 1, 1, 1, 1);
 		matrices.pop();
 	}

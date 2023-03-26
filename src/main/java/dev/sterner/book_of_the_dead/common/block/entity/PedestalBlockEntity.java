@@ -17,7 +17,7 @@ import net.minecraft.world.World;
 
 public class PedestalBlockEntity extends BaseBlockEntity {
 	private ItemStack stack;
-	private boolean loaded = false;
+	private final boolean loaded = false;
 	private boolean crafting;
 	private boolean craftingFinished;
 	public Vec3d ritualCenter;

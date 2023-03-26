@@ -66,6 +66,6 @@ public class BotDSkullBlock extends AbstractBotDSkullBlock {
 	}
 
 	public enum Type implements BotDSkullBlock.BotDType {
-		VILLAGER;
-	}
+		VILLAGER
+    }
 }

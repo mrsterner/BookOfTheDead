@@ -24,23 +24,23 @@ public interface IHauler {
 
 	default boolean getHeadVisible(){
 		return true;
-	};
+	}
 
 	default boolean getRArmVisible(){
 		return true;
-	};
+	}
 
 	default boolean getLArmVisible(){
 		return true;
-	};
+	}
 
 	default boolean getRLegVisible(){
 		return true;
-	};
+	}
 
 	default boolean getLLegVisible(){
 		return true;
-	};
+	}
 
 	void setHeadVisible(boolean visible);
 
@@ -58,5 +58,5 @@ public interface IHauler {
 		setLLegVisible(true);
 		setRArmVisible(true);
 		setRLegVisible(true);
-	};
+	}
 }

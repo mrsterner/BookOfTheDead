@@ -44,7 +44,7 @@ public class BloodDripParticle extends SpriteBillboardParticle {
 		this.prevPosZ = this.z;
 		this.updateAge();
 		if (!this.dead) {
-			this.velocityY -= (double)this.gravityStrength;
+			this.velocityY -= this.gravityStrength;
 			this.move(this.velocityX, this.velocityY, this.velocityZ);
 			this.updateVelocity();
 			if (!this.dead) {
