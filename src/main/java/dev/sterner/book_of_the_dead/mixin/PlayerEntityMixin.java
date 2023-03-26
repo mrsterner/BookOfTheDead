@@ -77,7 +77,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IHauler 
 
 	@Inject(method = "applyDamage", at = @At("HEAD"), cancellable = true)
 	protected void book_of_the_dead$morphine(DamageSource source, float amount, CallbackInfo callbackInfo) {
-		PlayerEntity player = (PlayerEntity) (Object) this;
+		PlayerEntity player = PlayerEntity.class.cast(this);
 		if (player.hasStatusEffect(BotDStatusEffects.MORPHINE) && amount > 0.1f) {
 			if (!player.isInvulnerableTo(source)) {
 				LivingEntityDataComponent component = BotDComponents.LIVING_COMPONENT.get(player);

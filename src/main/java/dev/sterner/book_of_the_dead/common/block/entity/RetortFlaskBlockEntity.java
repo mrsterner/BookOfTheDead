@@ -7,6 +7,7 @@ import dev.sterner.book_of_the_dead.common.recipe.RetortRecipe;
 import dev.sterner.book_of_the_dead.common.registry.BotDBlockEntityTypes;
 import dev.sterner.book_of_the_dead.common.registry.BotDRecipeTypes;
 import dev.sterner.book_of_the_dead.common.util.BotDUtils;
+import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
@@ -121,22 +122,22 @@ public class RetortFlaskBlockEntity extends BaseBlockEntity implements IBlockEnt
 	public void readNbt(NbtCompound nbt) {
 		super.readNbt(nbt);
 		Inventories.readNbt(nbt, inventory);
-		if (nbt.contains("Color")) {
-			color = nbt.getInt("Color");
+		if (nbt.contains(Constants.Nbt.COLOR)) {
+			color = nbt.getInt(Constants.Nbt.COLOR);
 		}
-		heatTimer = nbt.getInt("HeatTimer");
-		progress = nbt.getInt("Progress");
-		hasLiquid = nbt.getBoolean("HasLiquid");
+		heatTimer = nbt.getInt(Constants.Nbt.HEAT_TIMER);
+		progress = nbt.getInt(Constants.Nbt.PROGRESS);
+		hasLiquid = nbt.getBoolean(Constants.Nbt.HAS_LIQUID);
 	}
 
 	@Override
 	protected void writeNbt(NbtCompound nbt) {
 		super.writeNbt(nbt);
 		Inventories.writeNbt(nbt, inventory);
-		nbt.putInt("Color", color);
-		nbt.putInt("HeatTimer", heatTimer);
-		nbt.putInt("Progress", progress);
-		nbt.putBoolean("HasLiquid", hasLiquid);
+		nbt.putInt(Constants.Nbt.COLOR, color);
+		nbt.putInt(Constants.Nbt.HEAT_TIMER, heatTimer);
+		nbt.putInt(Constants.Nbt.PROGRESS, progress);
+		nbt.putBoolean(Constants.Nbt.HAS_LIQUID, hasLiquid);
 	}
 
 	public void setColor(int color) {

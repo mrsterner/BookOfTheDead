@@ -1,6 +1,7 @@
 package dev.sterner.book_of_the_dead.common.entity;
 
 import com.mojang.authlib.GameProfile;
+import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
@@ -30,15 +31,15 @@ public class PlayerCorpseEntity extends MobEntity {
 		if (getSkinProfile() != null) {
 			NbtCompound nbtCompound = new NbtCompound();
 			NbtHelper.writeGameProfile(nbtCompound, this.getSkinProfile());
-			nbt.put("SkinProfile", nbtCompound);
+			nbt.put(Constants.Nbt.SKIN_PROFILE, nbtCompound);
 		}
 	}
 
 	@Override
 	public void readCustomDataFromNbt(NbtCompound nbt) {
 		super.readCustomDataFromNbt(nbt);
-		if (nbt.contains("SkinProfile", NbtElement.COMPOUND_TYPE)) {
-			this.setSkinProfile(NbtHelper.toGameProfile(nbt.getCompound("SkinProfile")));
+		if (nbt.contains(Constants.Nbt.SKIN_PROFILE, NbtElement.COMPOUND_TYPE)) {
+			this.setSkinProfile(NbtHelper.toGameProfile(nbt.getCompound(Constants.Nbt.SKIN_PROFILE)));
 		}
 	}
 

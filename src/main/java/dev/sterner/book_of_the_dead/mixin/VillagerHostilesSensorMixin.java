@@ -25,7 +25,6 @@ public class VillagerHostilesSensorMixin {
 		}
 	}
 
-
 	@Inject(method = "isCloseEnoughForDanger", at = @At("HEAD"), cancellable = true)
 	private void book_of_the_dead$getNearestHostile(LivingEntity villager, LivingEntity target, CallbackInfoReturnable<Boolean> cir) {
 		if (target instanceof PlayerEntity player && ((VillagerEntity) villager).getReputation(player) < -100) {

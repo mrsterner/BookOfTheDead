@@ -7,18 +7,18 @@ import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.world.World;
 
-public class BotDDamageTypes {
-	public static final RegistryKey<DamageType> SANGUINE = register("sanguine");
-	public static final RegistryKey<DamageType> SACRIFICE = register("sacrifice");
+public interface BotDDamageTypes {
+	RegistryKey<DamageType> SANGUINE = register("sanguine");
+	RegistryKey<DamageType> SACRIFICE = register("sacrifice");
 
-	public static RegistryKey<DamageType> register(String name) {
+	static RegistryKey<DamageType> register(String name) {
 		return RegistryKey.of(RegistryKeys.DAMAGE_TYPE, Constants.id(name));
 	}
 
-	public static DamageSource getDamageSource(World world, RegistryKey<DamageType> type) {
+	static DamageSource getDamageSource(World world, RegistryKey<DamageType> type) {
 		return new DamageSource(world.getRegistryManager().get(RegistryKeys.DAMAGE_TYPE).getHolderOrThrow(type));
 	}
 
-	public static void init() {
+	static void init() {
 	}
 }

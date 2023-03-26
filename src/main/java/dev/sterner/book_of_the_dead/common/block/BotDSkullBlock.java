@@ -27,7 +27,7 @@ public class BotDSkullBlock extends AbstractBotDSkullBlock {
 
 	public BotDSkullBlock(BotDSkullBlock.Type skullType, AbstractBlock.Settings settings) {
 		super(skullType, settings);
-		this.setDefaultState(this.stateManager.getDefaultState().with(ROTATION, Integer.valueOf(0)));
+		this.setDefaultState(this.stateManager.getDefaultState().with(ROTATION, 0));
 	}
 
 	@Override
@@ -42,17 +42,17 @@ public class BotDSkullBlock extends AbstractBotDSkullBlock {
 
 	@Override
 	public BlockState getPlacementState(ItemPlacementContext ctx) {
-		return this.getDefaultState().with(ROTATION, Integer.valueOf(MathHelper.floor((double) (ctx.getPlayerYaw() * 16.0F / 360.0F) + 0.5) & 15));
+		return this.getDefaultState().with(ROTATION, MathHelper.floor((double) (ctx.getPlayerYaw() * 16.0F / 360.0F) + 0.5) & ROTATION_BITMASK);
 	}
 
 	@Override
 	public BlockState rotate(BlockState state, BlockRotation rotation) {
-		return state.with(ROTATION, Integer.valueOf(rotation.rotate(state.get(ROTATION), 16)));
+		return state.with(ROTATION, rotation.rotate(state.get(ROTATION), ROTATIONS));
 	}
 
 	@Override
 	public BlockState mirror(BlockState state, BlockMirror mirror) {
-		return state.with(ROTATION, Integer.valueOf(mirror.mirror(state.get(ROTATION), 16)));
+		return state.with(ROTATION, mirror.mirror(state.get(ROTATION), ROTATIONS));
 	}
 
 	@Override

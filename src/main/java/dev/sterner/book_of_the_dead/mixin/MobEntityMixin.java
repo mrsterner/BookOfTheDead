@@ -47,7 +47,7 @@ public abstract class MobEntityMixin extends LivingEntity {
 
 	@Inject(method = "interact", at = @At("HEAD"), cancellable = true)
 	public void book_of_the_dead$interact(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
-		MobEntity mob = (MobEntity) (Object) this;
+		MobEntity mob = MobEntity.class.cast(this);
 		Optional<CorpseDataComponent> component = BotDComponents.CORPSE_COMPONENT.maybeGet(mob);
 		if (this.deathTime > 20 && component.isPresent() && component.get().isCorpse) {
 			if (!world.isClient() && player.isSneaking() && player.getMainHandStack().isEmpty()) {

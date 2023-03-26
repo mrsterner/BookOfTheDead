@@ -69,19 +69,19 @@ public abstract class LivingEntityMixin extends Entity implements QuiltLivingEnt
 
 	@Inject(method = "onDeath", at = @At("HEAD"))
 	private void book_of_the_dead$PreOnDeath(DamageSource source, CallbackInfo ci) {
-		LivingEntity livingEntity = (LivingEntity) (Object) this;
+		LivingEntity livingEntity = LivingEntity.class.cast(this);
 		OnEntityDeathEvent.START.invoker().start(livingEntity, livingEntity.getBlockPos(), source);
 	}
 
 	@Inject(method = "onDeath", at = @At("TAIL"))
 	private void book_of_the_dead$postOnDeath(DamageSource source, CallbackInfo ci) {
-		LivingEntity livingEntity = (LivingEntity) (Object) this;
+		LivingEntity livingEntity = LivingEntity.class.cast(this);
 		OnEntityDeathEvent.END.invoker().end(livingEntity, livingEntity.getBlockPos(), source);
 	}
 
 	@Inject(method = "tickMovement", at = @At("HEAD"), cancellable = true)
 	private void book_of_the_dead$tickMovement(CallbackInfo callbackInfo) {
-		LivingEntity livingEntity = (LivingEntity) (Object) this;
+		LivingEntity livingEntity = LivingEntity.class.cast(this);
 		if (this.deathTime >= 20 && livingEntity instanceof MobEntity) {
 			Box box = this.getBoundingBox();
 			if (this.world.containsFluid(box.offset(0.0D, box.getYLength(), 0.0D))) {
@@ -93,7 +93,7 @@ public abstract class LivingEntityMixin extends Entity implements QuiltLivingEnt
 
 	@Inject(method = "damage", at = @At("HEAD"))
 	private void book_of_the_dead$damage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
-		LivingEntity livingEntity = (LivingEntity) (Object) this;
+		LivingEntity livingEntity = LivingEntity.class.cast(this);
 		Optional<CorpseDataComponent> component = BotDComponents.CORPSE_COMPONENT.maybeGet(livingEntity);
 		if (component.isPresent()) {
 			if (component.get().isCorpse) {
@@ -104,7 +104,7 @@ public abstract class LivingEntityMixin extends Entity implements QuiltLivingEnt
 
 	@Inject(method = "updatePostDeath", at = @At("HEAD"), cancellable = true)
 	protected void book_of_the_dead$updatePostDeath(CallbackInfo callbackInfo) {
-		LivingEntity livingEntity = (LivingEntity) (Object) this;
+		LivingEntity livingEntity = LivingEntity.class.cast(this);
 		Optional<CorpseDataComponent> component = BotDComponents.CORPSE_COMPONENT.maybeGet(livingEntity);
 		if (component.isPresent()) {
 			boolean isCorpse = component.get().isCorpse;
@@ -146,7 +146,7 @@ public abstract class LivingEntityMixin extends Entity implements QuiltLivingEnt
 
 	@Inject(method = "dropLoot", at = @At(value = "HEAD"), cancellable = true)
 	private void book_of_the_dead$dropLoot(DamageSource source, boolean causedByPlayer, CallbackInfo ci) {
-		LivingEntity livingEntity = (LivingEntity) (Object) this;
+		LivingEntity livingEntity = LivingEntity.class.cast(this);
 		Optional<CorpseDataComponent> component = BotDComponents.CORPSE_COMPONENT.maybeGet(livingEntity);
 		if (component.isPresent()) {
 			boolean isCorpse = component.get().isCorpse;
@@ -159,7 +159,7 @@ public abstract class LivingEntityMixin extends Entity implements QuiltLivingEnt
 
 	@Inject(method = "applyDamage", at = @At("HEAD"), cancellable = true)
 	protected void book_of_the_dead$morphine(DamageSource source, float amount, CallbackInfo callbackInfo) {
-		LivingEntity livingEntity = (LivingEntity) (Object) this;
+		LivingEntity livingEntity = LivingEntity.class.cast(this);
 		if (livingEntity.hasStatusEffect(BotDStatusEffects.MORPHINE) && amount > 0.1f) {
 			if (!livingEntity.isInvulnerableTo(source)) {
 				LivingEntityDataComponent component = BotDComponents.LIVING_COMPONENT.get(livingEntity);
@@ -171,7 +171,7 @@ public abstract class LivingEntityMixin extends Entity implements QuiltLivingEnt
 
 	@ModifyVariable(method = "addStatusEffect(Lnet/minecraft/entity/effect/StatusEffectInstance;Lnet/minecraft/entity/Entity;)Z", at = @At("HEAD"), argsOnly = true)
 	private StatusEffectInstance book_of_the_dead$convertHarmfulEffect(StatusEffectInstance effect) {
-		LivingEntity livingEntity = (LivingEntity) (Object) this;
+		LivingEntity livingEntity = LivingEntity.class.cast(this);
 		if (livingEntity instanceof PlayerEntity player && effect.getEffectType().getType().equals(StatusEffectType.HARMFUL)) {
 			PlayerDataComponent component = BotDComponents.PLAYER_COMPONENT.get(player);
 			if (component.getStatusEffectConversionBuffModifier() > PlayerAbilityData.STATUS_EFFECT_CONVERSION[0]) {

@@ -34,7 +34,6 @@ public class PlayerDataComponent implements AutoSyncedComponent {
 	private int statusEffectConversionBuff = 0;
 	private int necroAuraBuff = 0;
 
-	//TODO change name to kakuzu
 	private int kakuzu = 0;
 	private int dispatchedKakuzuMinions = 0;
 

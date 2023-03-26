@@ -109,5 +109,10 @@ public class Constants {
 		String LIQUID_TYPE = "LiquidType";
 		String LIQUID_LEVEL = "LiquidLevel";
 		String BLOOD_LEVEL = "BloodLevel";
+		String SKIN_PROFILE = "SkinProfile";
+		String COLOR = "Color";
+		String HEAT_TIMER = "HeatTimer";
+		String PROGRESS = "Progress";
+		String HAS_LIQUID = "HasLiquid";
 	}
 }
