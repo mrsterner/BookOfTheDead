@@ -29,7 +29,6 @@ public class BotDBlockLootTableProvider extends FabricBlockLootTableProvider {
 		this.addDrop(BotDObjects.METAL_HOOK_BLOCK, BotDObjects.METAL_HOOK);
 		this.addDrop(BotDObjects.ROPE);
 		this.addDrop(BotDObjects.PEDESTAL, Blocks.DEEPSLATE_TILE_WALL);
-		this.addDrop(BotDObjects.RITUAL, Blocks.DEEPSLATE_TILE_SLAB);
 		this.add(BotDObjects.SULFUR_PILE, dropWithoutSilkTouch(BotDObjects.SULFUR, 1, 2));
 	}
 

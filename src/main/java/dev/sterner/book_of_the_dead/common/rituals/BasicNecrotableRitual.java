@@ -4,8 +4,8 @@ import com.google.common.collect.Lists;
 import com.mojang.brigadier.ParseResults;
 import dev.sterner.book_of_the_dead.api.CommandType;
 import dev.sterner.book_of_the_dead.api.interfaces.IRitual;
+import dev.sterner.book_of_the_dead.common.block.entity.NecroTableBlockEntity;
 import dev.sterner.book_of_the_dead.common.block.entity.PedestalBlockEntity;
-import dev.sterner.book_of_the_dead.common.block.entity.RitualBlockEntity;
 import dev.sterner.book_of_the_dead.common.component.BotDComponents;
 import dev.sterner.book_of_the_dead.common.component.LivingEntityDataComponent;
 import dev.sterner.book_of_the_dead.common.item.ContractItem;
@@ -62,7 +62,7 @@ public class BasicNecrotableRitual implements IRitual {
 	//Called methods from RitualBlockEntity
 
 	@Override
-	public void tick(World world, BlockPos blockPos, RitualBlockEntity blockEntity) {
+	public void tick(World world, BlockPos blockPos, NecroTableBlockEntity blockEntity) {
 		ticker++;
 		boolean canEndRitual = this.consumeItems(world, blockPos, blockEntity) && this.consumeSacrifices(world, blockPos, blockEntity);
 		if (canEndRitual || lockTick) {
@@ -76,7 +76,7 @@ public class BasicNecrotableRitual implements IRitual {
 	}
 
 	@Override
-	public void onStopped(World world, BlockPos blockPos, RitualBlockEntity blockEntity) {
+	public void onStopped(World world, BlockPos blockPos, NecroTableBlockEntity blockEntity) {
 		ticker = 0;
 		index = 0;
 		if (lockTick) {
@@ -103,7 +103,7 @@ public class BasicNecrotableRitual implements IRitual {
 	 * @param blockPos    ritual origin
 	 * @param blockEntity ritualBlockEntity
 	 */
-	private void summonItems(World world, BlockPos blockPos, RitualBlockEntity blockEntity) {
+	private void summonItems(World world, BlockPos blockPos, NecroTableBlockEntity blockEntity) {
 		double x = blockPos.getX() + 0.5;
 		double y = blockPos.getY() + 0.5;
 		double z = blockPos.getZ() + 0.5;
@@ -127,7 +127,7 @@ public class BasicNecrotableRitual implements IRitual {
 	 * @param blockPos    ritual origin
 	 * @param blockEntity ritualBlockEntity
 	 */
-	private void summonSummons(World world, BlockPos blockPos, RitualBlockEntity blockEntity) {
+	private void summonSummons(World world, BlockPos blockPos, NecroTableBlockEntity blockEntity) {
 		if (blockEntity.ritualRecipe.summons != null) {
 			for (EntityType<?> entityType : blockEntity.ritualRecipe.summons) {
 				var entity = entityType.create(world);
@@ -147,7 +147,7 @@ public class BasicNecrotableRitual implements IRitual {
 	 * @param blockPos    ritual origin
 	 * @param blockEntity ritualBlockEntity
 	 */
-	private void generateStatusEffects(World world, BlockPos blockPos, RitualBlockEntity blockEntity) {
+	private void generateStatusEffects(World world, BlockPos blockPos, NecroTableBlockEntity blockEntity) {
 		int size = 16;
 		List<LivingEntity> livingEntityList = new ArrayList<>();
 		boolean foundContract = false;
@@ -186,7 +186,7 @@ public class BasicNecrotableRitual implements IRitual {
 	 * @param blockEntity ritualBlockEntity
 	 * @return true if all items where consumed
 	 */
-	private boolean consumeItems(World world, BlockPos blockPos, RitualBlockEntity blockEntity) {
+	private boolean consumeItems(World world, BlockPos blockPos, NecroTableBlockEntity blockEntity) {
 		if (blockEntity.ritualRecipe.inputs != null && blockEntity.ritualRecipe.inputs.isEmpty()) return true;
 		double x = blockPos.getX() + 0.5;
 		double y = blockPos.getY() + 0.5 + height;
@@ -197,12 +197,11 @@ public class BasicNecrotableRitual implements IRitual {
 		if (stream.size() > 0) {
 			dividedTime = (dividedTime / (stream.size() + 1));
 		}
-
 		for (Pair<ItemStack, BlockPos> itemStackBlockPosPair : stream) {
 			if (recipe.inputs != null) {
 				for (Ingredient ingredient : recipe.inputs) {
 					if (ingredient.test(itemStackBlockPosPair.getLeft())) {
-						BlockPos checkPos = itemStackBlockPosPair.getRight().add(blockPos.getX(), blockPos.getY(), blockPos.getZ());
+						BlockPos checkPos = itemStackBlockPosPair.getRight();
 						if (world.getBlockEntity(checkPos) instanceof PedestalBlockEntity) {
 							if (itemStackBlockPosPair.getLeft().isOf(BotDObjects.CONTRACT)) {
 								ItemStack contract = itemStackBlockPosPair.getLeft();
@@ -225,14 +224,14 @@ public class BasicNecrotableRitual implements IRitual {
 				pedestalBlockEntity.setCrafting(true);
 				pedestalBlockEntity.duration = dividedTime;
 				pedestalBlockEntity.targetY = height;
+				index++;
 			}
-			index++;
 		}
 
 		if (world instanceof ServerWorld serverWorld) {
 			this.generateFX(serverWorld, x, y, z);
 		}
-		return index == pedestalToActivate.size() + 1;
+		return index == pedestalToActivate.size();
 	}
 
 	/**
@@ -243,7 +242,7 @@ public class BasicNecrotableRitual implements IRitual {
 	 * @param blockEntity ritualBlockEntity
 	 * @return true if sacrifice was successful
 	 */
-	private boolean consumeSacrifices(World world, BlockPos blockPos, RitualBlockEntity blockEntity) {
+	private boolean consumeSacrifices(World world, BlockPos blockPos, NecroTableBlockEntity blockEntity) {
 		if (blockEntity.ritualRecipe.sacrifices != null && blockEntity.ritualRecipe.sacrifices.isEmpty()) {
 			return true;
 		}
@@ -326,7 +325,7 @@ public class BasicNecrotableRitual implements IRitual {
 	 * @param blockPos    pos of the ritual origin
 	 * @param phase       keyword for which phase the command should run in
 	 */
-	private void runCommand(World world, RitualBlockEntity blockEntity, BlockPos blockPos, String phase) {
+	private void runCommand(World world, NecroTableBlockEntity blockEntity, BlockPos blockPos, String phase) {
 		MinecraftServer minecraftServer = world.getServer();
 		for (CommandType commandType : blockEntity.ritualRecipe.command) {
 			if (commandType.type.equals(phase)) {

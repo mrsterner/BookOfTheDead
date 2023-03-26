@@ -48,6 +48,5 @@ public class BotDItemGroupEvents {
 		e.addItem(JAR);
 		e.addItem(PEDESTAL);
 		e.addItem(REINFORCED_BLOCK);
-		e.addItem(RITUAL);
 	}
 }

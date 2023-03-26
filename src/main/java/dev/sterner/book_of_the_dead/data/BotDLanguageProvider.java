@@ -51,7 +51,6 @@ public class BotDLanguageProvider extends FabricLanguageProvider {
 		builder.add(BotDObjects.PAPER_AND_QUILL, "Paper And Quill");
 		builder.add(BotDObjects.CARPENTER_TOOLS, "Carpenter's Tools");
 		builder.add(BotDObjects.PEDESTAL, "Pedestal");
-		builder.add(BotDObjects.RITUAL, "Ritual Plate");
 		builder.add(BotDObjects.VILLAGER_HEAD, "Villager Head");
 		builder.add(BotDObjects.VILLAGER_WALL_HEAD, "Villager Head");
 		builder.add(BotDObjects.DEBUG_WAND, "Debug Wand");

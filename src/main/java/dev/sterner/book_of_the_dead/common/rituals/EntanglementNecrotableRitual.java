@@ -1,7 +1,7 @@
 package dev.sterner.book_of_the_dead.common.rituals;
 
 import dev.sterner.book_of_the_dead.api.BotDApi;
-import dev.sterner.book_of_the_dead.common.block.entity.RitualBlockEntity;
+import dev.sterner.book_of_the_dead.common.block.entity.NecroTableBlockEntity;
 import dev.sterner.book_of_the_dead.common.component.BotDComponents;
 import dev.sterner.book_of_the_dead.common.component.LivingEntityDataComponent;
 import net.minecraft.entity.Entity;
@@ -18,7 +18,7 @@ public class EntanglementNecrotableRitual extends BasicNecrotableRitual {
 	}
 
 	@Override
-	public void onStopped(World world, BlockPos blockPos, RitualBlockEntity blockEntity) {
+	public void onStopped(World world, BlockPos blockPos, NecroTableBlockEntity blockEntity) {
 		super.onStopped(world, blockPos, blockEntity);
 		if (this.contract.get(0) != 0 && this.contract.get(1) != 0) {
 			Entity entity = world.getEntityById(contract.get(0));

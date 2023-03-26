@@ -53,7 +53,6 @@ public class BotDClient implements ClientModInitializer {
 				BotDObjects.REINFORCED_DOOR,
 				BotDObjects.POPPY_CROP,
 				BotDObjects.PEDESTAL,
-				BotDObjects.RITUAL,
 				BotDObjects.RETORT_FLASK_BLOCK
 		);
 
@@ -64,7 +63,6 @@ public class BotDClient implements ClientModInitializer {
 		BlockEntityRendererFactories.register(BotDBlockEntityTypes.NECRO, NecroTableBlockEntityRenderer::new);
 		BlockEntityRendererFactories.register(BotDBlockEntityTypes.BUTCHER, ButcherTableBlockEntityRenderer::new);
 		BlockEntityRendererFactories.register(BotDBlockEntityTypes.PEDESTAL, PedestalBlockEntityRenderer::new);
-		BlockEntityRendererFactories.register(BotDBlockEntityTypes.RITUAL, RitualBlockEntityRenderer::new);
 		BlockEntityRendererFactories.register(BotDBlockEntityTypes.RETORT, RetortFlaskBlockEntityRenderer::new);
 		BlockEntityRendererFactories.register(BotDBlockEntityTypes.HEAD, ctx -> new BotDSkullBlockEntityRenderer());
 		BlockEntityRendererFactories.register(BotDBlockEntityTypes.BRAIN, BrainBlockEntityRenderer::new);

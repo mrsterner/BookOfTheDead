@@ -1,6 +1,6 @@
 package dev.sterner.book_of_the_dead.common.registry;
 
-import dev.sterner.book_of_the_dead.common.block.entity.RitualBlockEntity;
+import dev.sterner.book_of_the_dead.common.block.entity.NecroTableBlockEntity;
 import dev.sterner.book_of_the_dead.common.recipe.ButcheringRecipe;
 import dev.sterner.book_of_the_dead.common.recipe.RetortRecipe;
 import dev.sterner.book_of_the_dead.common.recipe.RitualRecipe;
@@ -53,7 +53,7 @@ public interface BotDRecipeTypes {
 	}
 
 
-	static RitualRecipe getRiteRecipe(RitualBlockEntity ritualBlockEntity) {
+	static RitualRecipe getRiteRecipe(NecroTableBlockEntity ritualBlockEntity) {
 		World world = ritualBlockEntity.getWorld();
 		if (world == null) {
 			return null;

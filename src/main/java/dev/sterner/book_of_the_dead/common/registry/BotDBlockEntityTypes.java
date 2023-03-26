@@ -35,12 +35,7 @@ public interface BotDBlockEntityTypes {
 			QuiltBlockEntityTypeBuilder.create(ButcherTableBlockEntity::new,
 					BotDObjects.BUTCHER_TABLE
 			).build(null));
-
-	BlockEntityType<RitualBlockEntity> RITUAL = register("ritual",
-			QuiltBlockEntityTypeBuilder.create(RitualBlockEntity::new,
-					BotDObjects.RITUAL
-			).build(null));
-
+	
 	BlockEntityType<PedestalBlockEntity> PEDESTAL = register("pedestal",
 			QuiltBlockEntityTypeBuilder.create(PedestalBlockEntity::new,
 					BotDObjects.PEDESTAL

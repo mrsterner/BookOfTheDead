@@ -82,13 +82,6 @@ public class BotDUseEvents {
 
 					world.setBlockState(blockPos, state);
 					return ActionResult.CONSUME;
-				} else if (world.getBlockState(blockPos).isOf(Blocks.DEEPSLATE_TILE_SLAB)) {
-					BlockState state = BotDObjects.RITUAL.getDefaultState();
-					world.breakBlock(blockPos, false);
-					addParticle(world, blockPos, state);
-					world.setBlockState(blockPos, state);
-					player.getMainHandStack().damage(1, world.random, serverPlayerEntity);
-					return ActionResult.CONSUME;
 				}
 			}
 		}
