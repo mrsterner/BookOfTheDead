@@ -24,6 +24,7 @@
 			"fabric-datagen": "dev.sterner.book_of_the_dead.data.BotDDataGen",
 			"mm:early_risers":"dev.sterner.book_of_the_dead.common.asm.BotDEarlyRiser",
 			"rei_client": "dev.sterner.book_of_the_dead.client.integration.rei.BotDREIPlugin",
+			"emi": "dev.sterner.book_of_the_dead.client.integration.emi.BotDEMIPlugin",
 			"cardinal-components-entity": "dev.sterner.book_of_the_dead.common.component.BotDComponents"
 		},
 		"depends": [

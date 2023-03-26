@@ -1,5 +1,5 @@
 package dev.sterner.book_of_the_dead.client.integration.emi;
-/*
+
 import dev.emi.emi.api.EmiPlugin;
 import dev.emi.emi.api.EmiRegistry;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
@@ -11,7 +11,8 @@ import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.recipe.RecipeManager;
 
 public class BotDEMIPlugin implements EmiPlugin {
-	private static final EmiStack ICON = EmiStack.of(BotDObjects.BLOODY_BUTCHER_KNIFE);
+
+	private static final EmiStack ICON = EmiStack.of(BotDObjects.MEAT_CLEAVER);
 	public static final EmiRecipeCategory BUTCHERING_CATEGORY = new EmiRecipeCategory(
 			Constants.id("butchering"), ICON
 	);
@@ -27,4 +28,4 @@ public class BotDEMIPlugin implements EmiPlugin {
 	}
 }
 
- */
+

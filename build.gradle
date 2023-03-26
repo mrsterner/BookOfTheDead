@@ -111,12 +111,10 @@ dependencies {
 	//modImplementation("vazkii.patchouli:Patchouli:${project.patchouli_version}")
 
 	//REI
-	//modLocalRuntime "dev.architectury:architectury-fabric:6.2.46"
 	modImplementation("me.shedaniel:RoughlyEnoughItems-api-fabric:${project.rei_version}")
-	//modRuntimeOnly("me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}")
 
 	//EMI
-	//modImplementation "dev.emi:emi:${project.emi_version}"
+	modImplementation "dev.emi:emi:${project.emi_version}"
 
 	//Reach
 	//modImplementation include ("com.jamieswhiteshirt:reach-entity-attributes:${project.reach_entity_attributes_version}"){

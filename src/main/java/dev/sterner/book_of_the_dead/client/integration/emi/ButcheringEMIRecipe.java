@@ -1,5 +1,5 @@
 package dev.sterner.book_of_the_dead.client.integration.emi;
-/*
+
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.datafixers.util.Pair;
 import dev.emi.emi.api.recipe.EmiRecipe;
@@ -128,4 +128,4 @@ public class ButcheringEMIRecipe implements EmiRecipe {
 
 }
 
- */
+

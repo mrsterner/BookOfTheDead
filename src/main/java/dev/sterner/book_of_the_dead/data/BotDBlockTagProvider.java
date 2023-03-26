@@ -17,8 +17,7 @@ public class BotDBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 	protected void configure(HolderLookup.Provider arg) {
 		getOrCreateTagBuilder(BlockTags.CLIMBABLE).add(BotDObjects.ROPE);
 
-		getOrCreateTagBuilder(BlockTags.INFINIBURN_OVERWORLD)
-				.add(BotDObjects.SULFUR_PILE);
+		getOrCreateTagBuilder(BlockTags.INFINIBURN_OVERWORLD).add(BotDObjects.SULFUR_PILE);
 
 		getOrCreateTagBuilder(BlockTags.PICKAXE_MINEABLE).add(BotDObjects.SULFUR_PILE);
 		getOrCreateTagBuilder(BlockTags.SHOVEL_MINEABLE).add(BotDObjects.SULFUR_PILE);
