@@ -21,6 +21,7 @@ public class RitualBlockEntityRenderer implements BlockEntityRenderer<RitualBloc
 	private final Identifier CIRCLE_NECROMANCY = Constants.id("textures/misc/circle_necromancy.png");
 	private final Identifier CIRCLE_ALCHEMICAL = Constants.id("textures/misc/circle_alchemical.png");
 	private final Identifier CIRCLE_SACRIFICE = Constants.id("textures/misc/circle_sacrifice.png");
+	private final Identifier CIRCLE_ELDRITCH = Constants.id("textures/misc/circle_eldritch.png");
 
 	public RitualBlockEntityRenderer(BlockEntityRendererFactory.Context context) {
 	}
@@ -50,8 +51,8 @@ public class RitualBlockEntityRenderer implements BlockEntityRenderer<RitualBloc
 		matrices.multiply(Axis.Y_POSITIVE.rotationDegrees(entity.getCachedState().get(HorizontalFacingBlock.FACING).asRotation()));
 
 		Matrix4f mat = matrices.peek().getModel();
-		VertexConsumer vertexConsumer = vertexConsumers.getBuffer(BotDRenderLayer.GLOWING_LAYER.apply(CIRCLE_ALCHEMICAL));
-		RenderSystem.setShaderTexture(0, CIRCLE_ALCHEMICAL);
+		VertexConsumer vertexConsumer = vertexConsumers.getBuffer(BotDRenderLayer.GLOWING_LAYER.apply(CIRCLE_ELDRITCH));
+		RenderSystem.setShaderTexture(0, CIRCLE_ELDRITCH);
 		vertexConsumer.vertex(mat, -2.5F, 0, 2.5F).color(255, 255, 255, 255).uv(0, 1).overlay(overlay).light(light).normal(0, 1, 0).next();//TODO replace 255 with alpha
 		vertexConsumer.vertex(mat, 2.5F, 0, 2.5F).color(255, 255, 255, 255).uv(1, 1).overlay(overlay).light(light).normal(0, 1, 0).next();
 		vertexConsumer.vertex(mat, 2.5F, 0, -2.5F).color(255, 255, 255, 255).uv(1, 0).overlay(overlay).light(light).normal(0, 1, 0).next();
