@@ -7,6 +7,7 @@ import dev.sterner.book_of_the_dead.api.interfaces.IRecipe;
 import dev.sterner.book_of_the_dead.common.registry.BotDRecipeTypes;
 import dev.sterner.book_of_the_dead.common.registry.BotDRegistries;
 import dev.sterner.book_of_the_dead.common.rituals.BasicNecrotableRitual;
+import dev.sterner.book_of_the_dead.common.util.Constants;
 import dev.sterner.book_of_the_dead.common.util.RecipeUtils;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.effect.StatusEffect;
@@ -35,6 +36,7 @@ import java.util.stream.IntStream;
 public class RitualRecipe implements IRecipe {
 	public final Identifier id;
 	public final BasicNecrotableRitual ritual;
+	public final Identifier texture;
 
 	public final DefaultedList<Ingredient> inputs;
 	public final List<ItemStack> outputs;
@@ -47,8 +49,9 @@ public class RitualRecipe implements IRecipe {
 	public final boolean requireEmeraldTablet;
 	public final List<StatusEffectInstance> statusEffectInstance;
 
-	public RitualRecipe(Identifier id, BasicNecrotableRitual ritual, boolean requireBotD, boolean requireEmeraldTablet, int duration, @Nullable DefaultedList<Ingredient> inputs, @Nullable List<ItemStack> outputs, @Nullable List<EntityType<?>> sacrifices, @Nullable List<EntityType<?>> summons, @Nullable List<StatusEffectInstance> statusEffectInstance, Set<CommandType> command) {
+	public RitualRecipe(Identifier id, BasicNecrotableRitual ritual, Identifier texture, boolean requireBotD, boolean requireEmeraldTablet, int duration, @Nullable DefaultedList<Ingredient> inputs, @Nullable List<ItemStack> outputs, @Nullable List<EntityType<?>> sacrifices, @Nullable List<EntityType<?>> summons, @Nullable List<StatusEffectInstance> statusEffectInstance, Set<CommandType> command) {
 		this.id = id;
+		this.texture = texture;
 		this.outputs = outputs;
 		this.inputs = inputs;
 		this.sacrifices = sacrifices;
@@ -124,6 +127,15 @@ public class RitualRecipe implements IRecipe {
 			//Ritual
 			BasicNecrotableRitual ritual = BotDRegistries.NECROTABLE_RITUALS.get(new Identifier(JsonHelper.getString(json, "ritual")));
 
+			//Texture
+			Identifier texture;
+			if(JsonHelper.hasString(json, "texture")){
+				texture = new Identifier(JsonHelper.getString(json, "texture"));
+			}else{
+				texture = Constants.id("textures/misc/circle_necromancy.png");
+			}
+
+
 			boolean requireBotD = JsonHelper.getBoolean(json, "requireBotD", false);
 			boolean requireEmeraldTablet = JsonHelper.getBoolean(json, "requireEmeraldTablet", false);
 
@@ -171,7 +183,7 @@ public class RitualRecipe implements IRecipe {
 				commands = RecipeUtils.deserializeCommands(commandArray);
 			}
 
-			return new RitualRecipe(id, ritual, requireBotD, requireEmeraldTablet, duration, inputs, outputs, sacrifices, summons, statusEffectInstanceList, commands);
+			return new RitualRecipe(id, ritual, texture, requireBotD, requireEmeraldTablet, duration, inputs, outputs, sacrifices, summons, statusEffectInstanceList, commands);
 		}
 
 
@@ -179,6 +191,9 @@ public class RitualRecipe implements IRecipe {
 		public RitualRecipe read(Identifier id, PacketByteBuf buf) {
 			//Ritual
 			BasicNecrotableRitual rite = BotDRegistries.NECROTABLE_RITUALS.get(buf.readIdentifier());
+
+			Identifier texture = buf.readIdentifier();
+
 			boolean requireBotD = buf.readBoolean();
 			boolean requireEmeraldTablet = buf.readBoolean();
 
@@ -217,12 +232,15 @@ public class RitualRecipe implements IRecipe {
 				commandTypeSet.add(new CommandType(buf.readString(), buf.readString()));
 			}
 
-			return new RitualRecipe(id, rite, requireBotD, requireEmeraldTablet, duration, inputs, outputs, sacrificeList, summons, statusEffectInstanceList, commandTypeSet);
+			return new RitualRecipe(id, rite, texture, requireBotD, requireEmeraldTablet, duration, inputs, outputs, sacrificeList, summons, statusEffectInstanceList, commandTypeSet);
 		}
 
 		@Override
 		public void write(PacketByteBuf buf, RitualRecipe recipe) {
 			buf.writeIdentifier(recipe.ritual.getId());
+
+			buf.writeIdentifier(recipe.texture);
+
 			buf.writeBoolean(recipe.requireBotD);
 			buf.writeBoolean(recipe.requireEmeraldTablet);
 

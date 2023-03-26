@@ -18,6 +18,8 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import static dev.sterner.book_of_the_dead.BotD.isDebugMode;
+
 public class DebugWandItem extends Item {
 	public DebugWandItem(Settings settings) {
 		super(settings);
@@ -25,13 +27,15 @@ public class DebugWandItem extends Item {
 
 	@Override
 	public ActionResult useOnBlock(ItemUsageContext context) {
+		if(!isDebugMode()) return super.useOnBlock(context);
 		World world = context.getWorld();
-		BlockPos pos = context.getBlockPos();
 		PlayerEntity player = context.getPlayer();
 		ItemStack syringe = new ItemStack(BotDObjects.SYRINGE);
 		StatusEffectInstance instance = new StatusEffectInstance(StatusEffects.WITHER, 20 * 2, 2);
 		SyringeItem.writeStatusEffectNbt(syringe, instance);
-		ItemScatterer.spawn(world, player.getX(), player.getY(), player.getZ(), syringe);
+		if (player != null) {
+			ItemScatterer.spawn(world, player.getX(), player.getY(), player.getZ(), syringe);
+		}
 		return super.useOnBlock(context);
 	}
 
@@ -62,6 +66,7 @@ public class DebugWandItem extends Item {
 
 	@Override
 	public ActionResult useOnEntity(ItemStack stack, PlayerEntity user, LivingEntity entity, Hand hand) {
+		if(!isDebugMode()) return super.useOnEntity(stack, user, entity, hand);
 		LivingEntityDataComponent source = BotDComponents.LIVING_COMPONENT.get(user);
 		LivingEntityDataComponent target = BotDComponents.LIVING_COMPONENT.get(entity);
 		source.setEntangledEntityId(entity.getId());

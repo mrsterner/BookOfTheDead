@@ -1,5 +1,5 @@
-// 1.19.4	2023-03-25T19:35:36.732360079	Book of the Dead/Tags for minecraft:block
-f3f1ea7f72d6cdc90179704cc08beae8c68117ac data/minecraft/tags/blocks/mineable/pickaxe.json
-f3f1ea7f72d6cdc90179704cc08beae8c68117ac data/minecraft/tags/blocks/infiniburn_overworld.json
+// 1.19.4	2023-03-26T14:56:38.985396701	Book of the Dead/Tags for minecraft:block
+e9aa69c50752a267216d4efcb5491ffc97556442 data/minecraft/tags/blocks/mineable/pickaxe.json
+e9aa69c50752a267216d4efcb5491ffc97556442 data/minecraft/tags/blocks/infiniburn_overworld.json
 72fac3fb6556d63371a9ca4fb92c92557bfc3812 data/minecraft/tags/blocks/climbable.json
-f3f1ea7f72d6cdc90179704cc08beae8c68117ac data/minecraft/tags/blocks/mineable/shovel.json
+e9aa69c50752a267216d4efcb5491ffc97556442 data/minecraft/tags/blocks/mineable/shovel.json

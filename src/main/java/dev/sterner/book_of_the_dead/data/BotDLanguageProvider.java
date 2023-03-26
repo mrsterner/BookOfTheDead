@@ -24,7 +24,7 @@ public class BotDLanguageProvider extends FabricLanguageProvider {
 		builder.add(BotDObjects.EYE, "Eye");
 		builder.add(BotDObjects.SULFURIC_ACID, "Sulfuric Acid");
 		builder.add(BotDObjects.SULFUR, "Sulfur");
-		builder.add(BotDObjects.SULFUR.asItem(), "Sulfur");
+		builder.add(BotDObjects.SULFUR_PILE, "Sulfur");
 		builder.add(BotDObjects.HEART, "Heart");
 		builder.add(BotDObjects.BRAIN, "Brain");
 		builder.add(BotDObjects.BOOK_OF_THE_DEAD, "The Book of the Dead");

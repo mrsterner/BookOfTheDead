@@ -87,7 +87,8 @@ public interface BotDObjects {
 	Block POPPY_CROP = register("poppy_crop", new PoppyCropBlock(QuiltBlockSettings.copy(Blocks.WHEAT)), settings(), false);
 	Item POPPY_SEEDS = register("poppy_seeds", new AliasedBlockItem(POPPY_CROP, settings()));
 
-	Block SULFUR = registerSulfur("sulfur", new SulfurLayerBlock(QuiltBlockSettings.of(SULFUR_MATERIAL).requiresTool()), settings(), true);
+	Block SULFUR_PILE = register("sulfur_pile", new SulfurLayerBlock(QuiltBlockSettings.of(SULFUR_MATERIAL).requiresTool()), settings(), false);
+	Item SULFUR = register("sulfur", new Item(settings()));
 
 	Block HOOK_BLOCK = register("hook_block", new HookBlock(QuiltBlockSettings.of(Material.WOOL).strength(0.2F), false), settings(), false);
 	Block METAL_HOOK_BLOCK = register("metal_hook_block", new HookBlock(QuiltBlockSettings.of(Material.WOOL).strength(0.2F), true), settings(), false);
@@ -107,14 +108,6 @@ public interface BotDObjects {
 		BLOCKS.put(block, Constants.id(name));
 		if (createItem) {
 			ITEMS.put(new WallStandingBlockItem(block, wall, settings, Direction.DOWN), BLOCKS.get(block));
-		}
-		return block;
-	}
-
-	static <T extends Block> T registerSulfur(String name, T block, Item.Settings settings, boolean createItem) {
-		BLOCKS.put(block, Constants.id(name));
-		if (createItem) {
-			ITEMS.put(new AliasedBlockItem(block, settings), BLOCKS.get(block));
 		}
 		return block;
 	}

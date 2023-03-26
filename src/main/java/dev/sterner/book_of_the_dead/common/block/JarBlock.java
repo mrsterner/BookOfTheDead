@@ -80,7 +80,7 @@ public class JarBlock extends BlockWithEntity {
 					return ActionResult.CONSUME;
 				} else if (!state.get(OPEN)) {
 					return ActionResult.PASS;
-				} else if (stack.isOf(Items.GLASS_BOTTLE)) {
+				} else if (stack.isOf(Items.GLASS_BOTTLE) && !jarBlockEntity.hasBrain) {
 					if (jarBlockEntity.liquidAmount >= 25 && !jarBlockEntity.getLiquidType(EMPTY)) {
 						Item outStack = switch (jarBlockEntity.liquidType) {
 							case BLOOD -> BotDObjects.BOTTLE_OF_BLOOD;
