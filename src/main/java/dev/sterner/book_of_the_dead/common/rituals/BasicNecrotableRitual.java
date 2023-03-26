@@ -193,38 +193,40 @@ public class BasicNecrotableRitual implements IRitual {
 		double z = blockPos.getZ() + 0.5;
 		List<BlockPos> pedestalToActivate = new ArrayList<>();
 		List<Pair<ItemStack, BlockPos>> stream = blockEntity.getPedestalInfo(world).stream().filter(itemStackBlockPosPair -> !itemStackBlockPosPair.getLeft().isEmpty()).toList();
-		int dividedTime = recipe.getDuration();
-		if (stream.size() > 0) {
-			dividedTime = (dividedTime / (stream.size() + 1));
-		}
-		for (Pair<ItemStack, BlockPos> itemStackBlockPosPair : stream) {
-			if (recipe.inputs != null) {
-				for (Ingredient ingredient : recipe.inputs) {
-					if (ingredient.test(itemStackBlockPosPair.getLeft())) {
-						BlockPos checkPos = itemStackBlockPosPair.getRight();
-						if (world.getBlockEntity(checkPos) instanceof PedestalBlockEntity) {
-							if (itemStackBlockPosPair.getLeft().isOf(BotDObjects.CONTRACT)) {
-								ItemStack contract = itemStackBlockPosPair.getLeft();
-								for (Integer i : this.contract) {
-									if (i == 0) {
-										this.contract.set(i, ContractItem.getIdFromContractNbt(contract));
-										break;
+		if(recipe != null){
+			int dividedTime = recipe.getDuration();
+			if (stream.size() > 0) {
+				dividedTime = (dividedTime / (stream.size() + 1));
+			}
+			for (Pair<ItemStack, BlockPos> itemStackBlockPosPair : stream) {
+				if (recipe.inputs != null) {
+					for (Ingredient ingredient : recipe.inputs) {
+						if (ingredient.test(itemStackBlockPosPair.getLeft())) {
+							BlockPos checkPos = itemStackBlockPosPair.getRight();
+							if (world.getBlockEntity(checkPos) instanceof PedestalBlockEntity) {
+								if (itemStackBlockPosPair.getLeft().isOf(BotDObjects.CONTRACT)) {
+									ItemStack contract = itemStackBlockPosPair.getLeft();
+									for (Integer i : this.contract) {
+										if (i == 0) {
+											this.contract.set(i, ContractItem.getIdFromContractNbt(contract));
+											break;
+										}
 									}
 								}
+								pedestalToActivate.add(checkPos);
 							}
-							pedestalToActivate.add(checkPos);
 						}
 					}
 				}
 			}
-		}
-		if (ticker == 1 || (ticker + 1) % dividedTime == 0) {
-			if (index < pedestalToActivate.size() && world.getBlockEntity(pedestalToActivate.get(index)) instanceof PedestalBlockEntity pedestalBlockEntity) {
-				world.playSound(null, pedestalToActivate.get(index).getX(), pedestalToActivate.get(index).getY(), pedestalToActivate.get(index).getZ(), BotDSoundEvents.MISC_ITEM_BEAM, SoundCategory.BLOCKS, 0.75f, 0.75f * world.random.nextFloat() / 2);
-				pedestalBlockEntity.setCrafting(true);
-				pedestalBlockEntity.duration = dividedTime;
-				pedestalBlockEntity.targetY = height;
-				index++;
+			if (ticker == 1 || (ticker + 1) % dividedTime == 0) {
+				if (index < pedestalToActivate.size() && world.getBlockEntity(pedestalToActivate.get(index)) instanceof PedestalBlockEntity pedestalBlockEntity) {
+					world.playSound(null, pedestalToActivate.get(index).getX(), pedestalToActivate.get(index).getY(), pedestalToActivate.get(index).getZ(), BotDSoundEvents.MISC_ITEM_BEAM, SoundCategory.BLOCKS, 0.75f, 0.75f * world.random.nextFloat() / 2);
+					pedestalBlockEntity.setCrafting(true);
+					pedestalBlockEntity.duration = dividedTime;
+					pedestalBlockEntity.targetY = height;
+					index++;
+				}
 			}
 		}
 

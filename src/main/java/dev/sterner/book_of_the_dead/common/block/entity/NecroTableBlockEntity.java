@@ -42,7 +42,7 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 	public boolean hasBotD = false;
 	public boolean hasEmeraldTablet = false;
 	public BlockPos ritualPos = null;
-	public static final List<BlockPos> PEDESTAL_POS_LIST;
+	public List<BlockPos> PEDESTAL_POS_LIST = new ArrayList<>();
 	public BasicNecrotableRitual currentBasicNecrotableRitual = null;
 	public RitualRecipe ritualRecipe = null;
 
@@ -65,6 +65,7 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 			}
 			blockEntity.age++;
 			if (blockEntity.shouldRun) {
+				blockEntity.collectPedestalBlockPos(world, pos);
 				blockEntity.sendRitualPosition(world);
 				SimpleInventory tempInv = new SimpleInventory(8);
 				List<ItemStack> pedestalItemList = blockEntity.getPedestalInfo(world).stream().map(Pair::getLeft).toList();
@@ -101,6 +102,23 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 			if (blockEntity.shouldRun) {
 				if (world.isClient()) {
 					blockEntity.clientTime++;
+				}
+			}
+		}
+	}
+
+	private void collectPedestalBlockPos(World world, BlockPos pos) {
+		int r = 5;
+		for(int x = -r; x < r; x++){
+			for(int y = -r; y < r; y++){
+				for(int z = -r; z < r; z++){
+					BlockPos lookPos = pos.add(x,y,z);
+					BlockState state = world.getBlockState(lookPos);
+					if(state.isOf(BotDObjects.PEDESTAL)){
+						if(!PEDESTAL_POS_LIST.contains(lookPos)){
+							PEDESTAL_POS_LIST.add(lookPos);
+						}
+					}
 				}
 			}
 		}
@@ -143,8 +161,7 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 
 	public void sendRitualPosition(World world) {
 		for (BlockPos pos : PEDESTAL_POS_LIST) {
-			BlockPos specificPos = pos.add(this.ritualPos);
-			if (world.getBlockState(specificPos).isOf(BotDObjects.PEDESTAL) && world.getBlockEntity(specificPos) instanceof PedestalBlockEntity pedestalBlockEntity) {
+			if (world.getBlockState(pos).isOf(BotDObjects.PEDESTAL) && world.getBlockEntity(pos) instanceof PedestalBlockEntity pedestalBlockEntity) {
 				pedestalBlockEntity.ritualCenter = new Vec3d(this.ritualPos.getX(), this.ritualPos.getY(), this.ritualPos.getZ());
 				pedestalBlockEntity.markDirty();
 			}
@@ -154,9 +171,8 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 	public List<Pair<ItemStack, BlockPos>> getPedestalInfo(World world) {
 		List<Pair<ItemStack, BlockPos>> pairs = new ArrayList<>();
 		for (BlockPos pos : PEDESTAL_POS_LIST) {
-			BlockPos specificPos = pos.add(this.ritualPos);
-			if (world.getBlockState(specificPos).isOf(BotDObjects.PEDESTAL) && world.getBlockEntity(specificPos) instanceof PedestalBlockEntity pedestalBlockEntity) {
-				pairs.add(new Pair<>(pedestalBlockEntity.getStack(), specificPos));
+			if (world.getBlockState(pos).isOf(BotDObjects.PEDESTAL) && world.getBlockEntity(pos) instanceof PedestalBlockEntity pedestalBlockEntity) {
+				pairs.add(new Pair<>(pedestalBlockEntity.getStack(), pos));
 			}
 		}
 		return pairs;
@@ -255,19 +271,5 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 		nbt.putInt(Constants.Nbt.CLIENT_TIMER, this.clientTime);
 		nbt.putLong(Constants.Nbt.AGE, this.age);
 		nbt.putBoolean(Constants.Nbt.SHOULD_RUN, this.shouldRun);
-	}
-
-	static {
-		PEDESTAL_POS_LIST = List.of(
-				new BlockPos(3, 0, 0),
-				new BlockPos(0, 0, 3),
-				new BlockPos(-3, 0, 0),
-				new BlockPos(0, 0, -3),
-
-				new BlockPos(2, 0, 2),
-				new BlockPos(2, 0, -2),
-				new BlockPos(-2, 0, -2),
-				new BlockPos(-2, 0, 2)
-		);
 	}
 }
