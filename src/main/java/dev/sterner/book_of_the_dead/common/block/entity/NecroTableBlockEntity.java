@@ -1,6 +1,7 @@
 package dev.sterner.book_of_the_dead.common.block.entity;
 
 import com.google.common.collect.Lists;
+import dev.sterner.book_of_the_dead.api.PedestalInfo;
 import dev.sterner.book_of_the_dead.api.block.entity.BaseBlockEntity;
 import dev.sterner.book_of_the_dead.common.block.NecroTableBlock;
 import dev.sterner.book_of_the_dead.common.recipe.RitualRecipe;
@@ -17,10 +18,13 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtHelper;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
@@ -33,12 +37,12 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class NecroTableBlockEntity extends BaseBlockEntity {
+	public List<PedestalInfo> pedestalToActivate = new ArrayList<>();
+
 	public boolean hasBotD = false;
 	public boolean hasEmeraldTablet = false;
 	public BlockPos ritualPos = null;
@@ -67,13 +71,7 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 			if (blockEntity.shouldRun) {
 				blockEntity.collectPedestalBlockPos(world, pos);
 				blockEntity.sendRitualPosition(world);
-				SimpleInventory tempInv = new SimpleInventory(8);
-				List<ItemStack> pedestalItemList = blockEntity.getPedestalInfo(world).stream().map(Pair::getLeft).toList();
-				for (ItemStack itemStack : pedestalItemList) {
-					if (!itemStack.isEmpty()) {
-						tempInv.addStack(itemStack.copy());
-					}
-				}
+
 				if (blockEntity.ritualRecipe == null || blockEntity.currentBasicNecrotableRitual == null) {
 					blockEntity.ritualRecipe = BotDRecipeTypes.getRiteRecipe(blockEntity);
 
@@ -84,12 +82,12 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 					}
 
 				} else if (blockEntity.checkTier(blockEntity)) {
-					blockEntity.currentBasicNecrotableRitual.recipe = blockEntity.ritualRecipe;
+					int craftingTime = blockEntity.ritualRecipe.inputs.stream().filter(ingredient -> !ingredient.isEmpty()).toList().size() * 20 * 4 + 20 * 2;
 					blockEntity.timer++;
 					if (blockEntity.timer >= 0) {
 						blockEntity.currentBasicNecrotableRitual.tick(world, blockEntity.ritualPos, blockEntity);
 					}
-					if (blockEntity.timer >= blockEntity.currentBasicNecrotableRitual.recipe.getDuration()) {
+					if (blockEntity.timer >= blockEntity.ritualRecipe.getDuration() + craftingTime) {
 						blockEntity.currentBasicNecrotableRitual.onStopped(world, blockEntity.ritualPos, blockEntity);
 						blockEntity.reset(blockEntity);
 					}
@@ -168,11 +166,11 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 		}
 	}
 
-	public List<Pair<ItemStack, BlockPos>> getPedestalInfo(World world) {
-		List<Pair<ItemStack, BlockPos>> pairs = new ArrayList<>();
+	public List<PedestalInfo> getPedestalInfo(World world) {
+		List<PedestalInfo> pairs = new ArrayList<>();
 		for (BlockPos pos : PEDESTAL_POS_LIST) {
 			if (world.getBlockState(pos).isOf(BotDObjects.PEDESTAL) && world.getBlockEntity(pos) instanceof PedestalBlockEntity pedestalBlockEntity) {
-				pairs.add(new Pair<>(pedestalBlockEntity.getStack(), pos));
+				pairs.add(PedestalInfo.of(pedestalBlockEntity.getStack(), pos));
 			}
 		}
 		return pairs;
@@ -210,6 +208,7 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 		blockEntity.currentBasicNecrotableRitual = null;
 		blockEntity.timer = -20;
 		blockEntity.shouldRun = false;
+		blockEntity.pedestalToActivate.clear();
 		blockEntity.markDirty();
 	}
 
@@ -235,8 +234,6 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 			this.ritualPos = NbtHelper.toBlockPos(nbt.getCompound(Constants.Nbt.RITUAL_POS));
 		}
 
-
-
 		currentBasicNecrotableRitual = BotDRegistries.NECROTABLE_RITUALS.get(new Identifier(nbt.getString(Constants.Nbt.NECRO_RITUAL)));
 		if (world != null) {
 			Optional<RitualRecipe> optional = world.getRecipeManager().listAllOfType(BotDRecipeTypes.RITUAL_RECIPE_TYPE).stream()
@@ -247,6 +244,7 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 		this.clientTime = nbt.getInt(Constants.Nbt.CLIENT_TIMER);
 		this.age = nbt.getLong(Constants.Nbt.AGE);
 		this.shouldRun = nbt.getBoolean(Constants.Nbt.SHOULD_RUN);
+
 		markDirty();
 	}
 
@@ -258,8 +256,6 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 		if (this.ritualPos != null) {
 			nbt.put(Constants.Nbt.RITUAL_POS, NbtHelper.fromBlockPos(this.ritualPos));
 		}
-
-
 
 		if (currentBasicNecrotableRitual != null) {
 			nbt.putString(Constants.Nbt.NECRO_RITUAL, BotDRegistries.NECROTABLE_RITUALS.getId(currentBasicNecrotableRitual).toString());

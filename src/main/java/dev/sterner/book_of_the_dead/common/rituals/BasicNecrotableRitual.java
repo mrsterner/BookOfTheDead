@@ -3,15 +3,14 @@ package dev.sterner.book_of_the_dead.common.rituals;
 import com.google.common.collect.Lists;
 import com.mojang.brigadier.ParseResults;
 import dev.sterner.book_of_the_dead.api.CommandType;
+import dev.sterner.book_of_the_dead.api.PedestalInfo;
 import dev.sterner.book_of_the_dead.api.interfaces.IRitual;
+import dev.sterner.book_of_the_dead.client.particle.ItemStackBeamParticleEffect;
 import dev.sterner.book_of_the_dead.common.block.entity.NecroTableBlockEntity;
 import dev.sterner.book_of_the_dead.common.block.entity.PedestalBlockEntity;
 import dev.sterner.book_of_the_dead.common.component.BotDComponents;
 import dev.sterner.book_of_the_dead.common.component.LivingEntityDataComponent;
-import dev.sterner.book_of_the_dead.common.item.ContractItem;
-import dev.sterner.book_of_the_dead.common.recipe.RitualRecipe;
-import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
-import dev.sterner.book_of_the_dead.common.registry.BotDSoundEvents;
+import dev.sterner.book_of_the_dead.common.registry.BotDParticleTypes;
 import dev.sterner.book_of_the_dead.common.registry.BotDStatusEffects;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -30,7 +29,6 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.ItemScatterer;
-import net.minecraft.util.Pair;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
@@ -38,20 +36,17 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 
 public class BasicNecrotableRitual implements IRitual {
 	private final Identifier id;
 	public Vec3d ritualCenter = null;
-	public RitualRecipe recipe;
+	public int pedestalTicker = 0;
+	public boolean canCollectPedestals = true;
 	public int ticker = 0;
 	public UUID userUuid = null;
 	public int height = 0;
-	private int index = 0;
 	private boolean lockTick = false;
 	public DefaultedList<Integer> contract = DefaultedList.ofSize(8, 0);
 
@@ -68,17 +63,16 @@ public class BasicNecrotableRitual implements IRitual {
 		if (canEndRitual || lockTick) {
 			if (!this.lockTick) {
 				this.runCommand(world, blockEntity, blockPos, "start");
+				this.generateStatusEffects(world, blockPos, blockEntity);
 			}
 			this.lockTick = true;
 			this.runCommand(world, blockEntity, blockPos, "tick");
-			this.generateStatusEffects(world, blockPos, blockEntity);
 		}
 	}
 
 	@Override
 	public void onStopped(World world, BlockPos blockPos, NecroTableBlockEntity blockEntity) {
 		ticker = 0;
-		index = 0;
 		if (lockTick) {
 			if (userUuid == null) {
 				PlayerEntity player = world.getClosestPlayer(blockPos.getZ(), blockPos.getY(), blockPos.getZ(), 16D, true);
@@ -91,6 +85,7 @@ public class BasicNecrotableRitual implements IRitual {
 			this.summonSummons(world, blockPos, blockEntity);
 			this.summonItems(world, blockPos, blockEntity);
 			this.lockTick = false;
+			this.canCollectPedestals = true;
 		}
 	}
 
@@ -108,12 +103,12 @@ public class BasicNecrotableRitual implements IRitual {
 		double y = blockPos.getY() + 0.5;
 		double z = blockPos.getZ() + 0.5;
 
-		if (blockEntity.currentBasicNecrotableRitual != null && recipe != null) {
+		if (blockEntity.currentBasicNecrotableRitual != null && blockEntity.ritualRecipe != null) {
 			if (world instanceof ServerWorld serverWorld) {
 				serverWorld.playSound(null, x, y, z, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, 1F, 1F);
 			}
-			if (recipe.outputs != null) {
-				for (ItemStack output : recipe.outputs) {
+			if (blockEntity.ritualRecipe.outputs != null) {
+				for (ItemStack output : blockEntity.ritualRecipe.outputs) {
 					ItemScatterer.spawn(world, x, y, z, output.copy());
 				}
 			}
@@ -151,7 +146,7 @@ public class BasicNecrotableRitual implements IRitual {
 		int size = 16;
 		List<LivingEntity> livingEntityList = new ArrayList<>();
 		boolean foundContract = false;
-		if (recipe.statusEffectInstance != null) {
+		if (blockEntity.ritualRecipe.statusEffectInstance != null) {
 			for (Integer id : this.contract) {
 				if (id != 0) {
 					Entity entity = world.getEntityById(id);
@@ -165,9 +160,9 @@ public class BasicNecrotableRitual implements IRitual {
 				livingEntityList = world.getEntitiesByClass(LivingEntity.class, new Box(blockPos).expand(size), Entity::isAlive);
 			}
 			for (LivingEntity living : livingEntityList) {
-				for (StatusEffectInstance instance : recipe.statusEffectInstance) {
+				for (StatusEffectInstance instance : blockEntity.ritualRecipe.statusEffectInstance) {
 					if (living.canHaveStatusEffect(instance)) {
-						living.addStatusEffect(instance);
+						living.addStatusEffect(new StatusEffectInstance(instance));
 					}
 				}
 			}
@@ -187,53 +182,62 @@ public class BasicNecrotableRitual implements IRitual {
 	 * @return true if all items where consumed
 	 */
 	private boolean consumeItems(World world, BlockPos blockPos, NecroTableBlockEntity blockEntity) {
-		if (blockEntity.ritualRecipe.inputs != null && blockEntity.ritualRecipe.inputs.isEmpty()) return true;
-		double x = blockPos.getX() + 0.5;
-		double y = blockPos.getY() + 0.5 + height;
-		double z = blockPos.getZ() + 0.5;
-		List<BlockPos> pedestalToActivate = new ArrayList<>();
-		List<Pair<ItemStack, BlockPos>> stream = blockEntity.getPedestalInfo(world).stream().filter(itemStackBlockPosPair -> !itemStackBlockPosPair.getLeft().isEmpty()).toList();
-		if(recipe != null){
-			int dividedTime = recipe.getDuration();
-			if (stream.size() > 0) {
-				dividedTime = (dividedTime / (stream.size() + 1));
-			}
-			for (Pair<ItemStack, BlockPos> itemStackBlockPosPair : stream) {
-				if (recipe.inputs != null) {
-					for (Ingredient ingredient : recipe.inputs) {
-						if (ingredient.test(itemStackBlockPosPair.getLeft())) {
-							BlockPos checkPos = itemStackBlockPosPair.getRight();
-							if (world.getBlockEntity(checkPos) instanceof PedestalBlockEntity) {
-								if (itemStackBlockPosPair.getLeft().isOf(BotDObjects.CONTRACT)) {
-									ItemStack contract = itemStackBlockPosPair.getLeft();
-									for (Integer i : this.contract) {
-										if (i == 0) {
-											this.contract.set(i, ContractItem.getIdFromContractNbt(contract));
-											break;
-										}
-									}
-								}
-								pedestalToActivate.add(checkPos);
-							}
+		if(blockEntity.ritualRecipe == null){
+			return false;
+		} else if (blockEntity.ritualRecipe.inputs != null && blockEntity.ritualRecipe.inputs.isEmpty()) {
+			return true;
+		}
+
+
+		if (blockEntity.pedestalToActivate.isEmpty() && canCollectPedestals){
+			List<PedestalInfo> infoStream = blockEntity.getPedestalInfo(world).stream().filter(itemStackBlockPosPair -> !itemStackBlockPosPair.getStack().isEmpty()).toList();
+			for (PedestalInfo info : infoStream) {
+				for (Ingredient ingredient : blockEntity.ritualRecipe.inputs) {
+					if (ingredient.test(info.getStack())) {
+						BlockPos checkPos = info.getBlockPos();
+						if (world.getBlockEntity(checkPos) instanceof PedestalBlockEntity) {
+							blockEntity.pedestalToActivate.add(info);
 						}
 					}
 				}
 			}
-			if (ticker == 1 || (ticker + 1) % dividedTime == 0) {
-				if (index < pedestalToActivate.size() && world.getBlockEntity(pedestalToActivate.get(index)) instanceof PedestalBlockEntity pedestalBlockEntity) {
-					world.playSound(null, pedestalToActivate.get(index).getX(), pedestalToActivate.get(index).getY(), pedestalToActivate.get(index).getZ(), BotDSoundEvents.MISC_ITEM_BEAM, SoundCategory.BLOCKS, 0.75f, 0.75f * world.random.nextFloat() / 2);
-					pedestalBlockEntity.setCrafting(true);
-					pedestalBlockEntity.duration = dividedTime;
-					pedestalBlockEntity.targetY = height;
-					index++;
+		} else if (!blockEntity.pedestalToActivate.isEmpty()){
+			pedestalTicker++;
+			generateFX(blockEntity, world, blockPos.getX(), blockPos.getY(), blockPos.getY());
+			generatePedestalParticleBeam(blockEntity, world, blockEntity.pedestalToActivate.get(0));
+			if(pedestalTicker > 20 * 4){
+				if(world.getBlockEntity(blockEntity.pedestalToActivate.get(0).getBlockPos()) instanceof PedestalBlockEntity pedestalBlockEntity){
+					pedestalBlockEntity.setStack(ItemStack.EMPTY);
+					pedestalBlockEntity.markDirty();
 				}
+				blockEntity.pedestalToActivate.remove(0);
+				blockEntity.markDirty();
+				canCollectPedestals = false;
+				pedestalTicker = 0;
+				return blockEntity.pedestalToActivate.isEmpty();
 			}
 		}
 
-		if (world instanceof ServerWorld serverWorld) {
-			this.generateFX(serverWorld, x, y, z);
+		return false;
+	}
+
+	private void generatePedestalParticleBeam(NecroTableBlockEntity blockEntity, World world, PedestalInfo next) {
+		BlockPos pos = next.getBlockPos();
+		Vec3d blockPosInD = new Vec3d(blockEntity.ritualPos.getX(), blockEntity.ritualPos.getY(), blockEntity.ritualPos.getZ());
+		Vec3d b = blockPosInD.subtract(new Vec3d(pos.getX(), pos.getY(), pos.getZ())).add(0.5,0.5,0.5);
+		Vec3d directionVector = new Vec3d(b.getX(), b.getY(), b.getZ());
+
+		double x = pos.getX() + (world.random.nextDouble() * 0.2D) + 0.4D;
+		double y = pos.getY() + (world.random.nextDouble() * 0.2D) + 1.2D;
+		double z = pos.getZ() + (world.random.nextDouble() * 0.2D) + 0.4D;
+		if (world instanceof ServerWorld serverWorld && !next.getStack().isEmpty()) {
+			serverWorld.spawnParticles(
+					new ItemStackBeamParticleEffect(
+							BotDParticleTypes.ITEM_BEAM_PARTICLE,
+							next.getStack(),
+							10),
+					x, y, z, 0, directionVector.x, directionVector.y, directionVector.z, 0.10D);
 		}
-		return index == pedestalToActivate.size();
 	}
 
 	/**
@@ -293,30 +297,33 @@ public class BasicNecrotableRitual implements IRitual {
 	/**
 	 * Handles the output items sound and particle effect
 	 *
-	 * @param serverWorld serverWorld
+	 * @param world world
 	 * @param x           coordinate for sound and particle
 	 * @param y           coordinate for sound and particle
 	 * @param z           coordinate for sound and particle
 	 */
-	private void generateFX(ServerWorld serverWorld, double x, double y, double z) {
-		if (ticker % 5 == 0 && ticker < recipe.getDuration() - 40) {
-			serverWorld.playSound(null, x, y, z, SoundEvents.BLOCK_CAMPFIRE_CRACKLE, SoundCategory.BLOCKS, 10, 0.5f);
-		}
-		if (recipe.outputs != null) {
-			for (ItemStack output : recipe.outputs) {
-				for (int i = 0; i < recipe.outputs.size() * 2; i++) {
-					serverWorld.spawnParticles(new ItemStackParticleEffect(ParticleTypes.ITEM, output),
-							x + ((serverWorld.random.nextDouble() / 2) - 0.25),
-							y + ((serverWorld.random.nextDouble() / 2) - 0.25),
-							z + ((serverWorld.random.nextDouble() / 2) - 0.25),
-							0,
-							1 * ((serverWorld.random.nextDouble() / 2) - 0.25),
-							1 * ((serverWorld.random.nextDouble() / 2) - 0.25),
-							1 * ((serverWorld.random.nextDouble() / 2) - 0.25),
-							0);
+	private void generateFX(NecroTableBlockEntity blockEntity, World world, double x, double y, double z) {
+		if(world instanceof ServerWorld serverWorld){
+			if (ticker % 5 == 0 && ticker < blockEntity.ritualRecipe.getDuration() - 40) {
+				serverWorld.playSound(null, x, y, z, SoundEvents.BLOCK_CAMPFIRE_CRACKLE, SoundCategory.BLOCKS, 10, 0.5f);
+			}
+			if (blockEntity.ritualRecipe.outputs != null) {
+				for (ItemStack output : blockEntity.ritualRecipe.outputs) {
+					for (int i = 0; i < blockEntity.ritualRecipe.outputs.size() * 2; i++) {
+						serverWorld.spawnParticles(new ItemStackParticleEffect(ParticleTypes.ITEM, output),
+								x + ((serverWorld.random.nextDouble() / 2) - 0.25),
+								y + ((serverWorld.random.nextDouble() / 2) - 0.25),
+								z + ((serverWorld.random.nextDouble() / 2) - 0.25),
+								0,
+								1 * ((serverWorld.random.nextDouble() / 2) - 0.25),
+								1 * ((serverWorld.random.nextDouble() / 2) - 0.25),
+								1 * ((serverWorld.random.nextDouble() / 2) - 0.25),
+								0);
+					}
 				}
 			}
 		}
+
 	}
 
 	/**

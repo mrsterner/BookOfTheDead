@@ -8,6 +8,9 @@
   "inputs": [
     {
       "item" : "minecraft:stick"
+    },
+    {
+      "item" : "minecraft:apple"
     }
   ],
   "outputs": [
