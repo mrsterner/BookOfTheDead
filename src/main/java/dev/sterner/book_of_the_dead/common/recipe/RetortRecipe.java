@@ -3,8 +3,10 @@ package dev.sterner.book_of_the_dead.common.recipe;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
+import com.mojang.datafixers.util.Pair;
 import dev.sterner.book_of_the_dead.api.interfaces.IRecipe;
 import dev.sterner.book_of_the_dead.common.registry.BotDRecipeTypes;
+import dev.sterner.book_of_the_dead.common.util.RecipeUtils;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -22,20 +24,7 @@ import org.quiltmc.qsl.recipe.api.serializer.QuiltRecipeSerializer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RetortRecipe implements IRecipe {
-	private final Identifier id;
-	public final int color;
-	public final DefaultedList<Ingredient> ingredients = DefaultedList.ofSize(4, Ingredient.EMPTY);
-	public final ItemStack output;
-
-	public RetortRecipe(Identifier id, int color, Ingredient[] ingredients, ItemStack output) {
-		this.id = id;
-		for (int i = 0; i < ingredients.length; i++) {
-			this.ingredients.set(i, ingredients[i]);
-		}
-		this.output = output;
-		this.color = color;
-	}
+public record RetortRecipe(Identifier id, int color, DefaultedList<Ingredient> ingredients, ItemStack output) implements IRecipe {
 
 	@Override
 	public boolean matches(Inventory inventory, World world) {
@@ -98,36 +87,44 @@ public class RetortRecipe implements IRecipe {
 
 		@Override
 		public RetortRecipe read(Identifier id, JsonObject json) {
-			Ingredient[] ingredients = readIngredients(JsonHelper.getArray(json, "ingredients"));
+
+			//Inputs
+			DefaultedList<Ingredient> inputs = RecipeUtils.deserializeIngredients(JsonHelper.getArray(json, "inputs"));
+
+			//Output
 			Item outputItem = Registries.ITEM.getOrEmpty(new Identifier(JsonHelper.getString(json, "outputItem"))).orElseThrow(() -> new JsonSyntaxException("No such item " + JsonHelper.getString(json, "outputItem")));
 			ItemStack output = new ItemStack(outputItem, JsonHelper.getInt(json, "outputCount", 1));
-			int color = Integer.parseInt(JsonHelper.getString(json, "color").substring(2), 16);
-			return new RetortRecipe(id, color, ingredients, output);
-		}
 
-		private Ingredient[] readIngredients(JsonArray json) {
-			List<Ingredient> ingredients = new ArrayList<>();
-			json.forEach(jsonElement -> ingredients.add(Ingredient.fromJson(jsonElement)));
-			return ingredients.toArray(new Ingredient[ingredients.size()]);
+			//Color
+			int color = Integer.parseInt(JsonHelper.getString(json, "color").substring(2), 16);
+			return new RetortRecipe(id, color, inputs, output);
 		}
 
 		@Override
 		public RetortRecipe read(Identifier id, PacketByteBuf buf) {
-			int sizeIngredients = buf.readInt();
+			//Inputs
+			DefaultedList<Ingredient> inputs = DefaultedList.ofSize(buf.readVarInt(), Ingredient.EMPTY);
+			inputs.replaceAll(ignored -> Ingredient.fromPacket(buf));
+
+			//Output
 			ItemStack itemStack = buf.readItemStack();
-			List<Ingredient> ingredients = new ArrayList<>();
-			for (int i = 0; i < sizeIngredients; i++) {
-				ingredients.add(Ingredient.fromPacket(buf));
-			}
+
+			//Color
 			int color = Integer.parseInt(buf.readString().substring(2), 16);
-			return new RetortRecipe(id, color, ingredients.toArray(new Ingredient[ingredients.size()]), itemStack);
+			return new RetortRecipe(id, color, inputs, itemStack);
 		}
 
 		@Override
 		public void write(PacketByteBuf buf, RetortRecipe recipe) {
+
+			//Inputs
 			buf.writeInt(recipe.ingredients.size());
+			recipe.ingredients.forEach(ingredient -> ingredient.write(buf));
+
+			//Output
 			buf.writeItemStack(recipe.output);
-			recipe.ingredients.forEach(i -> i.write(buf));
+
+			//Color
 			buf.writeInt(recipe.color);
 		}
 

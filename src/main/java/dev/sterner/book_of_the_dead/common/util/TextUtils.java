@@ -32,17 +32,23 @@ public class TextUtils {
 	 * @return formatted string
 	 */
 	public static String capitalizeString(String string) {
-		char[] chars = string.toLowerCase().toCharArray();
-		boolean found = false;
-		for (int i = 0; i < chars.length; i++) {
-			if (!found && Character.isLetter(chars[i])) {
-				chars[i] = Character.toUpperCase(chars[i]);
-				found = true;
-			} else if (Character.isWhitespace(chars[i]) || chars[i] == '.' || chars[i] == '\'' || chars[i] == '_') {
-				chars[i] = ' ';
-				found = false;
+		if (string == null || string.trim().isEmpty()) {
+			return "";
+		}
+
+		StringBuilder sb = new StringBuilder(string.toLowerCase());
+		boolean capitalizeNext = true;
+
+		for (int i = 0; i < sb.length(); i++) {
+			char c = sb.charAt(i);
+			if (Character.isWhitespace(c) || c == '.' || c == '\'' || c == '_') {
+				capitalizeNext = true;
+			} else if (capitalizeNext && Character.isLetter(c)) {
+				sb.setCharAt(i, Character.toUpperCase(c));
+				capitalizeNext = false;
 			}
 		}
-		return String.valueOf(chars);
+
+		return sb.toString();
 	}
 }

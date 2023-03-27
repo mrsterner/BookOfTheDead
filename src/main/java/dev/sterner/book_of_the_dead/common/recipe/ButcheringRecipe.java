@@ -21,18 +21,7 @@ import net.minecraft.world.World;
 import org.quiltmc.qsl.recipe.api.serializer.QuiltRecipeSerializer;
 
 
-public class ButcheringRecipe implements IRecipe {
-	private final Identifier identifier;
-	public final EntityType<?> entityType;
-	private final DefaultedList<Pair<ItemStack, Float>> outputs;
-	public final Pair<ItemStack, Float> headDrop;
-
-	public ButcheringRecipe(Identifier id, EntityType<?> entityType, DefaultedList<Pair<ItemStack, Float>> outputs, Pair<ItemStack, Float> headDrop) {
-		this.identifier = id;
-		this.entityType = entityType;
-		this.outputs = outputs;
-		this.headDrop = headDrop;
-	}
+public record ButcheringRecipe(Identifier id, EntityType<?> entityType, DefaultedList<Pair<ItemStack, Float>> outputs, Pair<ItemStack, Float> headDrop) implements IRecipe {
 
 	@Override
 	public boolean matches(Inventory inventory, World world) {
@@ -45,7 +34,7 @@ public class ButcheringRecipe implements IRecipe {
 
 	@Override
 	public Identifier getId() {
-		return identifier;
+		return id;
 	}
 
 	@Override
@@ -62,7 +51,10 @@ public class ButcheringRecipe implements IRecipe {
 
 		@Override
 		public ButcheringRecipe read(Identifier id, JsonObject json) {
+			//EntityType
 			EntityType<?> entityType = Registries.ENTITY_TYPE.get(new Identifier(JsonHelper.getString(json, "entityType")));
+
+			//Outputs
 			JsonArray array = JsonHelper.getArray(json, "results");
 			DefaultedList<Pair<ItemStack, Float>> outputs = RecipeUtils.deserializeStackPairs(array);
 			if (outputs.isEmpty()) {
@@ -70,6 +62,8 @@ public class ButcheringRecipe implements IRecipe {
 			} else if (outputs.size() > 8) {
 				throw new JsonParseException("Too many outputs for Butchering recipe");
 			}
+
+			//Output Head
 			Pair<ItemStack, Float> headDrop = Pair.of(ItemStack.EMPTY, 1.0f);
 			if (JsonHelper.hasArray(json, "head")) {
 				JsonArray headArray = JsonHelper.getArray(json, "head");
@@ -81,9 +75,14 @@ public class ButcheringRecipe implements IRecipe {
 
 		@Override
 		public ButcheringRecipe read(Identifier id, PacketByteBuf buf) {
+			//EntityType
 			EntityType<?> entityType = Registries.ENTITY_TYPE.get(new Identifier(buf.readString()));
+
+			//Outputs
 			DefaultedList<Pair<ItemStack, Float>> outputs = DefaultedList.ofSize(buf.readInt(), Pair.of(ItemStack.EMPTY, 1.0F));
 			outputs.replaceAll(ignored -> Pair.of(buf.readItemStack(), buf.readFloat()));
+
+			//Output Head
 			Pair<ItemStack, Float> headDrop = Pair.of(buf.readItemStack(), buf.readFloat());
 
 			return new ButcheringRecipe(id, entityType, outputs, headDrop);
@@ -92,12 +91,17 @@ public class ButcheringRecipe implements IRecipe {
 
 		@Override
 		public void write(PacketByteBuf buf, ButcheringRecipe recipe) {
+			//Entity Type
 			buf.writeString(Registries.ENTITY_TYPE.getId(recipe.entityType).toString());
+
+			//Outputs
 			buf.writeInt(recipe.outputs.size());
 			for (Pair<ItemStack, Float> pair : recipe.outputs) {
 				buf.writeItemStack(pair.getFirst());
 				buf.writeFloat(pair.getSecond());
 			}
+
+			//Output Head
 			buf.writeItemStack(recipe.headDrop.getFirst());
 			buf.writeFloat(recipe.headDrop.getSecond());
 		}

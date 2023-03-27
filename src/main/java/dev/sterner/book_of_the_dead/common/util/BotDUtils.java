@@ -12,8 +12,11 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 public class BotDUtils {
 
@@ -25,21 +28,21 @@ public class BotDUtils {
 	 * @param toAdd  item to add
 	 */
 	public static void addItemToInventoryAndConsume(PlayerEntity player, Hand hand, ItemStack toAdd) {
-		boolean shouldAdd = false;
 		ItemStack stack = player.getStackInHand(hand);
-		if (stack.getCount() == 1) {
-			if (player.isCreative()) {
-				shouldAdd = true;
-			} else {
-				player.setStackInHand(hand, toAdd);
-			}
-		} else {
-			stack.decrement(1);
-			shouldAdd = true;
+		if (stack.getCount() == 1 && !player.isCreative()) {
+			player.setStackInHand(hand, toAdd);
+			return;
 		}
-		if (shouldAdd) {
+		stack.decrement(1);
+		try {
 			if (!player.getInventory().insertStack(toAdd)) {
 				player.dropItem(toAdd, false, true);
+			}
+		} finally {
+			if (stack.isEmpty()) {
+				player.setStackInHand(hand, ItemStack.EMPTY);
+			} else {
+				player.setStackInHand(hand, stack);
 			}
 		}
 	}
@@ -121,20 +124,15 @@ public class BotDUtils {
 	 * Gets the closest entity of a specific type
 	 *
 	 * @param entityList list of entities to test
-	 * @param type       entityType to look for
+	 * @param entityType       entityType to look for
 	 * @param pos        position to measure distance from
 	 * @return Entity closest to pos from entityList
 	 */
-	public static <T extends LivingEntity> T getClosestEntity(List<? extends T> entityList, EntityType<?> type, BlockPos pos) {
-		double d = -1.0;
-		T livingEntity = null;
-		for (T livingEntity2 : entityList) {
-			double e = livingEntity2.squaredDistanceTo(pos.getX(), pos.getY(), pos.getZ());
-			if (livingEntity2.getType() == type && (d == -1.0 || e < d)) {
-				d = e;
-				livingEntity = livingEntity2;
-			}
-		}
-		return livingEntity;
+
+	@Nullable
+	public static <T extends LivingEntity> T getClosestEntity(List<? extends T> entityList, EntityType<?> entityType, BlockPos pos) {
+		Optional<? extends T> closestEntity = entityList.stream().filter(entity -> entity.getType() == entityType)
+				.min(Comparator.comparingDouble(entity -> entity.squaredDistanceTo(pos.getX(), pos.getY(), pos.getZ())));
+		return closestEntity.orElse(null);
 	}
 }

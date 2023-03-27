@@ -53,7 +53,7 @@ public class RecipeUtils {
 	/**
 	 * Deserialize an EntityType from a json object
 	 */
-	public static @Nullable EntityType<?> deserializeEntityType(JsonObject object) {
+	public static @NotNull EntityType<?> deserializeEntityType(JsonObject object) {
 		final Identifier id = new Identifier(JsonHelper.getString(object, "entity"));
 		return Registries.ENTITY_TYPE.get(id);
 	}

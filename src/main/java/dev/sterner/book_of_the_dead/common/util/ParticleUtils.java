@@ -20,7 +20,7 @@ public class ParticleUtils {
 	 * @param world        world
 	 * @param itemStack    itemstack for particle effect
 	 */
-	public static void generatePedestalParticleBeam(Vec3d from, Vec3d to, World world, ItemStack itemStack) {
+	public static void spawnItemParticleBeam(Vec3d from, Vec3d to, World world, ItemStack itemStack) {
 		Vec3d directionVector = to.subtract(from);
 
 		double x = from.getX() + (world.random.nextDouble() * 0.2D) + 0.4D;

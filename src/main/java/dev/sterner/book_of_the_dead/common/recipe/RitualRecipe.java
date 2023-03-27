@@ -33,40 +33,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class RitualRecipe implements IRecipe {
-	public final Identifier id;
-	public final BasicNecrotableRitual ritual;
-	public final Identifier texture;
-
-	public final DefaultedList<Ingredient> inputs;
-	public final List<ItemStack> outputs;
-	public final List<EntityType<?>> summons;
-	public final List<EntityType<?>> sacrifices;
-	public final int duration;
-	public final Set<CommandType> command;
-
-	public final boolean requireBotD;
-	public final boolean requireEmeraldTablet;
-	public final List<StatusEffectInstance> statusEffectInstance;
-
-	public RitualRecipe(Identifier id, BasicNecrotableRitual ritual, Identifier texture, boolean requireBotD, boolean requireEmeraldTablet, int duration, @Nullable DefaultedList<Ingredient> inputs, @Nullable List<ItemStack> outputs, @Nullable List<EntityType<?>> sacrifices, @Nullable List<EntityType<?>> summons, @Nullable List<StatusEffectInstance> statusEffectInstance, Set<CommandType> command) {
-		this.id = id;
-		this.texture = texture;
-		this.outputs = outputs;
-		this.inputs = inputs;
-		this.sacrifices = sacrifices;
-		this.duration = duration;
-		this.command = command;
-		this.ritual = ritual;
-		this.requireBotD = requireBotD;
-		this.requireEmeraldTablet = requireEmeraldTablet;
-		this.statusEffectInstance = statusEffectInstance;
-		this.summons = summons;
-	}
-
-	public int getDuration() {
-		return this.duration;
-	}
+public record RitualRecipe(Identifier id, BasicNecrotableRitual ritual, Identifier texture, boolean requireBotD, boolean requireEmeraldTablet, int duration, @Nullable DefaultedList<Ingredient> inputs, @Nullable List<ItemStack> outputs, @Nullable List<EntityType<?>> sacrifices, @Nullable List<EntityType<?>> summons, @Nullable List<StatusEffectInstance> statusEffectInstance, Set<CommandType> command) implements IRecipe {
 
 	@Override
 	public Identifier getId() {
@@ -134,7 +101,6 @@ public class RitualRecipe implements IRecipe {
 			} else {
 				texture = Constants.id("book_of_the_dead:misc/circle_necromancy.png");
 			}
-
 
 			boolean requireBotD = JsonHelper.getBoolean(json, "requireBotD", false);
 			boolean requireEmeraldTablet = JsonHelper.getBoolean(json, "requireEmeraldTablet", false);
@@ -246,44 +212,36 @@ public class RitualRecipe implements IRecipe {
 
 			//Inputs
 			buf.writeVarInt(recipe.inputs.size());
-			for (Ingredient ingredient : recipe.inputs) {
-				ingredient.write(buf);
-			}
+			recipe.inputs.forEach(ingredient -> ingredient.write(buf));
 			//Outputs
 			buf.writeVarInt(recipe.outputs.size());
-			for (ItemStack stack : recipe.outputs) {
-				buf.writeItemStack(stack);
-			}
+			recipe.outputs.forEach(buf::writeItemStack);
 
 			//Sacrifices
 			buf.writeInt(recipe.sacrifices.size());
-			for (EntityType<?> entityType : recipe.sacrifices) {
-				buf.writeString(Registries.ENTITY_TYPE.getId(entityType).toString());
-			}
+			recipe.sacrifices.stream().map(entityType -> Registries.ENTITY_TYPE.getId(entityType).toString()).forEach(buf::writeString);
 
 			//Summons
 			buf.writeInt(recipe.summons.size());
-			for (EntityType<?> entityType : recipe.summons) {
-				buf.writeString(Registries.ENTITY_TYPE.getId(entityType).toString());
-			}
+			recipe.summons.stream().map(entityType -> Registries.ENTITY_TYPE.getId(entityType).toString()).forEach(buf::writeString);
 
 			//Duration
 			buf.writeInt(recipe.duration);
 
 			//Effects
 			buf.writeVarInt(recipe.statusEffectInstance.size());
-			for (StatusEffectInstance effectInstance : recipe.statusEffectInstance) {
+			recipe.statusEffectInstance.forEach(effectInstance -> {
 				buf.writeString(Registries.STATUS_EFFECT.getId(effectInstance.getEffectType()).toString());
 				buf.writeInt(effectInstance.getDuration());
 				buf.writeInt(effectInstance.getAmplifier());
-			}
+			});
 
 			//Commands
 			buf.writeVarInt(recipe.command.size());
-			for (CommandType commandType : recipe.command) {
+			recipe.command.forEach(commandType -> {
 				buf.writeString(commandType.command());
 				buf.writeString(commandType.type());
-			}
+			});
 		}
 
 		@Override

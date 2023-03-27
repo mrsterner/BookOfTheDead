@@ -30,6 +30,6 @@ public interface IRecipe extends Recipe<Inventory> {
 
 	@Override
 	default String getGroup() {
-		return getId().toString();
+		return id().toString();
 	}
 }
