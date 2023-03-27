@@ -27,7 +27,6 @@ public class Constants {
 
 	public interface Values {
 		int BLEEDING = 120;
-		double JAR_COLLECTION_RANGE = 10;
 	}
 
 	public interface DataTrackers {
@@ -52,13 +51,10 @@ public class Constants {
 		String NECRO_RITUAL = "NecroRitual";
 		String TIMER = "Timer";
 		String AGE = "Age";
-		String PLAYER_UUID = "PlayerUuid";
 		String RITUAL_POS = "RitualPos";
 		String PEDESTAL_ITEM = "PedestalItem";
-		String CRAFTING_FINISHED = "CraftingFinished";
 		String CRAFTING = "Crafting";
 		String RITUAL_RECIPE = "RitualRecipe";
-		String START = "Start";
 		String SHOULD_RUN = "ShouldRun";
 		String CLIENT_TIMER = "ClientTimer";
 		String DURATION = "Duration";

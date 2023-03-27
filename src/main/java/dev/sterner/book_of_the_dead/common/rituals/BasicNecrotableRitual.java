@@ -5,14 +5,14 @@ import com.mojang.brigadier.ParseResults;
 import dev.sterner.book_of_the_dead.api.CommandType;
 import dev.sterner.book_of_the_dead.api.PedestalInfo;
 import dev.sterner.book_of_the_dead.api.interfaces.IRitual;
-import dev.sterner.book_of_the_dead.client.particle.ItemStackBeamParticleEffect;
 import dev.sterner.book_of_the_dead.common.block.entity.NecroTableBlockEntity;
 import dev.sterner.book_of_the_dead.common.block.entity.PedestalBlockEntity;
 import dev.sterner.book_of_the_dead.common.component.BotDComponents;
 import dev.sterner.book_of_the_dead.common.component.LivingEntityDataComponent;
-import dev.sterner.book_of_the_dead.common.registry.BotDParticleTypes;
 import dev.sterner.book_of_the_dead.common.registry.BotDSoundEvents;
 import dev.sterner.book_of_the_dead.common.registry.BotDStatusEffects;
+import dev.sterner.book_of_the_dead.common.util.BotDUtils;
+import dev.sterner.book_of_the_dead.common.util.ParticleUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -205,13 +205,15 @@ public class BasicNecrotableRitual implements IRitual {
 			}
 		} else if (!blockEntity.pedestalToActivate.isEmpty()) {
 			pedestalTicker++;
-			if (world instanceof ServerWorld serverWorld) {
-				this.generateFX(serverWorld, blockEntity, blockPos.getX() + 0.5, blockPos.getY() + 0.5, blockPos.getZ() + 0.5);
+			if (world instanceof ServerWorld serverWorld && blockEntity.ritualRecipe.outputs != null) {
+				ParticleUtils.generateItemParticle(serverWorld, blockPos.getX() + 0.5, blockPos.getY() + 0.5, blockPos.getZ() + 0.5, blockEntity.ritualRecipe.outputs);
 			}
 			if (pedestalTicker == 1) {
 				world.playSound(null, blockEntity.pedestalToActivate.get(0).pos().getX(), blockEntity.pedestalToActivate.get(0).pos().getY(), blockEntity.pedestalToActivate.get(0).pos().getZ(), BotDSoundEvents.MISC_ITEM_BEAM, SoundCategory.BLOCKS, 0.5f, 0.75f * world.random.nextFloat() / 2);
 			}
-			generatePedestalParticleBeam(blockEntity, world, blockEntity.pedestalToActivate.get(0));
+			BlockPos particlePos = blockEntity.pedestalToActivate.get(0).pos();
+			ParticleUtils.generatePedestalParticleBeam(new Vec3d(particlePos.getX(), particlePos.getY() + 1, particlePos.getZ()), new Vec3d(blockPos.getX(), blockPos.getY() + 1, blockPos.getZ()), world, blockEntity.pedestalToActivate.get(0).stack());
+
 			if (pedestalTicker > 20 * 4) {
 				if (world.getBlockEntity(blockEntity.pedestalToActivate.get(0).pos()) instanceof PedestalBlockEntity pedestalBlockEntity) {
 					pedestalBlockEntity.setStack(ItemStack.EMPTY);
@@ -249,7 +251,7 @@ public class BasicNecrotableRitual implements IRitual {
 
 		if (ritualSacrifices != null && new HashSet<>(entityTypeList).containsAll(ritualSacrifices)) {
 			for (EntityType<?> entityType : ritualSacrifices) {
-				LivingEntity foundEntity = getClosestEntity(livingEntityList, entityType, blockPos);
+				LivingEntity foundEntity = BotDUtils.getClosestEntity(livingEntityList, entityType, blockPos);
 				if (foundEntity != null) {
 					LivingEntityDataComponent livingEntityDataComponent = BotDComponents.LIVING_COMPONENT.get(foundEntity);
 					livingEntityDataComponent.setRitualPos(new Vec3d(blockPos.getX(), blockPos.getY(), blockPos.getZ()));
@@ -259,86 +261,6 @@ public class BasicNecrotableRitual implements IRitual {
 			return true;
 		}
 		return false;
-	}
-
-	/**
-	 * Gets the closest entity of a specific type
-	 *
-	 * @param entityList list of entities to test
-	 * @param type       entityType to look for
-	 * @param pos        position to measure distance from
-	 * @return Entity closest to pos from entityList
-	 */
-	public <T extends LivingEntity> T getClosestEntity(List<? extends T> entityList, EntityType<?> type, BlockPos pos) {
-		double d = -1.0;
-		T livingEntity = null;
-		for (T livingEntity2 : entityList) {
-			double e = livingEntity2.squaredDistanceTo(pos.getX(), pos.getY(), pos.getZ());
-			if (livingEntity2.getType() == type && (d == -1.0 || e < d)) {
-				d = e;
-				livingEntity = livingEntity2;
-			}
-		}
-		return livingEntity;
-	}
-
-	/**
-	 * Handles the output items sound and particle effect
-	 *
-	 * @param serverWorld serverWorld
-	 * @param x           coordinate for sound and particle
-	 * @param y           coordinate for sound and particle
-	 * @param z           coordinate for sound and particle
-	 */
-	private void generateFX(ServerWorld serverWorld, NecroTableBlockEntity blockEntity, double x, double y, double z) {
-		if (ticker % 5 == 0 && ticker < blockEntity.ritualRecipe.getDuration() - 40) {
-			serverWorld.playSound(null, x, y, z, SoundEvents.BLOCK_CAMPFIRE_CRACKLE, SoundCategory.BLOCKS, 10, 0.5f);
-		}
-		if (blockEntity.ritualRecipe.outputs != null) {
-			for (ItemStack output : blockEntity.ritualRecipe.outputs) {
-				for (int i = 0; i < blockEntity.ritualRecipe.outputs.size() * 2; i++) {
-					serverWorld.spawnParticles(new ItemStackParticleEffect(ParticleTypes.ITEM, output),
-							x + ((serverWorld.random.nextDouble() / 2) - 0.25),
-							y + ((serverWorld.random.nextDouble() / 2) - 0.25),
-							z + ((serverWorld.random.nextDouble() / 2) - 0.25),
-							0,
-							1 * ((serverWorld.random.nextDouble() / 2) - 0.25),
-							1 * ((serverWorld.random.nextDouble() / 2) - 0.25),
-							1 * ((serverWorld.random.nextDouble() / 2) - 0.25),
-							0);
-				}
-			}
-		}
-	}
-
-	/**
-	 * generates the beam of particles from the pedestals to the ritual center
-	 *
-	 * @param blockEntity  necro table
-	 * @param world        world
-	 * @param pedestalInfo info about where the pedestals are
-	 */
-	private void generatePedestalParticleBeam(NecroTableBlockEntity blockEntity, World world, PedestalInfo pedestalInfo) {
-		BlockPos pos = pedestalInfo.pos();
-		Vec3d blockPosInD = new Vec3d(blockEntity.ritualPos.getX(), blockEntity.ritualPos.getY() - 1.0, blockEntity.ritualPos.getZ());
-		Vec3d b = blockPosInD.subtract(new Vec3d(pos.getX(), pos.getY(), pos.getZ()));
-		Vec3d directionVector = new Vec3d(b.getX(), b.getY(), b.getZ());
-
-		double x = pos.getX() + (world.random.nextDouble() * 0.2D) + 0.4D;
-		double y = pos.getY() + (world.random.nextDouble() * 0.2D) + 1.2D;
-		double z = pos.getZ() + (world.random.nextDouble() * 0.2D) + 0.4D;
-		if (world instanceof ServerWorld serverWorld && !pedestalInfo.stack().isEmpty()) {
-			serverWorld.spawnParticles(
-					new ItemStackBeamParticleEffect(BotDParticleTypes.ITEM_BEAM_PARTICLE, pedestalInfo.stack(), 10),
-					x,
-					y,
-					z,
-					0,
-					directionVector.x,
-					directionVector.y,
-					directionVector.z,
-					0.10D);
-		}
 	}
 
 	/**

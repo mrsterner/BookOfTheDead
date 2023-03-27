@@ -1,14 +1,19 @@
 package dev.sterner.book_of_the_dead.common.util;
 
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Hand;
 import net.minecraft.util.function.BooleanBiFunction;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
+
+import java.util.List;
 
 public class BotDUtils {
 
@@ -39,6 +44,14 @@ public class BotDUtils {
 		}
 	}
 
+	/**
+	 * Rotates a VoxelShape on any axis a certain amount of times
+	 *
+	 * @param times amount of times to rotate
+	 * @param shape the shape input
+	 * @param axis which axis to rotate on
+	 * @return new VoxelShape after rotation
+	 */
 	public static VoxelShape rotateShape(int times, VoxelShape shape, char axis) {
 		VoxelShape[] buffer = new VoxelShape[]{shape, VoxelShapes.empty()};
 		VoxelShape emptyShape = VoxelShapes.empty();
@@ -60,6 +73,14 @@ public class BotDUtils {
 		return buffer[0];
 	}
 
+	/**
+	 * Rotates the VoxelShape on y-axis
+	 *
+	 * @param from direction
+	 * @param to direction
+	 * @param shape shape
+	 * @return new voxel shape for the new direction
+	 */
 	public static VoxelShape rotateShape(Direction from, Direction to, VoxelShape shape) {
 		VoxelShape[] buffer = new VoxelShape[]{shape, VoxelShapes.empty()};
 
@@ -72,15 +93,48 @@ public class BotDUtils {
 		return buffer[0];
 	}
 
+	/**
+	 * Parse an nbt to a vec3d
+	 *
+	 * @param compound nbt
+	 * @return vec3d
+	 */
 	public static Vec3d toVec3d(NbtCompound compound) {
 		return new Vec3d(compound.getDouble("X"), compound.getDouble("Y"), compound.getDouble("Z"));
 	}
 
+	/**
+	 * Make a nbt from a Vec3d
+	 *
+	 * @param pos vec3d position
+	 * @return nbt
+	 */
 	public static NbtCompound fromVec3d(Vec3d pos) {
 		NbtCompound nbtCompound = new NbtCompound();
 		nbtCompound.putDouble("X", pos.getX());
 		nbtCompound.putDouble("Y", pos.getY());
 		nbtCompound.putDouble("Z", pos.getZ());
 		return nbtCompound;
+	}
+
+	/**
+	 * Gets the closest entity of a specific type
+	 *
+	 * @param entityList list of entities to test
+	 * @param type       entityType to look for
+	 * @param pos        position to measure distance from
+	 * @return Entity closest to pos from entityList
+	 */
+	public static <T extends LivingEntity> T getClosestEntity(List<? extends T> entityList, EntityType<?> type, BlockPos pos) {
+		double d = -1.0;
+		T livingEntity = null;
+		for (T livingEntity2 : entityList) {
+			double e = livingEntity2.squaredDistanceTo(pos.getX(), pos.getY(), pos.getZ());
+			if (livingEntity2.getType() == type && (d == -1.0 || e < d)) {
+				d = e;
+				livingEntity = livingEntity2;
+			}
+		}
+		return livingEntity;
 	}
 }

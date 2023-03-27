@@ -11,6 +11,7 @@ import net.minecraft.world.World;
 
 public class JarBlockEntity extends BaseBlockEntity {
 	public static final int MAX_LIQUID = 100;
+	public static final int JAR_COLLECTION_RANGE = 10;
 	public int liquidAmount = 0;
 
 	public static final int EMPTY = 0;
@@ -42,7 +43,7 @@ public class JarBlockEntity extends BaseBlockEntity {
 	}
 
 	private boolean getBloodyCorpseAbove(World world, BlockPos pos) {
-		for (double y = 0; y <= Constants.Values.JAR_COLLECTION_RANGE; ++y) {
+		for (double y = 0; y <= JAR_COLLECTION_RANGE; ++y) {
 			BlockPos potentialCorpse = new BlockPos(pos.getX(), (int) (pos.getY() + y), pos.getZ());
 			if (world.getBlockEntity(potentialCorpse) instanceof HookBlockEntity hookBlockEntity) {
 				if (hookBlockEntity.hookedAge < Constants.Values.BLEEDING) {
