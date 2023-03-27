@@ -1,7 +1,5 @@
 package dev.sterner.book_of_the_dead.client.renderer.block;
 
-import com.mojang.blaze3d.platform.GlStateManager;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import dev.sterner.book_of_the_dead.BotDClient;
 import dev.sterner.book_of_the_dead.client.renderer.renderlayer.BotDRenderLayer;
@@ -25,7 +23,6 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import org.joml.Matrix4f;
-import org.lwjgl.opengl.GL11;
 import org.quiltmc.loader.api.minecraft.ClientOnly;
 
 @ClientOnly
@@ -84,11 +81,11 @@ public class NecroTableBlockEntityRenderer<T extends BlockEntity> implements Blo
 				matrices.push();
 				matrices.translate(0.5, 0.15, 0.5);
 
-				switch (necroTableBlockEntity.getCachedState().get(NecroTableBlock.FACING)){
-					case NORTH -> matrices.translate(0,0,-4);
-					case SOUTH -> matrices.translate(0,0,4);
-					case EAST -> matrices.translate(4,0,0);
-					case WEST -> matrices.translate(-4,0,0);
+				switch (necroTableBlockEntity.getCachedState().get(NecroTableBlock.FACING)) {
+					case NORTH -> matrices.translate(0, 0, -4);
+					case SOUTH -> matrices.translate(0, 0, 4);
+					case EAST -> matrices.translate(4, 0, 0);
+					case WEST -> matrices.translate(-4, 0, 0);
 				}
 
 				final float rotationModifier = 4F;
@@ -98,16 +95,16 @@ public class NecroTableBlockEntityRenderer<T extends BlockEntity> implements Blo
 				matrices.multiply(Axis.X_POSITIVE.rotationDegrees(MathHelper.cos(deg) / (float) Math.PI));
 				matrices.multiply(Axis.Y_POSITIVE.rotationDegrees(entity.getCachedState().get(HorizontalFacingBlock.FACING).asRotation()));
 
-				if(necroTableBlockEntity.shouldRun){
-					alpha = ((float)necroTableBlockEntity.clientTime + tickDelta - 1.0F) / 20.0F * 1.6F;
+				if (necroTableBlockEntity.shouldRun) {
+					alpha = ((float) necroTableBlockEntity.clientTime + tickDelta - 1.0F) / 20.0F * 1.6F;
 					alpha = MathHelper.sqrt(alpha);
 					if (alpha > 1.0F) {
 						alpha = 1.0F;
 					}
-				}else{
-					if(alpha < 0.02){
+				} else {
+					if (alpha < 0.02) {
 						alpha = 0;
-					}else {
+					} else {
 						alpha = alpha - 0.01f;
 					}
 				}
@@ -115,7 +112,7 @@ public class NecroTableBlockEntityRenderer<T extends BlockEntity> implements Blo
 				Matrix4f mat = matrices.peek().getModel();
 				RitualRecipe recipe = necroTableBlockEntity.ritualRecipe;
 				Identifier texture;
-				if(recipe != null){
+				if (recipe != null) {
 					texture = recipe.texture;
 					VertexConsumer vertexConsumer = vertexConsumers.getBuffer(BotDRenderLayer.GLOWING_LAYER.apply(texture));
 					vertexConsumer.vertex(mat, -2.5F, 0, 2.5F).color(1f, 1f, 1f, alpha).uv(0, 1).overlay(overlay).light(light).normal(0, 1, 0).next();
@@ -131,7 +128,7 @@ public class NecroTableBlockEntityRenderer<T extends BlockEntity> implements Blo
 
 	public void render(MatrixStack matrixStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, boolean isNecro) {
 		base.render(matrixStack, vertexConsumer, packedLight, packedOverlay, 1, 1, 1, 1);
-		if(isNecro){
+		if (isNecro) {
 			candle.render(matrixStack, vertexConsumer, packedLight, packedOverlay, 1, 1, 1, 1);
 			slate.render(matrixStack, vertexConsumer, packedLight, packedOverlay, 1, 1, 1, 1);
 			cruse.render(matrixStack, vertexConsumer, packedLight, packedOverlay, 1, 1, 1, 1);

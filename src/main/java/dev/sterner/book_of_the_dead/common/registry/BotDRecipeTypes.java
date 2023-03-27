@@ -11,7 +11,6 @@ import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
-import net.minecraft.util.Pair;
 import net.minecraft.world.World;
 
 import java.util.stream.Collectors;

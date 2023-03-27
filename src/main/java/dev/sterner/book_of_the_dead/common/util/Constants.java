@@ -114,6 +114,6 @@ public class Constants {
 		String HEAT_TIMER = "HeatTimer";
 		String PROGRESS = "Progress";
 		String HAS_LIQUID = "HasLiquid";
-        String IS_NECRO = "IsNecro";
-    }
+		String IS_NECRO = "IsNecro";
+	}
 }

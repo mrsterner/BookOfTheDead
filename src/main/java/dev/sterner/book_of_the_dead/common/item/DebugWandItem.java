@@ -15,7 +15,6 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import static dev.sterner.book_of_the_dead.BotD.isDebugMode;
@@ -27,7 +26,7 @@ public class DebugWandItem extends Item {
 
 	@Override
 	public ActionResult useOnBlock(ItemUsageContext context) {
-		if(!isDebugMode()) return super.useOnBlock(context);
+		if (!isDebugMode()) return super.useOnBlock(context);
 		World world = context.getWorld();
 		PlayerEntity player = context.getPlayer();
 		ItemStack syringe = new ItemStack(BotDObjects.SYRINGE);
@@ -66,7 +65,7 @@ public class DebugWandItem extends Item {
 
 	@Override
 	public ActionResult useOnEntity(ItemStack stack, PlayerEntity user, LivingEntity entity, Hand hand) {
-		if(!isDebugMode()) return super.useOnEntity(stack, user, entity, hand);
+		if (!isDebugMode()) return super.useOnEntity(stack, user, entity, hand);
 		LivingEntityDataComponent source = BotDComponents.LIVING_COMPONENT.get(user);
 		LivingEntityDataComponent target = BotDComponents.LIVING_COMPONENT.get(entity);
 		source.setEntangledEntityId(entity.getId());

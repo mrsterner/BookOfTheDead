@@ -11,7 +11,7 @@ public class CircleEntityModel extends Model {
 	public static final EntityModelLayer LAYER_LOCATION = new EntityModelLayer(Constants.id("circle_model"), "main");
 	private final ModelPart main;
 
-	public CircleEntityModel(ModelPart root){
+	public CircleEntityModel(ModelPart root) {
 		super(RenderLayer::getEntityTranslucent);
 		this.main = root.getChild("main");
 	}

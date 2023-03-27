@@ -129,9 +129,9 @@ public class RitualRecipe implements IRecipe {
 
 			//Texture
 			Identifier texture;
-			if(JsonHelper.hasString(json, "texture")){
+			if (JsonHelper.hasString(json, "texture")) {
 				texture = new Identifier(JsonHelper.getString(json, "texture"));
-			}else{
+			} else {
 				texture = Constants.id("textures/misc/circle_necromancy.png");
 			}
 

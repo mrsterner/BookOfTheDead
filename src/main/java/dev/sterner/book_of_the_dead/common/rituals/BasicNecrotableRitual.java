@@ -37,7 +37,10 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.UUID;
 
 
 public class BasicNecrotableRitual implements IRitual {
@@ -181,14 +184,14 @@ public class BasicNecrotableRitual implements IRitual {
 	 * @return true if all items where consumed
 	 */
 	private boolean consumeItems(World world, BlockPos blockPos, NecroTableBlockEntity blockEntity) {
-		if(blockEntity.ritualRecipe == null){
+		if (blockEntity.ritualRecipe == null) {
 			return false;
 		} else if (blockEntity.ritualRecipe.inputs != null && blockEntity.ritualRecipe.inputs.isEmpty()) {
 			return true;
 		}
 
 
-		if (blockEntity.pedestalToActivate.isEmpty() && canCollectPedestals){
+		if (blockEntity.pedestalToActivate.isEmpty() && canCollectPedestals) {
 			List<PedestalInfo> infoStream = blockEntity.getPedestalInfo(world).stream().filter(itemStackBlockPosPair -> !itemStackBlockPosPair.stack().isEmpty()).toList();
 			for (PedestalInfo info : infoStream) {
 				for (Ingredient ingredient : blockEntity.ritualRecipe.inputs) {
@@ -200,17 +203,17 @@ public class BasicNecrotableRitual implements IRitual {
 					}
 				}
 			}
-		} else if (!blockEntity.pedestalToActivate.isEmpty()){
+		} else if (!blockEntity.pedestalToActivate.isEmpty()) {
 			pedestalTicker++;
-			if(world instanceof ServerWorld serverWorld) {
+			if (world instanceof ServerWorld serverWorld) {
 				this.generateFX(serverWorld, blockEntity, blockPos.getX() + 0.5, blockPos.getY() + 0.5, blockPos.getZ() + 0.5);
 			}
-			if(pedestalTicker == 1) {
+			if (pedestalTicker == 1) {
 				world.playSound(null, blockEntity.pedestalToActivate.get(0).pos().getX(), blockEntity.pedestalToActivate.get(0).pos().getY(), blockEntity.pedestalToActivate.get(0).pos().getZ(), BotDSoundEvents.MISC_ITEM_BEAM, SoundCategory.BLOCKS, 0.5f, 0.75f * world.random.nextFloat() / 2);
 			}
 			generatePedestalParticleBeam(blockEntity, world, blockEntity.pedestalToActivate.get(0));
-			if(pedestalTicker > 20 * 4){
-				if(world.getBlockEntity(blockEntity.pedestalToActivate.get(0).pos()) instanceof PedestalBlockEntity pedestalBlockEntity){
+			if (pedestalTicker > 20 * 4) {
+				if (world.getBlockEntity(blockEntity.pedestalToActivate.get(0).pos()) instanceof PedestalBlockEntity pedestalBlockEntity) {
 					pedestalBlockEntity.setStack(ItemStack.EMPTY);
 					pedestalBlockEntity.markDirty();
 				}
@@ -288,11 +291,11 @@ public class BasicNecrotableRitual implements IRitual {
 	 * @param z           coordinate for sound and particle
 	 */
 	private void generateFX(ServerWorld serverWorld, NecroTableBlockEntity blockEntity, double x, double y, double z) {
-		if(ticker % 5 == 0 && ticker < blockEntity.ritualRecipe.getDuration() - 40){
-			serverWorld.playSound(null, x,y,z, SoundEvents.BLOCK_CAMPFIRE_CRACKLE, SoundCategory.BLOCKS, 10,0.5f);
+		if (ticker % 5 == 0 && ticker < blockEntity.ritualRecipe.getDuration() - 40) {
+			serverWorld.playSound(null, x, y, z, SoundEvents.BLOCK_CAMPFIRE_CRACKLE, SoundCategory.BLOCKS, 10, 0.5f);
 		}
 		if (blockEntity.ritualRecipe.outputs != null) {
-			for(ItemStack output : blockEntity.ritualRecipe.outputs){
+			for (ItemStack output : blockEntity.ritualRecipe.outputs) {
 				for (int i = 0; i < blockEntity.ritualRecipe.outputs.size() * 2; i++) {
 					serverWorld.spawnParticles(new ItemStackParticleEffect(ParticleTypes.ITEM, output),
 							x + ((serverWorld.random.nextDouble() / 2) - 0.25),
@@ -310,9 +313,10 @@ public class BasicNecrotableRitual implements IRitual {
 
 	/**
 	 * generates the beam of particles from the pedestals to the ritual center
-	 * @param blockEntity   necro table
-	 * @param world			world
-	 * @param pedestalInfo  info about where the pedestals are
+	 *
+	 * @param blockEntity  necro table
+	 * @param world        world
+	 * @param pedestalInfo info about where the pedestals are
 	 */
 	private void generatePedestalParticleBeam(NecroTableBlockEntity blockEntity, World world, PedestalInfo pedestalInfo) {
 		BlockPos pos = pedestalInfo.pos();
@@ -339,6 +343,7 @@ public class BasicNecrotableRitual implements IRitual {
 
 	/**
 	 * Runs a command depending on which key phrase is used, "start", "tick", "end". Runs the {@link BasicNecrotableRitual#runCommand(MinecraftServer, BlockPos, String)}
+	 *
 	 * @param world       world
 	 * @param blockEntity ritualBlockEntity
 	 * @param blockPos    pos of the ritual origin
@@ -355,9 +360,10 @@ public class BasicNecrotableRitual implements IRitual {
 
 	/**
 	 * Runs the command with the command manager
-	 * @param minecraftServer   server
-	 * @param blockPos			ritual center
-	 * @param command			command to execute
+	 *
+	 * @param minecraftServer server
+	 * @param blockPos        ritual center
+	 * @param command         command to execute
 	 */
 	private void runCommand(MinecraftServer minecraftServer, BlockPos blockPos, String command) {
 		if (minecraftServer != null && !command.isEmpty()) {

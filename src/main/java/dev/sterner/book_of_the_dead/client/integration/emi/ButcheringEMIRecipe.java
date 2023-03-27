@@ -73,7 +73,7 @@ public class ButcheringEMIRecipe implements EmiRecipe {
 
 	@Override
 	public int getDisplayHeight() {
-		if(output.size() > 5){
+		if (output.size() > 5) {
 			return 18 * 4;
 		}
 		if (output.size() > 3) {
@@ -87,14 +87,14 @@ public class ButcheringEMIRecipe implements EmiRecipe {
 		Entity target = entityType.create(MinecraftClient.getInstance().world);
 
 
-		widgetHolder.addDrawable(36,18, 64, 59, (matrices, mouseX, mouseY, delta) -> {
+		widgetHolder.addDrawable(36, 18, 64, 59, (matrices, mouseX, mouseY, delta) -> {
 			RenderSystem.setShaderTexture(0, Constants.id("textures/gui/icons/butchering.png"));
 			DrawableHelper.drawTexture(matrices, 0, 0, 0, 0, 16, 16, 16, 16);
 		});
 
-		widgetHolder.addDrawable(18,18,20,20, (matrices, mouseX, mouseY, delta) -> {
+		widgetHolder.addDrawable(18, 18, 20, 20, (matrices, mouseX, mouseY, delta) -> {
 			if (target instanceof LivingEntity livingEntity) {
-				RenderUtils.drawEntity(18,18, 20, mouseX, mouseY, livingEntity, null);
+				RenderUtils.drawEntity(18, 18, 20, mouseX, mouseY, livingEntity, null);
 			}
 		});
 		if (output.size() > 0) {
@@ -108,7 +108,7 @@ public class ButcheringEMIRecipe implements EmiRecipe {
 						if (output.size() > 4) {
 							widgetHolder.addSlot(output.get(4), 58, 18 + 18).recipeContext(this);
 							if (output.size() > 5) {
-								widgetHolder.addSlot(output.get(5), 58 + 18 , 18 + 18).recipeContext(this);
+								widgetHolder.addSlot(output.get(5), 58 + 18, 18 + 18).recipeContext(this);
 								if (output.size() > 6) {
 									widgetHolder.addSlot(output.get(6), 58, 18 + 18 + 18).recipeContext(this);
 									if (output.size() > 7) {

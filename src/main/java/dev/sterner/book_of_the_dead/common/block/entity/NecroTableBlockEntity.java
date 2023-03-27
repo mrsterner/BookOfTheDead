@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import dev.sterner.book_of_the_dead.api.PedestalInfo;
 import dev.sterner.book_of_the_dead.api.block.entity.BaseBlockEntity;
 import dev.sterner.book_of_the_dead.common.block.NecroTableBlock;
-import dev.sterner.book_of_the_dead.common.event.BotDUseEvents;
 import dev.sterner.book_of_the_dead.common.recipe.RitualRecipe;
 import dev.sterner.book_of_the_dead.common.registry.BotDBlockEntityTypes;
 import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
@@ -14,30 +13,20 @@ import dev.sterner.book_of_the_dead.common.rituals.BasicNecrotableRitual;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.CandleBlock;
-import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.Inventories;
-import net.minecraft.inventory.SimpleInventory;
-import net.minecraft.item.FlintAndSteelItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtHelper;
-import net.minecraft.nbt.NbtList;
-import net.minecraft.particle.BlockStateParticleEffect;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.Pair;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
@@ -45,8 +34,10 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
 
 public class NecroTableBlockEntity extends BaseBlockEntity {
 	public List<PedestalInfo> pedestalToActivate = new ArrayList<>();
@@ -71,7 +62,7 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 	}
 
 	public void tick(World world, BlockPos pos, BlockState state) {
-		if(!isNecroTable){
+		if (!isNecroTable) {
 			return;
 		}
 		if (world != null && !world.isClient()) {
@@ -93,7 +84,7 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 							currentBasicNecrotableRitual = ritualRecipe.ritual;
 						}
 					}
-					if(ritualRecipe == null){
+					if (ritualRecipe == null) {
 						reset();
 					}
 
@@ -123,13 +114,13 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 
 	private void collectPedestalBlockPos(World world, BlockPos pos) {
 		int r = 5;
-		for(int x = -r; x < r; x++){
-			for(int y = -r; y < r; y++){
-				for(int z = -r; z < r; z++){
-					BlockPos lookPos = pos.add(x,y,z);
+		for (int x = -r; x < r; x++) {
+			for (int y = -r; y < r; y++) {
+				for (int z = -r; z < r; z++) {
+					BlockPos lookPos = pos.add(x, y, z);
 					BlockState state = world.getBlockState(lookPos);
-					if(state.isOf(BotDObjects.PEDESTAL)){
-						if(!PEDESTAL_POS_LIST.contains(lookPos)){
+					if (state.isOf(BotDObjects.PEDESTAL)) {
+						if (!PEDESTAL_POS_LIST.contains(lookPos)) {
 							PEDESTAL_POS_LIST.add(lookPos);
 						}
 					}
@@ -141,19 +132,19 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 	public ActionResult onUse(World world, BlockState state, BlockPos pos, PlayerEntity player, Hand hand) {
 		if (world != null && world.getBlockEntity(pos) instanceof NecroTableBlockEntity necroTableBlockEntity && hand == Hand.MAIN_HAND) {
 			ItemStack handStack = player.getMainHandStack();
-			if(!isNecroTable){
-				if(handStack.isOf(BotDObjects.PAPER_AND_QUILL)){
+			if (!isNecroTable) {
+				if (handStack.isOf(BotDObjects.PAPER_AND_QUILL)) {
 					isNecroTable = true;
 					markDirty();
 					return ActionResult.CONSUME;
 				}
-			} else if(handStack.isOf(Items.FLINT_AND_STEEL)) {
+			} else if (handStack.isOf(Items.FLINT_AND_STEEL)) {
 				world.playSound(player, pos, SoundEvents.ITEM_FLINTANDSTEEL_USE, SoundCategory.BLOCKS, 1.0F, world.getRandom().nextFloat() * 0.4F + 0.8F);
 				world.setBlockState(pos, state.with(Properties.LIT, Boolean.TRUE), Block.NOTIFY_ALL | Block.REDRAW_ON_MAIN_THREAD);
 				world.emitGameEvent(player, GameEvent.BLOCK_CHANGE, pos);
 				handStack.damage(1, player, p -> p.sendToolBreakStatus(hand));
 				return ActionResult.CONSUME;
-			} else if(!shouldRun){
+			} else if (!shouldRun) {
 				if (handStack.isEmpty()) {
 					if (player.isSneaking()) {
 						if (necroTableBlockEntity.hasBotD) {

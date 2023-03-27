@@ -1,6 +1,5 @@
 package dev.sterner.book_of_the_dead.common.block;
 
-import dev.sterner.book_of_the_dead.common.block.entity.PedestalBlockEntity;
 import dev.sterner.book_of_the_dead.common.block.entity.RetortFlaskBlockEntity;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
@@ -39,7 +38,7 @@ public class RetortFlaskBlock extends HorizontalFacingBlock implements BlockEnti
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
 		return (tickerWorld, pos, tickerState, blockEntity) -> {
-			if(blockEntity instanceof RetortFlaskBlockEntity be){
+			if (blockEntity instanceof RetortFlaskBlockEntity be) {
 				be.tick(world, pos, state);
 			}
 		};

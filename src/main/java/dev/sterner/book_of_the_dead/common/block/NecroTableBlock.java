@@ -47,7 +47,7 @@ public class NecroTableBlock extends HorizontalFacingBlock implements BlockEntit
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
 		return (tickerWorld, pos, tickerState, blockEntity) -> {
-			if(blockEntity instanceof NecroTableBlockEntity be){
+			if (blockEntity instanceof NecroTableBlockEntity be) {
 				be.tick(world, pos, state);
 			}
 		};
