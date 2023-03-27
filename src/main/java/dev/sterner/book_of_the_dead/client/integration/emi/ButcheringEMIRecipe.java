@@ -33,7 +33,7 @@ public class ButcheringEMIRecipe implements EmiRecipe {
 
 	public ButcheringEMIRecipe(ButcheringRecipe recipe) {
 		this.id = recipe.id();
-		entityType = recipe.entityType;
+		entityType = recipe.entityType();
 		List<ItemStack> itemStackList = recipe.getOutputs().stream().map(Pair::getFirst).toList();
 		DefaultedList<ItemStack> defaultedList = DefaultedList.copyOf(ItemStack.EMPTY, itemStackList.toArray(new ItemStack[0]));
 		this.outputList = defaultedList;
