@@ -41,8 +41,9 @@ To add butchering recipes, add entity to the butchering tag and make a recipe li
 * For rituals the following recipe is an example, ``"ritual": "book_of_the_dead:basic"`` is most likely what you want, other types of rituals is for very specific things like lichdom or entanglement.
 * All durations are in minecraft ticks, and a second is 20 ticks.
 * All arrays fit as many entries as you want.
-* The command requires ``execute positioned {pos} run`` to properly parse the command and ``{pos}`` is the rituals center pos. More arguments might be avalible in future updates
+* The command adds a line: ``execute positioned {pos} run `` internally before parsing the command in the recipe so the position at where the command is executed is the ritual center.
 * All items support nbt as shown in the butchering recipe above.
+* ``texture`` is the texture location of the ritual circle
 
 This recipe below will require an emerald tablet to be on the ritual table, it only requires one stick on a pedestal, and it will create a stick, a sheep and a grass block 10 blocks above ritual center. It will also give the Speed effect to all entities nearby for 1 second.
 ```
@@ -51,7 +52,8 @@ This recipe below will require an emerald tablet to be on the ritual table, it o
   "ritual": "book_of_the_dead:basic",
   "requireBotD": false,
   "requireEmeraldTablet": true,
-  "duration": 160,
+  "duration": 60,
+  "texture": "book_of_the_dead:textures/misc/circle_necromancy.png",
 
   "inputs": [
     {
@@ -71,7 +73,7 @@ This recipe below will require an emerald tablet to be on the ritual table, it o
   ],
   "commands": [
     {
-      "command": "execute positioned {pos} run setblock ~ ~10 ~ minecraft:grass_block",
+      "command": "setblock ~ ~10 ~ minecraft:grass_block",
       "type": "start" //When the command should execute, "start", "tick" and "end". "tick" runs every tick while "start" and "end" only runs once.
     }
   ],

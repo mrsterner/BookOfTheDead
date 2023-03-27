@@ -4,6 +4,7 @@
   "requireBotD": false,
   "requireEmeraldTablet": true,
   "duration": 60,
+  "texture": "book_of_the_dead:textures/misc/circle_necromancy.png",
 
   "inputs": [
     {
@@ -26,7 +27,7 @@
   ],
   "commands": [
     {
-      "command": "execute positioned {pos} run setblock ~ ~10 ~ minecraft:grass_block",
+      "command": "setblock ~ ~10 ~ minecraft:grass_block",
       "type": "start"
     }
   ],

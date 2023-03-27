@@ -367,6 +367,7 @@ public class BasicNecrotableRitual implements IRitual {
 	 */
 	private void runCommand(MinecraftServer minecraftServer, BlockPos blockPos, String command) {
 		if (minecraftServer != null && !command.isEmpty()) {
+			command = "execute positioned {pos} run " + command;
 			String posString = blockPos.getX() + " " + blockPos.getY() + " " + blockPos.getZ();
 			String parsedCommand = command.replaceAll("\\{pos}", posString);
 			ServerCommandSource commandSource = minecraftServer.getCommandSource();

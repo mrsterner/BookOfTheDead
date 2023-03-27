@@ -258,20 +258,24 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 		this.hasBotD = nbt.getBoolean(Constants.Nbt.HAS_LEGEMETON);
 		this.hasEmeraldTablet = nbt.getBoolean(Constants.Nbt.HAS_EMERALD_TABLET);
 		this.isNecroTable = nbt.getBoolean(Constants.Nbt.IS_NECRO);
-		if (nbt.contains(Constants.Nbt.RITUAL_POS)) {
-			this.ritualPos = NbtHelper.toBlockPos(nbt.getCompound(Constants.Nbt.RITUAL_POS));
-		}
-
-		currentBasicNecrotableRitual = BotDRegistries.NECROTABLE_RITUALS.get(new Identifier(nbt.getString(Constants.Nbt.NECRO_RITUAL)));
-		if (world != null) {
-			Optional<RitualRecipe> optional = world.getRecipeManager().listAllOfType(BotDRecipeTypes.RITUAL_RECIPE_TYPE).stream()
-					.filter(ritualRecipe1 -> ritualRecipe1.id.equals(new Identifier(nbt.getString(Constants.Nbt.RITUAL_RECIPE)))).findFirst();
-			optional.ifPresent(recipe -> ritualRecipe = recipe);
-		}
 		this.timer = nbt.getInt(Constants.Nbt.TIMER);
 		this.clientTime = nbt.getInt(Constants.Nbt.CLIENT_TIMER);
 		this.age = nbt.getLong(Constants.Nbt.AGE);
 		this.shouldRun = nbt.getBoolean(Constants.Nbt.SHOULD_RUN);
+
+		if(nbt.contains(Constants.Nbt.NECRO_RITUAL)){
+			this.currentBasicNecrotableRitual = BotDRegistries.NECROTABLE_RITUALS.get(new Identifier(nbt.getString(Constants.Nbt.NECRO_RITUAL)));
+		}
+
+		if (nbt.contains(Constants.Nbt.RITUAL_POS)) {
+			this.ritualPos = NbtHelper.toBlockPos(nbt.getCompound(Constants.Nbt.RITUAL_POS));
+		}
+
+		if (world != null) {
+			Optional<RitualRecipe> optional = world.getRecipeManager().listAllOfType(BotDRecipeTypes.RITUAL_RECIPE_TYPE).stream().filter(ritualRecipe1 -> ritualRecipe1.id.equals(new Identifier(nbt.getString(Constants.Nbt.RITUAL_RECIPE)))).findFirst();
+			optional.ifPresent(recipe -> ritualRecipe = recipe);
+		}
+
 		markDirty();
 	}
 
@@ -281,21 +285,25 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 		nbt.putBoolean(Constants.Nbt.HAS_LEGEMETON, this.hasBotD);
 		nbt.putBoolean(Constants.Nbt.HAS_EMERALD_TABLET, this.hasEmeraldTablet);
 		nbt.putBoolean(Constants.Nbt.IS_NECRO, this.isNecroTable);
+		nbt.putInt(Constants.Nbt.TIMER, this.timer);
+		nbt.putInt(Constants.Nbt.CLIENT_TIMER, this.clientTime);
+		nbt.putLong(Constants.Nbt.AGE, this.age);
+		nbt.putBoolean(Constants.Nbt.SHOULD_RUN, this.shouldRun);
+
 		if (this.ritualPos != null) {
 			nbt.put(Constants.Nbt.RITUAL_POS, NbtHelper.fromBlockPos(this.ritualPos));
 		}
 
 		if (currentBasicNecrotableRitual != null) {
-			nbt.putString(Constants.Nbt.NECRO_RITUAL, BotDRegistries.NECROTABLE_RITUALS.getId(currentBasicNecrotableRitual).toString());
+			Identifier id = BotDRegistries.NECROTABLE_RITUALS.getId(currentBasicNecrotableRitual);
+			if(id != null){
+				nbt.putString(Constants.Nbt.NECRO_RITUAL, id.toString());
+			}
+
 		}
+
 		if (ritualRecipe != null) {
 			nbt.putString(Constants.Nbt.RITUAL_RECIPE, this.ritualRecipe.id.toString());
 		}
-		nbt.putInt(Constants.Nbt.TIMER, this.timer);
-		nbt.putInt(Constants.Nbt.CLIENT_TIMER, this.clientTime);
-		nbt.putLong(Constants.Nbt.AGE, this.age);
-		nbt.putBoolean(Constants.Nbt.SHOULD_RUN, this.shouldRun);
 	}
-
-
 }
