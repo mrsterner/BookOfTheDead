@@ -225,25 +225,6 @@ public class BasicNecrotableRitual implements IRitual {
 		return false;
 	}
 
-	private void generatePedestalParticleBeam(NecroTableBlockEntity blockEntity, World world, PedestalInfo pedestalInfo) {
-		BlockPos pos = pedestalInfo.pos();
-		Vec3d blockPosInD = new Vec3d(blockEntity.ritualPos.getX(), blockEntity.ritualPos.getY() - 1.0, blockEntity.ritualPos.getZ());
-		Vec3d b = blockPosInD.subtract(new Vec3d(pos.getX(), pos.getY(), pos.getZ()));
-		Vec3d directionVector = new Vec3d(b.getX(), b.getY(), b.getZ());
-
-		double x = pos.getX() + (world.random.nextDouble() * 0.2D) + 0.4D;
-		double y = pos.getY() + (world.random.nextDouble() * 0.2D) + 1.2D;
-		double z = pos.getZ() + (world.random.nextDouble() * 0.2D) + 0.4D;
-		if (world instanceof ServerWorld serverWorld && !pedestalInfo.stack().isEmpty()) {
-			serverWorld.spawnParticles(
-					new ItemStackBeamParticleEffect(
-							BotDParticleTypes.ITEM_BEAM_PARTICLE,
-							pedestalInfo.stack(),
-							10),
-					x, y, z, 0, directionVector.x, directionVector.y, directionVector.z, 0.10D);
-		}
-	}
-
 	/**
 	 * Check and kill sacrifices around the ritual origin depending on recipe
 	 *
@@ -328,8 +309,32 @@ public class BasicNecrotableRitual implements IRitual {
 	}
 
 	/**
-	 * Runs a command depending on which key phrase is used, "start", "tick", "end"
-	 *
+	 * generates the beam of particles from the pedestals to the ritual center
+	 * @param blockEntity   necro table
+	 * @param world			world
+	 * @param pedestalInfo  info about where the pedestals are
+	 */
+	private void generatePedestalParticleBeam(NecroTableBlockEntity blockEntity, World world, PedestalInfo pedestalInfo) {
+		BlockPos pos = pedestalInfo.pos();
+		Vec3d blockPosInD = new Vec3d(blockEntity.ritualPos.getX(), blockEntity.ritualPos.getY() - 1.0, blockEntity.ritualPos.getZ());
+		Vec3d b = blockPosInD.subtract(new Vec3d(pos.getX(), pos.getY(), pos.getZ()));
+		Vec3d directionVector = new Vec3d(b.getX(), b.getY(), b.getZ());
+
+		double x = pos.getX() + (world.random.nextDouble() * 0.2D) + 0.4D;
+		double y = pos.getY() + (world.random.nextDouble() * 0.2D) + 1.2D;
+		double z = pos.getZ() + (world.random.nextDouble() * 0.2D) + 0.4D;
+		if (world instanceof ServerWorld serverWorld && !pedestalInfo.stack().isEmpty()) {
+			serverWorld.spawnParticles(
+					new ItemStackBeamParticleEffect(
+							BotDParticleTypes.ITEM_BEAM_PARTICLE,
+							pedestalInfo.stack(),
+							10),
+					x, y, z, 0, directionVector.x, directionVector.y, directionVector.z, 0.10D);
+		}
+	}
+
+	/**
+	 * Runs a command depending on which key phrase is used, "start", "tick", "end". Runs the {@link BasicNecrotableRitual#runCommand(MinecraftServer, BlockPos, String)}
 	 * @param world       world
 	 * @param blockEntity ritualBlockEntity
 	 * @param blockPos    pos of the ritual origin
@@ -344,7 +349,12 @@ public class BasicNecrotableRitual implements IRitual {
 		}
 	}
 
-	//TODO test this
+	/**
+	 * Runs the command with the command manager
+	 * @param minecraftServer   server
+	 * @param blockPos			ritual center
+	 * @param command			command to execute
+	 */
 	private void runCommand(MinecraftServer minecraftServer, BlockPos blockPos, String command) {
 		if (minecraftServer != null && !command.isEmpty()) {
 			String posString = blockPos.getX() + " " + blockPos.getY() + " " + blockPos.getZ();
