@@ -113,7 +113,7 @@ public class NecroTableBlockEntityRenderer<T extends BlockEntity> implements Blo
 				RitualRecipe recipe = necroTableBlockEntity.ritualRecipe;
 				Identifier texture;
 				if (recipe != null) {
-					texture = recipe.texture;
+					texture = recipe.texture();
 					VertexConsumer vertexConsumer = vertexConsumers.getBuffer(BotDRenderLayer.GLOWING_LAYER.apply(texture));
 					vertexConsumer.vertex(mat, -2.5F, 0, 2.5F).color(1f, 1f, 1f, alpha).uv(0, 1).overlay(overlay).light(light).normal(0, 1, 0).next();
 					vertexConsumer.vertex(mat, 2.5F, 0, 2.5F).color(1f, 1f, 1f, alpha).uv(1, 1).overlay(overlay).light(light).normal(0, 1, 0).next();

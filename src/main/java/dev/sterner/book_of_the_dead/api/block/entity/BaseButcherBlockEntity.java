@@ -72,7 +72,7 @@ public class BaseButcherBlockEntity extends HaulerBlockEntity implements IBlockE
 				Optional<Entity> entity = EntityType.getEntityFromNbt(getCorpseEntity(), world);
 				if (entity.isPresent() && !world.isClient()) {
 					butcheringRecipe = world.getRecipeManager().listAllOfType(BotDRecipeTypes.BUTCHERING_RECIPE_TYPE)
-							.stream().filter(type -> type.entityType == entity.get().getType()).findFirst().orElse(null);
+							.stream().filter(type -> type.entityType() == entity.get().getType()).findFirst().orElse(null);
 					if (butcheringRecipe != null) {
 						DefaultedList<Pair<ItemStack, Float>> outputsWithChance = DefaultedList.ofSize(butcheringRecipe.getOutputs().size(), Pair.of(ItemStack.EMPTY, 1f));
 						for (int i = 0; i < butcheringRecipe.getOutputs().size(); i++) {
@@ -104,10 +104,10 @@ public class BaseButcherBlockEntity extends HaulerBlockEntity implements IBlockE
 						double magicNumber = probability + 0.5D * butcherLevel * sanitaryModifier;//TODO implement index lookup instead of weird math: float[] CHANCE = {0, 0.15f, 0.25f, 0.35f};
 
 						nonEmptyOutput.get(0).setCount(world.getRandom().nextDouble() < magicNumber * nonEmptyChance.get(0) ? 1 : 0);
-						if (getHeadVisible() && !isNeighbour && this.butcheringRecipe.headDrop.getFirst() != ItemStack.EMPTY) {
+						if (getHeadVisible() && !isNeighbour && this.butcheringRecipe.headDrop().getFirst() != ItemStack.EMPTY) {
 							this.setHeadVisible(false);
-							ItemStack head = this.butcheringRecipe.headDrop.getFirst();
-							head.setCount(world.getRandom().nextDouble() < magicNumber * this.butcheringRecipe.headDrop.getSecond() ? 1 : 0);
+							ItemStack head = this.butcheringRecipe.headDrop().getFirst();
+							head.setCount(world.getRandom().nextDouble() < magicNumber * this.butcheringRecipe.headDrop().getSecond() ? 1 : 0);
 							ItemScatterer.spawn(world, pos.getX() + 0.5, pos.getY() + 1.2, pos.getZ() + 0.5, head);
 						} else {
 							dismemberAtRandom(world);

@@ -81,7 +81,7 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 					markDirty();
 					if (ritualRecipe != null) {
 						if (checkValidSacrifices(ritualRecipe, world)) {
-							currentBasicNecrotableRitual = ritualRecipe.ritual;
+							currentBasicNecrotableRitual = ritualRecipe.ritual();
 						}
 					}
 					if (ritualRecipe == null) {
@@ -89,12 +89,12 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 					}
 
 				} else if (checkTier()) {
-					int craftingTime = ritualRecipe.inputs.stream().filter(ingredient -> !ingredient.isEmpty()).toList().size() * 20 * 4 + 20 * 2;
+					int craftingTime = ritualRecipe.inputs().stream().filter(ingredient -> !ingredient.isEmpty()).toList().size() * 20 * 4 + 20 * 2;
 					timer++;
 					if (timer >= 0) {
 						currentBasicNecrotableRitual.tick(world, ritualPos, this);
 					}
-					if (timer >= ritualRecipe.getDuration() + craftingTime) {
+					if (timer >= ritualRecipe.duration() + craftingTime) {
 						currentBasicNecrotableRitual.onStopped(world, ritualPos, this);
 						reset();
 					}
@@ -202,7 +202,7 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 	}
 
 	private boolean checkValidSacrifices(RitualRecipe ritual, World world) {
-		if (ritual.sacrifices != null && ritual.sacrifices.isEmpty()) {
+		if (ritual.sacrifices() != null && ritual.sacrifices().isEmpty()) {
 			return true;
 		}
 
@@ -210,14 +210,14 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 
 		List<LivingEntity> livingEntityList = world.getEntitiesByClass(LivingEntity.class, new Box(this.pos).expand(size), Entity::isAlive);
 		List<EntityType<?>> entityTypeList = Lists.newArrayList(livingEntityList.stream().map(Entity::getType).toList());
-		List<EntityType<?>> ritualSacrifices = ritual.sacrifices;
+		List<EntityType<?>> ritualSacrifices = ritual.sacrifices();
 
 		return ritualSacrifices != null && new HashSet<>(entityTypeList).containsAll(ritualSacrifices);
 	}
 
 	public boolean checkTier() {
-		boolean tablet = ritualRecipe.requireEmeraldTablet;
-		boolean botD = ritualRecipe.requireBotD;
+		boolean tablet = ritualRecipe.requireEmeraldTablet();
+		boolean botD = ritualRecipe.requireBotD();
 		boolean tabletMatch = tablet && hasEmeraldTablet;
 		boolean botDMatch = botD && hasBotD;
 		if (!tablet && !botD) {
@@ -272,7 +272,7 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 		}
 
 		if (world != null) {
-			Optional<RitualRecipe> optional = world.getRecipeManager().listAllOfType(BotDRecipeTypes.RITUAL_RECIPE_TYPE).stream().filter(ritualRecipe1 -> ritualRecipe1.id.equals(new Identifier(nbt.getString(Constants.Nbt.RITUAL_RECIPE)))).findFirst();
+			Optional<RitualRecipe> optional = world.getRecipeManager().listAllOfType(BotDRecipeTypes.RITUAL_RECIPE_TYPE).stream().filter(ritualRecipe1 -> ritualRecipe1.id().equals(new Identifier(nbt.getString(Constants.Nbt.RITUAL_RECIPE)))).findFirst();
 			optional.ifPresent(recipe -> ritualRecipe = recipe);
 		}
 
@@ -303,7 +303,7 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 		}
 
 		if (ritualRecipe != null) {
-			nbt.putString(Constants.Nbt.RITUAL_RECIPE, this.ritualRecipe.id.toString());
+			nbt.putString(Constants.Nbt.RITUAL_RECIPE, this.ritualRecipe.id().toString());
 		}
 	}
 }

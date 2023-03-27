@@ -212,7 +212,7 @@ public class BasicNecrotableRitual implements IRitual {
 				world.playSound(null, blockEntity.pedestalToActivate.get(0).pos().getX(), blockEntity.pedestalToActivate.get(0).pos().getY(), blockEntity.pedestalToActivate.get(0).pos().getZ(), BotDSoundEvents.MISC_ITEM_BEAM, SoundCategory.BLOCKS, 0.5f, 0.75f * world.random.nextFloat() / 2);
 			}
 			BlockPos particlePos = blockEntity.pedestalToActivate.get(0).pos();
-			ParticleUtils.spawnItemParticleBeam(new Vec3d(particlePos.getX(), particlePos.getY() + 1, particlePos.getZ()), new Vec3d(blockPos.getX(), blockPos.getY() + 1, blockPos.getZ()), world, blockEntity.pedestalToActivate.get(0).stack());
+			ParticleUtils.spawnItemParticleBeam(new Vec3d(particlePos.getX(), particlePos.getY(), particlePos.getZ()), new Vec3d(blockPos.getX(), blockPos.getY() - 1, blockPos.getZ()), world, blockEntity.pedestalToActivate.get(0).stack());
 
 			if (pedestalTicker > 20 * 4) {
 				if (world.getBlockEntity(blockEntity.pedestalToActivate.get(0).pos()) instanceof PedestalBlockEntity pedestalBlockEntity) {

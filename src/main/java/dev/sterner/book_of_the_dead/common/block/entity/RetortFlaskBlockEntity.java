@@ -99,8 +99,8 @@ public class RetortFlaskBlockEntity extends BaseBlockEntity implements IBlockEnt
 							progress++;
 						}
 						if (progress >= MAX_PROGRESS) {
-							craft(retortRecipe.output);
-							setColor(retortRecipe.color);
+							craft(retortRecipe.output());
+							setColor(retortRecipe.color());
 						}
 					}
 					if (world.random.nextFloat() <= 0.075f) {
