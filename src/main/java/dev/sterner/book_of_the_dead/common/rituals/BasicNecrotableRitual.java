@@ -205,14 +205,18 @@ public class BasicNecrotableRitual implements IRitual {
 			}
 		} else if (!blockEntity.pedestalToActivate.isEmpty()) {
 			pedestalTicker++;
-			if (blockEntity.ritualRecipe.outputs() != null) {
-				ParticleUtils.generateItemParticle(world, blockPos.getX() + 0.5, blockPos.getY() + 0.5, blockPos.getZ() + 0.5, blockEntity.ritualRecipe.outputs());
+			BlockPos particlePos = blockEntity.pedestalToActivate.get(0).pos();
+
+			if (world instanceof ServerWorld serverWorld) {
+				if(blockEntity.ritualRecipe.outputs() != null){
+					ParticleUtils.generateItemParticle(serverWorld, blockPos.getX() + 0.5, blockPos.getY() + 0.5, blockPos.getZ() + 0.5, blockEntity.ritualRecipe.outputs());
+				}
+				ParticleUtils.spawnItemParticleBeam(new Vec3d(particlePos.getX(), particlePos.getY(), particlePos.getZ()), new Vec3d(blockPos.getX(), blockPos.getY() - 1, blockPos.getZ()), serverWorld, blockEntity.pedestalToActivate.get(0).stack());
 			}
+
 			if (pedestalTicker == 1) {
 				world.playSound(null, blockEntity.pedestalToActivate.get(0).pos().getX(), blockEntity.pedestalToActivate.get(0).pos().getY(), blockEntity.pedestalToActivate.get(0).pos().getZ(), BotDSoundEvents.MISC_ITEM_BEAM, SoundCategory.BLOCKS, 0.5f, 0.75f * world.random.nextFloat() / 2);
 			}
-			BlockPos particlePos = blockEntity.pedestalToActivate.get(0).pos();
-			ParticleUtils.spawnItemParticleBeam(new Vec3d(particlePos.getX(), particlePos.getY(), particlePos.getZ()), new Vec3d(blockPos.getX(), blockPos.getY() - 1, blockPos.getZ()), world, blockEntity.pedestalToActivate.get(0).stack());
 
 			if (pedestalTicker > 20 * 4) {
 				if (world.getBlockEntity(blockEntity.pedestalToActivate.get(0).pos()) instanceof PedestalBlockEntity pedestalBlockEntity) {
