@@ -205,8 +205,8 @@ public class BasicNecrotableRitual implements IRitual {
 			}
 		} else if (!blockEntity.pedestalToActivate.isEmpty()) {
 			pedestalTicker++;
-			if (world instanceof ServerWorld serverWorld && blockEntity.ritualRecipe.outputs() != null) {
-				ParticleUtils.generateItemParticle(serverWorld, blockPos.getX() + 0.5, blockPos.getY() + 0.5, blockPos.getZ() + 0.5, blockEntity.ritualRecipe.outputs());
+			if (blockEntity.ritualRecipe.outputs() != null) {
+				ParticleUtils.generateItemParticle(world, blockPos.getX() + 0.5, blockPos.getY() + 0.5, blockPos.getZ() + 0.5, blockEntity.ritualRecipe.outputs());
 			}
 			if (pedestalTicker == 1) {
 				world.playSound(null, blockEntity.pedestalToActivate.get(0).pos().getX(), blockEntity.pedestalToActivate.get(0).pos().getY(), blockEntity.pedestalToActivate.get(0).pos().getZ(), BotDSoundEvents.MISC_ITEM_BEAM, SoundCategory.BLOCKS, 0.5f, 0.75f * world.random.nextFloat() / 2);

@@ -43,26 +43,29 @@ public class ParticleUtils {
 	/**
 	 * Handles the output items sound and particle effect
 	 *
-	 * @param serverWorld serverWorld
+	 * @param world 	  world
 	 * @param x           coordinate for sound and particle
 	 * @param y           coordinate for sound and particle
 	 * @param z           coordinate for sound and particle
 	 */
-	public static void generateItemParticle(ServerWorld serverWorld, double x, double y, double z, List<ItemStack> items) {
-		if (items != null) {
-			for (ItemStack output : items) {
-				for (int i = 0; i < items.size() * 2; i++) {
-					serverWorld.spawnParticles(new ItemStackParticleEffect(ParticleTypes.ITEM, output),
-							x + ((serverWorld.random.nextDouble() / 2) - 0.25),
-							y + ((serverWorld.random.nextDouble() / 2) - 0.25),
-							z + ((serverWorld.random.nextDouble() / 2) - 0.25),
-							0,
-							1 * ((serverWorld.random.nextDouble() / 2) - 0.25),
-							1 * ((serverWorld.random.nextDouble() / 2) - 0.25),
-							1 * ((serverWorld.random.nextDouble() / 2) - 0.25),
-							0);
+	public static void generateItemParticle(World world, double x, double y, double z, List<ItemStack> items) {
+		if(world instanceof ServerWorld serverWorld){
+			if (items != null) {
+				for (ItemStack output : items) {
+					for (int i = 0; i < items.size() * 2; i++) {
+						serverWorld.spawnParticles(new ItemStackParticleEffect(ParticleTypes.ITEM, output),
+								x + ((serverWorld.random.nextDouble() / 2) - 0.25),
+								y + ((serverWorld.random.nextDouble() / 2) - 0.25),
+								z + ((serverWorld.random.nextDouble() / 2) - 0.25),
+								0,
+								1 * ((serverWorld.random.nextDouble() / 2) - 0.25),
+								1 * ((serverWorld.random.nextDouble() / 2) - 0.25),
+								1 * ((serverWorld.random.nextDouble() / 2) - 0.25),
+								0);
+					}
 				}
 			}
 		}
+
 	}
 }
