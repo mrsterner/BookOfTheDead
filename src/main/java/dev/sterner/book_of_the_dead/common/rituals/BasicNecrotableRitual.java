@@ -259,7 +259,7 @@ public class BasicNecrotableRitual implements IRitual {
 	}
 
 	/**
-	 * Gets closes entity of a specific type
+	 * Gets the closest entity of a specific type
 	 *
 	 * @param entityList list of entities to test
 	 * @param type       entityType to look for
@@ -325,11 +325,15 @@ public class BasicNecrotableRitual implements IRitual {
 		double z = pos.getZ() + (world.random.nextDouble() * 0.2D) + 0.4D;
 		if (world instanceof ServerWorld serverWorld && !pedestalInfo.stack().isEmpty()) {
 			serverWorld.spawnParticles(
-					new ItemStackBeamParticleEffect(
-							BotDParticleTypes.ITEM_BEAM_PARTICLE,
-							pedestalInfo.stack(),
-							10),
-					x, y, z, 0, directionVector.x, directionVector.y, directionVector.z, 0.10D);
+					new ItemStackBeamParticleEffect(BotDParticleTypes.ITEM_BEAM_PARTICLE, pedestalInfo.stack(), 10),
+					x,
+					y,
+					z,
+					0,
+					directionVector.x,
+					directionVector.y,
+					directionVector.z,
+					0.10D);
 		}
 	}
 

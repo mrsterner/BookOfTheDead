@@ -32,6 +32,7 @@ import org.quiltmc.loader.api.minecraft.ClientOnly;
 public class NecroTableBlockEntityRenderer<T extends BlockEntity> implements BlockEntityRenderer<T> {
 	public static final EntityModelLayer LAYER_LOCATION = new EntityModelLayer(Constants.id("necro_model"), "main");
 	private final Identifier TEXTURE = Constants.id("textures/entity/necro_table.png");
+	private final Identifier TEXTURE_TABLE = Constants.id("textures/entity/table.png");
 	private float alpha = 0;
 	private final ModelPart base;
 	private final ModelPart book;
@@ -76,7 +77,7 @@ public class NecroTableBlockEntityRenderer<T extends BlockEntity> implements Blo
 				if (necroTableBlockEntity.hasBotD) {
 					renderBook(matrices, vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(TEXTURE)), light, overlay);
 				}
-				render(matrices, vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(TEXTURE)), light, overlay);
+				render(matrices, vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(necroTableBlockEntity.isNecroTable ? TEXTURE : TEXTURE_TABLE)), light, overlay, necroTableBlockEntity.isNecroTable);
 				matrices.pop();
 
 
@@ -128,13 +129,15 @@ public class NecroTableBlockEntityRenderer<T extends BlockEntity> implements Blo
 		}
 	}
 
-	public void render(MatrixStack matrixStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay) {
+	public void render(MatrixStack matrixStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, boolean isNecro) {
 		base.render(matrixStack, vertexConsumer, packedLight, packedOverlay, 1, 1, 1, 1);
-		candle.render(matrixStack, vertexConsumer, packedLight, packedOverlay, 1, 1, 1, 1);
-		slate.render(matrixStack, vertexConsumer, packedLight, packedOverlay, 1, 1, 1, 1);
-		cruse.render(matrixStack, vertexConsumer, packedLight, packedOverlay, 1, 1, 1, 1);
-		paper.render(matrixStack, vertexConsumer, packedLight, packedOverlay, 1, 1, 1, 1);
-		ink.render(matrixStack, vertexConsumer, packedLight, packedOverlay, 1, 1, 1, 1);
+		if(isNecro){
+			candle.render(matrixStack, vertexConsumer, packedLight, packedOverlay, 1, 1, 1, 1);
+			slate.render(matrixStack, vertexConsumer, packedLight, packedOverlay, 1, 1, 1, 1);
+			cruse.render(matrixStack, vertexConsumer, packedLight, packedOverlay, 1, 1, 1, 1);
+			paper.render(matrixStack, vertexConsumer, packedLight, packedOverlay, 1, 1, 1, 1);
+			ink.render(matrixStack, vertexConsumer, packedLight, packedOverlay, 1, 1, 1, 1);
+		}
 	}
 
 	public void renderTablet(MatrixStack matrixStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay) {

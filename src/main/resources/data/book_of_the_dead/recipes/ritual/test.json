@@ -3,7 +3,7 @@
   "ritual": "book_of_the_dead:basic",
   "requireBotD": false,
   "requireEmeraldTablet": true,
-  "duration": 160,
+  "duration": 60,
 
   "inputs": [
     {

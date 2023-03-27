@@ -66,7 +66,6 @@ public class PedestalBlock extends Block implements BlockEntityProvider {
 						}
 						return ActionResult.success(world.isClient);
 					}
-					return ActionResult.FAIL;
 				} else {
 					if (!entity.getStack().isEmpty()) {
 						if (!world.isClient) {
@@ -77,8 +76,8 @@ public class PedestalBlock extends Block implements BlockEntityProvider {
 						}
 						return ActionResult.success(world.isClient);
 					}
-					return ActionResult.FAIL;
 				}
+				return ActionResult.FAIL;
 			}
 		}
 		return ActionResult.FAIL;
@@ -91,7 +90,7 @@ public class PedestalBlock extends Block implements BlockEntityProvider {
 
 	@Override
 	public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-		if (world.getBlockEntity(pos) instanceof PedestalBlockEntity be) {
+		if (world.getBlockEntity(pos) instanceof PedestalBlockEntity be && !be.isCrafting()) {
 			ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), be.getStack());
 		}
 		super.onBreak(world, pos, state, player);

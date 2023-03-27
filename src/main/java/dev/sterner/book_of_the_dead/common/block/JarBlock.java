@@ -151,7 +151,7 @@ public class JarBlock extends BlockWithEntity {
 	@Override
 	public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
 		BlockEntity blockEntity = world.getBlockEntity(pos);
-		if (blockEntity instanceof JarBlockEntity jarBlockEntity) {
+		if (blockEntity instanceof JarBlockEntity jarBlockEntity && jarBlockEntity.liquidAmount != 0) {
 			if (!world.isClient) {
 				ItemStack itemStack = new ItemStack(this);
 				jarBlockEntity.writeNbtToStack(itemStack);

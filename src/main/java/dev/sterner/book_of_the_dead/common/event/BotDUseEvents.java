@@ -29,6 +29,7 @@ import net.minecraft.world.World;
 
 import java.util.Optional;
 
+import static dev.sterner.book_of_the_dead.common.block.NecroTableBlock.LIT;
 import static net.minecraft.block.HorizontalFacingBlock.FACING;
 
 public class BotDUseEvents {
@@ -41,7 +42,7 @@ public class BotDUseEvents {
 		UseBlockCallback.EVENT.register(BotDUseEvents::placeMetalHook);
 		UseBlockCallback.EVENT.register(BotDUseEvents::createNecroTable);
 		UseBlockCallback.EVENT.register(BotDUseEvents::createButcherTable);
-		UseBlockCallback.EVENT.register(BotDUseEvents::createPedestalAndRitual);
+		UseBlockCallback.EVENT.register(BotDUseEvents::createPedestal);
 	}
 
 	/**
@@ -62,7 +63,7 @@ public class BotDUseEvents {
 	}
 
 	/**
-	 * Used to convert Deepslate Tile Wall to a Pedestal or Deepslate Tile Slab to a Ritual Block
+	 * Used to convert Deepslate Tile Wall to a Pedestal
 	 *
 	 * @param player         player who is converting
 	 * @param world          world
@@ -70,7 +71,7 @@ public class BotDUseEvents {
 	 * @param blockHitResult to get the pos of the block to convert
 	 * @return CONSUME if conversion was successful
 	 */
-	private static ActionResult createPedestalAndRitual(PlayerEntity player, World world, Hand hand, BlockHitResult blockHitResult) {
+	private static ActionResult createPedestal(PlayerEntity player, World world, Hand hand, BlockHitResult blockHitResult) {
 		if (!world.isClient() && hand == Hand.MAIN_HAND && player instanceof ServerPlayerEntity serverPlayerEntity) {
 			BlockPos blockPos = blockHitResult.getBlockPos();
 			if (player.getMainHandStack().isOf(BotDObjects.CARPENTER_TOOLS)) {
@@ -132,14 +133,14 @@ public class BotDUseEvents {
 	 * @return CONSUME if successfully converted deepslate to necro table
 	 */
 	private static ActionResult createNecroTable(PlayerEntity player, World world, Hand hand, BlockHitResult blockHitResult) {
-		if (!world.isClient() && player.getMainHandStack().isOf(BotDObjects.PAPER_AND_QUILL) && hand == Hand.MAIN_HAND) {
+		if (!world.isClient() && player.getMainHandStack().isOf(BotDObjects.CARPENTER_TOOLS) && hand == Hand.MAIN_HAND) {
 			BlockPos blockPos = blockHitResult.getBlockPos();
 			if (world.getBlockState(blockPos).isOf(Blocks.DEEPSLATE_TILES)) {
 				BlockState state = BotDObjects.NECRO_TABLE.getDefaultState();
 				world.breakBlock(blockPos, false);
 				addParticle(world, blockPos, state);
 
-				world.setBlockState(blockPos, state.with(FACING, player.getHorizontalFacing()));
+				world.setBlockState(blockPos, state.with(FACING, player.getHorizontalFacing()).with(LIT, false));
 				return ActionResult.CONSUME;
 			}
 		}

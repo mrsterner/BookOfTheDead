@@ -72,7 +72,7 @@ This recipe below will require an emerald tablet to be on the ritual table, it o
   "commands": [
     {
       "command": "execute positioned {pos} run setblock ~ ~10 ~ minecraft:grass_block",
-      "type": "start"
+      "type": "start" //When the command should execute, "start", "tick" and "end". "tick" runs every tick while "start" and "end" only runs once.
     }
   ],
   "statusEffects": [
