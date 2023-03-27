@@ -84,29 +84,29 @@ public class RetortFlaskBlockEntity extends BaseBlockEntity implements IBlockEnt
 		return ActionResult.PASS;
 	}
 
-	public static void tick(World world, BlockPos pos, BlockState state, RetortFlaskBlockEntity blockEntity) {
+	public void tick(World world, BlockPos pos, BlockState state) {
 		if (world != null) {
-			if (!blockEntity.loaded) {
-				blockEntity.markDirty();
-				blockEntity.retortRecipe = world.getRecipeManager().listAllOfType(BotDRecipeTypes.RETORT_RECIPE_TYPE).stream().filter(recipe -> recipe.matches(blockEntity, world)).findFirst().orElse(null);
-				blockEntity.loaded = true;
+			if (!loaded) {
+				markDirty();
+				retortRecipe = world.getRecipeManager().listAllOfType(BotDRecipeTypes.RETORT_RECIPE_TYPE).stream().filter(recipe -> recipe.matches(this, world)).findFirst().orElse(null);
+				loaded = true;
 			}
-			blockEntity.heatTimer = MathHelper.clamp(blockEntity.heatTimer + (state.get(Properties.LIT) && blockEntity.hasLiquid ? 1 : -1), 0, 160);
+			heatTimer = MathHelper.clamp(heatTimer + (state.get(Properties.LIT) && hasLiquid ? 1 : -1), 0, 160);
 			if (!world.isClient) {
-				if (blockEntity.hasLiquid && blockEntity.heatTimer > 20) {
-					if (blockEntity.retortRecipe != null) {
-						if (blockEntity.progress < blockEntity.MAX_PROGRESS) {
-							blockEntity.progress++;
+				if (hasLiquid && heatTimer > 20) {
+					if (retortRecipe != null) {
+						if (progress < MAX_PROGRESS) {
+							progress++;
 						}
-						if (blockEntity.progress >= blockEntity.MAX_PROGRESS) {
-							blockEntity.craft(blockEntity.retortRecipe.output);
-							blockEntity.setColor(blockEntity.retortRecipe.color);
+						if (progress >= MAX_PROGRESS) {
+							craft(retortRecipe.output);
+							setColor(retortRecipe.color);
 						}
 					}
 					if (world.random.nextFloat() <= 0.075f) {
 						world.playSound(null, pos, SoundEvents.BLOCK_BUBBLE_COLUMN_UPWARDS_AMBIENT, SoundCategory.BLOCKS, 1 / 3f, 1);
 					}
-					blockEntity.markDirty();
+					markDirty();
 				}
 			}
 		}

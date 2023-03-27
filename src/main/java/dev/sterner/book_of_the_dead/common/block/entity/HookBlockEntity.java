@@ -18,24 +18,24 @@ public class HookBlockEntity extends BaseButcherBlockEntity {
 		super(BotDBlockEntityTypes.HOOK, pos, state);
 	}
 
-	public static void tick(World world, BlockPos pos, BlockState tickerState, HookBlockEntity blockEntity) {
+	public void tick(World world, BlockPos pos, BlockState state) {
 		boolean mark = false;
 
 		if (world != null && !world.isClient) {
-			if (world.getTime() % 20 == 0 && !blockEntity.storedCorpseNbt.isEmpty()) {
+			if (world.getTime() % 20 == 0 && !storedCorpseNbt.isEmpty()) {
 				mark = true;
-				if (blockEntity.hookedAge < Constants.Values.BLEEDING) {
-					blockEntity.hookedAge++;
+				if (hookedAge < Constants.Values.BLEEDING) {
+					hookedAge++;
 				} else {
-					blockEntity.hookedAge = Constants.Values.BLEEDING;
+					hookedAge = Constants.Values.BLEEDING;
 				}
 			}
-			if (blockEntity.storedCorpseNbt.isEmpty()) {
-				blockEntity.hookedAge = 0;
+			if (storedCorpseNbt.isEmpty()) {
+				hookedAge = 0;
 			}
 		}
 		if (mark) {
-			markDirty(world, pos, tickerState);
+			markDirty();
 		}
 	}
 

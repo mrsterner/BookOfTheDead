@@ -32,12 +32,12 @@ public class ButcherTableBlockEntity extends BaseButcherBlockEntity {
 		super(BotDBlockEntityTypes.BUTCHER, pos, state);
 	}
 
-	public static void tick(World world, BlockPos pos, BlockState state, ButcherTableBlockEntity blockEntity) {
-		if (blockEntity.latter > 0) {
-			blockEntity.progressCleaning();
+	public void tick(World world, BlockPos pos, BlockState state) {
+		if (latter > 0) {
+			progressCleaning();
 			if (world.getTime() % 20 == 0) {
-				blockEntity.latter--;
-				blockEntity.markDirty();
+				latter--;
+				markDirty();
 			}
 		}
 	}
@@ -114,4 +114,6 @@ public class ButcherTableBlockEntity extends BaseButcherBlockEntity {
 			this.markDirty();
 		}
 	}
+
+
 }

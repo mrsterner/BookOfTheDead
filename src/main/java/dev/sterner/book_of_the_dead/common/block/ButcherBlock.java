@@ -3,6 +3,7 @@ package dev.sterner.book_of_the_dead.common.block;
 import dev.sterner.book_of_the_dead.api.block.HorizontalDoubleBlock;
 import dev.sterner.book_of_the_dead.api.enums.HorizontalDoubleBlockHalf;
 import dev.sterner.book_of_the_dead.common.block.entity.ButcherTableBlockEntity;
+import dev.sterner.book_of_the_dead.common.block.entity.NecroTableBlockEntity;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
@@ -50,7 +51,11 @@ public class ButcherBlock extends HorizontalDoubleBlock implements BlockEntityPr
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-		return (tickerWorld, pos, tickerState, blockEntity) -> ButcherTableBlockEntity.tick(tickerWorld, pos, tickerState, (ButcherTableBlockEntity) blockEntity);
+		return (tickerWorld, pos, tickerState, blockEntity) -> {
+			if(blockEntity instanceof ButcherTableBlockEntity be){
+				be.tick(world, pos, state);
+			}
+		};
 	}
 
 	@Nullable

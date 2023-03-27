@@ -61,50 +61,50 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 		super(BotDBlockEntityTypes.NECRO, pos, state);
 	}
 
-	public static void tick(World world, BlockPos pos, BlockState blockState, NecroTableBlockEntity blockEntity) {
+	public void tick(World world, BlockPos pos, BlockState state) {
 		if (world != null && !world.isClient()) {
-			if (!blockEntity.loaded) {
-				blockEntity.reset(blockEntity);
-				blockEntity.markDirty();
-				blockEntity.loaded = true;
+			if (!loaded) {
+				reset();
+				markDirty();
+				loaded = true;
 			}
-			blockEntity.age++;
-			if (blockEntity.shouldRun) {
-				blockEntity.collectPedestalBlockPos(world, pos);
-				blockEntity.sendRitualPosition(world);
+			age++;
+			if (shouldRun) {
+				collectPedestalBlockPos(world, pos);
+				sendRitualPosition(world);
 
-				if (blockEntity.ritualRecipe == null || blockEntity.currentBasicNecrotableRitual == null) {
-					blockEntity.ritualRecipe = BotDRecipeTypes.getRiteRecipe(blockEntity);
-					blockEntity.markDirty();
-					if (blockEntity.ritualRecipe != null) {
-						if (blockEntity.checkValidSacrifices(blockEntity.ritualRecipe, world)) {
-							blockEntity.currentBasicNecrotableRitual = blockEntity.ritualRecipe.ritual;
+				if (ritualRecipe == null || currentBasicNecrotableRitual == null) {
+					ritualRecipe = BotDRecipeTypes.getRiteRecipe(this);
+					markDirty();
+					if (ritualRecipe != null) {
+						if (checkValidSacrifices(ritualRecipe, world)) {
+							currentBasicNecrotableRitual = ritualRecipe.ritual;
 						}
 					}
-					if(blockEntity.ritualRecipe == null){
-						blockEntity.reset(blockEntity);
+					if(ritualRecipe == null){
+						reset();
 					}
 
-				} else if (blockEntity.checkTier(blockEntity)) {
-					int craftingTime = blockEntity.ritualRecipe.inputs.stream().filter(ingredient -> !ingredient.isEmpty()).toList().size() * 20 * 4 + 20 * 2;
-					blockEntity.timer++;
-					if (blockEntity.timer >= 0) {
-						blockEntity.currentBasicNecrotableRitual.tick(world, blockEntity.ritualPos, blockEntity);
+				} else if (checkTier()) {
+					int craftingTime = ritualRecipe.inputs.stream().filter(ingredient -> !ingredient.isEmpty()).toList().size() * 20 * 4 + 20 * 2;
+					timer++;
+					if (timer >= 0) {
+						currentBasicNecrotableRitual.tick(world, ritualPos, this);
 					}
-					if (blockEntity.timer >= blockEntity.ritualRecipe.getDuration() + craftingTime) {
-						blockEntity.currentBasicNecrotableRitual.onStopped(world, blockEntity.ritualPos, blockEntity);
-						blockEntity.reset(blockEntity);
+					if (timer >= ritualRecipe.getDuration() + craftingTime) {
+						currentBasicNecrotableRitual.onStopped(world, ritualPos, this);
+						reset();
 					}
 
 				} else {
-					blockEntity.reset(blockEntity);
+					reset();
 				}
 			}
 		}
 		if (world != null) {
-			if (blockEntity.shouldRun) {
-				blockEntity.clientTime++;
-				blockEntity.markDirty();
+			if (shouldRun) {
+				clientTime++;
+				markDirty();
 			}
 		}
 	}
@@ -194,11 +194,11 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 		return ritualSacrifices != null && new HashSet<>(entityTypeList).containsAll(ritualSacrifices);
 	}
 
-	public boolean checkTier(NecroTableBlockEntity blockEntity) {
-		boolean tablet = blockEntity.ritualRecipe.requireEmeraldTablet;
-		boolean botD = blockEntity.ritualRecipe.requireBotD;
-		boolean tabletMatch = tablet && blockEntity.hasEmeraldTablet;
-		boolean botDMatch = botD && blockEntity.hasBotD;
+	public boolean checkTier() {
+		boolean tablet = ritualRecipe.requireEmeraldTablet;
+		boolean botD = ritualRecipe.requireBotD;
+		boolean tabletMatch = tablet && hasEmeraldTablet;
+		boolean botDMatch = botD && hasBotD;
 		if (!tablet && !botD) {
 			return true;
 		}
@@ -208,14 +208,14 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 		return botDMatch || tabletMatch;
 	}
 
-	public void reset(NecroTableBlockEntity blockEntity) {
-		blockEntity.currentBasicNecrotableRitual = null;
-		blockEntity.timer = -20;
-		blockEntity.shouldRun = false;
-		blockEntity.pedestalToActivate.clear();
-		blockEntity.ritualRecipe = null;
-		blockEntity.clientTime = 0;
-		blockEntity.markDirty();
+	public void reset() {
+		currentBasicNecrotableRitual = null;
+		timer = -20;
+		shouldRun = false;
+		pedestalToActivate.clear();
+		ritualRecipe = null;
+		clientTime = 0;
+		markDirty();
 	}
 
 	private void playItemSound(World world, BlockPos pos) {
@@ -273,4 +273,6 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 		nbt.putLong(Constants.Nbt.AGE, this.age);
 		nbt.putBoolean(Constants.Nbt.SHOULD_RUN, this.shouldRun);
 	}
+
+
 }

@@ -1,5 +1,6 @@
 package dev.sterner.book_of_the_dead.common.block;
 
+import dev.sterner.book_of_the_dead.common.block.entity.HookBlockEntity;
 import dev.sterner.book_of_the_dead.common.block.entity.JarBlockEntity;
 import dev.sterner.book_of_the_dead.common.registry.BotDBlockEntityTypes;
 import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
@@ -60,7 +61,11 @@ public class JarBlock extends BlockWithEntity {
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-		return (tickerWorld, pos, tickerState, blockEntity) -> JarBlockEntity.tick(tickerWorld, pos, tickerState, (JarBlockEntity) blockEntity);
+		return (tickerWorld, pos, tickerState, blockEntity) -> {
+			if(blockEntity instanceof JarBlockEntity be){
+				be.tick(world, pos, state);
+			}
+		};
 	}
 
 	@Override

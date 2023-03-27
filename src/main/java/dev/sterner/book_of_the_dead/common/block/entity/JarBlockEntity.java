@@ -24,20 +24,20 @@ public class JarBlockEntity extends BaseBlockEntity {
 		super(BotDBlockEntityTypes.JAR, pos, state);
 	}
 
-	public static void tick(World world, BlockPos pos, BlockState tickerState, JarBlockEntity blockEntity) {
+	public void tick(World world, BlockPos pos, BlockState state) {
 		boolean mark = false;
 		if (world != null && !world.isClient) {
-			if (world.getTime() % 10 == 0 && tickerState.get(JarBlock.OPEN) && blockEntity.getBloodyCorpseAbove(world, pos)) {
-				if (blockEntity.liquidAmount < MAX_LIQUID && (blockEntity.getLiquidType(BLOOD) || blockEntity.getLiquidType(EMPTY))) {
-					blockEntity.setLiquidType(BLOOD);
-					blockEntity.liquidAmount++;
-					blockEntity.markDirty();
+			if (world.getTime() % 10 == 0 && state.get(JarBlock.OPEN) && getBloodyCorpseAbove(world, pos)) {
+				if (liquidAmount < MAX_LIQUID && (getLiquidType(BLOOD) || getLiquidType(EMPTY))) {
+					setLiquidType(BLOOD);
+					liquidAmount++;
+					markDirty();
 					mark = true;
 				}
 			}
 		}
 		if (mark) {
-			markDirty(world, pos, tickerState);
+			markDirty();
 		}
 	}
 

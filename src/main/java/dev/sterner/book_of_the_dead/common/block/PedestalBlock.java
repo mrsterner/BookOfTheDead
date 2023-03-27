@@ -1,5 +1,6 @@
 package dev.sterner.book_of_the_dead.common.block;
 
+import dev.sterner.book_of_the_dead.common.block.entity.NecroTableBlockEntity;
 import dev.sterner.book_of_the_dead.common.block.entity.PedestalBlockEntity;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
@@ -99,7 +100,11 @@ public class PedestalBlock extends Block implements BlockEntityProvider {
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-		return (tickerWorld, pos, tickerState, blockEntity) -> PedestalBlockEntity.tick(tickerWorld, pos, tickerState, (PedestalBlockEntity) blockEntity);
+		return (tickerWorld, pos, tickerState, blockEntity) -> {
+			if(blockEntity instanceof PedestalBlockEntity be){
+				be.tick(world, pos, state);
+			}
+		};
 	}
 
 	@Override

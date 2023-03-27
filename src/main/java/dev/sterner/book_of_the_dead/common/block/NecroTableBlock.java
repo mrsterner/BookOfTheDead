@@ -36,7 +36,7 @@ public class NecroTableBlock extends HorizontalFacingBlock implements BlockEntit
 	protected static final Vec3d[] NORTH_PARTICLES, SOUTH_PARTICLES, WEST_PARTICLES, EAST_PARTICLES;
 
 	public static final BooleanProperty LIT = Properties.LIT;
-	public static final ToIntFunction<BlockState> STATE_TO_LUMINANCE = state -> state.get(LIT) ? 14 : 0;
+	public static final ToIntFunction<BlockState> STATE_TO_LUMINANCE = state -> state.get(LIT) ? 10 : 0;
 
 	public NecroTableBlock(Settings settings) {
 		super(settings.nonOpaque().luminance(STATE_TO_LUMINANCE));
@@ -46,7 +46,11 @@ public class NecroTableBlock extends HorizontalFacingBlock implements BlockEntit
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-		return (tickerWorld, pos, tickerState, blockEntity) -> NecroTableBlockEntity.tick(tickerWorld, pos, tickerState, (NecroTableBlockEntity) blockEntity);
+		return (tickerWorld, pos, tickerState, blockEntity) -> {
+			if(blockEntity instanceof NecroTableBlockEntity be){
+				be.tick(world, pos, state);
+			}
+		};
 	}
 
 	@Override
