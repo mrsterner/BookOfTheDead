@@ -3,7 +3,7 @@
   "ritual": "book_of_the_dead:basic",
   "requireBotD": false,
   "requireEmeraldTablet": true,
-  "duration": 60,
+  "duration": 40,
   "texture": "book_of_the_dead:textures/misc/circle_necromancy.png",
 
   "inputs": [
@@ -19,15 +19,22 @@
       "item" : "minecraft:stick"
     }
   ],
-  "sacrifices": [],
-  "summons": [
+  "sacrifices": [
+    {
+      "entity": "minecraft:sheep"
+    },
     {
       "entity": "minecraft:sheep"
     }
   ],
+  "summons": [
+    {
+      "entity": "minecraft:cow"
+    }
+  ],
   "commands": [
     {
-      "command": "setblock ~ ~10 ~ minecraft:grass_block",
+      "command": "setblock ~ ~4 ~ minecraft:grass_block",
       "type": "start"
     }
   ],

@@ -89,7 +89,7 @@ public record RetortRecipe(Identifier id, int color, DefaultedList<Ingredient> i
 		public RetortRecipe read(Identifier id, JsonObject json) {
 
 			//Inputs
-			DefaultedList<Ingredient> inputs = RecipeUtils.deserializeIngredients(JsonHelper.getArray(json, "inputs"));
+			DefaultedList<Ingredient> inputs = RecipeUtils.deserializeIngredients(JsonHelper.getArray(json, "ingredients"));
 
 			//Output
 			Item outputItem = Registries.ITEM.getOrEmpty(new Identifier(JsonHelper.getString(json, "outputItem"))).orElseThrow(() -> new JsonSyntaxException("No such item " + JsonHelper.getString(json, "outputItem")));

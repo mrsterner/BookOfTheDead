@@ -48,7 +48,7 @@ public class SoulSiphonStatusEffect extends StatusEffect {
 			double z = living.getZ() + (world.random.nextDouble() * 0.2D) + 0.4D;
 			if (world instanceof ServerWorld serverWorld) {
 				serverWorld.spawnParticles(new ItemStackBeamParticleEffect(
-						BotDParticleTypes.ITEM_BEAM_PARTICLE, Items.BONE_BLOCK.getDefaultStack(),
+						BotDParticleTypes.ITEM_BEAM_PARTICLE, Items.SLIME_BALL.getDefaultStack(),
 						10), x, y, z, 0, directionVector.x, directionVector.y, directionVector.z, 0.10D);
 			}
 		}

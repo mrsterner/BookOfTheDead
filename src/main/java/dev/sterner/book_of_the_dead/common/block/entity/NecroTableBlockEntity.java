@@ -27,10 +27,7 @@ import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 
@@ -41,6 +38,7 @@ import java.util.Optional;
 
 public class NecroTableBlockEntity extends BaseBlockEntity {
 	public List<PedestalInfo> pedestalToActivate = new ArrayList<>();
+	public List<LivingEntity> sacrificeCache = new ArrayList<>();
 
 	public boolean isNecroTable = false;
 	public boolean hasBotD = false;
@@ -89,12 +87,19 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 					}
 
 				} else if (checkTier()) {
-					int craftingTime = ritualRecipe.inputs().stream().filter(ingredient -> !ingredient.isEmpty()).toList().size() * 20 * 4 + 20 * 2;
+					int craftingTime = 0;
+					if (ritualRecipe.inputs() != null) {
+						craftingTime = ritualRecipe.inputs().stream().filter(ingredient -> !ingredient.isEmpty()).toList().size() * 20 * 4 + 20 * 2;
+					}
+					int sacrificeTime = 0;
+					if (ritualRecipe.sacrifices() != null) {
+						sacrificeTime = ritualRecipe.sacrifices().size() * 20 * 3 + 20 * 2;
+					}
 					timer++;
 					if (timer >= 0) {
 						currentBasicNecrotableRitual.tick(world, ritualPos, this);
 					}
-					if (timer >= ritualRecipe.duration() + craftingTime) {
+					if (timer >= ritualRecipe.duration() + Math.max(craftingTime, sacrificeTime)) {
 						currentBasicNecrotableRitual.onStopped(world, ritualPos, this);
 						reset();
 					}
@@ -234,6 +239,7 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 		timer = -20;
 		shouldRun = false;
 		pedestalToActivate.clear();
+		sacrificeCache.clear();
 		ritualRecipe = null;
 		clientTime = 0;
 		markDirty();

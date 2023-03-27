@@ -17,6 +17,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ItemStackParticleEffect;
@@ -37,16 +38,17 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 
 public class BasicNecrotableRitual implements IRitual {
 	private final Identifier id;
 	public int pedestalTicker = 0;
+	public int sacrificeTicker = -1;
 	public boolean canCollectPedestals = true;
+	public boolean canCollectSacrifices = true;
 	public int ticker = 0;
 	public UUID userUuid = null;
 	private boolean lockTick = false;
@@ -61,8 +63,9 @@ public class BasicNecrotableRitual implements IRitual {
 	@Override
 	public void tick(World world, BlockPos blockPos, NecroTableBlockEntity blockEntity) {
 		ticker++;
-		boolean canEndRitual = this.consumeItems(world, blockPos, blockEntity) && this.consumeSacrifices(world, blockPos, blockEntity);
-		if (canEndRitual || lockTick) {
+		boolean canEndSacrifices = this.consumeSacrifices(world, blockPos, blockEntity);
+		boolean canEndRitual = this.consumeItems(world, blockPos, blockEntity);
+		if ((canEndRitual && canEndSacrifices) || lockTick) {
 			if (!this.lockTick) {
 				this.runCommand(world, blockEntity, blockPos, "start");
 				this.generateStatusEffects(world, blockPos, blockEntity);
@@ -88,6 +91,7 @@ public class BasicNecrotableRitual implements IRitual {
 			this.summonItems(world, blockPos, blockEntity);
 			this.lockTick = false;
 			this.canCollectPedestals = true;
+			this.canCollectSacrifices = true;
 		}
 	}
 
@@ -249,22 +253,54 @@ public class BasicNecrotableRitual implements IRitual {
 
 		int size = 8;
 
-		List<LivingEntity> livingEntityList = world.getEntitiesByClass(LivingEntity.class, new Box(blockPos).expand(size), Entity::isAlive);
-		List<EntityType<?>> entityTypeList = Lists.newArrayList(livingEntityList.stream().map(Entity::getType).toList());
-		List<EntityType<?>> ritualSacrifices = blockEntity.ritualRecipe.sacrifices();
+		if(blockEntity.sacrificeCache.isEmpty() && canCollectSacrifices){
+			List<LivingEntity> livingEntityList = world.getEntitiesByClass(LivingEntity.class, new Box(blockPos).expand(size), Entity::isAlive);
+			List<EntityType<?>> entityTypeList = Lists.newArrayList(livingEntityList.stream().map(Entity::getType).toList());
+			List<EntityType<?>> ritualSacrifices = blockEntity.ritualRecipe.sacrifices();
 
-		if (ritualSacrifices != null && new HashSet<>(entityTypeList).containsAll(ritualSacrifices)) {
+			// Count occurrences of each entity type in both lists
+			Map<EntityType<?>, Long> entityTypeCountMap = entityTypeList.stream().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+			Map<EntityType<?>, Long> ritualSacrificesCountMap = ritualSacrifices.stream().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+
+			// Create a new list to store the missing entity types
+			List<EntityType<?>> missingEntityTypes = new ArrayList<>();
+			for (EntityType<?> entityType : ritualSacrifices) {
+				if (!entityTypeList.contains(entityType)) {
+					long entityTypeCount = entityTypeCountMap.getOrDefault(entityType, 0L);
+					long ritualSacrificesCount = ritualSacrificesCountMap.getOrDefault(entityType, 0L);
+					int copiesToAdd = (int) Math.max(ritualSacrificesCount - entityTypeCount, 0);
+					missingEntityTypes.addAll(Collections.nCopies(copiesToAdd, entityType));
+				}
+			}
+			// Add the missing entity types to entityTypeList
+			entityTypeList.addAll(missingEntityTypes);
+
+			// Find and add the closest entity for each entity type to sacrificeCache
 			for (EntityType<?> entityType : ritualSacrifices) {
 				LivingEntity foundEntity = BotDUtils.getClosestEntity(livingEntityList, entityType, blockPos);
 				if (foundEntity != null) {
-					LivingEntityDataComponent livingEntityDataComponent = BotDComponents.LIVING_COMPONENT.get(foundEntity);
-					livingEntityDataComponent.setRitualPos(new Vec3d(blockPos.getX(), blockPos.getY(), blockPos.getZ()));
-					foundEntity.addStatusEffect(new StatusEffectInstance(BotDStatusEffects.SOUL_SIPHON, 20 * 3));
+					blockEntity.sacrificeCache.add(foundEntity);
+					livingEntityList.remove(foundEntity);
 				}
 			}
-			return true;
+			return false;
+
+		} else if (!blockEntity.sacrificeCache.isEmpty()) {
+			sacrificeTicker++;
+			if(sacrificeTicker >= 20 * 3){
+				if(blockEntity.sacrificeCache.get(0) instanceof MobEntity mob){
+					LivingEntityDataComponent livingEntityDataComponent = BotDComponents.LIVING_COMPONENT.get(mob);
+					livingEntityDataComponent.setRitualPos(new Vec3d(blockPos.getX(), blockPos.getY(), blockPos.getZ()));
+					mob.addStatusEffect(new StatusEffectInstance(BotDStatusEffects.SOUL_SIPHON, 20 * 3));
+				}
+				canCollectSacrifices = false;
+				blockEntity.sacrificeCache.remove(0);
+				blockEntity.markDirty();
+				sacrificeTicker = 0;
+				return blockEntity.sacrificeCache.isEmpty();
+			}
 		}
-		return false;
+		return blockEntity.sacrificeCache.isEmpty();
 	}
 
 	/**
