@@ -21,7 +21,10 @@ import net.minecraft.world.World;
 import org.quiltmc.qsl.recipe.api.serializer.QuiltRecipeSerializer;
 
 
-public record ButcheringRecipe(Identifier id, EntityType<?> entityType, DefaultedList<Pair<ItemStack, Float>> outputs, Pair<ItemStack, Float> headDrop) implements IRecipe {
+public record ButcheringRecipe(Identifier id,
+							   EntityType<?> entityType,
+							   DefaultedList<Pair<ItemStack, Float>> outputs,
+							   Pair<ItemStack, Float> headDrop) implements IRecipe {
 
 	@Override
 	public boolean matches(Inventory inventory, World world) {

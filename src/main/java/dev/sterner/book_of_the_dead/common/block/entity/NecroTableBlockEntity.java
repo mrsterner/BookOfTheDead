@@ -27,7 +27,10 @@ import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.*;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 
@@ -90,7 +93,7 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 		} else {
 
 			int craftingTime = ritualRecipe.inputs() != null ? ritualRecipe.inputs().stream().filter(ingredient -> !ingredient.isEmpty()).toList().size() * 20 * 4 + 20 * 2 : 0;
-			int sacrificeTime = ritualRecipe.sacrifices() != null ? ritualRecipe.sacrifices().size() * 20 * 3 + 20 * 2: 0;
+			int sacrificeTime = ritualRecipe.sacrifices() != null ? ritualRecipe.sacrifices().size() * 20 * 3 + 20 * 2 : 0;
 
 			if (currentBasicNecrotableRitual.ritualManager.userUuid == null) {
 				currentBasicNecrotableRitual.ritualManager.userUuid = userUuid;
@@ -245,11 +248,11 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 		this.clientTime = nbt.getInt(Constants.Nbt.CLIENT_TIMER);
 		this.shouldRun = nbt.getBoolean(Constants.Nbt.SHOULD_RUN);
 
-		if(nbt.contains(Constants.Nbt.UUID)){
+		if (nbt.contains(Constants.Nbt.UUID)) {
 			this.userUuid = nbt.getUuid(Constants.Nbt.UUID);
 		}
 
-		if(nbt.contains(Constants.Nbt.NECRO_RITUAL)){
+		if (nbt.contains(Constants.Nbt.NECRO_RITUAL)) {
 			this.currentBasicNecrotableRitual = BotDRegistries.NECROTABLE_RITUALS.get(new Identifier(nbt.getString(Constants.Nbt.NECRO_RITUAL)));
 		}
 
@@ -285,7 +288,7 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 
 		if (currentBasicNecrotableRitual != null) {
 			Identifier id = BotDRegistries.NECROTABLE_RITUALS.getId(currentBasicNecrotableRitual);
-			if(id != null){
+			if (id != null) {
 				nbt.putString(Constants.Nbt.NECRO_RITUAL, id.toString());
 			}
 

@@ -1,9 +1,7 @@
 package dev.sterner.book_of_the_dead.common.recipe;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
-import com.mojang.datafixers.util.Pair;
 import dev.sterner.book_of_the_dead.api.interfaces.IRecipe;
 import dev.sterner.book_of_the_dead.common.registry.BotDRecipeTypes;
 import dev.sterner.book_of_the_dead.common.util.RecipeUtils;
@@ -24,7 +22,10 @@ import org.quiltmc.qsl.recipe.api.serializer.QuiltRecipeSerializer;
 import java.util.ArrayList;
 import java.util.List;
 
-public record RetortRecipe(Identifier id, int color, DefaultedList<Ingredient> ingredients, ItemStack output) implements IRecipe {
+public record RetortRecipe(Identifier id,
+						   int color,
+						   DefaultedList<Ingredient> ingredients,
+						   ItemStack output) implements IRecipe {
 
 	@Override
 	public boolean matches(Inventory inventory, World world) {

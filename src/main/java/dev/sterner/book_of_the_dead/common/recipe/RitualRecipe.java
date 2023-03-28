@@ -33,7 +33,18 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public record RitualRecipe(Identifier id, BasicNecrotableRitual ritual, Identifier texture, boolean requireBotD, boolean requireEmeraldTablet, int duration, @Nullable DefaultedList<Ingredient> inputs, @Nullable List<ItemStack> outputs, @Nullable List<EntityType<?>> sacrifices, @Nullable List<EntityType<?>> summons, @Nullable List<StatusEffectInstance> statusEffectInstance, Set<CommandType> command) implements IRecipe {
+public record RitualRecipe(Identifier id,
+						   BasicNecrotableRitual ritual,
+						   Identifier texture,
+						   boolean requireBotD,
+						   boolean requireEmeraldTablet,
+						   int duration,
+						   @Nullable DefaultedList<Ingredient> inputs,
+						   @Nullable List<ItemStack> outputs,
+						   @Nullable List<EntityType<?>> sacrifices,
+						   @Nullable List<EntityType<?>> summons,
+						   @Nullable List<StatusEffectInstance> statusEffectInstance,
+						   Set<CommandType> command) implements IRecipe {
 
 	@Override
 	public Identifier getId() {

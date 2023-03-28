@@ -55,7 +55,7 @@ public class BotDUtils {
 	 *
 	 * @param times amount of times to rotate
 	 * @param shape the shape input
-	 * @param axis which axis to rotate on
+	 * @param axis  which axis to rotate on
 	 * @return new VoxelShape after rotation
 	 */
 	public static VoxelShape rotateShape(int times, VoxelShape shape, char axis) {
@@ -82,8 +82,8 @@ public class BotDUtils {
 	/**
 	 * Rotates the VoxelShape on y-axis
 	 *
-	 * @param from direction
-	 * @param to direction
+	 * @param from  direction
+	 * @param to    direction
 	 * @param shape shape
 	 * @return new voxel shape for the new direction
 	 */
@@ -146,7 +146,7 @@ public class BotDUtils {
 	 * Gets the closest entity of a specific type
 	 *
 	 * @param entityList list of entities to test
-	 * @param entityType       entityType to look for
+	 * @param entityType entityType to look for
 	 * @param pos        position to measure distance from
 	 * @return Entity closest to pos from entityList
 	 */

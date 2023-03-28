@@ -146,7 +146,6 @@ public class RitualManager {
 			return true;
 		}
 
-
 		if (blockEntity.pedestalToActivate.isEmpty() && canCollectPedestals) {
 			List<PedestalInfo> infoStream = blockEntity.getPedestalInfo(world).stream().filter(itemStackBlockPosPair -> !itemStackBlockPosPair.stack().isEmpty()).toList();
 			for (PedestalInfo info : infoStream) {
@@ -158,7 +157,7 @@ public class RitualManager {
 			BlockPos particlePos = blockEntity.pedestalToActivate.get(0).pos();
 
 			if (world instanceof ServerWorld serverWorld) {
-				if(blockEntity.ritualRecipe.outputs() != null){
+				if (blockEntity.ritualRecipe.outputs() != null) {
 					ParticleUtils.generateItemParticle(serverWorld, blockPos.getX() + 0.5, blockPos.getY() + 0.5, blockPos.getZ() + 0.5, blockEntity.ritualRecipe.outputs());
 				}
 				ParticleUtils.spawnItemParticleBeam(new Vec3d(particlePos.getX(), particlePos.getY(), particlePos.getZ()), new Vec3d(blockPos.getX(), blockPos.getY() - 1, blockPos.getZ()), serverWorld, blockEntity.pedestalToActivate.get(0).stack());
@@ -171,6 +170,7 @@ public class RitualManager {
 			if (pedestalTicker > 20 * 4) {
 				if (world.getBlockEntity(blockEntity.pedestalToActivate.get(0).pos()) instanceof PedestalBlockEntity pedestalBlockEntity) {
 					pedestalBlockEntity.setStack(ItemStack.EMPTY);
+					pedestalBlockEntity.setCrafting(false);
 					pedestalBlockEntity.markDirty();
 				}
 				blockEntity.pedestalToActivate.remove(0);
@@ -188,16 +188,18 @@ public class RitualManager {
 		for (Ingredient ingredient : Objects.requireNonNull(blockEntity.ritualRecipe.inputs())) {
 			if (ingredient.test(info.stack())) {
 				BlockPos checkPos = info.pos();
-				if (world.getBlockEntity(checkPos) instanceof PedestalBlockEntity) {
+				if (world.getBlockEntity(checkPos) instanceof PedestalBlockEntity pedestalBlockEntity) {
 					if (info.stack().isOf(BotDObjects.CONTRACT) && info.stack().hasNbt()) {
 						for (int i = 0; i < contract.size(); i++) {
-							Integer element = contract.get(i);
-							if (element != 0) {
+							int id = contract.get(i);
+							if (id != 0) {
 								contract.set(i, ContractItem.getIdFromContractNbt(info.stack()));
 								break;
 							}
 						}
 					}
+					pedestalBlockEntity.setCrafting(true);
+					pedestalBlockEntity.markDirty();
 					blockEntity.pedestalToActivate.add(info);
 				}
 			}
@@ -219,7 +221,7 @@ public class RitualManager {
 
 		int size = 8;
 
-		if(blockEntity.sacrificeCache.isEmpty() && canCollectSacrifices){
+		if (blockEntity.sacrificeCache.isEmpty() && canCollectSacrifices) {
 			List<LivingEntity> livingEntityList = world.getEntitiesByClass(LivingEntity.class, new Box(blockPos).expand(size), Entity::isAlive);
 			List<EntityType<?>> entityTypeList = Lists.newArrayList(livingEntityList.stream().map(Entity::getType).toList());
 			List<EntityType<?>> ritualSacrifices = blockEntity.ritualRecipe.sacrifices();
@@ -253,8 +255,8 @@ public class RitualManager {
 
 		} else if (!blockEntity.sacrificeCache.isEmpty()) {
 			sacrificeTicker++;
-			if(sacrificeTicker >= 20 * 3){
-				if(blockEntity.sacrificeCache.get(0) instanceof MobEntity mob){
+			if (sacrificeTicker >= 20 * 3) {
+				if (blockEntity.sacrificeCache.get(0) instanceof MobEntity mob) {
 					LivingEntityDataComponent livingEntityDataComponent = BotDComponents.LIVING_COMPONENT.get(mob);
 					livingEntityDataComponent.setRitualPos(new Vec3d(blockPos.getX(), blockPos.getY(), blockPos.getZ()));
 					mob.addStatusEffect(new StatusEffectInstance(BotDStatusEffects.SOUL_SIPHON, 20 * 3));

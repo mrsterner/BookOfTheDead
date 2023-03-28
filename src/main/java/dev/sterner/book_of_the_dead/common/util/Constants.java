@@ -111,7 +111,7 @@ public class Constants {
 		String PROGRESS = "Progress";
 		String HAS_LIQUID = "HasLiquid";
 		String IS_NECRO = "IsNecro";
-        String REFRESH = "Refresh";
+		String REFRESH = "Refresh";
 		String CHANCE = "Chance";
 		String CHANCES = "Chances";
 	}

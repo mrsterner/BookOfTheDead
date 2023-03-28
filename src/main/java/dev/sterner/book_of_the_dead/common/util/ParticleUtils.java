@@ -14,10 +14,10 @@ public class ParticleUtils {
 	/**
 	 * generates the beam of particles from the pedestals to the ritual center
 	 *
-	 * @param from 		   blockpos from
-	 * @param to  		   blockpos to
-	 * @param serverWorld  serverWorld
-	 * @param itemStack    itemstack for particle effect
+	 * @param from        blockpos from
+	 * @param to          blockpos to
+	 * @param serverWorld serverWorld
+	 * @param itemStack   itemstack for particle effect
 	 */
 	public static void spawnItemParticleBeam(Vec3d from, Vec3d to, ServerWorld serverWorld, ItemStack itemStack) {
 		Vec3d directionVector = to.subtract(from);

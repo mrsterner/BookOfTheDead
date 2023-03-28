@@ -12,7 +12,6 @@ import dev.sterner.book_of_the_dead.common.registry.BotDRecipeTypes;
 import dev.sterner.book_of_the_dead.common.util.BotDUtils;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -22,10 +21,6 @@ import net.minecraft.inventory.Inventories;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
-import net.minecraft.nbt.NbtList;
-import net.minecraft.particle.BlockStateParticleEffect;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -60,14 +55,14 @@ public class BaseButcherBlockEntity extends HaulerBlockEntity implements IBlockE
 	/**
 	 * Triggered at onUse from the Butcher block
 	 *
-	 * @param world world
-	 * @param state state
-	 * @param pos pos
-	 * @param player player
-	 * @param hand hand
-	 * @param probability probability
+	 * @param world          world
+	 * @param state          state
+	 * @param pos            pos
+	 * @param player         player
+	 * @param hand           hand
+	 * @param probability    probability
 	 * @param particleOffset particle Y offset
-	 * @param isNeighbour if the butcher block is a double block and player is interacting with the recessive one.
+	 * @param isNeighbour    if the butcher block is a double block and player is interacting with the recessive one.
 	 * @return ActionResult
 	 */
 	public ActionResult onUse(World world, BlockState state, BlockPos pos, PlayerEntity player, Hand hand, double probability, double particleOffset, boolean isNeighbour) {
@@ -142,10 +137,10 @@ public class BaseButcherBlockEntity extends HaulerBlockEntity implements IBlockE
 	/**
 	 * Handles drop rate depending on magic number and item stack list input and removes the item from the next pool
 	 *
-	 * @param world world
-	 * @param pos pos
-	 * @param magicNumber chance of successful butcher attempt
-	 * @param isNeighbour if the butcher block is a double block and player is interacting with the recessive one.
+	 * @param world          world
+	 * @param pos            pos
+	 * @param magicNumber    chance of successful butcher attempt
+	 * @param isNeighbour    if the butcher block is a double block and player is interacting with the recessive one.
 	 * @param nonEmptyOutput list of item drop possibilities from butcher recipe
 	 */
 	private void handleButcheringResult(World world, BlockPos pos, double magicNumber, boolean isNeighbour, List<ItemStack> nonEmptyOutput) {
@@ -167,12 +162,12 @@ public class BaseButcherBlockEntity extends HaulerBlockEntity implements IBlockE
 	/**
 	 * If the butcher recipe has a head drop, drop the head first before trying to dismember other limbs
 	 *
-	 * @param world world
+	 * @param world       world
 	 * @param isNeighbour if the butcher block is a double block and player is interacting with the recessive one.
 	 * @param magicNumber chance of successful butcher attempt
 	 * @return if head was successfully decapitated and dropped
 	 */
-	private boolean decapitateHeadIfPresent(World world, boolean isNeighbour, double magicNumber){
+	private boolean decapitateHeadIfPresent(World world, boolean isNeighbour, double magicNumber) {
 		if (getHeadVisible() && !isNeighbour && this.butcheringRecipe.headDrop().getFirst() != ItemStack.EMPTY) {
 			this.setHeadVisible(false);
 			ItemStack head = this.butcheringRecipe.headDrop().getFirst();
@@ -186,11 +181,11 @@ public class BaseButcherBlockEntity extends HaulerBlockEntity implements IBlockE
 	/**
 	 * Calculates a mix between player butcher level, butcher block type and sanitary level of the butcher block.
 	 *
-	 * @param player player
+	 * @param player      player
 	 * @param probability inherited probability of butcher block
 	 * @return the chance of successful butchering attempt
 	 */
-	private double calculateMagicNumber(PlayerEntity player, double probability){
+	private double calculateMagicNumber(PlayerEntity player, double probability) {
 		double sanitaryModifier = 1.5 - (getFilthLevel() + 1) / 6d;
 		float butcherLevel = BotDComponents.PLAYER_COMPONENT.maybeGet(player).map(PlayerDataComponent::getButcheringModifier).orElse(0F);
 		return probability + 0.5D * butcherLevel * sanitaryModifier;
@@ -199,10 +194,10 @@ public class BaseButcherBlockEntity extends HaulerBlockEntity implements IBlockE
 	/**
 	 * Places a stored corpse from a IHauler on to the Butcher block.
 	 *
-	 * @param world world
-	 * @param pos pos
-	 * @param state state
-	 * @param player player who is IHauler
+	 * @param world       world
+	 * @param pos         pos
+	 * @param state       state
+	 * @param player      player who is IHauler
 	 * @param isNeighbour if the butcher block is a double block and player is interacting with the recessive one.
 	 * @return if place is successful
 	 */
@@ -237,7 +232,7 @@ public class BaseButcherBlockEntity extends HaulerBlockEntity implements IBlockE
 	 * Override to trigger when corpse is placed on butcher block
 	 *
 	 * @param world world
-	 * @param pos pos of muck
+	 * @param pos   pos of muck
 	 */
 	public void spawnMuckParticles(ServerWorld world, BlockPos pos) {
 	}
@@ -245,10 +240,10 @@ public class BaseButcherBlockEntity extends HaulerBlockEntity implements IBlockE
 	/**
 	 * To give the butchering an extra oomph, this method plays some sound and spawns some particles.
 	 *
-	 * @param world world
-	 * @param player player causing oomph
-	 * @param hand hand used
-	 * @param pos position of ruckus
+	 * @param world          world
+	 * @param player         player causing oomph
+	 * @param hand           hand used
+	 * @param pos            position of ruckus
 	 * @param particleOffset particle spawn Y offset.
 	 */
 	private void makeARuckus(World world, PlayerEntity player, Hand hand, BlockPos pos, double particleOffset) {
