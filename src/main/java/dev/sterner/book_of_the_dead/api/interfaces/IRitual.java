@@ -7,6 +7,8 @@ import net.minecraft.world.World;
 public interface IRitual {
 
 	/**
+	 * When all items and all sacrifices has been consumed, this ticks until end of ritual
+	 *
 	 * @param world       world
 	 * @param blockPos    ritual origin
 	 * @param blockEntity ritualBlockEntity

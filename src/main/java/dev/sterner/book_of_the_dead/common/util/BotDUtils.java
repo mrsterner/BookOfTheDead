@@ -5,7 +5,10 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.util.Hand;
+import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.function.BooleanBiFunction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -118,6 +121,25 @@ public class BotDUtils {
 		nbtCompound.putDouble("Y", pos.getY());
 		nbtCompound.putDouble("Z", pos.getZ());
 		return nbtCompound;
+	}
+
+	public static void writeChancesNbt(NbtCompound nbt, DefaultedList<Float> floats) {
+		NbtList nbtList = new NbtList();
+		for (float aFloat : floats) {
+			NbtCompound nbtCompound = new NbtCompound();
+			nbtCompound.putFloat(Constants.Nbt.CHANCE, aFloat);
+			nbtList.add(nbtCompound);
+		}
+		nbt.put(Constants.Nbt.CHANCES, nbtList);
+	}
+
+	public static void readChanceNbt(NbtCompound nbt, DefaultedList<Float> floats) {
+		NbtList nbtList = nbt.getList(Constants.Nbt.CHANCES, NbtElement.COMPOUND_TYPE);
+		for (int i = 0; i < nbtList.size(); ++i) {
+			NbtCompound nbtCompound = nbtList.getCompound(i);
+			float j = nbtCompound.getFloat(Constants.Nbt.CHANCE);
+			floats.set(i, j);
+		}
 	}
 
 	/**

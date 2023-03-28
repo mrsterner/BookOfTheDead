@@ -8,9 +8,13 @@ import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
 import dev.sterner.book_of_the_dead.common.util.BotDUtils;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.particle.BlockStateParticleEffect;
+import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
@@ -54,12 +58,18 @@ public class ButcherTableBlockEntity extends BaseButcherBlockEntity {
 		return onUse(world, state, pos, player, hand, 0.5d, 0d, isNeighbour);
 	}
 
-	public int getFilthLevel() {
-		return filthLevel;
-	}
-
-	public void setFilthLevel(int filthLevel) {
-		this.filthLevel = filthLevel;
+	@Override
+	public void spawnMuckParticles(ServerWorld world, BlockPos pos) {
+		int count = 150;
+		(world).spawnParticles(new BlockStateParticleEffect(ParticleTypes.BLOCK, Blocks.DARK_OAK_PLANKS.getDefaultState()),
+				pos.getX() + 0.5f,
+				pos.getY() + 1.0f,
+				pos.getZ() + 0.5f,
+				count,
+				0.0,
+				0.0,
+				0.0,
+				0.15F);
 	}
 
 	@Override
@@ -78,6 +88,16 @@ public class ButcherTableBlockEntity extends BaseButcherBlockEntity {
 		setCleaningProgress(nbt.getInt(Constants.Nbt.CLEANING));
 		bloodLevel = nbt.getInt(Constants.Nbt.BLOOD_LEVEL);
 		super.readNbt(nbt);
+	}
+
+	@Override
+	public int getFilthLevel() {
+		return filthLevel;
+	}
+
+
+	public void setFilthLevel(int filthLevel) {
+		this.filthLevel = filthLevel;
 	}
 
 	@Override
