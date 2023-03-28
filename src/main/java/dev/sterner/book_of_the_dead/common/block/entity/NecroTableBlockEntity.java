@@ -31,10 +31,7 @@ import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class NecroTableBlockEntity extends BaseBlockEntity {
 	public List<PedestalInfo> pedestalToActivate = new ArrayList<>();
@@ -47,6 +44,7 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 	public List<BlockPos> PEDESTAL_POS_LIST = new ArrayList<>();
 	public BasicNecrotableRitual currentBasicNecrotableRitual = null;
 	public RitualRecipe ritualRecipe = null;
+	public UUID userUuid = null;
 
 	//Logic
 	private boolean loaded = false;
@@ -94,6 +92,9 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 					int sacrificeTime = 0;
 					if (ritualRecipe.sacrifices() != null) {
 						sacrificeTime = ritualRecipe.sacrifices().size() * 20 * 3 + 20 * 2;
+					}
+					if(currentBasicNecrotableRitual.ritualManager.userUuid == null){
+						currentBasicNecrotableRitual.ritualManager.userUuid = userUuid;
 					}
 					timer++;
 					if (timer >= 0) {
@@ -143,7 +144,10 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 					markDirty();
 					return ActionResult.CONSUME;
 				}
-			} else if (handStack.isOf(Items.FLINT_AND_STEEL)) {
+				return ActionResult.PASS;
+			}
+
+			if (handStack.isOf(Items.FLINT_AND_STEEL)) {
 				world.playSound(player, pos, SoundEvents.ITEM_FLINTANDSTEEL_USE, SoundCategory.BLOCKS, 1.0F, world.getRandom().nextFloat() * 0.4F + 0.8F);
 				world.setBlockState(pos, state.with(Properties.LIT, Boolean.TRUE), Block.NOTIFY_ALL | Block.REDRAW_ON_MAIN_THREAD);
 				world.emitGameEvent(player, GameEvent.BLOCK_CHANGE, pos);
@@ -182,6 +186,8 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 					necroTableBlockEntity.markDirty();
 					return ActionResult.CONSUME;
 				}
+				userUuid = player.getUuid();
+				markDirty();
 			}
 		}
 		return ActionResult.PASS;
@@ -242,6 +248,7 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 		sacrificeCache.clear();
 		ritualRecipe = null;
 		clientTime = 0;
+		userUuid = null;
 		markDirty();
 	}
 
@@ -269,6 +276,10 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 		this.age = nbt.getLong(Constants.Nbt.AGE);
 		this.shouldRun = nbt.getBoolean(Constants.Nbt.SHOULD_RUN);
 
+		if(nbt.contains(Constants.Nbt.UUID)){
+			this.userUuid = nbt.getUuid(Constants.Nbt.UUID);
+		}
+
 		if(nbt.contains(Constants.Nbt.NECRO_RITUAL)){
 			this.currentBasicNecrotableRitual = BotDRegistries.NECROTABLE_RITUALS.get(new Identifier(nbt.getString(Constants.Nbt.NECRO_RITUAL)));
 		}
@@ -295,6 +306,10 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 		nbt.putInt(Constants.Nbt.CLIENT_TIMER, this.clientTime);
 		nbt.putLong(Constants.Nbt.AGE, this.age);
 		nbt.putBoolean(Constants.Nbt.SHOULD_RUN, this.shouldRun);
+
+		if (this.userUuid != null) {
+			nbt.putUuid(Constants.Nbt.UUID, this.userUuid);
+		}
 
 		if (this.ritualPos != null) {
 			nbt.put(Constants.Nbt.RITUAL_POS, NbtHelper.fromBlockPos(this.ritualPos));

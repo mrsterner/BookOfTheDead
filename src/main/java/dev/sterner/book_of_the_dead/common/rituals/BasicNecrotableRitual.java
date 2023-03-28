@@ -21,14 +21,18 @@ public class BasicNecrotableRitual implements IRitual {
 		return id;
 	}
 
-	//Called methods from RitualBlockEntity
-
 	@Override
 	public void tick(World world, BlockPos blockPos, NecroTableBlockEntity blockEntity) {
-		ritualManager.ticker++;
-		boolean canEndSacrifices = ritualManager.consumeSacrifices(world, blockPos, blockEntity);
-		boolean canEndRitual = ritualManager.consumeItems(world, blockPos, blockEntity);
-		if ((canEndRitual && canEndSacrifices) || ritualManager.lockTick) {
+		if (ritualManager.userUuid == null) {
+			PlayerEntity player = world.getClosestPlayer(blockPos.getZ(), blockPos.getY(), blockPos.getZ(), 16D, true);
+			if (player != null) {
+				ritualManager.userUuid = player.getUuid();
+			}
+		}
+
+		boolean sacrificesConsumed = ritualManager.consumeSacrifices(world, blockPos, blockEntity);
+		boolean itemsConsumed = ritualManager.consumeItems(world, blockPos, blockEntity);
+		if ((sacrificesConsumed && itemsConsumed) || ritualManager.lockTick) {
 			if (!ritualManager.lockTick) {
 				ritualManager.runCommand(world, blockEntity, blockPos, "start");
 				ritualManager.generateStatusEffects(world, blockPos, blockEntity);
@@ -40,15 +44,7 @@ public class BasicNecrotableRitual implements IRitual {
 
 	@Override
 	public void onStopped(World world, BlockPos blockPos, NecroTableBlockEntity blockEntity) {
-		ritualManager.ticker = 0;
 		if (ritualManager.lockTick) {
-			if (ritualManager.userUuid == null) {
-				PlayerEntity player = world.getClosestPlayer(blockPos.getZ(), blockPos.getY(), blockPos.getZ(), 16D, true);
-				if (player != null) {
-					ritualManager.userUuid = player.getUuid();
-				}
-			}
-
 			ritualManager.runCommand(world, blockEntity, blockPos, "end");
 			ritualManager.summonSummons(world, blockPos, blockEntity);
 			ritualManager.summonItems(world, blockPos, blockEntity);

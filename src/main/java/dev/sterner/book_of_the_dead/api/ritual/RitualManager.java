@@ -42,7 +42,6 @@ public class RitualManager {
 	public int sacrificeTicker = -1;
 	public boolean canCollectPedestals = true;
 	public boolean canCollectSacrifices = true;
-	public int ticker = 0;
 	public UUID userUuid = null;
 	public boolean lockTick = false;
 	public DefaultedList<Integer> contract = DefaultedList.ofSize(8, 0);
