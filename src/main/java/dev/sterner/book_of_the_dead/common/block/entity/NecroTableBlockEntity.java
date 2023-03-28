@@ -49,7 +49,6 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 	//Logic
 	private boolean loaded = false;
 	public int timer = -20;
-	public long age = 0;
 	public boolean shouldRun = false;
 	public int clientTime = 0;
 
@@ -67,7 +66,6 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 				markDirty();
 				loaded = true;
 			}
-			age++;
 			if (shouldRun) {
 				collectPedestalBlockPos(world, pos);
 				sendRitualPosition(world);
@@ -120,23 +118,18 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 
 	private void collectPedestalBlockPos(World world, BlockPos pos) {
 		int r = 5;
-		for (int x = -r; x < r; x++) {
-			for (int y = -r; y < r; y++) {
-				for (int z = -r; z < r; z++) {
-					BlockPos lookPos = pos.add(x, y, z);
-					BlockState state = world.getBlockState(lookPos);
-					if (state.isOf(BotDObjects.PEDESTAL)) {
-						if (!PEDESTAL_POS_LIST.contains(lookPos)) {
-							PEDESTAL_POS_LIST.add(lookPos);
-						}
-					}
-				}
+		Set<BlockPos> pedestalPositions = new HashSet<>();
+		BlockPos.iterate(pos.add(-r, -r, -r), pos.add(r, r, r)).forEach(lookPos -> {
+			BlockState state = world.getBlockState(lookPos);
+			if (state.isOf(BotDObjects.PEDESTAL)) {
+				pedestalPositions.add(lookPos.toImmutable());
 			}
-		}
+		});
+		PEDESTAL_POS_LIST.addAll(pedestalPositions);
 	}
 
 	public ActionResult onUse(World world, BlockState state, BlockPos pos, PlayerEntity player, Hand hand) {
-		if (world != null && world.getBlockEntity(pos) instanceof NecroTableBlockEntity necroTableBlockEntity && hand == Hand.MAIN_HAND) {
+		if (world != null && hand == Hand.MAIN_HAND) {
 			ItemStack handStack = player.getMainHandStack();
 			if (!isNecroTable) {
 				if (handStack.isOf(BotDObjects.PAPER_AND_QUILL)) {
@@ -156,34 +149,32 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 			} else if (!shouldRun) {
 				if (handStack.isEmpty()) {
 					if (player.isSneaking()) {
-						if (necroTableBlockEntity.hasBotD) {
+						if (hasBotD) {
 							player.setStackInHand(hand, BotDObjects.BOOK_OF_THE_DEAD.getDefaultStack());
-							necroTableBlockEntity.hasBotD = false;
-							this.playItemSound(world, pos);
-						} else if (necroTableBlockEntity.hasEmeraldTablet) {
+							hasBotD = false;
+						} else if (hasEmeraldTablet) {
 							player.setStackInHand(hand, BotDObjects.EMERALD_TABLET.getDefaultStack());
-							necroTableBlockEntity.hasEmeraldTablet = false;
-							this.playItemSound(world, pos);
+							hasEmeraldTablet = false;
 						}
-						necroTableBlockEntity.markDirty();
+						playItemSound(world, pos);
 					} else {
 						Direction dir = state.get(NecroTableBlock.FACING);
-						necroTableBlockEntity.ritualPos = pos.offset(dir, 4);
-						this.shouldRun = true;
-						this.markDirty();
+						ritualPos = pos.offset(dir, 4);
+						shouldRun = true;
 					}
+					markDirty();
 					return ActionResult.CONSUME;
-				} else if (handStack.isOf(BotDObjects.BOOK_OF_THE_DEAD) && !necroTableBlockEntity.hasBotD) {
-					necroTableBlockEntity.hasBotD = true;
+				} else if (handStack.isOf(BotDObjects.BOOK_OF_THE_DEAD) && !hasBotD) {
+					hasBotD = true;
 					handStack.decrement(1);
-					this.playItemSound(world, pos);
-					necroTableBlockEntity.markDirty();
+					playItemSound(world, pos);
+					markDirty();
 					return ActionResult.CONSUME;
-				} else if (handStack.isOf(BotDObjects.EMERALD_TABLET) && !necroTableBlockEntity.hasEmeraldTablet) {
-					necroTableBlockEntity.hasEmeraldTablet = true;
+				} else if (handStack.isOf(BotDObjects.EMERALD_TABLET) && !hasEmeraldTablet) {
+					hasEmeraldTablet = true;
 					handStack.decrement(1);
-					this.playItemSound(world, pos);
-					necroTableBlockEntity.markDirty();
+					playItemSound(world, pos);
+					markDirty();
 					return ActionResult.CONSUME;
 				}
 				userUuid = player.getUuid();
@@ -273,7 +264,6 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 		this.isNecroTable = nbt.getBoolean(Constants.Nbt.IS_NECRO);
 		this.timer = nbt.getInt(Constants.Nbt.TIMER);
 		this.clientTime = nbt.getInt(Constants.Nbt.CLIENT_TIMER);
-		this.age = nbt.getLong(Constants.Nbt.AGE);
 		this.shouldRun = nbt.getBoolean(Constants.Nbt.SHOULD_RUN);
 
 		if(nbt.contains(Constants.Nbt.UUID)){
@@ -304,7 +294,6 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 		nbt.putBoolean(Constants.Nbt.IS_NECRO, this.isNecroTable);
 		nbt.putInt(Constants.Nbt.TIMER, this.timer);
 		nbt.putInt(Constants.Nbt.CLIENT_TIMER, this.clientTime);
-		nbt.putLong(Constants.Nbt.AGE, this.age);
 		nbt.putBoolean(Constants.Nbt.SHOULD_RUN, this.shouldRun);
 
 		if (this.userUuid != null) {
