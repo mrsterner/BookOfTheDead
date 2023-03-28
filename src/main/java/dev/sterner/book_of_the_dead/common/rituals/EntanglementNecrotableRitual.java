@@ -20,9 +20,9 @@ public class EntanglementNecrotableRitual extends BasicNecrotableRitual {
 	@Override
 	public void onStopped(World world, BlockPos blockPos, NecroTableBlockEntity blockEntity) {
 		super.onStopped(world, blockPos, blockEntity);
-		if (this.contract.get(0) != 0 && this.contract.get(1) != 0) {
-			Entity entity = world.getEntityById(contract.get(0));
-			Entity entity2 = world.getEntityById(contract.get(1));
+		if (ritualManager.contract.get(0) != 0 && ritualManager.contract.get(1) != 0) {
+			Entity entity = world.getEntityById(ritualManager.contract.get(0));
+			Entity entity2 = world.getEntityById(ritualManager.contract.get(1));
 			if (entity instanceof LivingEntity livingEntity && entity2 instanceof LivingEntity livingEntity2) {
 				if (world instanceof ServerWorld serverWorld) {
 					if (!serverWorld.isChunkLoaded(livingEntity.getChunkPos().x, livingEntity.getChunkPos().z)) {

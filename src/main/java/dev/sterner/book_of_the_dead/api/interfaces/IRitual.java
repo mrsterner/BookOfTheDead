@@ -23,4 +23,7 @@ public interface IRitual {
 	 * @param blockEntity ritualBlockEntity
 	 */
 	void onStopped(World world, BlockPos blockPos, NecroTableBlockEntity blockEntity);
+
+
+	void reset();
 }

@@ -19,8 +19,8 @@ public class KakuzuNecrotableRitual extends BasicNecrotableRitual {
 	@Override
 	public void onStopped(World world, BlockPos blockPos, NecroTableBlockEntity blockEntity) {
 		super.onStopped(world, blockPos, blockEntity);
-		if (contract.get(0) != 0) {
-			Entity entity = world.getEntityById(contract.get(0));
+		if (ritualManager.contract.get(0) != 0) {
+			Entity entity = world.getEntityById(ritualManager.contract.get(0));
 			if (entity instanceof PlayerEntity player) {
 				PlayerDataComponent component = BotDComponents.PLAYER_COMPONENT.get(player);
 				if (BotDApi.canHaveKakuzu(player)) {
