@@ -8,6 +8,8 @@ import dev.sterner.book_of_the_dead.common.block.entity.NecroTableBlockEntity;
 import dev.sterner.book_of_the_dead.common.block.entity.PedestalBlockEntity;
 import dev.sterner.book_of_the_dead.common.component.BotDComponents;
 import dev.sterner.book_of_the_dead.common.component.LivingEntityDataComponent;
+import dev.sterner.book_of_the_dead.common.item.ContractItem;
+import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
 import dev.sterner.book_of_the_dead.common.registry.BotDSoundEvents;
 import dev.sterner.book_of_the_dead.common.registry.BotDStatusEffects;
 import dev.sterner.book_of_the_dead.common.util.BotDUtils;
@@ -148,15 +150,9 @@ public class RitualManager {
 		if (blockEntity.pedestalToActivate.isEmpty() && canCollectPedestals) {
 			List<PedestalInfo> infoStream = blockEntity.getPedestalInfo(world).stream().filter(itemStackBlockPosPair -> !itemStackBlockPosPair.stack().isEmpty()).toList();
 			for (PedestalInfo info : infoStream) {
-				for (Ingredient ingredient : blockEntity.ritualRecipe.inputs()) {
-					if (ingredient.test(info.stack())) {
-						BlockPos checkPos = info.pos();
-						if (world.getBlockEntity(checkPos) instanceof PedestalBlockEntity) {
-							blockEntity.pedestalToActivate.add(info);
-						}
-					}
-				}
+				activatePedestalIfMatchesRecipe(world, blockEntity, info);
 			}
+
 		} else if (!blockEntity.pedestalToActivate.isEmpty()) {
 			pedestalTicker++;
 			BlockPos particlePos = blockEntity.pedestalToActivate.get(0).pos();
@@ -186,6 +182,26 @@ public class RitualManager {
 		}
 
 		return false;
+	}
+
+	private void activatePedestalIfMatchesRecipe(World world, NecroTableBlockEntity blockEntity, PedestalInfo info) {
+		for (Ingredient ingredient : Objects.requireNonNull(blockEntity.ritualRecipe.inputs())) {
+			if (ingredient.test(info.stack())) {
+				BlockPos checkPos = info.pos();
+				if (world.getBlockEntity(checkPos) instanceof PedestalBlockEntity) {
+					if (info.stack().isOf(BotDObjects.CONTRACT) && info.stack().hasNbt()) {
+						for (int i = 0; i < contract.size(); i++) {
+							Integer element = contract.get(i);
+							if (element != 0) {
+								contract.set(i, ContractItem.getIdFromContractNbt(info.stack()));
+								break;
+							}
+						}
+					}
+					blockEntity.pedestalToActivate.add(info);
+				}
+			}
+		}
 	}
 
 	/**

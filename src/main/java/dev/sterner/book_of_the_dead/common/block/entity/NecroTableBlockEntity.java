@@ -57,63 +57,57 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 	}
 
 	public void tick(World world, BlockPos pos, BlockState state) {
-		if (!isNecroTable) {
+		if (!isNecroTable || (world == null || world.isClient())) {
 			return;
 		}
-		if (world != null && !world.isClient()) {
-			if (!loaded) {
+
+		if (!loaded) {
+			reset();
+			markDirty();
+			loaded = true;
+		}
+
+		if (!shouldRun) {
+			return;
+		}
+
+		collectPedestalBlockPos(world, ritualPos);
+		sendRitualPosition(world);
+
+		if (ritualRecipe == null || currentBasicNecrotableRitual == null) {
+			ritualRecipe = BotDRecipeTypes.getRiteRecipe(this);
+			markDirty();
+
+			if (ritualRecipe != null && checkValidSacrifices(ritualRecipe, world)) {
+				currentBasicNecrotableRitual = ritualRecipe.ritual();
+			}
+
+			if (ritualRecipe == null) {
 				reset();
-				markDirty();
-				loaded = true;
 			}
-			if (shouldRun) {
-				collectPedestalBlockPos(world, pos);
-				sendRitualPosition(world);
+		} else if (!checkTier()) {
+			reset();
+		} else {
 
-				if (ritualRecipe == null || currentBasicNecrotableRitual == null) {
-					ritualRecipe = BotDRecipeTypes.getRiteRecipe(this);
-					markDirty();
-					if (ritualRecipe != null) {
-						if (checkValidSacrifices(ritualRecipe, world)) {
-							currentBasicNecrotableRitual = ritualRecipe.ritual();
-						}
-					}
-					if (ritualRecipe == null) {
-						reset();
-					}
+			int craftingTime = ritualRecipe.inputs() != null ? ritualRecipe.inputs().stream().filter(ingredient -> !ingredient.isEmpty()).toList().size() * 20 * 4 + 20 * 2 : 0;
+			int sacrificeTime = ritualRecipe.sacrifices() != null ? ritualRecipe.sacrifices().size() * 20 * 3 + 20 * 2: 0;
 
-				} else if (checkTier()) {
-					int craftingTime = 0;
-					if (ritualRecipe.inputs() != null) {
-						craftingTime = ritualRecipe.inputs().stream().filter(ingredient -> !ingredient.isEmpty()).toList().size() * 20 * 4 + 20 * 2;
-					}
-					int sacrificeTime = 0;
-					if (ritualRecipe.sacrifices() != null) {
-						sacrificeTime = ritualRecipe.sacrifices().size() * 20 * 3 + 20 * 2;
-					}
-					if(currentBasicNecrotableRitual.ritualManager.userUuid == null){
-						currentBasicNecrotableRitual.ritualManager.userUuid = userUuid;
-					}
-					timer++;
-					if (timer >= 0) {
-						currentBasicNecrotableRitual.tick(world, ritualPos, this);
-					}
-					if (timer >= ritualRecipe.duration() + Math.max(craftingTime, sacrificeTime)) {
-						currentBasicNecrotableRitual.onStopped(world, ritualPos, this);
-						reset();
-					}
+			if (currentBasicNecrotableRitual.ritualManager.userUuid == null) {
+				currentBasicNecrotableRitual.ritualManager.userUuid = userUuid;
+			}
 
-				} else {
-					reset();
-				}
+			timer++;
+
+			if (timer >= ritualRecipe.duration() + Math.max(craftingTime, sacrificeTime)) {
+				currentBasicNecrotableRitual.onStopped(world, ritualPos, this);
+				reset();
+			} else if (timer >= 0) {
+				currentBasicNecrotableRitual.tick(world, ritualPos, this);
 			}
 		}
-		if (world != null) {
-			if (shouldRun) {
-				clientTime++;
-				markDirty();
-			}
-		}
+
+		clientTime++;
+		markDirty();
 	}
 
 	private void collectPedestalBlockPos(World world, BlockPos pos) {
@@ -218,17 +212,11 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 	}
 
 	public boolean checkTier() {
-		boolean tablet = ritualRecipe.requireEmeraldTablet();
-		boolean botD = ritualRecipe.requireBotD();
-		boolean tabletMatch = tablet && hasEmeraldTablet;
-		boolean botDMatch = botD && hasBotD;
-		if (!tablet && !botD) {
-			return true;
+		if (ritualRecipe.requireEmeraldTablet() && !hasEmeraldTablet) {
+			return false;
 		}
-		if (botDMatch && tabletMatch) {
-			return true;
-		}
-		return botDMatch || tabletMatch;
+
+		return !ritualRecipe.requireBotD() || hasBotD;
 	}
 
 	public void reset() {
@@ -245,15 +233,6 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 
 	private void playItemSound(World world, BlockPos pos) {
 		world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.5f, ((world.getRandom().nextFloat() - world.getRandom().nextFloat()) * 0.7F + 1.0F) * 2.0F);
-	}
-
-	@Override
-	public void markDirty() {
-		super.markDirty();
-		if (world != null && !world.isClient) {
-			world.updateListeners(pos, getCachedState(), getCachedState(), Block.NOTIFY_LISTENERS);
-			toUpdatePacket();
-		}
 	}
 
 	@Override
