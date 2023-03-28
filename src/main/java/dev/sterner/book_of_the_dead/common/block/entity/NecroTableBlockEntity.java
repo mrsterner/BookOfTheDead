@@ -60,57 +60,57 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 	}
 
 	public void tick(World world, BlockPos pos, BlockState state) {
-		if (!isNecroTable || (world == null || world.isClient())) {
+		if (!isNecroTable) {
 			return;
 		}
-
-		if (!loaded) {
-			reset();
-			markDirty();
-			loaded = true;
-		}
-
-		if (!shouldRun) {
-			return;
-		}
-
-		collectPedestalBlockPos(world, ritualPos);
-		sendRitualPosition(world);
-
-		if (ritualRecipe == null || currentBasicNecrotableRitual == null) {
-			ritualRecipe = BotDRecipeTypes.getRiteRecipe(this);
-			markDirty();
-
-			if (ritualRecipe != null && checkValidSacrifices(ritualRecipe, world)) {
-				currentBasicNecrotableRitual = ritualRecipe.ritual();
-			}
-
-			if (ritualRecipe == null) {
+		if (world != null && !world.isClient()) {
+			if (!loaded) {
 				reset();
-			}
-		} else if (!checkTier()) {
-			reset();
-		} else {
-
-			int craftingTime = ritualRecipe.inputs() != null ? ritualRecipe.inputs().stream().filter(ingredient -> !ingredient.isEmpty()).toList().size() * 20 * 4 + 20 * 2 : 0;
-			int sacrificeTime = ritualRecipe.sacrifices() != null ? ritualRecipe.sacrifices().size() * 20 * 3 + 20 * 2 : 0;
-
-			if (currentBasicNecrotableRitual.ritualManager.userUuid == null) {
-				currentBasicNecrotableRitual.ritualManager.userUuid = userUuid;
+				markDirty();
+				loaded = true;
 			}
 
-			timer++;
+			if (shouldRun) {
+				collectPedestalBlockPos(world, pos);
+				sendRitualPosition(world);
 
-			if (timer >= ritualRecipe.duration() + Math.max(craftingTime, sacrificeTime)) {
-				currentBasicNecrotableRitual.onStopped(world, ritualPos, this);
-				reset();
-			} else if (timer >= 0) {
-				currentBasicNecrotableRitual.tick(world, ritualPos, this);
+				if (ritualRecipe == null || currentBasicNecrotableRitual == null) {
+					ritualRecipe = BotDRecipeTypes.getRiteRecipe(this);
+					markDirty();
+					if (ritualRecipe != null) {
+						if (checkValidSacrifices(ritualRecipe, world)) {
+							currentBasicNecrotableRitual = ritualRecipe.ritual();
+						}
+					}
+					if (ritualRecipe == null) {
+						reset();
+					}
+
+				} else if (checkTier()) {
+					int craftingTime = ritualRecipe.inputs() != null ? ritualRecipe.inputs().stream().filter(ingredient -> !ingredient.isEmpty()).toList().size() * 20 * 4 + 20 * 2 : 0;
+
+					int sacrificeTime = ritualRecipe.sacrifices() != null ? ritualRecipe.sacrifices().size() * 20 * 3 + 20 * 2 : 0;
+
+					timer++;
+					if (timer >= 0) {
+						currentBasicNecrotableRitual.tick(world, ritualPos, this);
+					}
+					if (timer >= ritualRecipe.duration() + Math.max(craftingTime, sacrificeTime)) {
+						currentBasicNecrotableRitual.onStopped(world, ritualPos, this);
+						reset();
+					}
+
+				} else {
+					reset();
+				}
 			}
 		}
-
-		clientTime++;
-		markDirty();
+		if (world != null) {
+			if (shouldRun) {
+				clientTime++;
+				markDirty();
+			}
+		}
 	}
 
 	private void collectPedestalBlockPos(World world, BlockPos pos) {
@@ -118,7 +118,7 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 		Set<BlockPos> pedestalPositions = new HashSet<>();
 		BlockPos.iterate(pos.add(-r, -r, -r), pos.add(r, r, r)).forEach(lookPos -> {
 			BlockState state = world.getBlockState(lookPos);
-			if (state.isOf(BotDObjects.PEDESTAL)) {
+			if (state.isOf(BotDObjects.PEDESTAL) && !PEDESTAL_POS_LIST.contains(lookPos)) {
 				pedestalPositions.add(lookPos.toImmutable());
 			}
 		});
@@ -126,7 +126,7 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 	}
 
 	public ActionResult onUse(World world, BlockState state, BlockPos pos, PlayerEntity player, Hand hand) {
-		if (world != null && hand == Hand.MAIN_HAND) {
+		if (world != null && world.getBlockEntity(pos) instanceof NecroTableBlockEntity necroTableBlockEntity && hand == Hand.MAIN_HAND) {
 			ItemStack handStack = player.getMainHandStack();
 			if (!isNecroTable) {
 				if (handStack.isOf(BotDObjects.PAPER_AND_QUILL)) {
@@ -134,10 +134,7 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 					markDirty();
 					return ActionResult.CONSUME;
 				}
-				return ActionResult.PASS;
-			}
-
-			if (handStack.isOf(Items.FLINT_AND_STEEL)) {
+			} else if (handStack.isOf(Items.FLINT_AND_STEEL)) {
 				world.playSound(player, pos, SoundEvents.ITEM_FLINTANDSTEEL_USE, SoundCategory.BLOCKS, 1.0F, world.getRandom().nextFloat() * 0.4F + 0.8F);
 				world.setBlockState(pos, state.with(Properties.LIT, Boolean.TRUE), Block.NOTIFY_ALL | Block.REDRAW_ON_MAIN_THREAD);
 				world.emitGameEvent(player, GameEvent.BLOCK_CHANGE, pos);
@@ -146,36 +143,36 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 			} else if (!shouldRun) {
 				if (handStack.isEmpty()) {
 					if (player.isSneaking()) {
-						if (hasBotD) {
+						if (necroTableBlockEntity.hasBotD) {
 							player.setStackInHand(hand, BotDObjects.BOOK_OF_THE_DEAD.getDefaultStack());
-							hasBotD = false;
-						} else if (hasEmeraldTablet) {
+							necroTableBlockEntity.hasBotD = false;
+							this.playItemSound(world, pos);
+						} else if (necroTableBlockEntity.hasEmeraldTablet) {
 							player.setStackInHand(hand, BotDObjects.EMERALD_TABLET.getDefaultStack());
-							hasEmeraldTablet = false;
+							necroTableBlockEntity.hasEmeraldTablet = false;
+							this.playItemSound(world, pos);
 						}
-						playItemSound(world, pos);
+						necroTableBlockEntity.markDirty();
 					} else {
 						Direction dir = state.get(NecroTableBlock.FACING);
-						ritualPos = pos.offset(dir, 4);
-						shouldRun = true;
+						necroTableBlockEntity.ritualPos = pos.offset(dir, 4);
+						this.shouldRun = true;
+						this.markDirty();
 					}
-					markDirty();
 					return ActionResult.CONSUME;
-				} else if (handStack.isOf(BotDObjects.BOOK_OF_THE_DEAD) && !hasBotD) {
-					hasBotD = true;
+				} else if (handStack.isOf(BotDObjects.BOOK_OF_THE_DEAD) && !necroTableBlockEntity.hasBotD) {
+					necroTableBlockEntity.hasBotD = true;
 					handStack.decrement(1);
-					playItemSound(world, pos);
-					markDirty();
+					this.playItemSound(world, pos);
+					necroTableBlockEntity.markDirty();
 					return ActionResult.CONSUME;
-				} else if (handStack.isOf(BotDObjects.EMERALD_TABLET) && !hasEmeraldTablet) {
-					hasEmeraldTablet = true;
+				} else if (handStack.isOf(BotDObjects.EMERALD_TABLET) && !necroTableBlockEntity.hasEmeraldTablet) {
+					necroTableBlockEntity.hasEmeraldTablet = true;
 					handStack.decrement(1);
-					playItemSound(world, pos);
-					markDirty();
+					this.playItemSound(world, pos);
+					necroTableBlockEntity.markDirty();
 					return ActionResult.CONSUME;
 				}
-				userUuid = player.getUuid();
-				markDirty();
 			}
 		}
 		return ActionResult.PASS;
@@ -231,11 +228,21 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 		ritualRecipe = null;
 		clientTime = 0;
 		userUuid = null;
+		PEDESTAL_POS_LIST.clear();
 		markDirty();
 	}
 
 	private void playItemSound(World world, BlockPos pos) {
 		world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.5f, ((world.getRandom().nextFloat() - world.getRandom().nextFloat()) * 0.7F + 1.0F) * 2.0F);
+	}
+
+	@Override
+	public void markDirty() {
+		super.markDirty();
+		if (world != null && !world.isClient) {
+			world.updateListeners(pos, getCachedState(), getCachedState(), Block.NOTIFY_LISTENERS);
+			toUpdatePacket();
+		}
 	}
 
 	@Override

@@ -271,6 +271,7 @@ public class RitualManager {
 		return blockEntity.sacrificeCache.isEmpty();
 	}
 
+
 	/**
 	 * Runs a command depending on which key phrase is used, "start", "tick", "end". Runs the {@link RitualManager#runCommand(MinecraftServer, BlockPos, String)}
 	 *
