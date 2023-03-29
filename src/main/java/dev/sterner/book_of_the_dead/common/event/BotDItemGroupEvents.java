@@ -33,6 +33,7 @@ public class BotDItemGroupEvents {
 		e.addItem(SOAP);
 		e.addItem(ALL_BLACK);
 		e.addItem(EMERALD_TABLET);
+		e.addItem(PHILOSOPHERS_STONE);
 		e.addItem(POPPY_POD);
 		e.addItem(POPPY_SEEDS);
 		e.addItem(FLESH);

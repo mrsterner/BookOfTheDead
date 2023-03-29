@@ -19,6 +19,7 @@ public class BotDLanguageProvider extends FabricLanguageProvider {
 		builder.add(Constants.BOTD_GROUP, "The Book of the Dead");
 		builder.add("death.attack.book_of_the_dead.sacrifice", "%1$s was sacrificed");
 		builder.add("death.attack.book_of_the_dead.sanguine", "%1$s was drained");
+		builder.add(BotDObjects.PHILOSOPHERS_STONE, "Philosopher's Stone");
 		builder.add(BotDStatusEffects.SOUL_SIPHON, "Soul Siphon");
 		builder.add(BotDStatusEffects.SOUL_SICKNESS, "Soul Sickness");
 		builder.add(BotDObjects.EYE, "Eye");

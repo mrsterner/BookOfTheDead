@@ -1,6 +1,5 @@
 package dev.sterner.book_of_the_dead.api.ritual;
 
-import com.google.common.collect.Lists;
 import com.mojang.brigadier.ParseResults;
 import dev.sterner.book_of_the_dead.api.CommandType;
 import dev.sterner.book_of_the_dead.api.PedestalInfo;
@@ -36,8 +35,6 @@ import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 
 import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 public class RitualManager {
 	public int pedestalTicker = 0;

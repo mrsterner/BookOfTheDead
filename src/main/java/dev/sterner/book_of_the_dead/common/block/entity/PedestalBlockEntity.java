@@ -26,25 +26,6 @@ public class PedestalBlockEntity extends BaseBlockEntity {
 		stack = ItemStack.EMPTY;
 	}
 
-	public void tick(World world, BlockPos pos, BlockState state) {
-		if (world != null && isCrafting()) {
-			Vec3d b = ritualCenter.subtract(new Vec3d(pos.getX(), pos.getY(), pos.getZ()).add(0.5, 1.5 - targetY, 0.5));
-			Vec3d directionVector = new Vec3d(b.getX(), b.getY(), b.getZ());
-
-			double x = pos.getX() + (world.random.nextDouble() * 0.2D) + 0.4D;
-			double y = pos.getY() + (world.random.nextDouble() * 0.2D) + 1.2D;
-			double z = pos.getZ() + (world.random.nextDouble() * 0.2D) + 0.4D;
-			if (world instanceof ServerWorld serverWorld && !getStack().isEmpty()) {
-				serverWorld.spawnParticles(
-						new ItemStackBeamParticleEffect(
-								BotDParticleTypes.ITEM_BEAM_PARTICLE,
-								getStack(),
-								10),
-						x, y, z, 0, directionVector.x, directionVector.y, directionVector.z, 0.10D);
-			}
-		}
-	}
-
 	@Override
 	public void readNbt(NbtCompound nbt) {
 		super.readNbt(nbt);

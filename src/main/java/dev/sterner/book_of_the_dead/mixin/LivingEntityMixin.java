@@ -56,6 +56,9 @@ public abstract class LivingEntityMixin extends Entity implements QuiltLivingEnt
 	@Shadow
 	public abstract void remove(RemovalReason reason);
 
+	@Shadow
+	protected abstract void clearPotionSwirls();
+
 	@Unique
 	private DamageSource damageSource;
 
@@ -221,6 +224,15 @@ public abstract class LivingEntityMixin extends Entity implements QuiltLivingEnt
 					}
 				}
 			}
+		}
+	}
+
+	@Inject(method = "updatePotionVisibility", at = @At(value = "HEAD"), cancellable = true)
+	private void book_of_the_dead$dontSpawnParticlesOnSoulSiphon(CallbackInfo ci){
+		LivingEntity livingEntity = LivingEntity.class.cast(this);
+		if(livingEntity.hasStatusEffect(BotDStatusEffects.SOUL_SIPHON) || livingEntity.hasStatusEffect(BotDStatusEffects.SOUL_SICKNESS)){
+			clearPotionSwirls();
+			ci.cancel();
 		}
 	}
 }

@@ -52,6 +52,7 @@ public class SoulSiphonStatusEffect extends StatusEffect {
 						10), x, y, z, 0, directionVector.x, directionVector.y, directionVector.z, 0.10D);
 			}
 		}
-
 	}
+
+
 }

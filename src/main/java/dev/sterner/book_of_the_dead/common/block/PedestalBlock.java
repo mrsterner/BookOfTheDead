@@ -83,26 +83,11 @@ public class PedestalBlock extends Block implements BlockEntityProvider {
 	}
 
 	@Override
-	public void randomDisplayTick(BlockState state, World world, BlockPos pos, net.minecraft.util.random.RandomGenerator random) {
-
-	}
-
-	@Override
 	public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
 		if (world.getBlockEntity(pos) instanceof PedestalBlockEntity be && !be.isCrafting()) {
 			ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), be.getStack());
 		}
 		super.onBreak(world, pos, state, player);
-	}
-
-	@Nullable
-	@Override
-	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-		return (tickerWorld, pos, tickerState, blockEntity) -> {
-			if (blockEntity instanceof PedestalBlockEntity be) {
-				be.tick(world, pos, state);
-			}
-		};
 	}
 
 	@Override
