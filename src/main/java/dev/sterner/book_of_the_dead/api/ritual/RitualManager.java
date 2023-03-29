@@ -230,7 +230,9 @@ public class RitualManager {
 	 * @return true if sacrifice was successful
 	 */
 	public boolean consumeSacrifices(World world, BlockPos blockPos, NecroTableBlockEntity blockEntity) {
-		if (blockEntity.ritualRecipe.sacrifices() != null && blockEntity.ritualRecipe.sacrifices().isEmpty()) {
+		if(blockEntity.ritualRecipe.sacrifices() == null){
+			return true;
+		}else if (blockEntity.ritualRecipe.sacrifices().isEmpty()) {
 			return true;
 		}
 
@@ -238,25 +240,7 @@ public class RitualManager {
 
 		if (blockEntity.sacrificeCache.isEmpty() && canCollectSacrifices) {
 			List<LivingEntity> livingEntityList = world.getEntitiesByClass(LivingEntity.class, new Box(blockPos).expand(size), Entity::isAlive);
-			List<EntityType<?>> entityTypeList = Lists.newArrayList(livingEntityList.stream().map(Entity::getType).toList());
 			List<EntityType<?>> ritualSacrifices = blockEntity.ritualRecipe.sacrifices();
-
-			// Count occurrences of each entity type in both lists
-			Map<EntityType<?>, Long> entityTypeCountMap = entityTypeList.stream().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
-			Map<EntityType<?>, Long> ritualSacrificesCountMap = ritualSacrifices.stream().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
-
-			// Create a new list to store the missing entity types
-			List<EntityType<?>> missingEntityTypes = new ArrayList<>();
-			for (EntityType<?> entityType : ritualSacrifices) {
-				if (!entityTypeList.contains(entityType)) {
-					long entityTypeCount = entityTypeCountMap.getOrDefault(entityType, 0L);
-					long ritualSacrificesCount = ritualSacrificesCountMap.getOrDefault(entityType, 0L);
-					int copiesToAdd = (int) Math.max(ritualSacrificesCount - entityTypeCount, 0);
-					missingEntityTypes.addAll(Collections.nCopies(copiesToAdd, entityType));
-				}
-			}
-			// Add the missing entity types to entityTypeList
-			entityTypeList.addAll(missingEntityTypes);
 
 			// Find and add the closest entity for each entity type to sacrificeCache
 			for (EntityType<?> entityType : ritualSacrifices) {
