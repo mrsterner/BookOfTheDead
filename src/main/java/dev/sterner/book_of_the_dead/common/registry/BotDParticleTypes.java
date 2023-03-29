@@ -24,7 +24,9 @@ public interface BotDParticleTypes {
 
 	ParticleType<ItemStackBeamParticleEffect> ITEM_BEAM_PARTICLE = register("item_beam_particle", FabricParticleTypes.complex(ItemStackBeamParticleEffect.PARAMETERS_FACTORY));
 	ParticleType<DefaultParticleType> SOAP_BUBBLE = register("soap_bubble", FabricParticleTypes.simple());
+
 	ParticleType<SoulParticleEffect> SOUL = register("soul", FabricParticleTypes.complex(SoulParticleEffect.PARAMETERS_FACTORY));
+	ParticleType<SoulSpiralParticleEffect> SOUL_SPIRAL = register("soul_spiral", FabricParticleTypes.complex(SoulSpiralParticleEffect.PARAMETERS_FACTORY));
 
 	static <T extends ParticleEffect> ParticleType<T> register(String name, ParticleType<T> type) {
 		PARTICLE_TYPES.put(type, Constants.id(name));
@@ -40,6 +42,7 @@ public interface BotDParticleTypes {
 		ParticleFactoryRegistry.getInstance().register(FALLING_BLOOD, BloodDripParticle::createBloodFallParticle);
 		ParticleFactoryRegistry.getInstance().register(HANGING_BLOOD, BloodDripParticle::createBloodHangParticle);
 		ParticleFactoryRegistry.getInstance().register(SOUL, SoulParticle.Factory::new);
+		ParticleFactoryRegistry.getInstance().register(SOUL_SPIRAL, SoulSpiralParticle.Factory::new);
 
 	}
 }

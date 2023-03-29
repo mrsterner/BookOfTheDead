@@ -37,6 +37,7 @@ public class SoulSiphonStatusEffect extends StatusEffect {
 	public void generateFX(World world, LivingEntity living) {
 		LivingEntityDataComponent component = BotDComponents.LIVING_COMPONENT.get(living);
 		if (component.getRitualPos() != null) {
+
 			Vec3d b = component.getRitualPos().subtract(new Vec3d(living.getX(), living.getY(), living.getZ()).add(0.5, 1.5, 0.5));
 			Vec3d directionVector = new Vec3d(b.getX(), b.getY(), b.getZ());
 

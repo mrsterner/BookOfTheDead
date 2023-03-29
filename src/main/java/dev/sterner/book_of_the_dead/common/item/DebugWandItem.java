@@ -1,5 +1,7 @@
 package dev.sterner.book_of_the_dead.common.item;
 
+import dev.sterner.book_of_the_dead.client.particle.SoulParticleEffect;
+import dev.sterner.book_of_the_dead.client.particle.SoulSpiralParticleEffect;
 import dev.sterner.book_of_the_dead.common.component.BotDComponents;
 import dev.sterner.book_of_the_dead.common.component.LivingEntityDataComponent;
 import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
@@ -11,6 +13,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ItemScatterer;
@@ -57,9 +60,20 @@ public class DebugWandItem extends Item {
 		}
 
 		 */
+
+		for (int i = 0; i < 4; i++) {
+
+			if (world instanceof ServerWorld serverWorld) {
+				serverWorld.spawnParticles(new SoulSpiralParticleEffect((float)user.getX() + 8f, (float)user.getY(), (float) user.getZ()), user.getX(), user.getY(), user.getZ(), 0, 0, 0, 0, 0.05);
+			}
+		}
+
+		/*
 		LivingEntityDataComponent component = BotDComponents.LIVING_COMPONENT.get(user);
 		component.setRitualPos(user.getPos().add(5, 0, 5));
 		user.addStatusEffect(new StatusEffectInstance(BotDStatusEffects.SOUL_SIPHON, 20 * 10));
+
+		 */
 		return super.use(world, user, hand);
 	}
 
