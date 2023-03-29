@@ -20,10 +20,21 @@ public class PedestalBlockEntity extends BaseBlockEntity {
 	public Vec3d ritualCenter;
 	public int duration = 0;
 	public double targetY = 0;
+	private boolean loaded = false;
 
 	public PedestalBlockEntity(BlockPos pos, BlockState state) {
 		super(BotDBlockEntityTypes.PEDESTAL, pos, state);
 		stack = ItemStack.EMPTY;
+	}
+
+	public void tick(World world, BlockPos pos, BlockState state) {
+		if (world != null) {
+			if (!loaded) {
+				setCrafting(false);
+				markDirty();
+				loaded = true;
+			}
+		}
 	}
 
 	@Override

@@ -4,6 +4,7 @@ import dev.sterner.book_of_the_dead.client.particle.ItemStackBeamParticleEffect;
 import dev.sterner.book_of_the_dead.common.component.BotDComponents;
 import dev.sterner.book_of_the_dead.common.component.LivingEntityDataComponent;
 import dev.sterner.book_of_the_dead.common.registry.BotDDamageTypes;
+import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
 import dev.sterner.book_of_the_dead.common.registry.BotDParticleTypes;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.AttributeContainer;
@@ -43,14 +44,17 @@ public class SoulSiphonStatusEffect extends StatusEffect {
 			Vec3d b = component.getRitualPos().subtract(new Vec3d(living.getX(), living.getY(), living.getZ()).add(0.5, 1.5, 0.5));
 			Vec3d directionVector = new Vec3d(b.getX(), b.getY(), b.getZ());
 
-			double x = living.getX() + (world.random.nextDouble() * 0.2D) + 0.4D;
-			double y = living.getY() + (world.random.nextDouble() * 0.2D) + 1.2D;
-			double z = living.getZ() + (world.random.nextDouble() * 0.2D) + 0.4D;
-			if (world instanceof ServerWorld serverWorld) {
-				serverWorld.spawnParticles(new ItemStackBeamParticleEffect(
-						BotDParticleTypes.ITEM_BEAM_PARTICLE, Items.SLIME_BALL.getDefaultStack(),
-						10), x, y, z, 0, directionVector.x, directionVector.y, directionVector.z, 0.10D);
+			for(int i = 0; i < 4; i++){
+				double x = living.getParticleX(0.25D);
+				double y = living.getRandomBodyY();
+				double z = living.getParticleZ(0.25D);
+				if (world instanceof ServerWorld serverWorld) {
+					serverWorld.spawnParticles(new ItemStackBeamParticleEffect(
+							BotDParticleTypes.ITEM_BEAM_PARTICLE, BotDObjects.PHILOSOPHERS_STONE.getDefaultStack(),
+							50), x, y, z, 0, directionVector.x, directionVector.y, directionVector.z, 0.04D);
+				}
 			}
+
 		}
 	}
 

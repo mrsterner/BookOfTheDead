@@ -90,6 +90,16 @@ public class PedestalBlock extends Block implements BlockEntityProvider {
 		super.onBreak(world, pos, state, player);
 	}
 
+	@Nullable
+	@Override
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+		return (tickerWorld, pos, tickerState, blockEntity) -> {
+			if (blockEntity instanceof PedestalBlockEntity be) {
+				be.tick(world, pos, state);
+			}
+		};
+	}
+
 	@Override
 	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
 		return OUTLINE_SHAPE;
