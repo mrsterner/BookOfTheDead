@@ -48,7 +48,6 @@ public class RitualManager {
 	public boolean lockTick = false;
 	public DefaultedList<Integer> contract = DefaultedList.ofSize(8, 0);
 
-
 	/**
 	 * Drops all resulting items at ritual origin
 	 *
@@ -184,23 +183,39 @@ public class RitualManager {
 		return false;
 	}
 
+	/**
+	 * If a pedestal have an item required for the ritual, add it to pedestal cache. Set it to crafting to lock its item
+	 *
+	 * @param world world
+	 * @param blockEntity necrotable
+	 * @param info info
+	 */
 	private void activatePedestalIfMatchesRecipe(World world, NecroTableBlockEntity blockEntity, PedestalInfo info) {
 		for (Ingredient ingredient : Objects.requireNonNull(blockEntity.ritualRecipe.inputs())) {
 			if (ingredient.test(info.stack())) {
 				BlockPos checkPos = info.pos();
 				if (world.getBlockEntity(checkPos) instanceof PedestalBlockEntity pedestalBlockEntity) {
-					if (info.stack().isOf(BotDObjects.CONTRACT) && info.stack().hasNbt()) {
-						for (int i = 0; i < contract.size(); i++) {
-							int id = contract.get(i);
-							if (id != 0) {
-								contract.set(i, ContractItem.getIdFromContractNbt(info.stack()));
-								break;
-							}
-						}
-					}
+					checkAndStoreContract(info);
 					pedestalBlockEntity.setCrafting(true);
 					pedestalBlockEntity.markDirty();
 					blockEntity.pedestalToActivate.add(info);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Check if the item is a contract and try to parse the contract to store its id
+	 *
+	 * @param info info
+	 */
+	private void checkAndStoreContract(PedestalInfo info){
+		if (info.stack().isOf(BotDObjects.CONTRACT) && info.stack().hasNbt()) {
+			for (int i = 0; i < contract.size(); i++) {
+				int id = contract.get(i);
+				if (id != 0) {
+					contract.set(i, ContractItem.getIdFromContractNbt(info.stack()));
+					break;
 				}
 			}
 		}

@@ -44,7 +44,7 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 	public boolean hasBotD = false;
 	public boolean hasEmeraldTablet = false;
 	public BlockPos ritualPos = null;
-	public List<BlockPos> PEDESTAL_POS_LIST = new ArrayList<>();
+	public List<BlockPos> pedestalPosList = new ArrayList<>();
 	public BasicNecrotableRitual currentBasicNecrotableRitual = null;
 	public RitualRecipe ritualRecipe = null;
 	public UUID userUuid = null;
@@ -113,18 +113,6 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 		markDirty();
 	}
 
-	private void collectPedestalBlockPos(World world, BlockPos pos) {
-		int r = 5;
-		Set<BlockPos> pedestalPositions = new HashSet<>();
-		BlockPos.iterate(pos.add(-r, -r, -r), pos.add(r, r, r)).forEach(lookPos -> {
-			BlockState state = world.getBlockState(lookPos);
-			if (state.isOf(BotDObjects.PEDESTAL) && !PEDESTAL_POS_LIST.contains(lookPos)) {
-				pedestalPositions.add(lookPos.toImmutable());
-			}
-		});
-		PEDESTAL_POS_LIST.addAll(pedestalPositions);
-	}
-
 	public ActionResult onUse(World world, BlockState state, BlockPos pos, PlayerEntity player, Hand hand) {
 		if (world != null && hand == Hand.MAIN_HAND) {
 			ItemStack handStack = player.getMainHandStack();
@@ -181,8 +169,20 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 		return ActionResult.PASS;
 	}
 
+	private void collectPedestalBlockPos(World world, BlockPos pos) {
+		int r = 5;
+		Set<BlockPos> pedestalPositions = new HashSet<>();
+		BlockPos.iterate(pos.add(-r, -r, -r), pos.add(r, r, r)).forEach(lookPos -> {
+			BlockState state = world.getBlockState(lookPos);
+			if (state.isOf(BotDObjects.PEDESTAL) && !pedestalPosList.contains(lookPos)) {
+				pedestalPositions.add(lookPos.toImmutable());
+			}
+		});
+		pedestalPosList.addAll(pedestalPositions);
+	}
+
 	public void sendRitualPosition(World world) {
-		for (BlockPos pos : PEDESTAL_POS_LIST) {
+		for (BlockPos pos : pedestalPosList) {
 			if (world.getBlockState(pos).isOf(BotDObjects.PEDESTAL) && world.getBlockEntity(pos) instanceof PedestalBlockEntity pedestalBlockEntity) {
 				pedestalBlockEntity.ritualCenter = new Vec3d(this.ritualPos.getX(), this.ritualPos.getY(), this.ritualPos.getZ());
 				pedestalBlockEntity.markDirty();
@@ -192,7 +192,7 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 
 	public List<PedestalInfo> getPedestalInfo(World world) {
 		List<PedestalInfo> pairs = new ArrayList<>();
-		for (BlockPos pos : PEDESTAL_POS_LIST) {
+		for (BlockPos pos : pedestalPosList) {
 			if (world.getBlockState(pos).isOf(BotDObjects.PEDESTAL) && world.getBlockEntity(pos) instanceof PedestalBlockEntity pedestalBlockEntity) {
 				pairs.add(new PedestalInfo(pedestalBlockEntity.getStack(), pos));
 			}
@@ -231,7 +231,7 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 		ritualRecipe = null;
 		clientTime = 0;
 		userUuid = null;
-		PEDESTAL_POS_LIST.clear();
+		pedestalPosList.clear();
 		markDirty();
 	}
 
@@ -292,7 +292,6 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 			if (id != null) {
 				nbt.putString(Constants.Nbt.NECRO_RITUAL, id.toString());
 			}
-
 		}
 
 		if (ritualRecipe != null) {
