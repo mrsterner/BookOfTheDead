@@ -34,7 +34,10 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 public class RitualManager {
 	public int pedestalTicker = 0;
@@ -183,9 +186,9 @@ public class RitualManager {
 	/**
 	 * If a pedestal have an item required for the ritual, add it to pedestal cache. Set it to crafting to lock its item
 	 *
-	 * @param world world
+	 * @param world       world
 	 * @param blockEntity necrotable
-	 * @param info info
+	 * @param info        info
 	 */
 	private void activatePedestalIfMatchesRecipe(World world, NecroTableBlockEntity blockEntity, PedestalInfo info) {
 		for (Ingredient ingredient : Objects.requireNonNull(blockEntity.ritualRecipe.inputs())) {
@@ -206,7 +209,7 @@ public class RitualManager {
 	 *
 	 * @param info info
 	 */
-	private void checkAndStoreContract(PedestalInfo info){
+	private void checkAndStoreContract(PedestalInfo info) {
 		if (info.stack().isOf(BotDObjects.CONTRACT) && info.stack().hasNbt()) {
 			for (int i = 0; i < contract.size(); i++) {
 				int id = contract.get(i);
@@ -227,9 +230,9 @@ public class RitualManager {
 	 * @return true if sacrifice was successful
 	 */
 	public boolean consumeSacrifices(World world, BlockPos blockPos, NecroTableBlockEntity blockEntity) {
-		if(blockEntity.ritualRecipe.sacrifices() == null){
+		if (blockEntity.ritualRecipe.sacrifices() == null) {
 			return true;
-		}else if (blockEntity.ritualRecipe.sacrifices().isEmpty()) {
+		} else if (blockEntity.ritualRecipe.sacrifices().isEmpty()) {
 			return true;
 		}
 
@@ -254,7 +257,7 @@ public class RitualManager {
 			if (sacrificeTicker >= 20 * 3) {
 				if (blockEntity.sacrificeCache.get(0) instanceof MobEntity mob) {
 					LivingEntityDataComponent livingEntityDataComponent = BotDComponents.LIVING_COMPONENT.get(mob);
-					livingEntityDataComponent.setRitualPos(new Vec3d(blockPos.getX(), blockPos.getY(), blockPos.getZ()));
+					livingEntityDataComponent.setRitualPos(new Vec3d(blockPos.getX() + 0.5f, blockPos.getY(), blockPos.getZ() + 0.5f));
 					mob.addStatusEffect(new StatusEffectInstance(BotDStatusEffects.SOUL_SIPHON, 20 * 3));
 				}
 				canCollectSacrifices = false;

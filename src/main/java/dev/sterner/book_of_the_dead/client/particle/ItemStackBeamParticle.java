@@ -1,7 +1,5 @@
 package dev.sterner.book_of_the_dead.client.particle;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleFactory;
@@ -10,6 +8,7 @@ import net.minecraft.client.particle.SpriteBillboardParticle;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
+import org.quiltmc.loader.api.minecraft.ClientOnly;
 
 public class ItemStackBeamParticle extends SpriteBillboardParticle {
 	private final float sampleU;
@@ -65,7 +64,7 @@ public class ItemStackBeamParticle extends SpriteBillboardParticle {
 		return ParticleTextureSheet.TERRAIN_SHEET;
 	}
 
-	@Environment(EnvType.CLIENT)
+	@ClientOnly
 	public static class ItemFactory implements ParticleFactory<ItemStackBeamParticleEffect> {
 
 		@Nullable

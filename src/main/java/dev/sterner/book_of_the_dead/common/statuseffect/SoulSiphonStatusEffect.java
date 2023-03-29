@@ -1,16 +1,13 @@
 package dev.sterner.book_of_the_dead.common.statuseffect;
 
-import dev.sterner.book_of_the_dead.client.particle.ItemStackBeamParticleEffect;
+import dev.sterner.book_of_the_dead.client.particle.SoulParticleEffect;
 import dev.sterner.book_of_the_dead.common.component.BotDComponents;
 import dev.sterner.book_of_the_dead.common.component.LivingEntityDataComponent;
 import dev.sterner.book_of_the_dead.common.registry.BotDDamageTypes;
-import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
-import dev.sterner.book_of_the_dead.common.registry.BotDParticleTypes;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.AttributeContainer;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectType;
-import net.minecraft.item.Items;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -30,7 +27,6 @@ public class SoulSiphonStatusEffect extends StatusEffect {
 	public void applyUpdateEffect(LivingEntity entity, int amplifier) {
 		super.applyUpdateEffect(entity, amplifier);
 		generateFX(entity.world, entity);
-
 	}
 
 	@Override
@@ -44,19 +40,15 @@ public class SoulSiphonStatusEffect extends StatusEffect {
 			Vec3d b = component.getRitualPos().subtract(new Vec3d(living.getX(), living.getY(), living.getZ()).add(0.5, 1.5, 0.5));
 			Vec3d directionVector = new Vec3d(b.getX(), b.getY(), b.getZ());
 
-			for(int i = 0; i < 4; i++){
+			for (int i = 0; i < 4; i++) {
 				double x = living.getParticleX(0.25D);
 				double y = living.getRandomBodyY();
 				double z = living.getParticleZ(0.25D);
 				if (world instanceof ServerWorld serverWorld) {
-					serverWorld.spawnParticles(new ItemStackBeamParticleEffect(
-							BotDParticleTypes.ITEM_BEAM_PARTICLE, BotDObjects.PHILOSOPHERS_STONE.getDefaultStack(),
-							50), x, y, z, 0, directionVector.x, directionVector.y, directionVector.z, 0.04D);
+					serverWorld.spawnParticles(new SoulParticleEffect(1, 0, 0.25f), x, y, z, 0, directionVector.x, directionVector.y, directionVector.z, 0.05);
 				}
 			}
 
 		}
 	}
-
-
 }

@@ -1,10 +1,9 @@
 package dev.sterner.book_of_the_dead.client.particle;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.particle.*;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.particle.DefaultParticleType;
+import org.quiltmc.loader.api.minecraft.ClientOnly;
 
 public class BloodSplashParticle extends SpriteBillboardParticle {
 	private final float sampleU;
@@ -51,7 +50,7 @@ public class BloodSplashParticle extends SpriteBillboardParticle {
 		return this.sprite.getFrameV((this.sampleV + 1.0F) / 4.0F * 16.0F);
 	}
 
-	@Environment(EnvType.CLIENT)
+	@ClientOnly
 	public static class DefaultFactory implements ParticleFactory<DefaultParticleType> {
 		private final SpriteProvider spriteProvider;
 
