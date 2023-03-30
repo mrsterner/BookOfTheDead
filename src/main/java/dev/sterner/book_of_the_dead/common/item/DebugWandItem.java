@@ -1,11 +1,9 @@
 package dev.sterner.book_of_the_dead.common.item;
 
-import dev.sterner.book_of_the_dead.client.particle.SoulParticleEffect;
-import dev.sterner.book_of_the_dead.client.particle.SoulSpiralParticleEffect;
+import dev.sterner.book_of_the_dead.client.particle.OrbitParticleEffect;
 import dev.sterner.book_of_the_dead.common.component.BotDComponents;
 import dev.sterner.book_of_the_dead.common.component.LivingEntityDataComponent;
 import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
-import dev.sterner.book_of_the_dead.common.registry.BotDStatusEffects;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
@@ -56,16 +54,12 @@ public class DebugWandItem extends Item {
 					entity.damage(user.getDamageSources().magic(), Integer.MAX_VALUE);
 				}
 			}
-
 		}
 
 		 */
 
-		for (int i = 0; i < 4; i++) {
-
-			if (world instanceof ServerWorld serverWorld) {
-				serverWorld.spawnParticles(new SoulSpiralParticleEffect((float)user.getX() + 8f, (float)user.getY(), (float) user.getZ()), user.getX(), user.getY(), user.getZ(), 0, 0, 0, 0, 0.05);
-			}
+		if (world instanceof ServerWorld serverWorld) {
+			serverWorld.spawnParticles(new OrbitParticleEffect(1, 0, 0.25f, (float)user.getX(), (float)user.getY() + 1, (float) user.getZ(), 3), user.getX(), user.getY() + 1, user.getZ(), 0, 0, 0, 0, 0.05);
 		}
 
 		/*

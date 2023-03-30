@@ -1,18 +1,15 @@
 package dev.sterner.book_of_the_dead.client.particle;
 
-import com.mojang.blaze3d.vertex.VertexConsumer;
+import dev.sterner.book_of_the_dead.api.particle.BotDParticle;
 import net.minecraft.client.particle.*;
-import net.minecraft.client.render.Camera;
-import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Quaternionf;
-import org.joml.Vector3f;
 import org.quiltmc.loader.api.minecraft.ClientOnly;
 
-public class SoulSpiralParticle extends SpriteBillboardParticle {
+import java.util.Random;
+
+public class SoulSpiralParticle extends BotDParticle {
 	private final SpriteProvider spriteProvider;
 	protected double xTarget;
 	protected double yTarget;
@@ -22,57 +19,28 @@ public class SoulSpiralParticle extends SpriteBillboardParticle {
 	protected SoulSpiralParticle(ClientWorld world, double x, double y, double z, SpriteProvider spriteProvider, SoulSpiralParticleEffect effect) {
 		super(world, x, y, z);
 		this.gravityStrength = 0.0F;
-		this.maxAge = 600 + random.nextInt(600);
+		this.maxAge = 40 + random.nextInt(10);
 		this.spriteProvider = spriteProvider;
+		this.colorRed = effect.getRed();
+		this.colorGreen = effect.getGreen();
+		this.colorBlue = effect.getBlue();
+		this.colorAlpha = 0.75f;
 		this.xTarget = effect.getTargetX();
 		this.yTarget = effect.getTargetY();
 		this.zTarget = effect.getTargetZ();
+		this.velocityX *= 0.25F;
+		this.velocityY *= 0.25F;
+		this.velocityZ *= 0.25F;
+		this.scale *= 0.05f + new Random().nextFloat() * 2.25f;
 		this.setSpriteForAge(spriteProvider);
 		this.gravityStrength = 0.0F;
+		this.collidesWithWorld = false;
 		double maxDeviation = 0.2; // Maximum deviation from straight line path
 		this.offset = new Vec3d(
 				(Math.random() * maxDeviation * 2) - maxDeviation,
 				(Math.random() * maxDeviation * 2) - maxDeviation,
 				(Math.random() * maxDeviation * 2) - maxDeviation
 		);
-	}
-
-	@Override
-	public void buildGeometry(VertexConsumer vertexConsumer, Camera camera, float tickDelta) {
-		Vec3d vec3d = camera.getPos();
-		float f = (float)(MathHelper.lerp(tickDelta, this.prevPosX, this.x) - vec3d.getX());
-		float g = (float)(MathHelper.lerp(tickDelta, this.prevPosY, this.y) - vec3d.getY());
-		float h = (float)(MathHelper.lerp(tickDelta, this.prevPosZ, this.z) - vec3d.getZ());
-		Quaternionf quaternionf;
-		if (this.angle == 0.0F) {
-			quaternionf = camera.getRotation();
-		} else {
-			quaternionf = new Quaternionf(camera.getRotation());
-			quaternionf.rotateZ(MathHelper.lerp(tickDelta, this.prevAngle, this.angle));
-		}
-
-		Vector3f[] vector3fs = new Vector3f[]{
-				new Vector3f(-1.0F, -1.0F, 0.0F), new Vector3f(-1.0F, 1.0F, 0.0F), new Vector3f(1.0F, 1.0F, 0.0F), new Vector3f(1.0F, -1.0F, 0.0F)
-		};
-		float i = this.getSize(tickDelta);
-
-		for(int j = 0; j < 4; ++j) {
-			Vector3f vector3f = vector3fs[j];
-			vector3f.rotate(quaternionf);
-			vector3f.mul(i);
-			vector3f.add(f, g, h);
-		}
-
-		float k = this.getMinU();
-		float l = this.getMaxU();
-		float m = this.getMinV();
-		float n = this.getMaxV();
-		int o = 15728880;
-
-		vertexConsumer.vertex(vector3fs[0].x(), vector3fs[0].y(), vector3fs[0].z()).uv(l, n).color(this.colorRed, this.colorGreen, this.colorBlue, this.colorAlpha).light(o).next();
-		vertexConsumer.vertex(vector3fs[1].x(), vector3fs[1].y(), vector3fs[1].z()).uv(l, m).color(this.colorRed, this.colorGreen, this.colorBlue, this.colorAlpha).light(o).next();
-		vertexConsumer.vertex(vector3fs[2].x(), vector3fs[2].y(), vector3fs[2].z()).uv(k, m).color(this.colorRed, this.colorGreen, this.colorBlue, this.colorAlpha).light(o).next();
-		vertexConsumer.vertex(vector3fs[3].x(), vector3fs[3].y(), vector3fs[3].z()).uv(k, n).color(this.colorRed, this.colorGreen, this.colorBlue, this.colorAlpha).light(o).next();
 	}
 
 	@Override
@@ -83,7 +51,7 @@ public class SoulSpiralParticle extends SpriteBillboardParticle {
 		this.prevPosZ = this.z;
 
 		if (this.age++ >= this.maxAge) {
-			this.colorAlpha -= 0.05f;
+			this.colorAlpha -= 0.075f;
 		}
 		if (this.colorAlpha < 0f || this.scale <= 0f) {
 			this.markDead();
@@ -103,18 +71,13 @@ public class SoulSpiralParticle extends SpriteBillboardParticle {
 		}
 		targetVector = targetVector.add(this.offset).multiply(factor);
 
-		velocityX = 0.9 * velocityX + 0.1 * targetVector.x;
-		velocityY = 0.9 * velocityY + 0.1 * targetVector.y;
-		velocityZ = 0.9 * velocityZ + 0.1 * targetVector.z;
+		velocityX = 0.5 * velocityX + 0.5 * targetVector.x;
+		velocityY = 0.5 * velocityY + 0.5 * targetVector.y;
+		velocityZ = 0.5 * velocityZ + 0.5 * targetVector.z;
 
 		if (!new Vec3d(x, y, z).equals(new Vec3d(xTarget, yTarget, zTarget))) {
 			this.move(velocityX, velocityY, velocityZ);
 		}
-	}
-
-	@Override
-	public ParticleTextureSheet getType() {
-		return ParticleTextureSheet.PARTICLE_SHEET_TRANSLUCENT;
 	}
 
 	@ClientOnly

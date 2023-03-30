@@ -7,7 +7,6 @@ import org.quiltmc.loader.api.QuiltLoader;
 
 public class BotDEarlyRiser implements Runnable {
 
-
 	@Override
 	public void run() {
 		MixinExtrasBootstrap.init();

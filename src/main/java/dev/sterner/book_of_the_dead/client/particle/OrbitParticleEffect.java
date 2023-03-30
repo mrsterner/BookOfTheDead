@@ -11,44 +11,49 @@ import org.quiltmc.loader.api.minecraft.ClientOnly;
 
 import java.util.Locale;
 
-public class SoulSpiralParticleEffect implements ParticleEffect {
+public class OrbitParticleEffect implements ParticleEffect {
 
-	public static final ParticleEffect.Factory<SoulSpiralParticleEffect> PARAMETERS_FACTORY = new ParticleEffect.Factory<>() {
-		public SoulSpiralParticleEffect read(ParticleType<SoulSpiralParticleEffect> particleType, StringReader stringReader) throws CommandSyntaxException {
+	public static final ParticleEffect.Factory<OrbitParticleEffect> PARAMETERS_FACTORY = new ParticleEffect.Factory<>() {
+		public OrbitParticleEffect read(ParticleType<OrbitParticleEffect> particleType, StringReader stringReader) throws CommandSyntaxException {
 			stringReader.expect(' ');
 			float r = (float) stringReader.readDouble();
 			stringReader.expect(' ');
 			float g = (float) stringReader.readDouble();
 			stringReader.expect(' ');
 			float b = (float) stringReader.readDouble();
+
 			stringReader.expect(' ');
 			float tx = (float) stringReader.readDouble();
 			stringReader.expect(' ');
 			float ty = (float) stringReader.readDouble();
 			stringReader.expect(' ');
 			float tz = (float) stringReader.readDouble();
-			return new SoulSpiralParticleEffect(r, g, b, tx, ty, tz);
+			stringReader.expect(' ');
+			float radius = (float) stringReader.readDouble();
+			return new OrbitParticleEffect(r, g, b, tx, ty, tz, radius);
 		}
 
-		public SoulSpiralParticleEffect read(ParticleType<SoulSpiralParticleEffect> particleType, PacketByteBuf packetByteBuf) {
-			return new SoulSpiralParticleEffect(packetByteBuf.readFloat(), packetByteBuf.readFloat(), packetByteBuf.readFloat(), packetByteBuf.readFloat(), packetByteBuf.readFloat(), packetByteBuf.readFloat());
+		public OrbitParticleEffect read(ParticleType<OrbitParticleEffect> particleType, PacketByteBuf packetByteBuf) {
+			return new OrbitParticleEffect(packetByteBuf.readFloat(), packetByteBuf.readFloat(), packetByteBuf.readFloat(), packetByteBuf.readFloat(), packetByteBuf.readFloat(), packetByteBuf.readFloat(), packetByteBuf.readFloat());
 		}
 	};
 	private final float tx;
 	private final float ty;
 	private final float tz;
+	private final float radius;
 
 	private final float red;
 	private final float green;
 	private final float blue;
 
-	public SoulSpiralParticleEffect(float red, float green, float blue, float tx, float ty, float tz) {
+	public OrbitParticleEffect(float red, float green, float blue, float tx, float ty, float tz, float radius) {
 		this.red = red;
 		this.green = green;
 		this.blue = blue;
 		this.tx = tx;
 		this.ty = ty;
 		this.tz = tz;
+		this.radius = radius;
 	}
 
 	@Override
@@ -60,7 +65,7 @@ public class SoulSpiralParticleEffect implements ParticleEffect {
 
 	@Override
 	public ParticleType<?> getType() {
-		return BotDParticleTypes.SOUL_SPIRAL;
+		return BotDParticleTypes.SOUL_ORBIT;
 	}
 
 	@Override
@@ -81,6 +86,11 @@ public class SoulSpiralParticleEffect implements ParticleEffect {
 	@ClientOnly
 	public float getTargetZ() {
 		return this.tz;
+	}
+
+	@ClientOnly
+	public float getRadius() {
+		return this.radius;
 	}
 
 	@ClientOnly

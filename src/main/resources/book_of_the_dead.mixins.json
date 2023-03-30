@@ -21,6 +21,7 @@
     "client.ItemRendererMixin",
     "client.LivingEntityRendererMixin",
     "client.MinecraftClientMixin",
+    "client.ParticleManagerMixin",
     "client.PlayerEntityRendererMixin"
   ],
   "injectors": {
