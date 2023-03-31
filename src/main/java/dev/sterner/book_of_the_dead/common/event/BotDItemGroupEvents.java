@@ -32,6 +32,10 @@ public class BotDItemGroupEvents {
 		e.addItem(SYRINGE);
 		e.addItem(SOAP);
 		e.addItem(ALL_BLACK);
+		e.addItem(SKELETON_HELMET);
+		e.addItem(SKELETON_CHESTPLATE);
+		e.addItem(SKELETON_LEGGINGS);
+		e.addItem(SKELETON_BOOTS);
 		e.addItem(WITHER_HELMET);
 		e.addItem(WITHER_CHESTPLATE);
 		e.addItem(WITHER_LEGGINGS);

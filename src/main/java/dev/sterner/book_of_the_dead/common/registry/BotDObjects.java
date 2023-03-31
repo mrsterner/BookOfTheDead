@@ -68,14 +68,7 @@ public interface BotDObjects {
 	Item CAGE = register("cage", new CageItem(settings()));
 	Item HOOK = register("hook", new Item(settings()));
 	Item METAL_HOOK = register("metal_hook", new Item(settings()));
-	Item OLD_LETTER = register("old_letter", new Item(settings()) {
-		@Override
-		public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-			tooltip.add(Text.translatable("tooltip.book_of_the_dead.from_archive"));
-			tooltip.add(Text.translatable("tooltip.book_of_the_dead.old_friend").formatted(Formatting.ITALIC));
-			super.appendTooltip(stack, world, tooltip, context);
-		}
-	});
+	Item OLD_LETTER = register("old_letter", new OldLetterItem(settings()));
 	Block ROPE = register("rope", new RopeBlock(QuiltBlockSettings.of(Material.WOOL).strength(0.2F)), settings(), true);
 
 	Item FLESH = register("flesh", new Item(settings().food(FoodComponents.PORKCHOP)));
