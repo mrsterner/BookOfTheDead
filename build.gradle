@@ -46,10 +46,6 @@ repositories {
 		url  = "https://jitpack.io"
 	}
 	maven {
-		name = "Patchouli"
-		url  = "https://maven.blamejared.com"
-	}
-	maven {
 		name = "REI"
 		url = "https://maven.shedaniel.me"
 	}
@@ -80,6 +76,10 @@ repositories {
 	maven {
 		name = "Curse"
 		url = "https://www.cursemaven.com"
+	}
+	maven {
+		name = "Geckolib"
+		url = "https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/"
 	}
 }
 
@@ -128,6 +128,8 @@ dependencies {
 	implementation("com.github.LlamaLad7:MixinExtras:${project.mixin_extras}")
 	annotationProcessor("com.github.LlamaLad7:MixinExtras:${project.mixin_extras}")
 
+	//Geckolib
+	modImplementation ("software.bernie.geckolib:geckolib-quilt-${project.geckolib}")
 }
 
 processResources {

@@ -23,6 +23,7 @@ import net.tslat.smartbrainlib.api.core.sensor.ExtendedSensor;
 import net.tslat.smartbrainlib.api.core.sensor.vanilla.HurtBySensor;
 import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyLivingEntitySensor;
 import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyPlayersSensor;
+import net.minecraft.unmapped.C_lygsomtd;
 
 import java.util.List;
 import java.util.Optional;
@@ -46,6 +47,7 @@ public class KakuzuBrain {
 				new WalkTask(2.5F),
 				new LookAroundTask(45, 90),
 				new WanderAroundTask()
+
 		);
 	}
 

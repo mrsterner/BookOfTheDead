@@ -9,6 +9,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.MapColor;
 import net.minecraft.block.Material;
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.*;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -48,6 +49,16 @@ public interface BotDObjects {
 	Item MORPHINE = register("morphine", new StatusEffectItem(settings(), BotDStatusEffects.MORPHINE));
 	Item EUTHANASIA = register("euthanasia", new StatusEffectItem(settings(), BotDStatusEffects.EUTHANASIA));
 	Item ADRENALINE = register("adrenaline", new StatusEffectItem(settings(), BotDStatusEffects.ADRENALINE));
+
+	Item SKELETON_HELMET = register("skeleton_helmet", new SkeletonArmorItem(ArmorItem.ArmorSlot.HELMET, settings()));
+	Item SKELETON_CHESTPLATE = register("skeleton_chestplate", new SkeletonArmorItem(ArmorItem.ArmorSlot.CHESTPLATE, settings()));
+	Item SKELETON_LEGGINGS = register("skeleton_leggings", new SkeletonArmorItem(ArmorItem.ArmorSlot.LEGGINGS, settings()));
+	Item SKELETON_BOOTS = register("skeleton_boots", new SkeletonArmorItem(ArmorItem.ArmorSlot.BOOTS, settings()));
+
+	Item WITHER_HELMET = register("wither_helmet", new WitherArmorItem(ArmorItem.ArmorSlot.HELMET, settings()));
+	Item WITHER_CHESTPLATE = register("wither_chestplate", new WitherArmorItem(ArmorItem.ArmorSlot.CHESTPLATE, settings()));
+	Item WITHER_LEGGINGS = register("wither_leggings", new WitherArmorItem(ArmorItem.ArmorSlot.LEGGINGS, settings()));
+	Item WITHER_BOOTS = register("wither_boots", new WitherArmorItem(ArmorItem.ArmorSlot.BOOTS, settings()));
 
 	Item SOAP = register("soap", new SoapItem(settings()));
 
