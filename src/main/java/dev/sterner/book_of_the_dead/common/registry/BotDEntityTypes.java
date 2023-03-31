@@ -1,9 +1,6 @@
 package dev.sterner.book_of_the_dead.common.registry;
 
-import dev.sterner.book_of_the_dead.common.entity.BloodSlimeEntity;
-import dev.sterner.book_of_the_dead.common.entity.KakuzuEntity;
-import dev.sterner.book_of_the_dead.common.entity.OldManEntity;
-import dev.sterner.book_of_the_dead.common.entity.PlayerCorpseEntity;
+import dev.sterner.book_of_the_dead.common.entity.*;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityDimensions;
@@ -57,6 +54,15 @@ public interface BotDEntityTypes {
 							.spawnGroup(SpawnGroup.MISC)
 							.entityFactory(KakuzuEntity::new)
 							.setDimensions(EntityDimensions.fixed(0.25F, 0.5F))
+							.build());
+
+	EntityType<FloatingItemEntity> FLOATING_ITEM_ENTITY =
+			register(
+					"floating_item",
+					QuiltEntityTypeBuilder.<FloatingItemEntity>create()
+							.spawnGroup(SpawnGroup.MISC)
+							.entityFactory(FloatingItemEntity::new)
+							.setDimensions(EntityDimensions.fixed(0.5F, 0.75F))
 							.build());
 
 

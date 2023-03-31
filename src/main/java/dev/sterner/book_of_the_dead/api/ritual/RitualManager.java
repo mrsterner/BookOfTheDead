@@ -7,7 +7,9 @@ import dev.sterner.book_of_the_dead.common.block.entity.NecroTableBlockEntity;
 import dev.sterner.book_of_the_dead.common.block.entity.PedestalBlockEntity;
 import dev.sterner.book_of_the_dead.common.component.BotDComponents;
 import dev.sterner.book_of_the_dead.common.component.LivingEntityDataComponent;
+import dev.sterner.book_of_the_dead.common.entity.FloatingItemEntity;
 import dev.sterner.book_of_the_dead.common.item.ContractItem;
+import dev.sterner.book_of_the_dead.common.registry.BotDEntityTypes;
 import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
 import dev.sterner.book_of_the_dead.common.registry.BotDSoundEvents;
 import dev.sterner.book_of_the_dead.common.registry.BotDStatusEffects;
@@ -65,8 +67,15 @@ public class RitualManager {
 				serverWorld.playSound(null, x, y, z, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, 1F, 1F);
 			}
 			if (blockEntity.ritualRecipe.outputs() != null) {
-				for (ItemStack output : blockEntity.ritualRecipe.outputs()) {
-					ItemScatterer.spawn(world, x, y, z, output.copy());
+				if(blockEntity.ritualRecipe.outputs().size() > 1){
+					for (ItemStack output : blockEntity.ritualRecipe.outputs()) {
+						ItemScatterer.spawn(world, x, y, z, output.copy());
+					}
+				}else{
+					FloatingItemEntity itemEntity = new FloatingItemEntity(BotDEntityTypes.FLOATING_ITEM_ENTITY, world);
+					itemEntity.setItem(blockEntity.ritualRecipe.outputs().get(0));
+					itemEntity.refreshPositionAndAngles(blockPos.getX() + 0.5f, blockPos.getY() + 0.5f, blockPos.getZ() + 0.5f, 0, 0);
+					world.spawnEntity(itemEntity);
 				}
 			}
 		}

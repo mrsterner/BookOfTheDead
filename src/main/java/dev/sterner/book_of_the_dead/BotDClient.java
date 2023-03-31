@@ -3,10 +3,7 @@ package dev.sterner.book_of_the_dead;
 import dev.sterner.book_of_the_dead.client.model.*;
 import dev.sterner.book_of_the_dead.client.network.BloodSplashParticlePacket;
 import dev.sterner.book_of_the_dead.client.renderer.block.*;
-import dev.sterner.book_of_the_dead.client.renderer.entity.BloodSlimeEntityRenderer;
-import dev.sterner.book_of_the_dead.client.renderer.entity.KakuzuEntityRenderer;
-import dev.sterner.book_of_the_dead.client.renderer.entity.OldManEntityRenderer;
-import dev.sterner.book_of_the_dead.client.renderer.entity.PlayerCorpseEntityRenderer;
+import dev.sterner.book_of_the_dead.client.renderer.entity.*;
 import dev.sterner.book_of_the_dead.client.renderer.item.AllBlackSwordItemRenderer;
 import dev.sterner.book_of_the_dead.common.registry.BotDBlockEntityTypes;
 import dev.sterner.book_of_the_dead.common.registry.BotDEntityTypes;
@@ -74,6 +71,7 @@ public class BotDClient implements ClientModInitializer {
 		EntityRendererRegistry.register(BotDEntityTypes.BLOOD_SLIME_ENTITY, BloodSlimeEntityRenderer::new);
 		EntityRendererRegistry.register(BotDEntityTypes.PLAYER_CORPSE_ENTITY, PlayerCorpseEntityRenderer::new);
 		EntityRendererRegistry.register(BotDEntityTypes.KAKUZU_ENTITY, KakuzuEntityRenderer::new);
+		EntityRendererRegistry.register(BotDEntityTypes.FLOATING_ITEM_ENTITY, FloatingItemEntityRenderer::new);
 
 		EntityModelLayerRegistry.registerModelLayer(BagEntityModel.LAYER_LOCATION, BagEntityModel::createBodyLayer);
 		EntityModelLayerRegistry.registerModelLayer(JarEntityModel.LAYER_LOCATION, JarEntityModel::createBodyLayer);

@@ -114,5 +114,6 @@ public class Constants {
 		String REFRESH = "Refresh";
 		String CHANCE = "Chance";
 		String CHANCES = "Chances";
-	}
+        String ITEM = "Item";
+    }
 }
