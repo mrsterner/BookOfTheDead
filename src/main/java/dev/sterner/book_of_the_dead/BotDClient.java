@@ -2,13 +2,11 @@ package dev.sterner.book_of_the_dead;
 
 import dev.sterner.book_of_the_dead.client.model.*;
 import dev.sterner.book_of_the_dead.client.network.BloodSplashParticlePacket;
+import dev.sterner.book_of_the_dead.client.network.OpenBookPacket;
 import dev.sterner.book_of_the_dead.client.renderer.block.*;
 import dev.sterner.book_of_the_dead.client.renderer.entity.*;
 import dev.sterner.book_of_the_dead.client.renderer.item.AllBlackSwordItemRenderer;
-import dev.sterner.book_of_the_dead.common.registry.BotDBlockEntityTypes;
-import dev.sterner.book_of_the_dead.common.registry.BotDEntityTypes;
-import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
-import dev.sterner.book_of_the_dead.common.registry.BotDParticleTypes;
+import dev.sterner.book_of_the_dead.common.registry.*;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.*;
@@ -37,6 +35,7 @@ public class BotDClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient(ModContainer mod) {
 		BotDParticleTypes.init();
+		BotDKeyBindings.init();
 
 		BlockRenderLayerMap.put(RenderLayer.getCutout(),
 				BotDObjects.ROPE,
@@ -51,6 +50,7 @@ public class BotDClient implements ClientModInitializer {
 		);
 
 		ClientPlayNetworking.registerGlobalReceiver(BloodSplashParticlePacket.ID, BloodSplashParticlePacket::handle);
+		ClientPlayNetworking.registerGlobalReceiver(OpenBookPacket.ID, OpenBookPacket::handle);
 
 		BlockEntityRendererFactories.register(BotDBlockEntityTypes.HOOK, HookBlockEntityRenderer::new);
 		BlockEntityRendererFactories.register(BotDBlockEntityTypes.JAR, ctx -> new JarBlockEntityRenderer());
@@ -117,6 +117,8 @@ public class BotDClient implements ClientModInitializer {
 			}
 			return -1;
 		}, BotDObjects.SYRINGE);
+
+
 	}
 
 	public static final class ClientTickHandler {

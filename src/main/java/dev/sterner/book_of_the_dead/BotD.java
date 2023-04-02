@@ -33,6 +33,7 @@ public class BotD implements ModInitializer {
 		BotDDamageTypes.init();
 		BotDFeatureRegistry.init();
 		BotDPlacedFeatureRegistry.init();
+		BotDKnowledgeRegistry.init();
 
 		BotDUseEvents.init();
 		BotDEvents.init();
