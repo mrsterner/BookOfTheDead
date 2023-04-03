@@ -1,19 +1,13 @@
 package dev.sterner.book_of_the_dead.common.item;
 
 import dev.sterner.book_of_the_dead.client.screen.BookOfTheDeadScreen;
-import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
-import org.quiltmc.loader.api.minecraft.ClientOnly;
-
-import java.util.List;
 
 public class BookOfTheDeadItem extends Item {
 	private final Identifier id;
@@ -32,6 +26,4 @@ public class BookOfTheDeadItem extends Item {
 		}
 		return TypedActionResult.success(player.getStackInHand(hand));
 	}
-
-
 }

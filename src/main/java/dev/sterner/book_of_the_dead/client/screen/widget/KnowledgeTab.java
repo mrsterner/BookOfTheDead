@@ -20,13 +20,8 @@ import java.util.Map;
 public class KnowledgeTab extends DrawableHelper {
 	public final List<KnowledgeWidget> widgets = new ArrayList<>();
 	private final BookOfTheDeadScreen screen;
-	private double originX;
-	private double originY;
-	private int minPanX = Integer.MAX_VALUE;
-	private int minPanY = Integer.MAX_VALUE;
-	private int maxPanX = Integer.MIN_VALUE;
-	private int maxPanY = Integer.MIN_VALUE;
-	private boolean initialized;
+	public float xO = 0;
+	public float y0 = 0;
 
 	public KnowledgeTab(BookOfTheDeadScreen screen) {
 		this.screen = screen;
@@ -38,37 +33,20 @@ public class KnowledgeTab extends DrawableHelper {
 		addKnowledge(BotDKnowledgeRegistry.ASH, 32 * 4, 32 * 10 - 18);
 	}
 
-	public void render(MatrixStack matrices, int x, int y) {
-		if (!this.initialized) {
-			this.originX = (double)(117 - (this.maxPanX + this.minPanX) / 2);
-			this.originY = (double)(56 - (this.maxPanY + this.minPanY) / 2);
-			this.initialized = true;
-		}
+	public void move(float xOffset, float yOffset) {
+	}
 
+	public void render(MatrixStack matrices, int x, int y) {
 		enableScissor(x, y, x + 122, y + 173);
 		matrices.push();
 		matrices.translate((float)x, (float)y, 0.0F);
 		Identifier identifier = Constants.id("textures/gui/parallax.png");
-		if (identifier != null) {
-			RenderSystem.setShaderTexture(0, identifier);
-		} else {
-			RenderSystem.setShaderTexture(0, TextureManager.MISSING_IDENTIFIER);
-		}
+		RenderSystem.setShaderTexture(0, identifier);
 
 		drawTexture(matrices, 32 + 9, 32 + 9, 0.0F, 0.0F, 122, 173, 2507 / 2, 1205 / 2);
 
 		matrices.pop();
 		disableScissor();
-	}
-
-	public void move(double offsetX, double offsetY) {
-		if (this.maxPanX - this.minPanX > 234) {
-			this.originX = MathHelper.clamp(this.originX + offsetX, (-(this.maxPanX - 234)), 0.0);
-		}
-
-		if (this.maxPanY - this.minPanY > 113) {
-			this.originY = MathHelper.clamp(this.originY + offsetY, (-(this.maxPanY - 113)), 0.0);
-		}
 	}
 
 	public void addKnowledge(Knowledge knowledge, int x, int y) {
@@ -78,13 +56,7 @@ public class KnowledgeTab extends DrawableHelper {
 
 	private void addWidget(KnowledgeWidget widget) {
 		this.widgets.add(widget);
-		int i = widget.getX();
-		int j = i + 28;
-		int k = widget.getY();
-		int l = k + 27;
-		this.minPanX = Math.min(this.minPanX, i);
-		this.maxPanX = Math.max(this.maxPanX, j);
-		this.minPanY = Math.min(this.minPanY, k);
-		this.maxPanY = Math.max(this.maxPanY, l);
 	}
+
+
 }
