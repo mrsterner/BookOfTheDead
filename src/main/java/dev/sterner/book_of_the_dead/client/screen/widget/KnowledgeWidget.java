@@ -25,18 +25,39 @@ public class KnowledgeWidget extends ClickableWidget {
 	@Override
 	public void drawWidget(MatrixStack matrices, int mouseX, int mouseY, float delta) {
 		RenderSystem.setShaderTexture(0, knowledge.icon);
-		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, isHovered() && isValidClickButton(0) ? 0.75F : !isValidClickButton(0) ? 0.25F : this.alpha);
+		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, !isHovered() ? 0.25F : this.alpha);
 		RenderSystem.enableBlend();
 		RenderSystem.defaultBlendFunc();
 		RenderSystem.enableDepthTest();
 
-		drawTexture(matrices, this.x, this.y, 60 , 182, this.width, this.height, 512, 256);
+		drawTexture(matrices, this.x, this.y, 0 , 0, this.width, this.height, 17, 17);
 
 	}
 
 	@Override
 	protected boolean isValidClickButton(int button) {
 		return super.isValidClickButton(button);
+	}
+
+	@Override
+	protected boolean clicked(double mouseX, double mouseY) {
+		if(!this.active && !this.visible){
+			return false;
+		}
+		double halfWidth = (double) this.width / 2;
+		double halfHeight = (double) this.height / 2;
+		double centerX = this.getX() + halfWidth;
+		double centerY = this.getY() + halfHeight;
+		double radius = Math.min(halfWidth, halfHeight);
+
+		double dx = Math.abs(mouseX - centerX);
+		double dy = Math.abs(mouseY - centerY);
+
+		if (dx > radius || dy > radius) {
+			return false;
+		}
+
+		return dx + dy <= radius;
 	}
 
 	@Override
@@ -49,5 +70,9 @@ public class KnowledgeWidget extends ClickableWidget {
 	@Override
 	protected void updateNarration(NarrationMessageBuilder builder) {
 
+	}
+
+	public boolean isHovering(double mouseX, double mouseY) {
+		return clicked(mouseX, mouseY);
 	}
 }
