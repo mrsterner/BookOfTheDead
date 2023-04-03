@@ -12,15 +12,11 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
 
-import java.util.ArrayList;
-import java.util.List;
 
-public class BookOfTheDeadScreen extends Screen{
+public class BookOfTheDeadScreen extends Screen {
 	public static final Identifier BOOK_TEXTURE = Constants.id("textures/gui/background.png");
 	public PlayerEntity player;
-	public final List<KnowledgeWidget> widgets = new ArrayList<>();
 	public static BookOfTheDeadScreen screen;
-	public boolean ignoreNextMouseInput;
 
 	public BookOfTheDeadScreen(PlayerEntity player) {
 		super(ChatNarratorManager.NO_TITLE);
