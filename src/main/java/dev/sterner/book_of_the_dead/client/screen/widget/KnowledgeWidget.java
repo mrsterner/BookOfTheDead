@@ -2,9 +2,8 @@ package dev.sterner.book_of_the_dead.client.screen.widget;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.sterner.book_of_the_dead.api.KnowledgeData;
-import dev.sterner.book_of_the_dead.client.screen.BookOfTheDeadScreen;
 import dev.sterner.book_of_the_dead.api.Knowledge;
-import dev.sterner.book_of_the_dead.client.screen.tag.KnowledgeTab;
+import dev.sterner.book_of_the_dead.client.screen.tab.KnowledgeTab;
 import dev.sterner.book_of_the_dead.common.component.BotDComponents;
 import dev.sterner.book_of_the_dead.common.component.PlayerKnowledgeComponent;
 import dev.sterner.book_of_the_dead.common.util.RenderUtils;

@@ -2,29 +2,25 @@ package dev.sterner.book_of_the_dead.client.screen;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-import dev.sterner.book_of_the_dead.client.screen.tag.KnowledgeTab;
-import dev.sterner.book_of_the_dead.client.screen.widget.KnowledgeWidget;
-import dev.sterner.book_of_the_dead.common.registry.BotDKnowledgeRegistry;
+import dev.sterner.book_of_the_dead.client.screen.tab.BookOfTheDeadTab;
+import dev.sterner.book_of_the_dead.client.screen.tab.KnowledgeTab;
+import dev.sterner.book_of_the_dead.client.screen.widget.BackPageWidget;
+import dev.sterner.book_of_the_dead.client.screen.widget.NextPageWidget;
+import dev.sterner.book_of_the_dead.client.screen.widget.PrevPageWidget;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.advancement.AdvancementTab;
 import net.minecraft.client.util.ChatNarratorManager;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.MathHelper;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class BookOfTheDeadScreen extends Screen {
 	public static final Identifier BOOK_TEXTURE = Constants.id("textures/gui/background.png");
 	public PlayerEntity player;
 	public static BookOfTheDeadScreen screen;
-	public final KnowledgeTab knowledgeTab;
-	public List<KnowledgeWidget> widgets = new ArrayList<>();
+	public BookOfTheDeadTab knowledgeTab;
 
 
 	public BookOfTheDeadScreen(PlayerEntity player) {
@@ -40,8 +36,21 @@ public class BookOfTheDeadScreen extends Screen {
 
 	@Override
 	protected void init() {
-		knowledgeTab.width = this.width;
-		knowledgeTab.init();
+		initialize();
+	}
+
+	public void initialize(){
+		if(knowledgeTab != null) {
+			knowledgeTab.width = this.width;
+			knowledgeTab.init();
+		}
+
+		int x = (width - 192) / 4 + 9 * 12 + 2;
+		int y = 32 * 6 + 8;
+
+		addDrawableChild(new NextPageWidget(x + 18 * 6 + 9, y, knowledgeTab, this));
+		addDrawableChild(new PrevPageWidget(x - (18 * 6 + 9), y, knowledgeTab, this));
+		addDrawableChild(new BackPageWidget(x, y, knowledgeTab, this));
 	}
 
 	@Override
@@ -51,8 +60,10 @@ public class BookOfTheDeadScreen extends Screen {
 		this.setFocused(false);
 		renderBookTexture(matrices, (this.width - 192) / 4 - 16, 32, 0, 0, 272, 182, 512, 256);
 		matrices.pop();
+		if(knowledgeTab != null){
+			knowledgeTab.render(matrices, this.width, mouseX, mouseY, delta);
+		}
 
-		knowledgeTab.render(matrices, this.width, mouseX, mouseY, delta);
 
 		super.render(matrices, mouseX, mouseY, delta);
 	}
@@ -60,14 +71,18 @@ public class BookOfTheDeadScreen extends Screen {
 	@Override
 	public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
 		if (button == 0) {
-			return knowledgeTab.move(mouseX, mouseY, button, deltaX, deltaY);
+			if(knowledgeTab != null) {
+				return knowledgeTab.move(mouseX, mouseY, button, deltaX, deltaY);
+			}
 		}
 		return false;
 	}
 
 	@Override
 	public boolean mouseReleased(double mouseX, double mouseY, int button) {
-		knowledgeTab.isDragging = false;
+		if(knowledgeTab != null) {
+			knowledgeTab.isDragging = false;
+		}
 		return super.mouseReleased(mouseX, mouseY, button);
 	}
 

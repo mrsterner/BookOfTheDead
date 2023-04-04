@@ -1,13 +1,11 @@
-package dev.sterner.book_of_the_dead.client.screen.tag;
+package dev.sterner.book_of_the_dead.client.screen.tab;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.sterner.book_of_the_dead.client.screen.BookOfTheDeadScreen;
-import dev.sterner.book_of_the_dead.api.Knowledge;
 import dev.sterner.book_of_the_dead.client.screen.widget.KnowledgeWidget;
 import dev.sterner.book_of_the_dead.common.registry.BotDKnowledgeRegistry;
 import dev.sterner.book_of_the_dead.common.util.Constants;
-import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
@@ -16,7 +14,7 @@ import net.minecraft.util.math.MathHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KnowledgeTab extends DrawableHelper {
+public class KnowledgeTab extends BookOfTheDeadTab {
 	public final PlayerEntity player;
 	public static final Identifier TAB_TEXTURE = Constants.id("textures/gui/knowledge_tab.png");
 	public static final Identifier PARALLAX = Constants.id("textures/gui/parallax.png");
@@ -27,8 +25,6 @@ public class KnowledgeTab extends DrawableHelper {
 	public int scissorY;
 	public int scissorWidth;
 	public int scissorHeight;
-	public int width;
-	public boolean isDragging;
 	public List<KnowledgeWidget> widgets = new ArrayList<>();
 
 	public KnowledgeTab(BookOfTheDeadScreen screen) {
@@ -38,8 +34,11 @@ public class KnowledgeTab extends DrawableHelper {
 		this.scissorY = 30;
 		this.scissorWidth = 122 + scissorX;
 		this.scissorHeight = 172 + scissorY;
+		this.setNextTab(null);
+		this.setPrevTab(null);
 	}
 
+	@Override
 	public void init() {
 		widgets.clear();
 		float x = (float) (width - 192) / 4 + 9 * 5 - 4;
@@ -83,6 +82,7 @@ public class KnowledgeTab extends DrawableHelper {
 		screen.addDrawableChild(widget);
 	}
 
+	@Override
 	public boolean move(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
 		if (!this.isDragging) {
 			// Check if the mouse is within the screen texture
@@ -92,12 +92,15 @@ public class KnowledgeTab extends DrawableHelper {
 		}
 
 		// Check if the mouse is over any Button widgets
+		/*
 		for (KnowledgeWidget widget : this.widgets) {
 			if (widget.isMouseOver(mouseX, mouseY)) {
 				// Return false to prevent dragging if the mouse is over a Button widget
 				return false;
 			}
 		}
+
+		 */
 
 		if (this.isDragging) {
 			// Update the position of the screen
@@ -110,6 +113,7 @@ public class KnowledgeTab extends DrawableHelper {
 		return false;
 	}
 
+	@Override
 	public void render(MatrixStack matrices, int width, int mouseX, int mouseY, float delta) {
 		int scaledWidth = (width - 192) / 4 - 5;
 
