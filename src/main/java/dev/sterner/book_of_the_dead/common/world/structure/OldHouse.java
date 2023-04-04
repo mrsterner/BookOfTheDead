@@ -19,14 +19,14 @@ import java.util.Optional;
 
 public class OldHouse extends StructureFeature {
 	public static final Codec<OldHouse> CODEC = RecordCodecBuilder.<OldHouse>mapCodec(instance ->
-			instance.group(OldHouse.settingsCodec(instance),
-					StructurePool.REGISTRY_CODEC.fieldOf("start_pool").forGetter(structure -> structure.startPool),
-					Identifier.CODEC.optionalFieldOf("start_jigsaw_name").forGetter(structure -> structure.startJigsawName),
-					Codec.intRange(0, 30).fieldOf("size").forGetter(structure -> structure.size),
-					HeightProvider.CODEC.fieldOf("start_height").forGetter(structure -> structure.startHeight),
-					Heightmap.Type.CODEC.optionalFieldOf("project_start_to_heightmap").forGetter(structure -> structure.projectStartToHeightmap),
-					Codec.intRange(1, 128).fieldOf("max_distance_from_center").forGetter(structure -> structure.maxDistanceFromCenter)
-			).apply(instance, OldHouse::new)).codec();
+		instance.group(OldHouse.settingsCodec(instance),
+			StructurePool.REGISTRY_CODEC.fieldOf("start_pool").forGetter(structure -> structure.startPool),
+			Identifier.CODEC.optionalFieldOf("start_jigsaw_name").forGetter(structure -> structure.startJigsawName),
+			Codec.intRange(0, 30).fieldOf("size").forGetter(structure -> structure.size),
+			HeightProvider.CODEC.fieldOf("start_height").forGetter(structure -> structure.startHeight),
+			Heightmap.Type.CODEC.optionalFieldOf("project_start_to_heightmap").forGetter(structure -> structure.projectStartToHeightmap),
+			Codec.intRange(1, 128).fieldOf("max_distance_from_center").forGetter(structure -> structure.maxDistanceFromCenter)
+		).apply(instance, OldHouse::new)).codec();
 
 	private final Holder<StructurePool> startPool;
 	private final Optional<Identifier> startJigsawName;
@@ -53,15 +53,15 @@ public class OldHouse extends StructureFeature {
 		BlockPos blockPos = new BlockPos(chunkPos.getStartX(), startY, chunkPos.getStartZ());
 
 		Optional<GenerationStub> structurePiecesGenerator =
-				StructurePoolBasedGenerator.generate(
-						context,
-						this.startPool,
-						this.startJigsawName,
-						this.size,
-						blockPos,
-						false,
-						this.projectStartToHeightmap,
-						this.maxDistanceFromCenter);
+			StructurePoolBasedGenerator.generate(
+				context,
+				this.startPool,
+				this.startJigsawName,
+				this.size,
+				blockPos,
+				false,
+				this.projectStartToHeightmap,
+				this.maxDistanceFromCenter);
 		return structurePiecesGenerator;
 	}
 

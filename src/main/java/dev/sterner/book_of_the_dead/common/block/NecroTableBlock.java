@@ -141,36 +141,36 @@ public class NecroTableBlock extends HorizontalFacingBlock implements BlockEntit
 		SOUTH_SHAPE = VoxelShapes.union(createCuboidShape(4, 0, 0, 16, 3, 16), createCuboidShape(6, 0, 2, 16, 10, 14), createCuboidShape(5, 10, 1, 16, 13, 15), createCuboidShape(2, 13, -2, 16, 16, 18));
 
 		NORTH_PARTICLES = new Vec3d[]{
-				new Vec3d(1.25, 1.2, 0.45),
-				new Vec3d(1.05, 1.33, 0.35),
-				new Vec3d(1.2, 1.45, 0.25),
+			new Vec3d(1.25, 1.2, 0.45),
+			new Vec3d(1.05, 1.33, 0.35),
+			new Vec3d(1.2, 1.45, 0.25),
 
-				new Vec3d(0.1, 1.33, 0.20),
-				new Vec3d(0.15, 1.2, 0.35)
+			new Vec3d(0.1, 1.33, 0.20),
+			new Vec3d(0.15, 1.2, 0.35)
 		};
 		SOUTH_PARTICLES = new Vec3d[]{
-				new Vec3d(-0.25, 1.2, 0.55),
-				new Vec3d(-0.05, 1.33, 0.65),
-				new Vec3d(-0.2, 1.45, 0.75),
+			new Vec3d(-0.25, 1.2, 0.55),
+			new Vec3d(-0.05, 1.33, 0.65),
+			new Vec3d(-0.2, 1.45, 0.75),
 
-				new Vec3d(0.92, 1.33, 0.78),
-				new Vec3d(0.88, 1.2, 0.65)
+			new Vec3d(0.92, 1.33, 0.78),
+			new Vec3d(0.88, 1.2, 0.65)
 		};
 		EAST_PARTICLES = new Vec3d[]{
-				new Vec3d(0.55, 1.2, 1.25),
-				new Vec3d(0.65, 1.33, 1.05),
-				new Vec3d(0.75, 1.45, 1.2),
+			new Vec3d(0.55, 1.2, 1.25),
+			new Vec3d(0.65, 1.33, 1.05),
+			new Vec3d(0.75, 1.45, 1.2),
 
-				new Vec3d(0.65, 1.2, 0.15),
-				new Vec3d(0.78, 1.33, 0.10)
+			new Vec3d(0.65, 1.2, 0.15),
+			new Vec3d(0.78, 1.33, 0.10)
 		};
 		WEST_PARTICLES = new Vec3d[]{
-				new Vec3d(0.45, 1.2, -0.25),
-				new Vec3d(0.35, 1.33, -0.05),
-				new Vec3d(0.25, 1.45, -0.2),
+			new Vec3d(0.45, 1.2, -0.25),
+			new Vec3d(0.35, 1.33, -0.05),
+			new Vec3d(0.25, 1.45, -0.2),
 
-				new Vec3d(0.20, 1.33, 0.9),
-				new Vec3d(0.35, 1.2, 0.85)
+			new Vec3d(0.20, 1.33, 0.9),
+			new Vec3d(0.35, 1.2, 0.85)
 		};
 	}
 }

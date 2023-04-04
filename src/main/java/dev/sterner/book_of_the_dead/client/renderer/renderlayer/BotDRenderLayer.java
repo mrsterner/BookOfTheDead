@@ -65,39 +65,39 @@ public class BotDRenderLayer extends RenderLayer {
 
 	public static final Function<Identifier, RenderLayer> GLOWING_LAYER = Util.memoize(texture -> {
 		MultiPhaseParameters multiPhaseParameters = MultiPhaseParameters.builder()
-				.texture(new RenderPhase.Texture(texture, false, false))
-				.transparency(TRANSLUCENT_TRANSPARENCY)
-				.cull(DISABLE_CULLING)
-				.lightmap(ENABLE_LIGHTMAP)
-				.overlay(ENABLE_OVERLAY_COLOR)
-				.shader(ENERGY_SWIRL_SHADER)
-				.build(true);
+			.texture(new RenderPhase.Texture(texture, false, false))
+			.transparency(TRANSLUCENT_TRANSPARENCY)
+			.cull(DISABLE_CULLING)
+			.lightmap(ENABLE_LIGHTMAP)
+			.overlay(ENABLE_OVERLAY_COLOR)
+			.shader(ENERGY_SWIRL_SHADER)
+			.build(true);
 		return RenderLayer.of("glowing_layer", VertexFormats.POSITION_COLOR_TEXTURE_OVERLAY_LIGHT_NORMAL, VertexFormat.DrawMode.QUADS, 256, true, true, multiPhaseParameters);
 	});
 
 	private static RenderLayer buildGlintRenderLayer() {
 		return RenderLayer.of("glint_black", VertexFormats.POSITION_TEXTURE, VertexFormat.DrawMode.QUADS, 256, MultiPhaseParameters.builder()
-				.shader(RenderPhase.GLINT_SHADER)
-				.texture(new Texture(Constants.id("textures/misc/all_black_glint.png"), true, false))
-				.writeMaskState(COLOR_MASK)
-				.cull(DISABLE_CULLING)
-				.depthTest(EQUAL_DEPTH_TEST)
-				.transparency(GLINT_TRANSPARENCY)
-				.texturing(GLINT_TEXTURING)
-				.build(false));
+			.shader(RenderPhase.GLINT_SHADER)
+			.texture(new Texture(Constants.id("textures/misc/all_black_glint.png"), true, false))
+			.writeMaskState(COLOR_MASK)
+			.cull(DISABLE_CULLING)
+			.depthTest(EQUAL_DEPTH_TEST)
+			.transparency(GLINT_TRANSPARENCY)
+			.texturing(GLINT_TEXTURING)
+			.build(false));
 	}
 
 
 	private static RenderLayer buildGlintDirectRenderLayer() {
 		return RenderLayer.of("glint_direct_black", VertexFormats.POSITION_TEXTURE, VertexFormat.DrawMode.QUADS, 256, MultiPhaseParameters.builder()
-				.shader(RenderPhase.DIRECT_GLINT_SHADER)
-				.texture(new Texture(Constants.id("textures/misc/all_black_glint.png"), true, false))
-				.writeMaskState(COLOR_MASK)
-				.cull(DISABLE_CULLING)
-				.depthTest(EQUAL_DEPTH_TEST)
-				.transparency(GLINT_TRANSPARENCY)
-				.texturing(GLINT_TEXTURING)
-				.build(false));
+			.shader(RenderPhase.DIRECT_GLINT_SHADER)
+			.texture(new Texture(Constants.id("textures/misc/all_black_glint.png"), true, false))
+			.writeMaskState(COLOR_MASK)
+			.cull(DISABLE_CULLING)
+			.depthTest(EQUAL_DEPTH_TEST)
+			.transparency(GLINT_TRANSPARENCY)
+			.texturing(GLINT_TEXTURING)
+			.build(false));
 	}
 
 

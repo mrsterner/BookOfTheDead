@@ -111,17 +111,17 @@ public class RenderUtils {
 	}
 
 	private static void drawTexturedQuad(MatrixStack matrices, float x0, float x1, float y0, float y1, int z, int regionWidth, int regionHeight, float u, float v, int textureWidth, int textureHeight) {
-		drawTexturedQuad(matrices.peek().getModel(), x0, x1, y0, y1, z, (u + 0.0F) / (float)textureWidth, (u + (float)regionWidth) / (float)textureWidth, (v + 0.0F) / (float)textureHeight, (v + (float)regionHeight) / (float)textureHeight);
+		drawTexturedQuad(matrices.peek().getModel(), x0, x1, y0, y1, z, (u + 0.0F) / (float) textureWidth, (u + (float) regionWidth) / (float) textureWidth, (v + 0.0F) / (float) textureHeight, (v + (float) regionHeight) / (float) textureHeight);
 	}
 
 	private static void drawTexturedQuad(Matrix4f matrix, float x0, float x1, float y0, float y1, int z, float u0, float u1, float v0, float v1) {
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		BufferBuilder bufferBuilder = Tessellator.getInstance().getBufferBuilder();
 		bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
-		bufferBuilder.vertex(matrix, (float)x0, (float)y0, (float)z).uv(u0, v0).next();
-		bufferBuilder.vertex(matrix, (float)x0, (float)y1, (float)z).uv(u0, v1).next();
-		bufferBuilder.vertex(matrix, (float)x1, (float)y1, (float)z).uv(u1, v1).next();
-		bufferBuilder.vertex(matrix, (float)x1, (float)y0, (float)z).uv(u1, v0).next();
+		bufferBuilder.vertex(matrix, x0, y0, (float) z).uv(u0, v0).next();
+		bufferBuilder.vertex(matrix, x0, y1, (float) z).uv(u0, v1).next();
+		bufferBuilder.vertex(matrix, x1, y1, (float) z).uv(u1, v1).next();
+		bufferBuilder.vertex(matrix, x1, y0, (float) z).uv(u1, v0).next();
 		BufferRenderer.drawWithShader(bufferBuilder.end());
 	}
 }

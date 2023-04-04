@@ -21,16 +21,16 @@ public class BotDWallSkullBlock extends AbstractBotDSkullBlock {
 
 	public static final DirectionProperty FACING = HorizontalFacingBlock.FACING;
 	private static final Map<Direction, VoxelShape> FACING_TO_SHAPE = Maps.newEnumMap(
-			ImmutableMap.of(
-					Direction.NORTH,
-					Block.createCuboidShape(4.0, 4.0, 8.0, 12.0, 12.0, 16.0),
-					Direction.SOUTH,
-					Block.createCuboidShape(4.0, 4.0, 0.0, 12.0, 12.0, 8.0),
-					Direction.EAST,
-					Block.createCuboidShape(0.0, 4.0, 4.0, 8.0, 12.0, 12.0),
-					Direction.WEST,
-					Block.createCuboidShape(8.0, 4.0, 4.0, 16.0, 12.0, 12.0)
-			)
+		ImmutableMap.of(
+			Direction.NORTH,
+			Block.createCuboidShape(4.0, 4.0, 8.0, 12.0, 12.0, 16.0),
+			Direction.SOUTH,
+			Block.createCuboidShape(4.0, 4.0, 0.0, 12.0, 12.0, 8.0),
+			Direction.EAST,
+			Block.createCuboidShape(0.0, 4.0, 4.0, 8.0, 12.0, 12.0),
+			Direction.WEST,
+			Block.createCuboidShape(8.0, 4.0, 4.0, 16.0, 12.0, 12.0)
+		)
 	);
 
 	public BotDWallSkullBlock(BotDSkullBlock.BotDType skullType, AbstractBlock.Settings settings) {

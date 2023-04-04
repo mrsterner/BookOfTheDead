@@ -67,11 +67,11 @@ public class RitualManager {
 				serverWorld.playSound(null, x, y, z, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, 1F, 1F);
 			}
 			if (blockEntity.ritualRecipe.outputs() != null) {
-				if(blockEntity.ritualRecipe.outputs().size() > 1){
+				if (blockEntity.ritualRecipe.outputs().size() > 1) {
 					for (ItemStack output : blockEntity.ritualRecipe.outputs()) {
 						ItemScatterer.spawn(world, x, y, z, output.copy());
 					}
-				}else{
+				} else {
 					FloatingItemEntity itemEntity = new FloatingItemEntity(BotDEntityTypes.FLOATING_ITEM_ENTITY, world);
 					itemEntity.setItem(blockEntity.ritualRecipe.outputs().get(0));
 					itemEntity.refreshPositionAndAngles(blockPos.getX() + 0.5f, blockPos.getY() + 0.5f, blockPos.getZ() + 0.5f, 0, 0);

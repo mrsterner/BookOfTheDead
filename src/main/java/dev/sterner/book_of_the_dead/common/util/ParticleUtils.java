@@ -27,15 +27,15 @@ public class ParticleUtils {
 		double z = from.getZ() + (serverWorld.random.nextDouble() * 0.2D) + 0.4D;
 		if (!itemStack.isEmpty()) {
 			serverWorld.spawnParticles(
-					new ItemStackBeamParticleEffect(BotDParticleTypes.ITEM_BEAM_PARTICLE, itemStack, 10),
-					x,
-					y,
-					z,
-					0,
-					directionVector.x,
-					directionVector.y,
-					directionVector.z,
-					0.10D);
+				new ItemStackBeamParticleEffect(BotDParticleTypes.ITEM_BEAM_PARTICLE, itemStack, 10),
+				x,
+				y,
+				z,
+				0,
+				directionVector.x,
+				directionVector.y,
+				directionVector.z,
+				0.10D);
 		}
 	}
 
@@ -52,14 +52,14 @@ public class ParticleUtils {
 			for (ItemStack output : items) {
 				for (int i = 0; i < items.size() * 2; i++) {
 					serverWorld.spawnParticles(new ItemStackParticleEffect(ParticleTypes.ITEM, output),
-							x + ((serverWorld.random.nextDouble() / 2) - 0.25),
-							y + ((serverWorld.random.nextDouble() / 2) - 0.25),
-							z + ((serverWorld.random.nextDouble() / 2) - 0.25),
-							0,
-							1 * ((serverWorld.random.nextDouble() / 2) - 0.25),
-							1 * ((serverWorld.random.nextDouble() / 2) - 0.25),
-							1 * ((serverWorld.random.nextDouble() / 2) - 0.25),
-							0);
+						x + ((serverWorld.random.nextDouble() / 2) - 0.25),
+						y + ((serverWorld.random.nextDouble() / 2) - 0.25),
+						z + ((serverWorld.random.nextDouble() / 2) - 0.25),
+						0,
+						1 * ((serverWorld.random.nextDouble() / 2) - 0.25),
+						1 * ((serverWorld.random.nextDouble() / 2) - 0.25),
+						1 * ((serverWorld.random.nextDouble() / 2) - 0.25),
+						0);
 				}
 			}
 		}

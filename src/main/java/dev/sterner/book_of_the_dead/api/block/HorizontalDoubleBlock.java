@@ -23,9 +23,9 @@ public class HorizontalDoubleBlock extends HorizontalFacingBlock {
 	public HorizontalDoubleBlock(Settings settings) {
 		super(settings.nonOpaque());
 		this.stateManager
-				.getDefaultState()
-				.with(FACING, Direction.NORTH)
-				.with(HHALF, HorizontalDoubleBlockHalf.RIGHT);
+			.getDefaultState()
+			.with(FACING, Direction.NORTH)
+			.with(HHALF, HorizontalDoubleBlockHalf.RIGHT);
 	}
 
 	@Override

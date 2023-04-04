@@ -114,7 +114,7 @@ public class Constants {
 		String REFRESH = "Refresh";
 		String CHANCE = "Chance";
 		String CHANCES = "Chances";
-        String ITEM = "Item";
+		String ITEM = "Item";
 		String KNOWLEDGE = "Knowledge";
 		String KNOWLEDGE_DATA = "KnowledgeData";
 		String POINTS = "points";

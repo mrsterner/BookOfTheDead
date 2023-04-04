@@ -13,7 +13,6 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
-import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,7 +84,7 @@ public class BookOfTheDeadScreen extends Screen {
 		widgets.add(new KnowledgeWidget(x - 9 - 18, y - 15 - 30, this, BotDKnowledgeRegistry.ROT));
 		widgets.add(new KnowledgeWidget(x - 18 - 18, y - 12 - 18 - 30, this, BotDKnowledgeRegistry.CADUCEUS));
 
-		for(KnowledgeWidget widget : widgets){
+		for (KnowledgeWidget widget : widgets) {
 			addDrawableChild(widget);
 		}
 	}
@@ -132,8 +131,8 @@ public class BookOfTheDeadScreen extends Screen {
 
 			if (this.isDragging) {
 				// Update the position of the screen
-				this.xOffset = MathHelper.clamp(this.xOffset + deltaX, - 20,   20);
-				this.yOffset = MathHelper.clamp(this.yOffset + deltaY, - 20,   20);
+				this.xOffset = MathHelper.clamp(this.xOffset + deltaX, -20, 20);
+				this.yOffset = MathHelper.clamp(this.yOffset + deltaY, -20, 20);
 
 
 				return true;

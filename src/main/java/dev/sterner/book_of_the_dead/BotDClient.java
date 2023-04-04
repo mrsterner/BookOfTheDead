@@ -9,7 +9,10 @@ import dev.sterner.book_of_the_dead.client.renderer.item.AllBlackSwordItemRender
 import dev.sterner.book_of_the_dead.common.registry.*;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
-import net.fabricmc.fabric.api.client.rendering.v1.*;
+import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.client.render.RenderLayer;
@@ -38,15 +41,15 @@ public class BotDClient implements ClientModInitializer {
 		BotDKeyBindings.init();
 
 		BlockRenderLayerMap.put(RenderLayer.getCutout(),
-				BotDObjects.ROPE,
-				BotDObjects.HOOK_BLOCK,
-				BotDObjects.JAR,
-				BotDObjects.NECRO_TABLE,
-				BotDObjects.BUTCHER_TABLE,
-				BotDObjects.REINFORCED_DOOR,
-				BotDObjects.POPPY_CROP,
-				BotDObjects.PEDESTAL,
-				BotDObjects.RETORT_FLASK_BLOCK
+			BotDObjects.ROPE,
+			BotDObjects.HOOK_BLOCK,
+			BotDObjects.JAR,
+			BotDObjects.NECRO_TABLE,
+			BotDObjects.BUTCHER_TABLE,
+			BotDObjects.REINFORCED_DOOR,
+			BotDObjects.POPPY_CROP,
+			BotDObjects.PEDESTAL,
+			BotDObjects.RETORT_FLASK_BLOCK
 		);
 
 		ClientPlayNetworking.registerGlobalReceiver(BloodSplashParticlePacket.ID, BloodSplashParticlePacket::handle);

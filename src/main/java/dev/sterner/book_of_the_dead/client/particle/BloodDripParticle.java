@@ -72,7 +72,7 @@ public class BloodDripParticle extends SpriteBillboardParticle {
 	}
 
 	public static SpriteBillboardParticle createBloodHangParticle(
-			DefaultParticleType defaultParticleType, ClientWorld world, double d, double e, double f, double g, double h, double i
+		DefaultParticleType defaultParticleType, ClientWorld world, double d, double e, double f, double g, double h, double i
 	) {
 		BloodDripParticle.Dripping dripping = new BloodDripParticle.Dripping(world, d, e, f, Fluids.EMPTY, BotDParticleTypes.FALLING_BLOOD);
 		dripping.gravityStrength *= 0.01F;
@@ -82,7 +82,7 @@ public class BloodDripParticle extends SpriteBillboardParticle {
 	}
 
 	public static SpriteBillboardParticle createBloodFallParticle(
-			DefaultParticleType defaultParticleType, ClientWorld world, double d, double e, double f, double g, double h, double i
+		DefaultParticleType defaultParticleType, ClientWorld world, double d, double e, double f, double g, double h, double i
 	) {
 		BloodDripParticle blockLeakParticle = new BloodDripParticle.FallingBlood(world, d, e, f, Fluids.EMPTY, BotDParticleTypes.LANDING_BLOOD);
 		blockLeakParticle.gravityStrength = 0.01F;
@@ -91,7 +91,7 @@ public class BloodDripParticle extends SpriteBillboardParticle {
 	}
 
 	public static SpriteBillboardParticle createBloodLandParticle(
-			DefaultParticleType defaultParticleType, ClientWorld world, double d, double e, double f, double g, double h, double i
+		DefaultParticleType defaultParticleType, ClientWorld world, double d, double e, double f, double g, double h, double i
 	) {
 		BloodDripParticle blockLeakParticle = new BloodDripParticle.Landing(world, d, e, f, Fluids.EMPTY);
 		blockLeakParticle.maxAge = (int) (128.0 / (Math.random() * 0.8 + 0.2));

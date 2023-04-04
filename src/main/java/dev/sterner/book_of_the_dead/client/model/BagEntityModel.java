@@ -21,8 +21,8 @@ public class BagEntityModel extends Model {
 		ModelPartData modelPartData = modelData.getRoot();
 
 		modelPartData.addChild("base", ModelPartBuilder.create().uv(0, 36).cuboid(-7.0F, -14.0F, -7.0F, 14.0F, 14.0F, 14.0F, new Dilation(0.0F))
-				.uv(0, 15).cuboid(-6.0F, -15.0F, -6.0F, 12.0F, 1.0F, 12.0F, new Dilation(0.0F))
-				.uv(0, 0).cuboid(-6.5F, -17.0F, -6.5F, 13.0F, 2.0F, 13.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, 24.0F, 0.0F));
+			.uv(0, 15).cuboid(-6.0F, -15.0F, -6.0F, 12.0F, 1.0F, 12.0F, new Dilation(0.0F))
+			.uv(0, 0).cuboid(-6.5F, -17.0F, -6.5F, 13.0F, 2.0F, 13.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, 24.0F, 0.0F));
 
 		return TexturedModelData.of(modelData, 64, 64);
 	}

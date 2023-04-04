@@ -37,15 +37,15 @@ import static dev.sterner.book_of_the_dead.common.block.entity.JarBlockEntity.*;
 
 public class JarBlock extends BlockWithEntity {
 	protected static final VoxelShape OPEN_SHAPE = VoxelShapes.union(
-			createCuboidShape(4, 0, 4, 12, 10, 5),
-			createCuboidShape(4, 0, 4, 5, 10, 12),
-			createCuboidShape(4, 0, 11, 12, 10, 12),
-			createCuboidShape(11, 0, 5, 12, 10, 12),
+		createCuboidShape(4, 0, 4, 12, 10, 5),
+		createCuboidShape(4, 0, 4, 5, 10, 12),
+		createCuboidShape(4, 0, 11, 12, 10, 12),
+		createCuboidShape(11, 0, 5, 12, 10, 12),
 
-			createCuboidShape(4.5, 12, 4.5, 11.5, 14, 5.5),
-			createCuboidShape(4.5, 12, 4.5, 5.5, 14, 11.5),
-			createCuboidShape(4.5, 12, 10.5, 11.5, 14, 11.5),
-			createCuboidShape(10.5, 12, 4.5, 11.5, 14, 11.5)
+		createCuboidShape(4.5, 12, 4.5, 11.5, 14, 5.5),
+		createCuboidShape(4.5, 12, 4.5, 5.5, 14, 11.5),
+		createCuboidShape(4.5, 12, 10.5, 11.5, 14, 11.5),
+		createCuboidShape(10.5, 12, 4.5, 11.5, 14, 11.5)
 	);
 
 	protected static final VoxelShape CLOSED_SHAPE = VoxelShapes.union(createCuboidShape(5, 14, 5, 11, 16, 11));

@@ -37,7 +37,7 @@ public class WitherArmorItem extends ArmorItem implements GeoItem {
 
 			@Override
 			public @NotNull BipedEntityModel<LivingEntity> getHumanoidArmorModel(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, BipedEntityModel<LivingEntity> original) {
-				if (this.renderer == null){
+				if (this.renderer == null) {
 					this.renderer = new WitherArmorRenderer();
 				}
 
@@ -67,7 +67,7 @@ public class WitherArmorItem extends ArmorItem implements GeoItem {
 		return this.cache;
 	}
 
-	public enum WitherArmor implements ArmorMaterial{
+	public enum WitherArmor implements ArmorMaterial {
 		WITHER("book_of_the_dead:wither", 16, new int[]{1, 3, 4, 2}, 15, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, Items.WITHER_SKELETON_SKULL, 0),
 		SKELETON("book_of_the_dead:skeleton", 12, new int[]{1, 2, 3, 2}, 12, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, Items.WITHER_SKELETON_SKULL, 0);
 
@@ -80,8 +80,7 @@ public class WitherArmorItem extends ArmorItem implements GeoItem {
 		private final float toughness;
 		private static final int[] MAX_DAMAGE_ARRAY = new int[]{13, 15, 16, 11};
 
-		WitherArmor(String name, int durabilityMultiplier, int[] damageReduction, int enchantability, SoundEvent equipSound, Item repairItem, float toughness)
-		{
+		WitherArmor(String name, int durabilityMultiplier, int[] damageReduction, int enchantability, SoundEvent equipSound, Item repairItem, float toughness) {
 			this.name = name;
 			this.durabilityMultiplier = durabilityMultiplier;
 			this.damageReduction = damageReduction;

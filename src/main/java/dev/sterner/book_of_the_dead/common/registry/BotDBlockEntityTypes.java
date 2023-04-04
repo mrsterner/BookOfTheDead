@@ -16,46 +16,46 @@ public interface BotDBlockEntityTypes {
 	Map<BlockEntityType<?>, Identifier> BLOCK_ENTITY_TYPES = new LinkedHashMap<>();
 
 	BlockEntityType<HookBlockEntity> HOOK = register("hook",
-			QuiltBlockEntityTypeBuilder.create(HookBlockEntity::new,
-					BotDObjects.HOOK_BLOCK,
-					BotDObjects.METAL_HOOK_BLOCK
-			).build(null));
+		QuiltBlockEntityTypeBuilder.create(HookBlockEntity::new,
+			BotDObjects.HOOK_BLOCK,
+			BotDObjects.METAL_HOOK_BLOCK
+		).build(null));
 
 	BlockEntityType<JarBlockEntity> JAR = register("jar",
-			QuiltBlockEntityTypeBuilder.create(JarBlockEntity::new,
-					BotDObjects.JAR
-			).build(null));
+		QuiltBlockEntityTypeBuilder.create(JarBlockEntity::new,
+			BotDObjects.JAR
+		).build(null));
 
 	BlockEntityType<NecroTableBlockEntity> NECRO = register("necro",
-			QuiltBlockEntityTypeBuilder.create(NecroTableBlockEntity::new,
-					BotDObjects.NECRO_TABLE
-			).build(null));
+		QuiltBlockEntityTypeBuilder.create(NecroTableBlockEntity::new,
+			BotDObjects.NECRO_TABLE
+		).build(null));
 
 	BlockEntityType<ButcherTableBlockEntity> BUTCHER = register("butcher",
-			QuiltBlockEntityTypeBuilder.create(ButcherTableBlockEntity::new,
-					BotDObjects.BUTCHER_TABLE
-			).build(null));
+		QuiltBlockEntityTypeBuilder.create(ButcherTableBlockEntity::new,
+			BotDObjects.BUTCHER_TABLE
+		).build(null));
 
 	BlockEntityType<PedestalBlockEntity> PEDESTAL = register("pedestal",
-			QuiltBlockEntityTypeBuilder.create(PedestalBlockEntity::new,
-					BotDObjects.PEDESTAL
-			).build());
+		QuiltBlockEntityTypeBuilder.create(PedestalBlockEntity::new,
+			BotDObjects.PEDESTAL
+		).build());
 
 	BlockEntityType<RetortFlaskBlockEntity> RETORT = register("retort",
-			QuiltBlockEntityTypeBuilder.create(RetortFlaskBlockEntity::new,
-					BotDObjects.RETORT_FLASK_BLOCK
-			).build());
+		QuiltBlockEntityTypeBuilder.create(RetortFlaskBlockEntity::new,
+			BotDObjects.RETORT_FLASK_BLOCK
+		).build());
 
 	BlockEntityType<BotDSkullBlockEntity> HEAD = register("head",
-			QuiltBlockEntityTypeBuilder.create(BotDSkullBlockEntity::new,
-					BotDObjects.VILLAGER_HEAD,
-					BotDObjects.VILLAGER_WALL_HEAD
-			).build());
+		QuiltBlockEntityTypeBuilder.create(BotDSkullBlockEntity::new,
+			BotDObjects.VILLAGER_HEAD,
+			BotDObjects.VILLAGER_WALL_HEAD
+		).build());
 
 	BlockEntityType<BrainBlockEntity> BRAIN = register("brain",
-			QuiltBlockEntityTypeBuilder.create(BrainBlockEntity::new,
-					BotDObjects.BRAIN
-			).build());
+		QuiltBlockEntityTypeBuilder.create(BrainBlockEntity::new,
+			BotDObjects.BRAIN
+		).build());
 
 
 	static <T extends BlockEntity> BlockEntityType<T> register(String name, BlockEntityType<T> type) {

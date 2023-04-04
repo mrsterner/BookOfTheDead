@@ -14,7 +14,7 @@ public class BotDEMIPlugin implements EmiPlugin {
 
 	private static final EmiStack ICON = EmiStack.of(BotDObjects.MEAT_CLEAVER);
 	public static final EmiRecipeCategory BUTCHERING_CATEGORY = new EmiRecipeCategory(
-			Constants.id("butchering"), ICON
+		Constants.id("butchering"), ICON
 	);
 
 

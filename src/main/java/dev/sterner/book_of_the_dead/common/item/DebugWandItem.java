@@ -59,7 +59,7 @@ public class DebugWandItem extends Item {
 		 */
 
 		if (world instanceof ServerWorld serverWorld) {
-			serverWorld.spawnParticles(new OrbitParticleEffect(1, 0, 0.25f, (float)user.getX(), (float)user.getY() + 1, (float) user.getZ(), 3), user.getX(), user.getY() + 1, user.getZ(), 0, 0, 0, 0, 0.05);
+			serverWorld.spawnParticles(new OrbitParticleEffect(1, 0, 0.25f, (float) user.getX(), (float) user.getY() + 1, (float) user.getZ(), 3), user.getX(), user.getY() + 1, user.getZ(), 0, 0, 0, 0, 0.05);
 		}
 
 		/*

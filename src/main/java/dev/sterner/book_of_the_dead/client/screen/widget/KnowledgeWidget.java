@@ -11,7 +11,6 @@ import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.util.ChatNarratorManager;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.player.PlayerEntity;
 
 import java.util.List;
 import java.util.Set;
@@ -24,7 +23,7 @@ public class KnowledgeWidget extends ClickableWidget {
 	public Set<KnowledgeData> knowledgeDataList;
 
 	public KnowledgeWidget(float x, float y, BookOfTheDeadScreen screen, Knowledge knowledge) {
-		super((int)x, (int)y, 17, 17, ChatNarratorManager.NO_TITLE);
+		super((int) x, (int) y, 17, 17, ChatNarratorManager.NO_TITLE);
 		this.screen = screen;
 		this.knowledge = knowledge;
 		this.x = x;
@@ -38,16 +37,16 @@ public class KnowledgeWidget extends ClickableWidget {
 		boolean isActivated = knowledgeList.contains(knowledge);
 		boolean shouldRender = true;
 
-		if(!knowledge.children.isEmpty()){
-			for(Knowledge child : knowledge.children){
-				if(!knowledgeList.contains(child)){
+		if (!knowledge.children.isEmpty()) {
+			for (Knowledge child : knowledge.children) {
+				if (!knowledgeList.contains(child)) {
 					shouldRender = false;
 					break;
 				}
 			}
 		}
 
-		if(shouldRender){
+		if (shouldRender) {
 			RenderSystem.setShaderTexture(0, knowledge.icon);
 			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, isHovered() || isActivated ? this.alpha : 0.25F);
 			RenderSystem.enableBlend();
@@ -58,7 +57,7 @@ public class KnowledgeWidget extends ClickableWidget {
 			enableScissor((screen.width - 192) / 4 - 5, screen.scissorY + 13, screen.scissorWidth + (screen.width - 192) / 4 - 5 - 61, screen.scissorHeight + 1);
 			matrices.push();
 			matrices.translate(screen.xOffset, screen.yOffset, 0.0F);
-			RenderUtils.drawTexture(matrices, this.x + (float) screen.xOffset, this.y + (float) screen.yOffset, 0 , 0, this.width, this.height, 17, 17);
+			RenderUtils.drawTexture(matrices, this.x + (float) screen.xOffset, this.y + (float) screen.yOffset, 0, 0, this.width, this.height, 17, 17);
 			matrices.pop();
 			disableScissor();
 		}
@@ -72,7 +71,7 @@ public class KnowledgeWidget extends ClickableWidget {
 
 	@Override
 	protected boolean clicked(double mouseX, double mouseY) {
-		if(!this.active && !this.visible){
+		if (!this.active && !this.visible) {
 			return false;
 		}
 

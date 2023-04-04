@@ -1,7 +1,9 @@
 package dev.sterner.book_of_the_dead.client.particle;
 
 import dev.sterner.book_of_the_dead.api.particle.BotDParticle;
-import net.minecraft.client.particle.*;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.ParticleFactory;
+import net.minecraft.client.particle.SpriteProvider;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.Nullable;
@@ -37,9 +39,9 @@ public class SoulSpiralParticle extends BotDParticle {
 		this.collidesWithWorld = false;
 		double maxDeviation = 0.2; // Maximum deviation from straight line path
 		this.offset = new Vec3d(
-				(Math.random() * maxDeviation * 2) - maxDeviation,
-				(Math.random() * maxDeviation * 2) - maxDeviation,
-				(Math.random() * maxDeviation * 2) - maxDeviation
+			(Math.random() * maxDeviation * 2) - maxDeviation,
+			(Math.random() * maxDeviation * 2) - maxDeviation,
+			(Math.random() * maxDeviation * 2) - maxDeviation
 		);
 	}
 

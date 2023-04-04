@@ -1,21 +1,16 @@
 package dev.sterner.book_of_the_dead.client.screen.widget;
 
-import com.google.common.collect.Maps;
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.sterner.book_of_the_dead.client.screen.BookOfTheDeadScreen;
 import dev.sterner.book_of_the_dead.client.screen.book.Knowledge;
 import dev.sterner.book_of_the_dead.common.registry.BotDKnowledgeRegistry;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.client.gui.DrawableHelper;
-import net.minecraft.client.texture.TextureManager;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.MathHelper;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class KnowledgeTab extends DrawableHelper {
 	public final List<KnowledgeWidget> widgets = new ArrayList<>();
@@ -39,7 +34,7 @@ public class KnowledgeTab extends DrawableHelper {
 	public void render(MatrixStack matrices, int x, int y) {
 		enableScissor(x, y, x + 122, y + 173);
 		matrices.push();
-		matrices.translate((float)x, (float)y, 0.0F);
+		matrices.translate((float) x, (float) y, 0.0F);
 		Identifier identifier = Constants.id("textures/gui/parallax.png");
 		RenderSystem.setShaderTexture(0, identifier);
 

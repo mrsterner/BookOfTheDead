@@ -45,12 +45,12 @@ public class ReinforcedDoorBlock extends DoorBlock {
 			return doubleBlockHalf == DoubleBlockHalf.LOWER && direction == Direction.DOWN && !state.canPlaceAt(world, pos) ? Blocks.AIR.getDefaultState() : super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
 		} else {
 			return neighborState.isOf(this) && neighborState.get(HALF) != doubleBlockHalf
-					? state.with(FACING, neighborState.get(FACING))
-					.with(OPEN, neighborState.get(OPEN))
-					.with(HINGE, neighborState.get(HINGE))
-					.with(POWERED, neighborState.get(POWERED))
-					.with(LOCKED, neighborState.get(LOCKED))
-					: Blocks.AIR.getDefaultState();
+				? state.with(FACING, neighborState.get(FACING))
+				.with(OPEN, neighborState.get(OPEN))
+				.with(HINGE, neighborState.get(HINGE))
+				.with(POWERED, neighborState.get(POWERED))
+				.with(LOCKED, neighborState.get(LOCKED))
+				: Blocks.AIR.getDefaultState();
 		}
 	}
 

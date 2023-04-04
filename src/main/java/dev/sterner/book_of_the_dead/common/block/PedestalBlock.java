@@ -21,9 +21,9 @@ import org.jetbrains.annotations.Nullable;
 
 public class PedestalBlock extends Block implements BlockEntityProvider {
 	protected static final VoxelShape OUTLINE_SHAPE = VoxelShapes.union(
-			createCuboidShape(2D, 0D, 2D, 14D, 3D, 14D),
-			createCuboidShape(4D, 3D, 4D, 12D, 11D, 12D),
-			createCuboidShape(3D, 11D, 3D, 13D, 13D, 13D)
+		createCuboidShape(2D, 0D, 2D, 14D, 3D, 14D),
+		createCuboidShape(4D, 3D, 4D, 12D, 11D, 12D),
+		createCuboidShape(3D, 11D, 3D, 13D, 13D, 13D)
 	);
 
 	public PedestalBlock(Settings settings) {

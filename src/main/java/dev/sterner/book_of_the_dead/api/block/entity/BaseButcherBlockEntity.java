@@ -122,11 +122,11 @@ public class BaseButcherBlockEntity extends HaulerBlockEntity implements IBlockE
 			Optional<Entity> entity = EntityType.getEntityFromNbt(getCorpseEntity(), world);
 			if (entity.isPresent() && !world.isClient()) {
 				Optional<ButcheringRecipe> recipe = world.getRecipeManager().listAllOfType(BotDRecipeTypes.BUTCHERING_RECIPE_TYPE)
-						.stream().filter(type -> type.entityType() == entity.get().getType()).findFirst();
+					.stream().filter(type -> type.entityType() == entity.get().getType()).findFirst();
 				recipe.ifPresent(r -> {
 					DefaultedList<Pair<ItemStack, Float>> outputsWithChance = DefaultedList.ofSize(r.getOutputs().size(), Pair.of(ItemStack.EMPTY, 1f));
 					IntStream.range(0, butcheringRecipe.getOutputs().size()).forEach(i ->
-							outputsWithChance.set(i, Pair.of(butcheringRecipe.getOutputs().get(i).getFirst().copy(), butcheringRecipe.getOutputs().get(i).getSecond())));
+						outputsWithChance.set(i, Pair.of(butcheringRecipe.getOutputs().get(i).getFirst().copy(), butcheringRecipe.getOutputs().get(i).getSecond())));
 					craftRecipe(outputsWithChance);
 					resetRecipe = false;
 				});

@@ -25,9 +25,9 @@ public class ButcherBlock extends HorizontalDoubleBlock implements BlockEntityPr
 	public ButcherBlock(Settings settings) {
 		super(settings.nonOpaque());
 		this.stateManager
-				.getDefaultState()
-				.with(FACING, Direction.NORTH)
-				.with(HorizontalDoubleBlock.HHALF, HorizontalDoubleBlockHalf.RIGHT);
+			.getDefaultState()
+			.with(FACING, Direction.NORTH)
+			.with(HorizontalDoubleBlock.HHALF, HorizontalDoubleBlockHalf.RIGHT);
 	}
 
 	@Override

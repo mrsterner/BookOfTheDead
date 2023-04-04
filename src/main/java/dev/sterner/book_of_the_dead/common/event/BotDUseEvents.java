@@ -4,11 +4,8 @@ import dev.sterner.book_of_the_dead.api.block.HorizontalDoubleBlock;
 import dev.sterner.book_of_the_dead.api.enums.HorizontalDoubleBlockHalf;
 import dev.sterner.book_of_the_dead.api.interfaces.IHauler;
 import dev.sterner.book_of_the_dead.common.block.RopeBlock;
-import dev.sterner.book_of_the_dead.common.entity.FloatingItemEntity;
 import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
-import dev.sterner.book_of_the_dead.common.util.BotDUtils;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
-import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -20,7 +17,6 @@ import net.minecraft.item.Item;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.BlockStateParticleEffect;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
@@ -28,10 +24,8 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
@@ -60,12 +54,12 @@ public class BotDUseEvents {
 	 */
 	private static void addParticle(World world, BlockPos blockPos, BlockState blockState) {
 		world.addParticle(new BlockStateParticleEffect(ParticleTypes.BLOCK, blockState),
-				blockPos.getX() + ((double) world.random.nextFloat() - 0.5D),
-				blockPos.getY() + 0.1D,
-				blockPos.getZ() + ((double) world.random.nextFloat() - 0.5D),
-				4.0D * ((double) world.random.nextFloat() - 0.5D),
-				0.5D,
-				((double) world.random.nextFloat() - 0.5D) * 4.0D);
+			blockPos.getX() + ((double) world.random.nextFloat() - 0.5D),
+			blockPos.getY() + 0.1D,
+			blockPos.getZ() + ((double) world.random.nextFloat() - 0.5D),
+			4.0D * ((double) world.random.nextFloat() - 0.5D),
+			0.5D,
+			((double) world.random.nextFloat() - 0.5D) * 4.0D);
 	}
 
 	/**

@@ -1,14 +1,11 @@
 package dev.sterner.book_of_the_dead.common.item;
 
 import dev.sterner.book_of_the_dead.client.renderer.SkeletonArmorRenderer;
-import dev.sterner.book_of_the_dead.client.renderer.WitherArmorRenderer;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.*;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.sound.SoundEvents;
+import net.minecraft.item.ArmorItem;
+import net.minecraft.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.client.RenderProvider;
@@ -38,7 +35,7 @@ public class SkeletonArmorItem extends ArmorItem implements GeoItem {
 
 			@Override
 			public @NotNull BipedEntityModel<LivingEntity> getHumanoidArmorModel(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, BipedEntityModel<LivingEntity> original) {
-				if (this.renderer == null){
+				if (this.renderer == null) {
 					this.renderer = new SkeletonArmorRenderer();
 				}
 

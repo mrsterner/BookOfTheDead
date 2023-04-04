@@ -62,14 +62,14 @@ public class ButcherTableBlockEntity extends BaseButcherBlockEntity {
 	public void spawnMuckParticles(ServerWorld world, BlockPos pos) {
 		int count = 150;
 		(world).spawnParticles(new BlockStateParticleEffect(ParticleTypes.BLOCK, Blocks.DARK_OAK_PLANKS.getDefaultState()),
-				pos.getX() + 0.5f,
-				pos.getY() + 1.0f,
-				pos.getZ() + 0.5f,
-				count,
-				0.0,
-				0.0,
-				0.0,
-				0.15F);
+			pos.getX() + 0.5f,
+			pos.getY() + 1.0f,
+			pos.getZ() + 0.5f,
+			count,
+			0.0,
+			0.0,
+			0.0,
+			0.15F);
 	}
 
 	@Override

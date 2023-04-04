@@ -22,9 +22,9 @@ public class EnterPlayerOnDemandTask extends ExtendedBehaviour<KakuzuEntity> {
 	@Override
 	protected List<Pair<MemoryModuleType<?>, MemoryModuleState>> getMemoryRequirements() {
 		return ObjectArrayList.of(
-				Pair.of(MemoryModuleType.WALK_TARGET, MemoryModuleState.VALUE_ABSENT),
-				Pair.of(BotDMemoryModuleTypes.OWNER_PLAYER, MemoryModuleState.VALUE_PRESENT),
-				Pair.of(BotDMemoryModuleTypes.SHOULD_MERGE, MemoryModuleState.VALUE_PRESENT)
+			Pair.of(MemoryModuleType.WALK_TARGET, MemoryModuleState.VALUE_ABSENT),
+			Pair.of(BotDMemoryModuleTypes.OWNER_PLAYER, MemoryModuleState.VALUE_PRESENT),
+			Pair.of(BotDMemoryModuleTypes.SHOULD_MERGE, MemoryModuleState.VALUE_PRESENT)
 		);
 	}
 

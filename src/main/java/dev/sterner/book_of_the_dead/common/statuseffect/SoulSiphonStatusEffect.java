@@ -1,7 +1,6 @@
 package dev.sterner.book_of_the_dead.common.statuseffect;
 
 import dev.sterner.book_of_the_dead.client.particle.OrbitParticleEffect;
-import dev.sterner.book_of_the_dead.client.particle.SoulParticleEffect;
 import dev.sterner.book_of_the_dead.common.component.BotDComponents;
 import dev.sterner.book_of_the_dead.common.component.LivingEntityDataComponent;
 import dev.sterner.book_of_the_dead.common.registry.BotDDamageTypes;
@@ -53,17 +52,17 @@ public class SoulSiphonStatusEffect extends StatusEffect {
 
 			if (world instanceof ServerWorld serverWorld) {
 				serverWorld.spawnParticles(new OrbitParticleEffect(1, 0, 0.25f,
-						(float)component.getRitualPos().getX(),
-						(float)component.getRitualPos().getY() + 1,
+						(float) component.getRitualPos().getX(),
+						(float) component.getRitualPos().getY() + 1,
 						(float) component.getRitualPos().getZ(), 3),
-						x,
-						y,
-						z,
-						0,
-						0,
-						0,
-						0,
-						0);
+					x,
+					y,
+					z,
+					0,
+					0,
+					0,
+					0,
+					0);
 			}
 
 			for (int i = 0; i < 4; i++) {

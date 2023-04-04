@@ -49,11 +49,11 @@ public class BloodSlimeEntity extends MobEntity implements Monster {
 
 	public static DefaultAttributeContainer.Builder createMobAttributes() {
 		return MobEntity.createAttributes()
-				.add(EntityAttributes.GENERIC_FOLLOW_RANGE, 16.0)
-				.add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK)
-				.add(EntityAttributes.GENERIC_MAX_HEALTH, 20)
-				.add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.2F + 0.1F)
-				.add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 10);
+			.add(EntityAttributes.GENERIC_FOLLOW_RANGE, 16.0)
+			.add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK)
+			.add(EntityAttributes.GENERIC_MAX_HEALTH, 20)
+			.add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.2F + 0.1F)
+			.add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 10);
 	}
 
 
@@ -125,8 +125,8 @@ public class BloodSlimeEntity extends MobEntity implements Monster {
 		if (this.isAlive()) {
 			int i = 2;
 			if (this.squaredDistanceTo(target) < 0.6 * (double) i * 0.6 * (double) i
-					&& this.canSee(target)
-					&& target.damage(this.getDamageSources().mobAttack(this), this.getDamageAmount())) {
+				&& this.canSee(target)
+				&& target.damage(this.getDamageSources().mobAttack(this), this.getDamageAmount())) {
 				this.playSound(SoundEvents.ENTITY_SLIME_ATTACK, 1.0F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
 				this.applyDamageEffects(this, target);
 			}
@@ -274,8 +274,8 @@ public class BloodSlimeEntity extends MobEntity implements Monster {
 		@Override
 		public boolean canStart() {
 			return this.slime.getTarget() == null
-					&& (this.slime.onGround || this.slime.isTouchingWater() || this.slime.isInLava() || this.slime.hasStatusEffect(StatusEffects.LEVITATION))
-					&& this.slime.getMoveControl() instanceof SlimeMoveControl;
+				&& (this.slime.onGround || this.slime.isTouchingWater() || this.slime.isInLava() || this.slime.hasStatusEffect(StatusEffects.LEVITATION))
+				&& this.slime.getMoveControl() instanceof SlimeMoveControl;
 		}
 
 		@Override

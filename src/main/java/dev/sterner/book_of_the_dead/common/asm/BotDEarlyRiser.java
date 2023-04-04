@@ -15,7 +15,7 @@ public class BotDEarlyRiser implements Runnable {
 		final String enchantmentTarget = mappings.mapClassName("intermediary", "net.minecraft.class_1886");
 		//enchantmentTarget
 		ClassTinkerers.enumBuilder(enchantmentTarget, new Class[0])
-				.addEnumSubclass("AXE", "dev.sterner.book_of_the_dead.common.enchantment.ButcheringEnchantmentTarget")
-				.build();
+			.addEnumSubclass("AXE", "dev.sterner.book_of_the_dead.common.enchantment.ButcheringEnchantmentTarget")
+			.build();
 	}
 }

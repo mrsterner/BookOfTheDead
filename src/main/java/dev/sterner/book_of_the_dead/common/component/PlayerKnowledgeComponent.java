@@ -20,7 +20,7 @@ public class PlayerKnowledgeComponent implements AutoSyncedComponent {
 	private final PlayerEntity player;
 
 	private boolean isAlchemist = false;
-	private Set<KnowledgeData> knowledgeData = new HashSet<>();
+	private final Set<KnowledgeData> knowledgeData = new HashSet<>();
 
 	public PlayerKnowledgeComponent(PlayerEntity player) {
 		this.player = player;
@@ -30,7 +30,7 @@ public class PlayerKnowledgeComponent implements AutoSyncedComponent {
 		return knowledgeData;
 	}
 
-	public void increaseKnowledgePoints(Knowledge knowledge, int amount){
+	public void increaseKnowledgePoints(Knowledge knowledge, int amount) {
 		for (KnowledgeData kd : knowledgeData) {
 			if (kd.knowledge().equals(knowledge)) {
 				int currentPoints = kd.points();
@@ -42,14 +42,14 @@ public class PlayerKnowledgeComponent implements AutoSyncedComponent {
 	}
 
 	private void setKnowledgePoint(KnowledgeData kd, int newPoints) {
-		if(knowledgeData.contains(kd)){
+		if (knowledgeData.contains(kd)) {
 			knowledgeData.remove(kd);
 			knowledgeData.add(new KnowledgeData(kd.knowledge(), newPoints));
 		}
 		BotDComponents.KNOWLEDGE_COMPONENT.sync(player);
 	}
 
-	public void setKnowledgePoint(Knowledge knowledge, int points){
+	public void setKnowledgePoint(Knowledge knowledge, int points) {
 		for (KnowledgeData kd : knowledgeData) {
 			if (kd.knowledge().equals(knowledge)) {
 				knowledgeData.remove(kd);
@@ -60,16 +60,16 @@ public class PlayerKnowledgeComponent implements AutoSyncedComponent {
 		BotDComponents.KNOWLEDGE_COMPONENT.sync(player);
 	}
 
-	public void addKnowledge(Knowledge knowledge){
+	public void addKnowledge(Knowledge knowledge) {
 		boolean canAddKnowledge = true;
 		List<Knowledge> k = getKnowledgeData().stream().map(KnowledgeData::knowledge).toList();
-		for(Knowledge child : knowledge.children){
-			if(!k.contains(child)){
+		for (Knowledge child : knowledge.children) {
+			if (!k.contains(child)) {
 				canAddKnowledge = false;
 				break;
 			}
 		}
-		if(canAddKnowledge){
+		if (canAddKnowledge) {
 			getKnowledgeData().add(new KnowledgeData(knowledge, 0));
 			BotDComponents.KNOWLEDGE_COMPONENT.sync(player);
 		}
@@ -82,7 +82,7 @@ public class PlayerKnowledgeComponent implements AutoSyncedComponent {
 		NbtList nbtList = nbt.getList(Constants.Nbt.KNOWLEDGE_DATA, NbtCompound.COMPOUND_TYPE);
 		List<KnowledgeData> knowledgeDataList = new ArrayList<>();
 
-		for(int i = 0; i < nbtList.size(); ++i) {
+		for (int i = 0; i < nbtList.size(); ++i) {
 			NbtCompound nbtCompound = nbtList.getCompound(i);
 			Identifier id = new Identifier(nbtCompound.getString(Constants.Nbt.KNOWLEDGE));
 			if (BotDRegistries.KNOWLEDGE.getIds().contains(id)) {
@@ -98,7 +98,7 @@ public class PlayerKnowledgeComponent implements AutoSyncedComponent {
 	@Override
 	public void writeToNbt(@NotNull NbtCompound nbt) {
 		NbtList knowledgeList = new NbtList();
-		for(KnowledgeData knowledgeData : getKnowledgeData()){
+		for (KnowledgeData knowledgeData : getKnowledgeData()) {
 			NbtCompound nbtCompound = new NbtCompound();
 			nbtCompound.putString(Constants.Nbt.KNOWLEDGE, knowledgeData.knowledge().identifier);
 			nbtCompound.putInt(Constants.Nbt.POINTS, knowledgeData.points());

@@ -38,9 +38,9 @@ public class FloatingItemEntity extends Entity {
 
 	@Override
 	public ActionResult interactAt(PlayerEntity player, Vec3d hitPos, Hand hand) {
-		if(!world.isClient()){
+		if (!world.isClient()) {
 			ItemStack handStack = player.getMainHandStack();
-			if(handStack.isEmpty() && hand == Hand.MAIN_HAND){
+			if (handStack.isEmpty() && hand == Hand.MAIN_HAND) {
 				player.setStackInHand(hand, getItem());
 				this.remove(RemovalReason.DISCARDED);
 				return ActionResult.CONSUME;

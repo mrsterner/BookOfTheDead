@@ -1,7 +1,9 @@
 package dev.sterner.book_of_the_dead.client.particle;
 
 import dev.sterner.book_of_the_dead.api.particle.BotDParticle;
-import net.minecraft.client.particle.*;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.ParticleFactory;
+import net.minecraft.client.particle.SpriteProvider;
 import net.minecraft.client.world.ClientWorld;
 import org.quiltmc.loader.api.minecraft.ClientOnly;
 

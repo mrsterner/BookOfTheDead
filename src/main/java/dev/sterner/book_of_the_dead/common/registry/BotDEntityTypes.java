@@ -19,51 +19,51 @@ public interface BotDEntityTypes {
 	Map<EntityType<?>, Identifier> ENTITY_TYPES = new LinkedHashMap<>();
 
 	EntityType<OldManEntity> OLD_MAN_ENTITY =
-			register(
-					"old_man",
-					QuiltEntityTypeBuilder.<OldManEntity>create()
-							.spawnGroup(SpawnGroup.AMBIENT)
-							.spawnableFarFromPlayer()
-							.entityFactory(OldManEntity::new)
-							.setDimensions(EntityDimensions.fixed(0.6F, 1.95F))
-							.build());
+		register(
+			"old_man",
+			QuiltEntityTypeBuilder.<OldManEntity>create()
+				.spawnGroup(SpawnGroup.AMBIENT)
+				.spawnableFarFromPlayer()
+				.entityFactory(OldManEntity::new)
+				.setDimensions(EntityDimensions.fixed(0.6F, 1.95F))
+				.build());
 
 	EntityType<BloodSlimeEntity> BLOOD_SLIME_ENTITY =
-			register(
-					"blood_slime",
-					QuiltEntityTypeBuilder.<BloodSlimeEntity>create()
-							.spawnGroup(SpawnGroup.MONSTER)
-							.spawnableFarFromPlayer()
-							.entityFactory(BloodSlimeEntity::new)
-							.setDimensions(EntityDimensions.fixed(0.8F, 0.8F))
-							.build());
+		register(
+			"blood_slime",
+			QuiltEntityTypeBuilder.<BloodSlimeEntity>create()
+				.spawnGroup(SpawnGroup.MONSTER)
+				.spawnableFarFromPlayer()
+				.entityFactory(BloodSlimeEntity::new)
+				.setDimensions(EntityDimensions.fixed(0.8F, 0.8F))
+				.build());
 
 	EntityType<PlayerCorpseEntity> PLAYER_CORPSE_ENTITY =
-			register(
-					"corpse_player",
-					QuiltEntityTypeBuilder.<PlayerCorpseEntity>create()
-							.spawnGroup(SpawnGroup.MISC)
-							.entityFactory(PlayerCorpseEntity::new)
-							.setDimensions(EntityDimensions.fixed(0.6F, 1.85F))
-							.build());
+		register(
+			"corpse_player",
+			QuiltEntityTypeBuilder.<PlayerCorpseEntity>create()
+				.spawnGroup(SpawnGroup.MISC)
+				.entityFactory(PlayerCorpseEntity::new)
+				.setDimensions(EntityDimensions.fixed(0.6F, 1.85F))
+				.build());
 
 	EntityType<KakuzuEntity> KAKUZU_ENTITY =
-			register(
-					"kakuzu",
-					QuiltEntityTypeBuilder.<KakuzuEntity>create()
-							.spawnGroup(SpawnGroup.MISC)
-							.entityFactory(KakuzuEntity::new)
-							.setDimensions(EntityDimensions.fixed(0.25F, 0.5F))
-							.build());
+		register(
+			"kakuzu",
+			QuiltEntityTypeBuilder.<KakuzuEntity>create()
+				.spawnGroup(SpawnGroup.MISC)
+				.entityFactory(KakuzuEntity::new)
+				.setDimensions(EntityDimensions.fixed(0.25F, 0.5F))
+				.build());
 
 	EntityType<FloatingItemEntity> FLOATING_ITEM_ENTITY =
-			register(
-					"floating_item",
-					QuiltEntityTypeBuilder.<FloatingItemEntity>create()
-							.spawnGroup(SpawnGroup.MISC)
-							.entityFactory(FloatingItemEntity::new)
-							.setDimensions(EntityDimensions.fixed(0.5F, 0.75F))
-							.build());
+		register(
+			"floating_item",
+			QuiltEntityTypeBuilder.<FloatingItemEntity>create()
+				.spawnGroup(SpawnGroup.MISC)
+				.entityFactory(FloatingItemEntity::new)
+				.setDimensions(EntityDimensions.fixed(0.5F, 0.75F))
+				.build());
 
 
 	static <T extends Entity> EntityType<T> register(String name, EntityType<T> type) {

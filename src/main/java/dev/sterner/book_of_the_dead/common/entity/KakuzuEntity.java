@@ -78,11 +78,11 @@ public class KakuzuEntity extends PathAwareEntity implements SmartBrainOwner<Kak
 
 	public static DefaultAttributeContainer.Builder createAttributes() {
 		return MobEntity.createAttributes()
-				.add(EntityAttributes.GENERIC_MAX_HEALTH, 20.0)
-				.add(EntityAttributes.GENERIC_FLYING_SPEED, 0.1F)
-				.add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.1F)
-				.add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 2.0)
-				.add(EntityAttributes.GENERIC_FOLLOW_RANGE, 48.0);
+			.add(EntityAttributes.GENERIC_MAX_HEALTH, 20.0)
+			.add(EntityAttributes.GENERIC_FLYING_SPEED, 0.1F)
+			.add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.1F)
+			.add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 2.0)
+			.add(EntityAttributes.GENERIC_FOLLOW_RANGE, 48.0);
 	}
 
 	@Override

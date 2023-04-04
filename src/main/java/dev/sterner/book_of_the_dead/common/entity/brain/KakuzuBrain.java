@@ -23,7 +23,6 @@ import net.tslat.smartbrainlib.api.core.sensor.ExtendedSensor;
 import net.tslat.smartbrainlib.api.core.sensor.vanilla.HurtBySensor;
 import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyLivingEntitySensor;
 import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyPlayersSensor;
-import net.minecraft.unmapped.C_lygsomtd;
 
 import java.util.List;
 import java.util.Optional;
@@ -34,36 +33,36 @@ public class KakuzuBrain {
 
 	public static List<ExtendedSensor<KakuzuEntity>> getSensors() {
 		return ObjectArrayList.of(
-				new NearbyPlayersSensor<>(),
-				new NearbyLivingEntitySensor<>(),
-				new HurtBySensor<>(),
-				new KakuzuSpecificSensor()
+			new NearbyPlayersSensor<>(),
+			new NearbyLivingEntitySensor<>(),
+			new HurtBySensor<>(),
+			new KakuzuSpecificSensor()
 		);
 	}
 
 	public static BrainActivityGroup<KakuzuEntity> getCoreTasks() {
 		return BrainActivityGroup.coreTasks(
-				new EnterPlayerOnDemandTask(),
-				new WalkTask(2.5F),
-				new LookAroundTask(45, 90),
-				new WanderAroundTask()
+			new EnterPlayerOnDemandTask(),
+			new WalkTask(2.5F),
+			new LookAroundTask(45, 90),
+			new WanderAroundTask()
 
 		);
 	}
 
 	public static BrainActivityGroup<KakuzuEntity> getIdleTasks(KakuzuEntity kakuzu) {
 		return BrainActivityGroup.idleTasks(
-				new FirstApplicableBehaviour<>(
-						new SetPlayerLookTarget<>()),
-				new OneRandomBehaviour<>(
-						new StrollFlyTask<>().dontAvoidWater()
-				)
+			new FirstApplicableBehaviour<>(
+				new SetPlayerLookTarget<>()),
+			new OneRandomBehaviour<>(
+				new StrollFlyTask<>().dontAvoidWater()
+			)
 		);
 	}
 
 	public static BrainActivityGroup<KakuzuEntity> getFightTasks(KakuzuEntity kakuzu) {
 		return BrainActivityGroup.fightTasks(
-				new InvalidateAttackTarget<>()
+			new InvalidateAttackTarget<>()
 		);
 	}
 

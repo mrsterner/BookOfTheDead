@@ -145,20 +145,20 @@ public class ButcherTableBlockEntityRenderer implements BlockEntityRenderer<Butc
 		if (entity.latter > 0) {
 			float width = 0.5f;
 			world.addParticle((ParticleEffect) BotDParticleTypes.SOAP_BUBBLE,
-					pos.getX() + 0.5 + MathHelper.nextDouble(world.random, -width, width),
-					pos.getY() + 1.1,
-					pos.getZ() + 0.5 + MathHelper.nextDouble(world.random, -width, width),
-					0,
-					0,
-					0);
+				pos.getX() + 0.5 + MathHelper.nextDouble(world.random, -width, width),
+				pos.getY() + 1.1,
+				pos.getZ() + 0.5 + MathHelper.nextDouble(world.random, -width, width),
+				0,
+				0,
+				0);
 
 			world.addParticle((ParticleEffect) BotDParticleTypes.SOAP_BUBBLE,
-					neighbourPos.getX() + 0.5 + MathHelper.nextDouble(world.random, -width, width),
-					neighbourPos.getY() + 1.1,
-					neighbourPos.getZ() + 0.5 + MathHelper.nextDouble(world.random, -width, width),
-					0,
-					0,
-					0);
+				neighbourPos.getX() + 0.5 + MathHelper.nextDouble(world.random, -width, width),
+				neighbourPos.getY() + 1.1,
+				neighbourPos.getZ() + 0.5 + MathHelper.nextDouble(world.random, -width, width),
+				0,
+				0,
+				0);
 		}
 	}
 

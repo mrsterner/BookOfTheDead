@@ -32,14 +32,14 @@ public interface BotDPlacedFeatureRegistry {
 	static void init(Registry<ConfiguredFeature<?, ?>> configured, DynamicRegistryManagerSetupContext.RegistryMap registryMap) {
 		Holder<ConfiguredFeature<?, ?>> sulfur = configured.getHolder(CONFIGURED_FEATURE_KEYS.get(CONFIGURED_SULFUR_FEATURE)).orElseThrow();
 		registryMap.register(
-				RegistryKeys.PLACED_FEATURE,
-				Constants.id("placed_sulfur_feature"),
-				new PlacedFeature(sulfur,
-						List.copyOf(List.of(
-								InSquarePlacementModifier.getInstance(),
-								HeightRangePlacementModifier.trapezoid(YOffset.fixed(-56), YOffset.fixed(24)),
-								BiomePlacementModifier.getInstance()
-						)))
+			RegistryKeys.PLACED_FEATURE,
+			Constants.id("placed_sulfur_feature"),
+			new PlacedFeature(sulfur,
+				List.copyOf(List.of(
+					InSquarePlacementModifier.getInstance(),
+					HeightRangePlacementModifier.trapezoid(YOffset.fixed(-56), YOffset.fixed(24)),
+					BiomePlacementModifier.getInstance()
+				)))
 		);
 
 

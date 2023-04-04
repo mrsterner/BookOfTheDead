@@ -65,11 +65,11 @@ public class BotDUtils {
 			buffer[0].forEachBox((minX, minY, minZ, maxX, maxY, maxZ) -> {
 				switch (axis) {
 					case 'x' -> buffer[1] = VoxelShapes.combine(buffer[1],
-							VoxelShapes.cuboid(minX, 1 - maxZ, minY, maxX, 1 - minZ, maxY), BooleanBiFunction.OR);
+						VoxelShapes.cuboid(minX, 1 - maxZ, minY, maxX, 1 - minZ, maxY), BooleanBiFunction.OR);
 					case 'y' -> buffer[1] = VoxelShapes.combine(buffer[1],
-							VoxelShapes.cuboid(1 - maxZ, minY, minX, 1 - minZ, maxY, maxX), BooleanBiFunction.OR);
+						VoxelShapes.cuboid(1 - maxZ, minY, minX, 1 - minZ, maxY, maxX), BooleanBiFunction.OR);
 					case 'z' -> buffer[1] = VoxelShapes.combine(buffer[1],
-							VoxelShapes.cuboid(minY, minX, 1 - maxZ, maxY, maxX, 1 - minZ), BooleanBiFunction.OR);
+						VoxelShapes.cuboid(minY, minX, 1 - maxZ, maxY, maxX, 1 - minZ), BooleanBiFunction.OR);
 					default -> throw new IllegalArgumentException("Invalid axis argument: " + axis);
 				}
 			});
@@ -154,7 +154,7 @@ public class BotDUtils {
 	@Nullable
 	public static <T extends LivingEntity> T getClosestEntity(List<? extends T> entityList, EntityType<?> entityType, BlockPos pos) {
 		Optional<? extends T> closestEntity = entityList.stream().filter(entity -> entity.getType() == entityType)
-				.min(Comparator.comparingDouble(entity -> entity.squaredDistanceTo(pos.getX(), pos.getY(), pos.getZ())));
+			.min(Comparator.comparingDouble(entity -> entity.squaredDistanceTo(pos.getX(), pos.getY(), pos.getZ())));
 		return closestEntity.orElse(null);
 	}
 }

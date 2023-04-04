@@ -69,7 +69,7 @@ public interface BotDTrades {
 		@Override
 		public TradeOffer create(Entity entity, RandomGenerator random) {
 			return new TradeOffer(new ItemStack(Items.EMERALD, this.price + random.nextInt(3)), sell, this.maxUses, this.experience,
-					this.multiplier);
+				this.multiplier);
 		}
 	}
 }
