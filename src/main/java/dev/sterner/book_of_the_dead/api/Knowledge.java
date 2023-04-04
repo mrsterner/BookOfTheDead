@@ -1,4 +1,4 @@
-package dev.sterner.book_of_the_dead.client.screen.book;
+package dev.sterner.book_of_the_dead.api;
 
 import net.minecraft.util.Identifier;
 

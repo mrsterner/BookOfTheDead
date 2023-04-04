@@ -28,3 +28,5 @@ accessible class net/minecraft/entity/mob/PhantomEntity$FindTargetGoal
 accessible class net/minecraft/village/VillagerGossips$Reputation
 accessible field net/minecraft/village/VillagerGossips$Reputation associatedGossip Lit/unimi/dsi/fastutil/objects/Object2IntMap;
 accessible field net/minecraft/entity/effect/StatusEffectInstance duration I
+
+accessible method net/minecraft/client/gui/screen/Screen addDrawableChild (Lnet/minecraft/client/gui/Element;)Lnet/minecraft/client/gui/Element;

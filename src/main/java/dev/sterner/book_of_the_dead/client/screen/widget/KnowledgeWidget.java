@@ -3,7 +3,8 @@ package dev.sterner.book_of_the_dead.client.screen.widget;
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.sterner.book_of_the_dead.api.KnowledgeData;
 import dev.sterner.book_of_the_dead.client.screen.BookOfTheDeadScreen;
-import dev.sterner.book_of_the_dead.client.screen.book.Knowledge;
+import dev.sterner.book_of_the_dead.api.Knowledge;
+import dev.sterner.book_of_the_dead.client.screen.tag.KnowledgeTab;
 import dev.sterner.book_of_the_dead.common.component.BotDComponents;
 import dev.sterner.book_of_the_dead.common.component.PlayerKnowledgeComponent;
 import dev.sterner.book_of_the_dead.common.util.RenderUtils;
@@ -17,18 +18,18 @@ import java.util.Set;
 
 public class KnowledgeWidget extends ClickableWidget {
 	public Knowledge knowledge;
-	public BookOfTheDeadScreen screen;
+	public KnowledgeTab tab;
 	public float x;
 	public float y;
 	public Set<KnowledgeData> knowledgeDataList;
 
-	public KnowledgeWidget(float x, float y, BookOfTheDeadScreen screen, Knowledge knowledge) {
+	public KnowledgeWidget(float x, float y, KnowledgeTab tab, Knowledge knowledge) {
 		super((int) x, (int) y, 17, 17, ChatNarratorManager.NO_TITLE);
-		this.screen = screen;
+		this.tab = tab;
 		this.knowledge = knowledge;
 		this.x = x;
 		this.y = y;
-		this.knowledgeDataList = BotDComponents.KNOWLEDGE_COMPONENT.get(screen.player).getKnowledgeData();
+		this.knowledgeDataList = BotDComponents.KNOWLEDGE_COMPONENT.get(tab.player).getKnowledgeData();
 	}
 
 	@Override
@@ -54,10 +55,10 @@ public class KnowledgeWidget extends ClickableWidget {
 			RenderSystem.enableDepthTest();
 			// Render the screen texture
 
-			enableScissor((screen.width - 192) / 4 - 5, screen.scissorY + 13, screen.scissorWidth + (screen.width - 192) / 4 - 5 - 61, screen.scissorHeight + 1);
+			enableScissor((tab.width - 192) / 4 - 5, tab.scissorY + 13, tab.scissorWidth + (tab.width - 192) / 4 - 5 - 61, tab.scissorHeight + 1);
 			matrices.push();
-			matrices.translate(screen.xOffset, screen.yOffset, 0.0F);
-			RenderUtils.drawTexture(matrices, this.x + (float) screen.xOffset, this.y + (float) screen.yOffset, 0, 0, this.width, this.height, 17, 17);
+			matrices.translate(tab.xOffset, tab.yOffset, 0.0F);
+			RenderUtils.drawTexture(matrices, this.x + (float) tab.xOffset, this.y + (float) tab.yOffset, 0, 0, this.width, this.height, 17, 17);
 			matrices.pop();
 			disableScissor();
 		}
@@ -65,7 +66,7 @@ public class KnowledgeWidget extends ClickableWidget {
 
 	@Override
 	public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-		this.hovered = mouseX >= this.getX() + screen.xOffset * 2 && mouseY >= this.getY() + screen.yOffset * 2 && mouseX < this.getX() + screen.xOffset * 2 + this.width && mouseY < this.getY() + screen.yOffset * 2 + this.height;
+		this.hovered = mouseX >= this.getX() + tab.xOffset * 2 && mouseY >= this.getY() + tab.yOffset * 2 && mouseX < this.getX() + tab.xOffset * 2 + this.width && mouseY < this.getY() + tab.yOffset * 2 + this.height;
 		this.drawWidget(matrices, mouseX, mouseY, delta);
 	}
 
@@ -77,8 +78,8 @@ public class KnowledgeWidget extends ClickableWidget {
 
 		double halfWidth = (double) this.width / 2;
 		double halfHeight = (double) this.height / 2;
-		double centerX = this.getX() + halfWidth + screen.xOffset * 2;
-		double centerY = this.getY() + halfHeight + screen.yOffset * 2;
+		double centerX = this.getX() + halfWidth + tab.xOffset * 2;
+		double centerY = this.getY() + halfHeight + tab.yOffset * 2;
 		double radius = Math.min(halfWidth, halfHeight);
 
 		double dx = Math.abs(mouseX - centerX);
@@ -98,7 +99,7 @@ public class KnowledgeWidget extends ClickableWidget {
 	@Override
 	public void onClick(double mouseX, double mouseY) {
 		if (isValidClickButton(0)) {
-			PlayerKnowledgeComponent component = BotDComponents.KNOWLEDGE_COMPONENT.get(screen.player);
+			PlayerKnowledgeComponent component = BotDComponents.KNOWLEDGE_COMPONENT.get(tab.player);
 			component.addKnowledge(knowledge);
 		}
 	}

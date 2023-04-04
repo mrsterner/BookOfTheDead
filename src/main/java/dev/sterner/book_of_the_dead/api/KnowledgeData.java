@@ -1,7 +1,5 @@
 package dev.sterner.book_of_the_dead.api;
 
-import dev.sterner.book_of_the_dead.client.screen.book.Knowledge;
-
 import java.util.Objects;
 
 public record KnowledgeData(Knowledge knowledge, int points) {
