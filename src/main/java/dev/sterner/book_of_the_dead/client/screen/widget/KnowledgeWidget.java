@@ -1,19 +1,13 @@
 package dev.sterner.book_of_the_dead.client.screen.widget;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.*;
 import dev.sterner.book_of_the_dead.client.screen.BookOfTheDeadScreen;
 import dev.sterner.book_of_the_dead.client.screen.book.Knowledge;
 import dev.sterner.book_of_the_dead.common.util.RenderUtils;
-import net.minecraft.block.FluidBlock;
-import net.minecraft.block.Material;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.widget.ClickableWidget;
-import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.ChatNarratorManager;
 import net.minecraft.client.util.math.MatrixStack;
-import org.joml.Matrix4f;
-import org.lwjgl.opengl.GL11;
 
 public class KnowledgeWidget extends ClickableWidget {
 	public Knowledge knowledge;
@@ -39,7 +33,7 @@ public class KnowledgeWidget extends ClickableWidget {
 		RenderSystem.enableDepthTest();
 		// Render the screen texture
 
-		enableScissor(screen.buttonOffset, screen.scissorY + 13, screen.scissorWidth + screen.buttonOffset - 61, screen.scissorHeight + 1);
+		enableScissor((screen.width - 192) / 4 - 5, screen.scissorY + 13, screen.scissorWidth + (screen.width - 192) / 4 - 5 - 61, screen.scissorHeight + 1);
 		matrices.push();
 		matrices.translate(screen.xOffset, screen.yOffset, 0.0F);
 		RenderUtils.drawTexture(matrices, this.x + (float) screen.xOffset, this.y + (float) screen.yOffset, 0 , 0, this.width, this.height, 17, 17);
@@ -71,7 +65,6 @@ public class KnowledgeWidget extends ClickableWidget {
 		if (dx > radius || dy > radius) {
 			return false;
 		}
-		double c = dx + dy;
 		return dx + dy <= radius;
 	}
 

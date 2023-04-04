@@ -47,6 +47,7 @@
 	"cardinal-components": [
 		"book_of_the_dead:corpse",
 		"book_of_the_dead:player",
-		"book_of_the_dead:living"
+		"book_of_the_dead:living",
+		"book_of_the_dead:knowledge"
 	]
 }

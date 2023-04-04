@@ -32,7 +32,6 @@ public class BookOfTheDeadScreen extends Screen {
 	public int scissorWidth;
 	public int scissorHeight;
 	public boolean isDragging;
-	public int buttonOffset;
 	public List<KnowledgeWidget> widgets = new ArrayList<>();
 
 
@@ -44,10 +43,6 @@ public class BookOfTheDeadScreen extends Screen {
 		this.scissorY = 30;
 		this.scissorWidth = 122 + scissorX;
 		this.scissorHeight = 172 + scissorY;
-		/*
-		int i = (this.width - 252) / 2;
-		int j = (this.height - 140) / 2;
-		 */
 	}
 
 
@@ -57,7 +52,7 @@ public class BookOfTheDeadScreen extends Screen {
 
 	@Override
 	protected void init() {
-		float x = (this.width - 192) / 4 + 9 * 5 - 4;
+		float x = (float) (this.width - 192) / 4 + 9 * 5 - 4;
 		float y = 32 * 3 + 18 + 4;
 		//Void
 		widgets.add(new KnowledgeWidget(x - 9, y + 15, this, BotDKnowledgeRegistry.VOID));
@@ -101,9 +96,9 @@ public class BookOfTheDeadScreen extends Screen {
 		matrices.push();
 		this.renderBackground(matrices);
 		this.setFocused(false);
-		renderTransparentTexture(matrices, (this.width - 192) / 4 - 16, 32, 0, 0, 272, 182, 512, 256);
+		renderBookTexture(matrices, (this.width - 192) / 4 - 16, 32, 0, 0, 272, 182, 512, 256);
+
 		matrices.pop();
-		this.buttonOffset = scaledWidth;
 		RenderSystem.setShaderTexture(0, BookOfTheDeadScreen.PARALLAX);
 		enableScissor(scaledWidth, this.scissorY + 13, this.scissorWidth + scaledWidth - 61, this.scissorHeight + 1);
 		matrices.push();
@@ -121,7 +116,7 @@ public class BookOfTheDeadScreen extends Screen {
 		if (button == 0) {
 			if (!this.isDragging) {
 				// Check if the mouse is within the screen texture
-				if (mouseX >= (this.width - 192) / 4 - 16 && mouseX <= (this.width - 192) / 4 - 16 + 122 && mouseY >= this.yOffset && mouseY <= this.scissorHeight) {
+				if (mouseX >= (double) (this.width - 192) / 4 - 16 && mouseX <= (double) (this.width - 192) / 4 - 16 + 122 && mouseY >= this.yOffset && mouseY <= this.scissorHeight) {
 					this.isDragging = true;
 				}
 			}
@@ -152,7 +147,12 @@ public class BookOfTheDeadScreen extends Screen {
 		return super.mouseReleased(mouseX, mouseY, button);
 	}
 
-	public void renderTransparentTexture(MatrixStack matrices, int x, int y, float u, float v, int width, int height, int textureWidth, int textureHeight) {
+	@Override
+	public boolean isPauseScreen() {
+		return false;
+	}
+
+	public void renderBookTexture(MatrixStack matrices, int x, int y, float u, float v, int width, int height, int textureWidth, int textureHeight) {
 		RenderSystem.enableBlend();
 		RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
