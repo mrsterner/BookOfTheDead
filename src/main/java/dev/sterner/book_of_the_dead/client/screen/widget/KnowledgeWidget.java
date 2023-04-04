@@ -1,19 +1,27 @@
 package dev.sterner.book_of_the_dead.client.screen.widget;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import dev.sterner.book_of_the_dead.api.KnowledgeData;
 import dev.sterner.book_of_the_dead.client.screen.BookOfTheDeadScreen;
 import dev.sterner.book_of_the_dead.client.screen.book.Knowledge;
+import dev.sterner.book_of_the_dead.common.component.BotDComponents;
+import dev.sterner.book_of_the_dead.common.component.PlayerKnowledgeComponent;
 import dev.sterner.book_of_the_dead.common.util.RenderUtils;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.util.ChatNarratorManager;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.entity.player.PlayerEntity;
+
+import java.util.List;
+import java.util.Set;
 
 public class KnowledgeWidget extends ClickableWidget {
 	public Knowledge knowledge;
 	public BookOfTheDeadScreen screen;
 	public float x;
 	public float y;
+	public Set<KnowledgeData> knowledgeDataList;
 
 	public KnowledgeWidget(float x, float y, BookOfTheDeadScreen screen, Knowledge knowledge) {
 		super((int)x, (int)y, 17, 17, ChatNarratorManager.NO_TITLE);
@@ -21,24 +29,39 @@ public class KnowledgeWidget extends ClickableWidget {
 		this.knowledge = knowledge;
 		this.x = x;
 		this.y = y;
+		this.knowledgeDataList = BotDComponents.KNOWLEDGE_COMPONENT.get(screen.player).getKnowledgeData();
 	}
 
 	@Override
 	public void drawWidget(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+		List<Knowledge> knowledgeList = knowledgeDataList.stream().map(KnowledgeData::knowledge).toList();
+		boolean isActivated = knowledgeList.contains(knowledge);
+		boolean shouldRender = true;
 
-		RenderSystem.setShaderTexture(0, knowledge.icon);
-		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, !isHovered() ? 0.25F : this.alpha);
-		RenderSystem.enableBlend();
-		RenderSystem.defaultBlendFunc();
-		RenderSystem.enableDepthTest();
-		// Render the screen texture
+		if(!knowledge.children.isEmpty()){
+			for(Knowledge child : knowledge.children){
+				if(!knowledgeList.contains(child)){
+					shouldRender = false;
+					break;
+				}
+			}
+		}
 
-		enableScissor((screen.width - 192) / 4 - 5, screen.scissorY + 13, screen.scissorWidth + (screen.width - 192) / 4 - 5 - 61, screen.scissorHeight + 1);
-		matrices.push();
-		matrices.translate(screen.xOffset, screen.yOffset, 0.0F);
-		RenderUtils.drawTexture(matrices, this.x + (float) screen.xOffset, this.y + (float) screen.yOffset, 0 , 0, this.width, this.height, 17, 17);
-		matrices.pop();
-		disableScissor();
+		if(shouldRender){
+			RenderSystem.setShaderTexture(0, knowledge.icon);
+			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, isHovered() || isActivated ? this.alpha : 0.25F);
+			RenderSystem.enableBlend();
+			RenderSystem.defaultBlendFunc();
+			RenderSystem.enableDepthTest();
+			// Render the screen texture
+
+			enableScissor((screen.width - 192) / 4 - 5, screen.scissorY + 13, screen.scissorWidth + (screen.width - 192) / 4 - 5 - 61, screen.scissorHeight + 1);
+			matrices.push();
+			matrices.translate(screen.xOffset, screen.yOffset, 0.0F);
+			RenderUtils.drawTexture(matrices, this.x + (float) screen.xOffset, this.y + (float) screen.yOffset, 0 , 0, this.width, this.height, 17, 17);
+			matrices.pop();
+			disableScissor();
+		}
 	}
 
 	@Override
@@ -76,7 +99,8 @@ public class KnowledgeWidget extends ClickableWidget {
 	@Override
 	public void onClick(double mouseX, double mouseY) {
 		if (isValidClickButton(0)) {
-			System.out.println(knowledge.identifier);
+			PlayerKnowledgeComponent component = BotDComponents.KNOWLEDGE_COMPONENT.get(screen.player);
+			component.addKnowledge(knowledge);
 		}
 	}
 

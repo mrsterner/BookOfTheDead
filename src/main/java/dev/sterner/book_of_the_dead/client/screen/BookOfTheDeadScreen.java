@@ -52,6 +52,7 @@ public class BookOfTheDeadScreen extends Screen {
 
 	@Override
 	protected void init() {
+		widgets.clear();
 		float x = (float) (this.width - 192) / 4 + 9 * 5 - 4;
 		float y = 32 * 3 + 18 + 4;
 		//Void

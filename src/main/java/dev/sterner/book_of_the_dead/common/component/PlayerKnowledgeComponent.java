@@ -6,12 +6,8 @@ import dev.sterner.book_of_the_dead.client.screen.book.Knowledge;
 import dev.sterner.book_of_the_dead.common.registry.BotDRegistries;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.Inventories;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
-import net.minecraft.nbt.NbtString;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
 
