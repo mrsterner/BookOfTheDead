@@ -15,6 +15,9 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import org.lwjgl.opengl.GL11;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class BookOfTheDeadScreen extends Screen {
 	public static final Identifier BOOK_TEXTURE = Constants.id("textures/gui/background.png");
@@ -30,6 +33,7 @@ public class BookOfTheDeadScreen extends Screen {
 	public int scissorHeight;
 	public boolean isDragging;
 	public int buttonOffset;
+	public List<KnowledgeWidget> widgets = new ArrayList<>();
 
 
 	public BookOfTheDeadScreen(PlayerEntity player) {
@@ -55,41 +59,44 @@ public class BookOfTheDeadScreen extends Screen {
 	protected void init() {
 		float x = (this.width - 192) / 4 + 9 * 5 - 4;
 		float y = 32 * 3 + 18 + 4;
-
 		//Void
-		addDrawableChild(new KnowledgeWidget(x - 9, y + 15, this, BotDKnowledgeRegistry.VOID));
-		addDrawableChild(new KnowledgeWidget(x + 9, y + 15, this, BotDKnowledgeRegistry.AMALGAM));
-		addDrawableChild(new KnowledgeWidget(x, y + 12 + 18, this, BotDKnowledgeRegistry.DISPOSITION));
-		addDrawableChild(new KnowledgeWidget(x, y + 12 + 18 * 2, this, BotDKnowledgeRegistry.BALANCE));
-		addDrawableChild(new KnowledgeWidget(x, y + 12 + 18 * 3, this, BotDKnowledgeRegistry.PROJECTION));
+		widgets.add(new KnowledgeWidget(x - 9, y + 15, this, BotDKnowledgeRegistry.VOID));
+		widgets.add(new KnowledgeWidget(x + 9, y + 15, this, BotDKnowledgeRegistry.AMALGAM));
+		widgets.add(new KnowledgeWidget(x, y + 12 + 18, this, BotDKnowledgeRegistry.DISPOSITION));
+		widgets.add(new KnowledgeWidget(x, y + 12 + 18 * 2, this, BotDKnowledgeRegistry.BALANCE));
+		widgets.add(new KnowledgeWidget(x, y + 12 + 18 * 3, this, BotDKnowledgeRegistry.PROJECTION));
 		//Core
-		addDrawableChild(new KnowledgeWidget(x, y, this, BotDKnowledgeRegistry.ALCHEMY));
+		widgets.add(new KnowledgeWidget(x, y, this, BotDKnowledgeRegistry.ALCHEMY));
 		//Main
-		addDrawableChild(new KnowledgeWidget(x - 9, y - 15, this, BotDKnowledgeRegistry.CALCINATION));
-		addDrawableChild(new KnowledgeWidget(x + 9, y - 15, this, BotDKnowledgeRegistry.DISSOLUTION));
-		addDrawableChild(new KnowledgeWidget(x, y - 12 - 18, this, BotDKnowledgeRegistry.SEPARATION));
-		addDrawableChild(new KnowledgeWidget(x + 9, y - 15 - 30, this, BotDKnowledgeRegistry.CONJUNCTION));
-		addDrawableChild(new KnowledgeWidget(x - 9, y - 15 - 30, this, BotDKnowledgeRegistry.FERMENTATION));
-		addDrawableChild(new KnowledgeWidget(x, y - 12 - 18 - 30, this, BotDKnowledgeRegistry.DISTILLATION));
-		addDrawableChild(new KnowledgeWidget(x, y - 12 - 18 * 2 - 30, this, BotDKnowledgeRegistry.COAGULATION));
-		addDrawableChild(new KnowledgeWidget(x, y - 12 - 18 * 3 - 30, this, BotDKnowledgeRegistry.PHILOSOPHER));
+		widgets.add(new KnowledgeWidget(x - 9, y - 15, this, BotDKnowledgeRegistry.CALCINATION));
+		widgets.add(new KnowledgeWidget(x + 9, y - 15, this, BotDKnowledgeRegistry.DISSOLUTION));
+		widgets.add(new KnowledgeWidget(x, y - 12 - 18, this, BotDKnowledgeRegistry.SEPARATION));
+		widgets.add(new KnowledgeWidget(x + 9, y - 15 - 30, this, BotDKnowledgeRegistry.CONJUNCTION));
+		widgets.add(new KnowledgeWidget(x - 9, y - 15 - 30, this, BotDKnowledgeRegistry.FERMENTATION));
+		widgets.add(new KnowledgeWidget(x, y - 12 - 18 - 30, this, BotDKnowledgeRegistry.DISTILLATION));
+		widgets.add(new KnowledgeWidget(x, y - 12 - 18 * 2 - 30, this, BotDKnowledgeRegistry.COAGULATION));
+		widgets.add(new KnowledgeWidget(x, y - 12 - 18 * 3 - 30, this, BotDKnowledgeRegistry.PHILOSOPHER));
 		//Soul
-		addDrawableChild(new KnowledgeWidget(x + 18, y, this, BotDKnowledgeRegistry.SOUL));
-		addDrawableChild(new KnowledgeWidget(x + 9 + 18, y - 15, this, BotDKnowledgeRegistry.ESSENCE));
-		addDrawableChild(new KnowledgeWidget(x + 18, y - 12 - 18, this, BotDKnowledgeRegistry.FUSION));
-		addDrawableChild(new KnowledgeWidget(x + 9 + 18, y - 15 - 30, this, BotDKnowledgeRegistry.MULTIPLICATION));
-		addDrawableChild(new KnowledgeWidget(x + 18 + 18, y - 12 - 18 - 30, this, BotDKnowledgeRegistry.LIFE));
+		widgets.add(new KnowledgeWidget(x + 18, y, this, BotDKnowledgeRegistry.SOUL));
+		widgets.add(new KnowledgeWidget(x + 9 + 18, y - 15, this, BotDKnowledgeRegistry.ESSENCE));
+		widgets.add(new KnowledgeWidget(x + 18, y - 12 - 18, this, BotDKnowledgeRegistry.FUSION));
+		widgets.add(new KnowledgeWidget(x + 9 + 18, y - 15 - 30, this, BotDKnowledgeRegistry.MULTIPLICATION));
+		widgets.add(new KnowledgeWidget(x + 18 + 18, y - 12 - 18 - 30, this, BotDKnowledgeRegistry.LIFE));
 		//Infernal
-		addDrawableChild(new KnowledgeWidget(x - 18, y, this, BotDKnowledgeRegistry.BRIMSTONE));
-		addDrawableChild(new KnowledgeWidget(x - 9 - 18, y - 15, this, BotDKnowledgeRegistry.ASH));
-		addDrawableChild(new KnowledgeWidget(x - 18, y - 12 - 18, this, BotDKnowledgeRegistry.MELT));
-		addDrawableChild(new KnowledgeWidget(x - 9 - 18, y - 15 - 30, this, BotDKnowledgeRegistry.ROT));
-		addDrawableChild(new KnowledgeWidget(x - 18 - 18, y - 12 - 18 - 30, this, BotDKnowledgeRegistry.CADUCEUS));
+		widgets.add(new KnowledgeWidget(x - 18, y, this, BotDKnowledgeRegistry.BRIMSTONE));
+		widgets.add(new KnowledgeWidget(x - 9 - 18, y - 15, this, BotDKnowledgeRegistry.ASH));
+		widgets.add(new KnowledgeWidget(x - 18, y - 12 - 18, this, BotDKnowledgeRegistry.MELT));
+		widgets.add(new KnowledgeWidget(x - 9 - 18, y - 15 - 30, this, BotDKnowledgeRegistry.ROT));
+		widgets.add(new KnowledgeWidget(x - 18 - 18, y - 12 - 18 - 30, this, BotDKnowledgeRegistry.CADUCEUS));
+
+		for(KnowledgeWidget widget : widgets){
+			addDrawableChild(widget);
+		}
 	}
 
 	@Override
 	public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-		int scaledWidth = (this.width - 192) / 4;
+		int scaledWidth = (this.width - 192) / 4 - 5;
 
 		matrices.push();
 		this.renderBackground(matrices);
@@ -98,7 +105,7 @@ public class BookOfTheDeadScreen extends Screen {
 		matrices.pop();
 		this.buttonOffset = scaledWidth;
 		RenderSystem.setShaderTexture(0, BookOfTheDeadScreen.PARALLAX);
-		enableScissor(scaledWidth, this.scissorY, this.scissorWidth + scaledWidth, this.scissorHeight);
+		enableScissor(scaledWidth, this.scissorY + 13, this.scissorWidth + scaledWidth - 61, this.scissorHeight + 1);
 		matrices.push();
 		matrices.translate(xOffset, yOffset, 0.0F);
 
@@ -114,8 +121,16 @@ public class BookOfTheDeadScreen extends Screen {
 		if (button == 0) {
 			if (!this.isDragging) {
 				// Check if the mouse is within the screen texture
-				if (mouseX >= this.xOffset && mouseX <= this.xOffset + this.buttonOffset && mouseY >= this.yOffset && mouseY <= this.yOffset + this.scissorHeight) {
+				if (mouseX >= (this.width - 192) / 4 - 16 && mouseX <= (this.width - 192) / 4 - 16 + 122 && mouseY >= this.yOffset && mouseY <= this.scissorHeight) {
 					this.isDragging = true;
+				}
+			}
+
+			// Check if the mouse is over any Button widgets
+			for (KnowledgeWidget widget : this.widgets) {
+				if (widget.isMouseOver(mouseX, mouseY)) {
+					// Return false to prevent dragging if the mouse is over a Button widget
+					return false;
 				}
 			}
 

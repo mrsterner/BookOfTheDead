@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import dev.sterner.book_of_the_dead.client.screen.BookOfTheDeadScreen;
 import dev.sterner.book_of_the_dead.client.screen.book.Knowledge;
+import dev.sterner.book_of_the_dead.common.util.RenderUtils;
 import net.minecraft.block.FluidBlock;
 import net.minecraft.block.Material;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
@@ -38,48 +39,18 @@ public class KnowledgeWidget extends ClickableWidget {
 		RenderSystem.enableDepthTest();
 		// Render the screen texture
 
-		enableScissor(screen.buttonOffset, screen.scissorY, screen.scissorWidth + screen.buttonOffset, screen.scissorHeight);
+		enableScissor(screen.buttonOffset, screen.scissorY + 13, screen.scissorWidth + screen.buttonOffset - 61, screen.scissorHeight + 1);
 		matrices.push();
 		matrices.translate(screen.xOffset, screen.yOffset, 0.0F);
-		drawTexture(matrices, this.x + (float) screen.xOffset, this.y + (float) screen.yOffset, 0 , 0, this.width, this.height, 17, 17);
+		RenderUtils.drawTexture(matrices, this.x + (float) screen.xOffset, this.y + (float) screen.yOffset, 0 , 0, this.width, this.height, 17, 17);
 		matrices.pop();
 		disableScissor();
-
-
-	}
-
-	public static void drawTexture(MatrixStack matrices, float x, float y, int width, int height, float u, float v, int regionWidth, int regionHeight, int textureWidth, int textureHeight) {
-		drawTexturedQuad(matrices, x, x + width, y, y + height, 0, regionWidth, regionHeight, u, v, textureWidth, textureHeight);
-	}
-
-	public static void drawTexture(MatrixStack matrices, float x, float y, float u, float v, int width, int height, int textureWidth, int textureHeight) {
-		drawTexture(matrices, x, y, width, height, u, v, width, height, textureWidth, textureHeight);
-	}
-
-	private static void drawTexturedQuad(MatrixStack matrices, float x0, float x1, float y0, float y1, int z, int regionWidth, int regionHeight, float u, float v, int textureWidth, int textureHeight) {
-		drawTexturedQuad(matrices.peek().getModel(), x0, x1, y0, y1, z, (u + 0.0F) / (float)textureWidth, (u + (float)regionWidth) / (float)textureWidth, (v + 0.0F) / (float)textureHeight, (v + (float)regionHeight) / (float)textureHeight);
-	}
-
-	private static void drawTexturedQuad(Matrix4f matrix, float x0, float x1, float y0, float y1, int z, float u0, float u1, float v0, float v1) {
-		RenderSystem.setShader(GameRenderer::getPositionTexShader);
-		BufferBuilder bufferBuilder = Tessellator.getInstance().getBufferBuilder();
-		bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
-		bufferBuilder.vertex(matrix, (float)x0, (float)y0, (float)z).uv(u0, v0).next();
-		bufferBuilder.vertex(matrix, (float)x0, (float)y1, (float)z).uv(u0, v1).next();
-		bufferBuilder.vertex(matrix, (float)x1, (float)y1, (float)z).uv(u1, v1).next();
-		bufferBuilder.vertex(matrix, (float)x1, (float)y0, (float)z).uv(u1, v0).next();
-		BufferRenderer.drawWithShader(bufferBuilder.end());
 	}
 
 	@Override
 	public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
 		this.hovered = mouseX >= this.getX() + screen.xOffset * 2 && mouseY >= this.getY() + screen.yOffset * 2 && mouseX < this.getX() + screen.xOffset * 2 + this.width && mouseY < this.getY() + screen.yOffset * 2 + this.height;
 		this.drawWidget(matrices, mouseX, mouseY, delta);
-	}
-
-	@Override
-	protected boolean isValidClickButton(int button) {
-		return super.isValidClickButton(button);
 	}
 
 	@Override
@@ -90,38 +61,34 @@ public class KnowledgeWidget extends ClickableWidget {
 
 		double halfWidth = (double) this.width / 2;
 		double halfHeight = (double) this.height / 2;
-		double centerX = this.getX() + halfWidth;
-		double centerY = this.getY() + halfHeight;
+		double centerX = this.getX() + halfWidth + screen.xOffset * 2;
+		double centerY = this.getY() + halfHeight + screen.yOffset * 2;
 		double radius = Math.min(halfWidth, halfHeight);
 
-		double dx = Math.abs(mouseX + screen.xOffset - centerX);
-		double dy = Math.abs(mouseY + screen.yOffset - centerY);
+		double dx = Math.abs(mouseX - centerX);
+		double dy = Math.abs(mouseY - centerY);
 
 		if (dx > radius || dy > radius) {
 			return false;
 		}
-
+		double c = dx + dy;
 		return dx + dy <= radius;
 	}
 
 	@Override
 	public boolean isMouseOver(double mouseX, double mouseY) {
-		return super.isMouseOver(mouseX + screen.xOffset, mouseY + screen.yOffset);
+		return super.isMouseOver(mouseX, mouseY);
 	}
 
 	@Override
 	public void onClick(double mouseX, double mouseY) {
 		if (isValidClickButton(0)) {
-
+			System.out.println(knowledge.identifier);
 		}
 	}
 
 	@Override
 	protected void updateNarration(NarrationMessageBuilder builder) {
 
-	}
-
-	public boolean isHovering(double mouseX, double mouseY) {
-		return clicked(mouseX, mouseY);
 	}
 }
