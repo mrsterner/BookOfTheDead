@@ -35,16 +35,7 @@ public class KnowledgeWidget extends ClickableWidget {
 	public void drawWidget(MatrixStack matrices, int mouseX, int mouseY, float delta) {
 		List<Knowledge> knowledgeList = knowledgeDataList.stream().map(KnowledgeData::knowledge).toList();
 		boolean isActivated = knowledgeList.contains(knowledge);
-		boolean shouldRender = true;
-
-		if (!knowledge.children.isEmpty()) {
-			for (Knowledge child : knowledge.children) {
-				if (!knowledgeList.contains(child)) {
-					shouldRender = false;
-					break;
-				}
-			}
-		}
+		boolean shouldRender = isActive(knowledgeList);
 
 		if (shouldRender) {
 			RenderSystem.setShaderTexture(0, knowledge.icon);
@@ -74,25 +65,23 @@ public class KnowledgeWidget extends ClickableWidget {
 		if (!this.active && !this.visible) {
 			return false;
 		}
+		List<Knowledge> knowledgeList = knowledgeDataList.stream().map(KnowledgeData::knowledge).toList();
+		if(isActive(knowledgeList)){
+			double halfWidth = (double) this.width / 2;
+			double halfHeight = (double) this.height / 2;
+			double centerX = this.getX() + halfWidth + tab.xOffset * 2;
+			double centerY = this.getY() + halfHeight + tab.yOffset * 2;
+			double radius = Math.min(halfWidth, halfHeight);
 
-		double halfWidth = (double) this.width / 2;
-		double halfHeight = (double) this.height / 2;
-		double centerX = this.getX() + halfWidth + tab.xOffset * 2;
-		double centerY = this.getY() + halfHeight + tab.yOffset * 2;
-		double radius = Math.min(halfWidth, halfHeight);
+			double dx = Math.abs(mouseX - centerX);
+			double dy = Math.abs(mouseY - centerY);
 
-		double dx = Math.abs(mouseX - centerX);
-		double dy = Math.abs(mouseY - centerY);
-
-		if (dx > radius || dy > radius) {
-			return false;
+			if (dx > radius || dy > radius) {
+				return false;
+			}
+			return dx + dy <= radius;
 		}
-		return dx + dy <= radius;
-	}
-
-	@Override
-	public boolean isMouseOver(double mouseX, double mouseY) {
-		return super.isMouseOver(mouseX, mouseY);
+		return false;
 	}
 
 	@Override
@@ -101,6 +90,20 @@ public class KnowledgeWidget extends ClickableWidget {
 			PlayerKnowledgeComponent component = BotDComponents.KNOWLEDGE_COMPONENT.get(tab.player);
 			component.addKnowledge(knowledge);
 		}
+	}
+
+	public boolean isActive(List<Knowledge> knowledgeList){
+		boolean shouldRender = true;
+
+		if (!knowledge.children.isEmpty()) {
+			for (Knowledge child : knowledge.children) {
+				if (!knowledgeList.contains(child)) {
+					shouldRender = false;
+					break;
+				}
+			}
+		}
+		return shouldRender;
 	}
 
 	@Override

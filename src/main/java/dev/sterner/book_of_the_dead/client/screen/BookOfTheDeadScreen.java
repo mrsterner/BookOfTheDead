@@ -8,6 +8,7 @@ import dev.sterner.book_of_the_dead.client.screen.widget.BackPageWidget;
 import dev.sterner.book_of_the_dead.client.screen.widget.NextPageWidget;
 import dev.sterner.book_of_the_dead.client.screen.widget.PrevPageWidget;
 import dev.sterner.book_of_the_dead.common.util.Constants;
+import dev.sterner.book_of_the_dead.common.util.RenderUtils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.ChatNarratorManager;
@@ -58,7 +59,7 @@ public class BookOfTheDeadScreen extends Screen {
 		matrices.push();
 		this.renderBackground(matrices);
 		this.setFocused(false);
-		renderBookTexture(matrices, (this.width - 192) / 4 - 16, 32, 0, 0, 272, 182, 512, 256);
+		RenderUtils.renderTexture(matrices, BOOK_TEXTURE, (this.width - 192) / 4 - 16, 32, 0, 0, 272, 182, 512, 256);
 		matrices.pop();
 		if(knowledgeTab != null){
 			knowledgeTab.render(matrices, this.width, mouseX, mouseY, delta);
@@ -96,17 +97,5 @@ public class BookOfTheDeadScreen extends Screen {
 			screen = new BookOfTheDeadScreen(player);
 		}
 		return screen;
-	}
-
-	public void renderBookTexture(MatrixStack matrices, int x, int y, float u, float v, int width, int height, int textureWidth, int textureHeight) {
-		RenderSystem.enableBlend();
-		RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		RenderSystem.setShaderTexture(0, BOOK_TEXTURE);
-
-		drawTexture(matrices, x, y, u, v, width, height, textureWidth, textureHeight);
-
-		RenderSystem.defaultBlendFunc();
-		RenderSystem.disableBlend();
 	}
 }

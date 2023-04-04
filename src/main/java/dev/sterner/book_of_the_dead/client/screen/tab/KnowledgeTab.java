@@ -6,6 +6,7 @@ import dev.sterner.book_of_the_dead.client.screen.BookOfTheDeadScreen;
 import dev.sterner.book_of_the_dead.client.screen.widget.KnowledgeWidget;
 import dev.sterner.book_of_the_dead.common.registry.BotDKnowledgeRegistry;
 import dev.sterner.book_of_the_dead.common.util.Constants;
+import dev.sterner.book_of_the_dead.common.util.RenderUtils;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
@@ -42,7 +43,7 @@ public class KnowledgeTab extends BookOfTheDeadTab {
 	public void init() {
 		widgets.clear();
 		float x = (float) (width - 192) / 4 + 9 * 5 - 4;
-		float y = 32 * 3 + 18 + 4;
+		float y = 18 * 6 + 10;
 		//Void
 		widgets.add(new KnowledgeWidget(x - 9, y + 15, this, BotDKnowledgeRegistry.VOID));
 		widgets.add(new KnowledgeWidget(x + 9, y + 15, this, BotDKnowledgeRegistry.AMALGAM));
@@ -74,12 +75,8 @@ public class KnowledgeTab extends BookOfTheDeadTab {
 		widgets.add(new KnowledgeWidget(x - 18 - 18, y - 12 - 18 - 30, this, BotDKnowledgeRegistry.CADUCEUS));
 
 		for (KnowledgeWidget widget : widgets) {
-			addDrawableChild(widget);
+			screen.addDrawableChild(widget);
 		}
-	}
-
-	private void addDrawableChild(KnowledgeWidget widget) {
-		screen.addDrawableChild(widget);
 	}
 
 	@Override
@@ -90,17 +87,6 @@ public class KnowledgeTab extends BookOfTheDeadTab {
 				this.isDragging = true;
 			}
 		}
-
-		// Check if the mouse is over any Button widgets
-		/*
-		for (KnowledgeWidget widget : this.widgets) {
-			if (widget.isMouseOver(mouseX, mouseY)) {
-				// Return false to prevent dragging if the mouse is over a Button widget
-				return false;
-			}
-		}
-
-		 */
 
 		if (this.isDragging) {
 			// Update the position of the screen
@@ -119,7 +105,7 @@ public class KnowledgeTab extends BookOfTheDeadTab {
 
 		matrices.push();
 
-		renderTabTexture(matrices, (width - 192) / 4 - 16, 32, 0, 0, 272, 182, 512, 256);
+		RenderUtils.renderTexture(matrices, TAB_TEXTURE, (width - 192) / 4 - 16, 32, 0, 0, 272, 182, 512, 256);
 
 		matrices.pop();
 		RenderSystem.setShaderTexture(0, PARALLAX);
@@ -131,17 +117,5 @@ public class KnowledgeTab extends BookOfTheDeadTab {
 
 		matrices.pop();
 		disableScissor();
-	}
-
-	public void renderTabTexture(MatrixStack matrices, int x, int y, float u, float v, int width, int height, int textureWidth, int textureHeight) {
-		RenderSystem.enableBlend();
-		RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		RenderSystem.setShaderTexture(0, TAB_TEXTURE);
-
-		drawTexture(matrices, x, y, u, v, width, height, textureWidth, textureHeight);
-
-		RenderSystem.defaultBlendFunc();
-		RenderSystem.disableBlend();
 	}
 }

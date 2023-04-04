@@ -1,6 +1,7 @@
 package dev.sterner.book_of_the_dead.common.util;
 
 import com.mojang.blaze3d.lighting.DiffuseLighting;
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import me.shedaniel.math.Rectangle;
@@ -16,6 +17,7 @@ import net.minecraft.client.render.model.BakedQuad;
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
@@ -123,5 +125,17 @@ public class RenderUtils {
 		bufferBuilder.vertex(matrix, x1, y1, (float) z).uv(u1, v1).next();
 		bufferBuilder.vertex(matrix, x1, y0, (float) z).uv(u1, v0).next();
 		BufferRenderer.drawWithShader(bufferBuilder.end());
+	}
+
+	public static void renderTexture(MatrixStack matrices, Identifier texture, int x, int y, float u, float v, int width, int height, int textureWidth, int textureHeight) {
+		RenderSystem.enableBlend();
+		RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+		RenderSystem.setShaderTexture(0, texture);
+
+		drawTexture(matrices, x, y, u, v, width, height, textureWidth, textureHeight);
+
+		RenderSystem.defaultBlendFunc();
+		RenderSystem.disableBlend();
 	}
 }
