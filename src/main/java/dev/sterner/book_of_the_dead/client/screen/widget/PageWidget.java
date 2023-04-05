@@ -1,7 +1,6 @@
 package dev.sterner.book_of_the_dead.client.screen.widget;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import dev.sterner.book_of_the_dead.BotDClient;
 import dev.sterner.book_of_the_dead.client.screen.BookOfTheDeadScreen;
 import dev.sterner.book_of_the_dead.client.screen.tab.BotDTab;
 import dev.sterner.book_of_the_dead.common.util.RenderUtils;
@@ -47,9 +46,9 @@ public class PageWidget extends ClickableWidget {
 		// Render the screen texture
 
 		matrices.push();
-		if(isHovered()){
-			matrices.translate(-pulseAlpha/2, -pulseAlpha/2,0);
-			matrices.scale(1 + pulseAlpha * 0.001f,1 + pulseAlpha * 0.001f,1);
+		if (isHovered()) {
+			matrices.translate(-pulseAlpha / 2, -pulseAlpha / 2, 0);
+			matrices.scale(1 + pulseAlpha * 0.001f, 1 + pulseAlpha * 0.001f, 1);
 		}
 		RenderUtils.drawTexture(matrices, x, y, u, v, w, h, 512, 256);
 		matrices.pop();
@@ -61,8 +60,8 @@ public class PageWidget extends ClickableWidget {
 		return super.isHovered();
 	}
 
-	public void tick(){
-		if(!isHovered()){
+	public void tick() {
+		if (!isHovered()) {
 			hoverTick = 0;
 		}
 	}

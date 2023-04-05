@@ -1,8 +1,8 @@
 package dev.sterner.book_of_the_dead.client.screen.widget;
 
 import dev.sterner.book_of_the_dead.client.screen.BookOfTheDeadScreen;
-import dev.sterner.book_of_the_dead.client.screen.tab.BotDTab;
 import dev.sterner.book_of_the_dead.client.screen.tab.BookTab;
+import dev.sterner.book_of_the_dead.client.screen.tab.BotDTab;
 
 public class PrevPageWidget extends PageWidget {
 
@@ -13,12 +13,12 @@ public class PrevPageWidget extends PageWidget {
 	@Override
 	public void onClick(double mouseX, double mouseY) {
 		if (isValidClickButton(0)) {
-			if(tab instanceof BookTab bookTab){
+			if (tab instanceof BookTab bookTab) {
 				screen.clearChildren();
 				bookTab.previousPage();
 				screen.initialize();
 			}
-			if(tab != null && tab.getPrevTab() != null){
+			if (tab != null && tab.getPrevTab() != null) {
 				screen.clearChildren();
 				screen.tab = tab.getPrevTab();
 				screen.initialize();

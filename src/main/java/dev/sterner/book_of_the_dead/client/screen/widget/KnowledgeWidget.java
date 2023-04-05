@@ -1,18 +1,16 @@
 package dev.sterner.book_of_the_dead.client.screen.widget;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import dev.sterner.book_of_the_dead.api.KnowledgeData;
 import dev.sterner.book_of_the_dead.api.Knowledge;
+import dev.sterner.book_of_the_dead.api.KnowledgeData;
 import dev.sterner.book_of_the_dead.client.screen.tab.KnowledgeTab;
 import dev.sterner.book_of_the_dead.common.component.BotDComponents;
-import dev.sterner.book_of_the_dead.common.component.PlayerKnowledgeComponent;
 import dev.sterner.book_of_the_dead.common.network.KnowledgeC2SPacket;
 import dev.sterner.book_of_the_dead.common.util.RenderUtils;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.util.ChatNarratorManager;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.world.World;
 
 import java.util.List;
 import java.util.Set;
@@ -68,7 +66,7 @@ public class KnowledgeWidget extends ClickableWidget {
 			return false;
 		}
 		List<Knowledge> knowledgeList = knowledgeDataList.stream().map(KnowledgeData::knowledge).toList();
-		if(isActive(knowledgeList)){
+		if (isActive(knowledgeList)) {
 			double halfWidth = (double) this.width / 2;
 			double halfHeight = (double) this.height / 2;
 			double centerX = this.getX() + halfWidth + tab.xOffset * 2;
@@ -93,7 +91,7 @@ public class KnowledgeWidget extends ClickableWidget {
 		}
 	}
 
-	public boolean isActive(List<Knowledge> knowledgeList){
+	public boolean isActive(List<Knowledge> knowledgeList) {
 		boolean shouldRender = true;
 
 		if (!knowledge.children.isEmpty()) {

@@ -3,9 +3,6 @@ package dev.sterner.book_of_the_dead.client.screen.tab;
 import dev.sterner.book_of_the_dead.client.screen.BookEntry;
 import dev.sterner.book_of_the_dead.client.screen.BookOfTheDeadScreen;
 import dev.sterner.book_of_the_dead.client.screen.page.BookPage;
-import dev.sterner.book_of_the_dead.client.screen.page.HeadlineBookPage;
-import dev.sterner.book_of_the_dead.client.screen.page.TextPage;
-import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
@@ -28,7 +25,6 @@ public abstract class BookTab extends BotDTab {
 	}
 
 
-
 	public void initPages() {
 
 	}
@@ -39,7 +35,7 @@ public abstract class BookTab extends BotDTab {
 		float x = (float) (width - 192) / 4 + 9 * 5 - 4;
 		float y = 18 * 6 + 10;
 
-		if(openEntry != null){
+		if (openEntry != null) {
 			if (!openEntry.pages.isEmpty()) {
 				int openPages = grouping * 2;
 				for (int i = openPages; i < openPages + 2; i++) {

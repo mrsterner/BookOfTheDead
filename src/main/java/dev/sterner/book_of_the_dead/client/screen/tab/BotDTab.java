@@ -13,7 +13,7 @@ public class BotDTab extends DrawableHelper {
 	private BotDTab nextTab;
 	private BotDTab prevTab;
 
-	public BotDTab(BookOfTheDeadScreen screen, Identifier background){
+	public BotDTab(BookOfTheDeadScreen screen, Identifier background) {
 		this.screen = screen;
 		this.background = background;
 	}
@@ -34,7 +34,7 @@ public class BotDTab extends DrawableHelper {
 		this.prevTab = prevTab;
 	}
 
-	public void tick(){
+	public void tick() {
 	}
 
 	public void init() {

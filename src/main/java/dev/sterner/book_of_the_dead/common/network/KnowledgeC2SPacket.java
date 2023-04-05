@@ -6,7 +6,6 @@ import dev.sterner.book_of_the_dead.common.component.PlayerKnowledgeComponent;
 import dev.sterner.book_of_the_dead.common.registry.BotDRegistries;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import io.netty.buffer.Unpooled;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
@@ -29,7 +28,7 @@ public class KnowledgeC2SPacket {
 
 	public static void handle(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler network, PacketByteBuf buf, PacketSender sender) {
 		Identifier id = Constants.id(buf.readString());
-		if(BotDRegistries.KNOWLEDGE.getIds().contains(id)){
+		if (BotDRegistries.KNOWLEDGE.getIds().contains(id)) {
 			Knowledge knowledge = BotDRegistries.KNOWLEDGE.get(id);
 
 			server.execute(() -> {

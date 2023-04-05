@@ -1,6 +1,5 @@
 package dev.sterner.book_of_the_dead.common.item;
 
-import dev.sterner.book_of_the_dead.api.KnowledgeData;
 import dev.sterner.book_of_the_dead.client.particle.OrbitParticleEffect;
 import dev.sterner.book_of_the_dead.common.component.BotDComponents;
 import dev.sterner.book_of_the_dead.common.component.LivingEntityDataComponent;
@@ -61,8 +60,8 @@ public class DebugWandItem extends Item {
 		 */
 
 		PlayerKnowledgeComponent c = BotDComponents.KNOWLEDGE_COMPONENT.get(user);
-		for(KnowledgeData data : c.getKnowledgeData()){
-			System.out.println("Side: " + world.isClient() +" K: " + data.knowledge().identifier);
+		if (c.clearData()) {
+			System.out.println("KnowledgeData Cleared!");
 		}
 
 		if (world instanceof ServerWorld serverWorld) {

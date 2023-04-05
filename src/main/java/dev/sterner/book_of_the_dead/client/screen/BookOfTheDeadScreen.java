@@ -18,7 +18,6 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,8 +44,8 @@ public class BookOfTheDeadScreen extends Screen {
 		initialize();
 	}
 
-	public void initialize(){
-		if(tab != null) {
+	public void initialize() {
+		if (tab != null) {
 			tab.width = this.width;
 			tab.init();
 		}
@@ -54,7 +53,7 @@ public class BookOfTheDeadScreen extends Screen {
 		int x = (width - 192) / 4 + 9 * 12 + 3;
 		int y = 32 * 6 + 1;
 
-		if(!(tab instanceof MainTab)){
+		if (!(tab instanceof MainTab)) {
 			addDrawableChild(new NextPageWidget(x + 18 * 6 + 7, y, tab, this));
 			addDrawableChild(new PrevPageWidget(x - (18 * 6 + 7), y, tab, this));
 			addDrawableChild(new BackPageWidget(x, y - 5, tab, this));
@@ -68,8 +67,8 @@ public class BookOfTheDeadScreen extends Screen {
 		this.setFocused(false);
 		RenderUtils.renderTexture(matrices, BOOK_TEXTURE, (this.width - 192) / 4 - 16, 32, 0, 0, 272, 182, 512, 256);
 		matrices.pop();
-		if(tab != null){
-			if(tab.background != null){
+		if (tab != null) {
+			if (tab.background != null) {
 				RenderUtils.renderTexture(matrices, tab.background, (this.width - 192) / 4 - 16, 32, 0, 0, 272, 182, 512, 256);
 			}
 			tab.render(matrices, this.width, mouseX, mouseY, delta);
@@ -82,7 +81,7 @@ public class BookOfTheDeadScreen extends Screen {
 	@Override
 	public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
 		if (button == 0) {
-			if(tab != null) {
+			if (tab != null) {
 				return tab.move(mouseX, mouseY, button, deltaX, deltaY);
 			}
 		}
@@ -91,7 +90,7 @@ public class BookOfTheDeadScreen extends Screen {
 
 	@Override
 	public boolean mouseReleased(double mouseX, double mouseY, int button) {
-		if(tab != null) {
+		if (tab != null) {
 			tab.isDragging = false;
 		}
 		return super.mouseReleased(mouseX, mouseY, button);
@@ -105,7 +104,7 @@ public class BookOfTheDeadScreen extends Screen {
 
 	@Override
 	public void tick() {
-		if(tab != null){
+		if (tab != null) {
 			tab.tick();
 		}
 		super.tick();
@@ -226,7 +225,7 @@ public class BookOfTheDeadScreen extends Screen {
 
 	private static void renderRawText(MatrixStack stack, String text, int x, int y) {
 		var font = MinecraftClient.getInstance().textRenderer;
-		if (false){
+		if (false) {
 			font.draw(stack, text, x, y, 0);
 			return;
 		}

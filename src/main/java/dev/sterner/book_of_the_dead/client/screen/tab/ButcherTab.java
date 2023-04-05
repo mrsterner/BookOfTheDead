@@ -4,7 +4,6 @@ import dev.sterner.book_of_the_dead.client.screen.BookEntry;
 import dev.sterner.book_of_the_dead.client.screen.BookOfTheDeadScreen;
 import dev.sterner.book_of_the_dead.client.screen.page.HeadlineBookPage;
 import dev.sterner.book_of_the_dead.client.screen.page.TextPage;
-import dev.sterner.book_of_the_dead.common.util.Constants;
 
 public class ButcherTab extends BookTab {
 	public ButcherTab(BookOfTheDeadScreen screen) {

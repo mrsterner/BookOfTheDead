@@ -6,7 +6,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 
-public class HeadlineBookPage extends BookPage{
+public class HeadlineBookPage extends BookPage {
 	private final String headlineTranslationKey;
 	private final String translationKey;
 
