@@ -27,7 +27,6 @@ public class BookOfTheDeadScreen extends Screen {
 	public PlayerEntity player;
 	public static BookOfTheDeadScreen screen;
 	public BotDTab tab;
-	public long ticksInScreen = 0;
 
 	public BookOfTheDeadScreen(PlayerEntity player) {
 		super(ChatNarratorManager.NO_TITLE);
@@ -219,16 +218,8 @@ public class BookOfTheDeadScreen extends Screen {
 		renderRawText(stack, text, x, y);
 	}
 
-	public static void renderText(MatrixStack stack, String text, int x, int y) {
-		renderText(stack, Text.translatable(text), x, y);
-	}
-
 	private static void renderRawText(MatrixStack stack, String text, int x, int y) {
 		var font = MinecraftClient.getInstance().textRenderer;
-		if (false) {
-			font.draw(stack, text, x, y, 0);
-			return;
-		}
 
 		font.draw(stack, text, x - 1, y, ColorUtil.ARGB32.getArgb(96, 236, 227, 214));
 		font.draw(stack, text, x + 1, y, ColorUtil.ARGB32.getArgb(128, 165, 149, 142));

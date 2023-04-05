@@ -11,13 +11,14 @@ public class ButcherTab extends BookTab {
 	}
 
 	@Override
-	public void initPages() {
+	public void init() {
+		super.init();
 		ENTRIES.clear();
 
-		ENTRIES.add(new BookEntry("butcher", 0, 0)
-			.addPage(new HeadlineBookPage("butcher", "butcher.1"))
-			.addPage(new TextPage("text"))
-			.addPage(new TextPage("test2"))
+		ENTRIES.add(BookEntry.of()
+			.addPage(HeadlineBookPage.of("butcher", "butcher.1"))
+			.addPage(TextPage.of("text"))
+			.addPage(TextPage.of("test2"))
 
 		);
 

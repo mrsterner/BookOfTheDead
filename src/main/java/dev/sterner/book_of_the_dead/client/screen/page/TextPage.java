@@ -8,9 +8,13 @@ import net.minecraft.client.util.math.MatrixStack;
 public class TextPage extends BookPage {
 	public final String translationKey;
 
-	public TextPage(String translationKey) {
+	protected TextPage(String translationKey) {
 		super(Constants.id("textures/gui/book/pages/blank_page.png"));
 		this.translationKey = translationKey;
+	}
+
+	public static TextPage of(String translationKey){
+		return new TextPage(translationKey);
 	}
 
 	public String translationKey() {

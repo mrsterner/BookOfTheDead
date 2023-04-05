@@ -87,5 +87,10 @@ public class BotDLanguageProvider extends FabricLanguageProvider {
 		builder.add("book_of_the_dead.gui.book.page.text.text", "This is Text text text txtx txtx txtx txtx txtx txtx txtx");
 		builder.add("book_of_the_dead.gui.book.page.text.butcher.1", "Butchering is a fun fun fun fun fun fun thing");
 		builder.add("book_of_the_dead.gui.book.page.text.test2", "This is a Text 2");
+
+		builder.add("book_of_the_dead.gui.book.page.text.empty", "");
+		builder.add("book_of_the_dead.gui.book.page.text.main.1", "Welcome");
+		builder.add("book_of_the_dead.gui.book.page.headline.main", "Book of the Dead");
+		builder.add("book_of_the_dead.gui.book.page.headline.glossary", "Glossary");
 	}
 }

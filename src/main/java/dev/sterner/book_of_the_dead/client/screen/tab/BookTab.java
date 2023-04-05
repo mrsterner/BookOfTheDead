@@ -21,12 +21,13 @@ public abstract class BookTab extends BotDTab {
 
 	protected BookTab(BookOfTheDeadScreen screen, Identifier background) {
 		super(screen, background);
-		initPages();
 	}
 
 
-	public void initPages() {
-
+	@Override
+	public void init() {
+		openEntry = null;
+		ENTRIES.clear();
 	}
 
 

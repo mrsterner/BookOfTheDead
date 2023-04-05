@@ -10,10 +10,14 @@ public class HeadlineBookPage extends BookPage {
 	private final String headlineTranslationKey;
 	private final String translationKey;
 
-	public HeadlineBookPage(String headlineTranslationKey, String translationKey) {
+	protected HeadlineBookPage(String headlineTranslationKey, String translationKey) {
 		super(Constants.id("textures/gui/book/pages/headline_page.png"));
 		this.headlineTranslationKey = headlineTranslationKey;
 		this.translationKey = translationKey;
+	}
+
+	public static HeadlineBookPage of(String headlineTranslationKey, String translationKey){
+		return new HeadlineBookPage(headlineTranslationKey, translationKey);
 	}
 
 	public String headlineTranslationKey() {
@@ -38,7 +42,7 @@ public class HeadlineBookPage extends BookPage {
 		int guiLeft = guiLeft();
 		int guiTop = guiTop();
 		Text component = Text.translatable(headlineTranslationKey());
-		BookOfTheDeadScreen.renderText(matrixStack, component, guiLeft + 218 - minecraft.textRenderer.getWidth(component.getString()) / 2, guiTop + 10);
+		BookOfTheDeadScreen.renderText(matrixStack, component, guiLeft + 200 - 9 - minecraft.textRenderer.getWidth(component.getString()) / 2, guiTop + 10);
 		BookOfTheDeadScreen.renderWrappingText(matrixStack, translationKey(), guiLeft + 140, guiTop + 31, 109);
 	}
 }
