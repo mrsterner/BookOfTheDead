@@ -8,6 +8,7 @@ import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
 
@@ -71,8 +72,13 @@ public class PlayerKnowledgeComponent implements AutoSyncedComponent {
 		}
 		if (canAddKnowledge) {
 			getKnowledgeData().add(new KnowledgeData(knowledge, 0));
-			BotDComponents.KNOWLEDGE_COMPONENT.sync(player);
 		}
+		BotDComponents.KNOWLEDGE_COMPONENT.sync(this.player);
+	}
+
+	@Override
+	public boolean shouldSyncWith(ServerPlayerEntity player) {
+		return player == this.player; // only sync with the provider itself
 	}
 
 	@Override
@@ -84,15 +90,16 @@ public class PlayerKnowledgeComponent implements AutoSyncedComponent {
 
 		for (int i = 0; i < nbtList.size(); ++i) {
 			NbtCompound nbtCompound = nbtList.getCompound(i);
-			Identifier id = new Identifier(nbtCompound.getString(Constants.Nbt.KNOWLEDGE));
+			Identifier id = Constants.id(nbtCompound.getString(Constants.Nbt.KNOWLEDGE));
 			if (BotDRegistries.KNOWLEDGE.getIds().contains(id)) {
-				var knowledge = BotDRegistries.KNOWLEDGE.get(id);
+				Knowledge knowledge = BotDRegistries.KNOWLEDGE.get(id);
+				System.out.println("DataK: " + knowledge.identifier);
 				int points = nbtCompound.getInt(Constants.Nbt.POINTS);
 				knowledgeDataList.add(new KnowledgeData(knowledge, points));
 			}
 		}
-		BotDComponents.KNOWLEDGE_COMPONENT.sync(player);
 
+		getKnowledgeData().addAll(knowledgeDataList);
 	}
 
 	@Override

@@ -81,5 +81,11 @@ public class BotDLanguageProvider extends FabricLanguageProvider {
 		builder.add(BotDStatusEffects.ADRENALINE, "Adrenaline");
 		builder.add(BotDStatusEffects.EUTHANASIA, "Euthanasia");
 		builder.add(BotDStatusEffects.SANGUINE, "Sanguine Infection");
+
+		builder.add("book_of_the_dead.gui.book.page.headline.butcher", "Butchering");
+
+		builder.add("book_of_the_dead.gui.book.page.text.text", "This is Text text text txtx txtx txtx txtx txtx txtx txtx");
+		builder.add("book_of_the_dead.gui.book.page.text.butcher.1", "Butchering is a fun fun fun fun fun fun thing");
+		builder.add("book_of_the_dead.gui.book.page.text.test2", "This is a Text 2");
 	}
 }

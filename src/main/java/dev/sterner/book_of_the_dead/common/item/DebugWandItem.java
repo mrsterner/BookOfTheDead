@@ -1,8 +1,10 @@
 package dev.sterner.book_of_the_dead.common.item;
 
+import dev.sterner.book_of_the_dead.api.KnowledgeData;
 import dev.sterner.book_of_the_dead.client.particle.OrbitParticleEffect;
 import dev.sterner.book_of_the_dead.common.component.BotDComponents;
 import dev.sterner.book_of_the_dead.common.component.LivingEntityDataComponent;
+import dev.sterner.book_of_the_dead.common.component.PlayerKnowledgeComponent;
 import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -57,6 +59,11 @@ public class DebugWandItem extends Item {
 		}
 
 		 */
+
+		PlayerKnowledgeComponent c = BotDComponents.KNOWLEDGE_COMPONENT.get(user);
+		for(KnowledgeData data : c.getKnowledgeData()){
+			System.out.println("Side: " + world.isClient() +" K: " + data.knowledge().identifier);
+		}
 
 		if (world instanceof ServerWorld serverWorld) {
 			serverWorld.spawnParticles(new OrbitParticleEffect(1, 0, 0.25f, (float) user.getX(), (float) user.getY() + 1, (float) user.getZ(), 3), user.getX(), user.getY() + 1, user.getZ(), 0, 0, 0, 0, 0.05);

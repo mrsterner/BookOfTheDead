@@ -6,11 +6,13 @@ import dev.sterner.book_of_the_dead.api.Knowledge;
 import dev.sterner.book_of_the_dead.client.screen.tab.KnowledgeTab;
 import dev.sterner.book_of_the_dead.common.component.BotDComponents;
 import dev.sterner.book_of_the_dead.common.component.PlayerKnowledgeComponent;
+import dev.sterner.book_of_the_dead.common.network.KnowledgeC2SPacket;
 import dev.sterner.book_of_the_dead.common.util.RenderUtils;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.util.ChatNarratorManager;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.world.World;
 
 import java.util.List;
 import java.util.Set;
@@ -87,8 +89,7 @@ public class KnowledgeWidget extends ClickableWidget {
 	@Override
 	public void onClick(double mouseX, double mouseY) {
 		if (isValidClickButton(0)) {
-			PlayerKnowledgeComponent component = BotDComponents.KNOWLEDGE_COMPONENT.get(tab.player);
-			component.addKnowledge(knowledge);
+			KnowledgeC2SPacket.send(knowledge);
 		}
 	}
 

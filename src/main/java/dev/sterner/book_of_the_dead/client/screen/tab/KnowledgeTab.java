@@ -1,6 +1,5 @@
 package dev.sterner.book_of_the_dead.client.screen.tab;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.sterner.book_of_the_dead.client.screen.BookOfTheDeadScreen;
 import dev.sterner.book_of_the_dead.client.screen.widget.KnowledgeWidget;
@@ -15,11 +14,10 @@ import net.minecraft.util.math.MathHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KnowledgeTab extends BookOfTheDeadTab {
+public class KnowledgeTab extends BotDTab {
 	public final PlayerEntity player;
 	public static final Identifier TAB_TEXTURE = Constants.id("textures/gui/knowledge_tab.png");
 	public static final Identifier PARALLAX = Constants.id("textures/gui/parallax.png");
-	private final BookOfTheDeadScreen screen;
 	public double xOffset = 0;
 	public double yOffset = 0;
 	public int scissorX;
@@ -29,7 +27,7 @@ public class KnowledgeTab extends BookOfTheDeadTab {
 	public List<KnowledgeWidget> widgets = new ArrayList<>();
 
 	public KnowledgeTab(BookOfTheDeadScreen screen) {
-		this.screen = screen;
+		super(screen, Constants.id("textures/gui/background/knowledge_tab.png"));
 		this.player = screen.player;
 		this.scissorX = 50;
 		this.scissorY = 30;

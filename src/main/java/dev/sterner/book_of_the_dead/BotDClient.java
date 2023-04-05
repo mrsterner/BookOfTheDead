@@ -1,11 +1,15 @@
 package dev.sterner.book_of_the_dead;
 
+import dev.sterner.book_of_the_dead.api.Knowledge;
 import dev.sterner.book_of_the_dead.client.model.*;
 import dev.sterner.book_of_the_dead.client.network.BloodSplashParticlePacket;
 import dev.sterner.book_of_the_dead.client.network.OpenBookPacket;
 import dev.sterner.book_of_the_dead.client.renderer.block.*;
 import dev.sterner.book_of_the_dead.client.renderer.entity.*;
 import dev.sterner.book_of_the_dead.client.renderer.item.AllBlackSwordItemRenderer;
+import dev.sterner.book_of_the_dead.common.component.BotDComponents;
+import dev.sterner.book_of_the_dead.common.component.PlayerKnowledgeComponent;
+import dev.sterner.book_of_the_dead.common.network.KnowledgeC2SPacket;
 import dev.sterner.book_of_the_dead.common.registry.*;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
