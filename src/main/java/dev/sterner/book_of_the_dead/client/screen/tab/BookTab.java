@@ -3,6 +3,7 @@ package dev.sterner.book_of_the_dead.client.screen.tab;
 import dev.sterner.book_of_the_dead.client.screen.BookEntry;
 import dev.sterner.book_of_the_dead.client.screen.BookOfTheDeadScreen;
 import dev.sterner.book_of_the_dead.client.screen.page.BookPage;
+import dev.sterner.book_of_the_dead.client.screen.widget.BotDWidget;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
@@ -14,12 +15,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class BookTab extends BotDTab {
-	public static BookEntry openEntry;
-	public int grouping;
+	public BookEntry openEntry;
 
 	public static List<BookEntry> ENTRIES = new ArrayList<>();
 
-	protected BookTab(BookOfTheDeadScreen screen, Identifier background) {
+	protected BookTab(BookOfTheDeadScreen screen, List<Identifier> background) {
 		super(screen, background);
 	}
 
@@ -31,6 +31,13 @@ public abstract class BookTab extends BotDTab {
 
 	@Override
 	public void postInit() {
+		for (BotDWidget widget : widgets) {
+			System.out.println(grouping + " : " + widget.page);
+			if(grouping == widget.page){
+				screen.addDrawableChild(widget);
+			}
+
+		}
 		if(ENTRIES.size() > 0){
 			openEntry = ENTRIES.get(0);
 		}

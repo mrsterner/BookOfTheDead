@@ -82,17 +82,42 @@ public class BotDLanguageProvider extends FabricLanguageProvider {
 		builder.add(BotDStatusEffects.EUTHANASIA, "Euthanasia");
 		builder.add(BotDStatusEffects.SANGUINE, "Sanguine Infection");
 
-		builder.add("book_of_the_dead.gui.book.page.headline.butcher", "Butchering");
-
-		builder.add("book_of_the_dead.gui.book.page.text.text", "This is Text text text txtx txtx txtx txtx txtx txtx txtx");
-		builder.add("book_of_the_dead.gui.book.page.text.butcher.1", "Butchering is a fun fun fun fun fun fun thing");
-		builder.add("book_of_the_dead.gui.book.page.text.test2", "This is a Text 2");
-
 		builder.add("book_of_the_dead.gui.book.page.text.empty", "");
-		builder.add("book_of_the_dead.gui.book.page.text.main.1", "Welcome");
+
 		builder.add("book_of_the_dead.gui.book.page.headline.main", "Book of the Dead");
 		builder.add("book_of_the_dead.gui.book.page.headline.glossary", "Glossary");
 		builder.add("book_of_the_dead.gui.book.page.headline.knowledge", "Knowledge");
+
+		builder.add("book_of_the_dead.gui.book.page.headline.butcher", "Butchering");
+		builder.add("book_of_the_dead.gui.book.page.headline.butcher.1", "Butchering");
+		builder.add("book_of_the_dead.gui.book.page.headline.butcher.2", "Butchering");
+		builder.add("book_of_the_dead.gui.book.page.headline.butcher.3", "Butchering");
+
+		builder.add("book_of_the_dead.gui.book.page.headline.necro", "Necromancy");
+		builder.add("book_of_the_dead.gui.book.page.headline.necro.1", "Necromancy");
+		builder.add("book_of_the_dead.gui.book.page.headline.necro.2", "Necromancy");
+		builder.add("book_of_the_dead.gui.book.page.headline.necro.3", "Necromancy");
+
+		builder.add("book_of_the_dead.gui.book.page.headline.tools", "Tools");
+
+		builder.add("book_of_the_dead.gui.book.page.text.main.1", "Welcome");
+		builder.add("book_of_the_dead.gui.book.page.text.main.2", "Welcome");
+		builder.add("book_of_the_dead.gui.book.page.text.main.3", "Welcome");
+
+		builder.add("book_of_the_dead.gui.book.page.text.necro.1", "Welcome Necromancer");
+		builder.add("book_of_the_dead.gui.book.page.text.necro.2", "Welcome Necromancer");
+		builder.add("book_of_the_dead.gui.book.page.text.necro.3", "Welcome Necromancer");
+
+		builder.add("book_of_the_dead.gui.book.page.text.tools.1", "Welcome You Tool!");
+		builder.add("book_of_the_dead.gui.book.page.text.tools.2", "Welcome You Tool!");
+		builder.add("book_of_the_dead.gui.book.page.text.tools.3", "Welcome You Tool!");
+
+		builder.add("book_of_the_dead.gui.book.page.text.butcher.1", "Welcome Butcher");
+		builder.add("book_of_the_dead.gui.book.page.text.butcher.2", "Welcome Butcher");
+		builder.add("book_of_the_dead.gui.book.page.text.butcher.3", "Welcome Butcher");
+
 		builder.add("book_of_the_dead.gui.book.page.text.knowledge.1", "Git gud cram alchemy");
+		builder.add("book_of_the_dead.gui.book.page.text.knowledge.2", "Git gud cram alchemy");
+		builder.add("book_of_the_dead.gui.book.page.text.knowledge.3", "Git gud cram alchemy");
 	}
 }

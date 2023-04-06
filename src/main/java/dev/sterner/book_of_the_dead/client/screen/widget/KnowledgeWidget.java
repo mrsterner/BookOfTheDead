@@ -20,8 +20,8 @@ public class KnowledgeWidget extends BotDWidget {
 	public float y;
 	public Set<KnowledgeData> knowledgeDataList;
 
-	public KnowledgeWidget(float x, float y, KnowledgeTab tab, Knowledge knowledge) {
-		super((int) x, (int) y, 17, 17, ChatNarratorManager.NO_TITLE);
+	public KnowledgeWidget(float x, float y, KnowledgeTab tab, Knowledge knowledge, int page) {
+		super((int) x, (int) y, 17, 17, ChatNarratorManager.NO_TITLE, page);
 		this.tab = tab;
 		this.knowledge = knowledge;
 		this.x = x;

@@ -8,22 +8,16 @@ import dev.sterner.book_of_the_dead.client.screen.widget.PrevPageWidget;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import dev.sterner.book_of_the_dead.common.util.RenderUtils;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.ChatNarratorManager;
-import net.minecraft.client.util.ColorUtil;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
-
-import java.util.ArrayList;
-import java.util.List;
+import net.minecraft.util.math.MathHelper;
 
 
 public class BookOfTheDeadScreen extends Screen {
-	public static final Identifier BOOK_TEXTURE = Constants.id("textures/gui/background.png");
+	public static final Identifier BOOK_TEXTURE = Constants.id("textures/gui/book_of_the_dead.png");
 	public PlayerEntity player;
 	public static BookOfTheDeadScreen screen;
 	public BotDTab tab;
@@ -54,11 +48,9 @@ public class BookOfTheDeadScreen extends Screen {
 		int x = (width - 192) / 4 + 9 * 12 + 3;
 		int y = 32 * 6 + 1;
 
-		if (!(tab instanceof MainTab)) {
-			addDrawableChild(new NextPageWidget(x + 18 * 6 + 7, y, tab, this));
-			addDrawableChild(new PrevPageWidget(x - (18 * 6 + 7), y, tab, this));
-			addDrawableChild(new BackPageWidget(x, y - 5, tab, this));
-		}
+		addDrawableChild(new NextPageWidget(x + 18 * 6 + 7, y, tab, this, -1));
+		addDrawableChild(new PrevPageWidget(x - (18 * 6 + 7), y, tab, this, -1));
+		addDrawableChild(new BackPageWidget(x, y - 5, tab, this, -1));
 	}
 
 	@Override
@@ -70,11 +62,13 @@ public class BookOfTheDeadScreen extends Screen {
 		matrices.pop();
 		if (tab != null) {
 			if (tab.background != null) {
-				RenderUtils.renderTexture(matrices, tab.background, (this.width - 192) / 4 - 16, 32, 0, 0, 272, 182, 512, 256);
+				int bgIndex = MathHelper.ceil(tab.grouping / 2d);
+				if(bgIndex >= 0 && tab.background.size() > bgIndex){
+					RenderUtils.renderTexture(matrices, tab.background.get(bgIndex), (this.width - 192) / 4 - 16, 32, 0, 0, 272, 182, 512, 256);
+				}
 			}
 			tab.render(matrices, this.width, mouseX, mouseY, delta);
 		}
-
 
 		super.render(matrices, mouseX, mouseY, delta);
 	}

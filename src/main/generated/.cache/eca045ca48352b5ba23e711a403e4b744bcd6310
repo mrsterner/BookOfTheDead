@@ -1,4 +1,4 @@
-// 1.19.4	2023-04-06T15:53:47.11408237	Book of the Dead/Model Definitions
+// 1.19.4	2023-04-06T20:33:33.297654675	Book of the Dead/Model Definitions
 6761e32ea091ac250b056652d959e6a80753ed69 assets/book_of_the_dead/blockstates/reinforced_door.json
 78f05cc5642a71ba0ce54f04c856ff2fb56ce722 assets/book_of_the_dead/models/block/poppy_crop_stage0.json
 0c76bfd391878723caae652e677615db31ab06e1 assets/book_of_the_dead/models/item/fat.json
@@ -20,8 +20,8 @@ d5e985ba3cdca469aa989b90fd0f20b5c03f899e assets/book_of_the_dead/models/block/po
 df4074a7177df477fca88fc7d552a54427171a9b assets/book_of_the_dead/models/block/poppy_crop_stage1.json
 329b7f4b9566ee26dbfa3214c1ea48195aff068d assets/book_of_the_dead/models/item/hook.json
 ad4070f826781a7caec42060fa03dda359f7d2fe assets/book_of_the_dead/models/item/skin.json
-76415f328194d5f63fdc53d928756e9939742036 assets/book_of_the_dead/models/item/paper_and_quill.json
 91ff597202dca381b305f46f1353c200a563bbed assets/book_of_the_dead/models/item/poppy_pod.json
+76415f328194d5f63fdc53d928756e9939742036 assets/book_of_the_dead/models/item/paper_and_quill.json
 06dafce8d5f57d756601cfc1f94a4eb2f506c35c assets/book_of_the_dead/models/block/reinforced_door_top_right_open.json
 dcbdb7f76e74f07a6642f3d16ba8671eb90d63ee assets/book_of_the_dead/models/block/reinforced_door_bottom_left.json
 838f8353a9e9fa2aa9dd0d437d4f00cdd8215de9 assets/book_of_the_dead/models/item/old_letter.json

@@ -5,8 +5,10 @@ import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.text.Text;
 
 public abstract class BotDWidget extends ClickableWidget {
-	public BotDWidget(int x, int y, int width, int height, Text message) {
+	public int page;
+	public BotDWidget(int x, int y, int width, int height, Text message, int page) {
 		super(x, y, width, height, message);
+		this.page = page;
 	}
 
 	public void tick() {
