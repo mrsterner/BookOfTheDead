@@ -2,6 +2,7 @@ package dev.sterner.book_of_the_dead.client.screen.page;
 
 import dev.sterner.book_of_the_dead.client.screen.BookOfTheDeadScreen;
 import dev.sterner.book_of_the_dead.common.util.Constants;
+import dev.sterner.book_of_the_dead.common.util.TextUtils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
@@ -20,6 +21,11 @@ public class HeadlineBookPage extends BookPage {
 		return new HeadlineBookPage(headlineTranslationKey, translationKey);
 	}
 
+	public static HeadlineBookPage of(String headlineTranslationKey){
+		return new HeadlineBookPage(headlineTranslationKey, "empty");
+	}
+
+
 	public String headlineTranslationKey() {
 		return "book_of_the_dead.gui.book.page.headline." + headlineTranslationKey;
 	}
@@ -33,8 +39,8 @@ public class HeadlineBookPage extends BookPage {
 		int guiLeft = guiLeft();
 		int guiTop = guiTop();
 		Text component = Text.translatable(headlineTranslationKey());
-		BookOfTheDeadScreen.renderText(matrixStack, component, guiLeft + 75 - 18 - minecraft.textRenderer.getWidth(component.getString()) / 2, guiTop + 10);
-		BookOfTheDeadScreen.renderWrappingText(matrixStack, translationKey(), guiLeft, guiTop + 31, 109);
+		TextUtils.renderText(matrixStack, component, guiLeft + 75 - 18 - minecraft.textRenderer.getWidth(component.getString()) / 2, guiTop + 10);
+		TextUtils.renderWrappingText(matrixStack, translationKey(), guiLeft, guiTop + 31, 109);
 	}
 
 	@Override
@@ -42,7 +48,7 @@ public class HeadlineBookPage extends BookPage {
 		int guiLeft = guiLeft();
 		int guiTop = guiTop();
 		Text component = Text.translatable(headlineTranslationKey());
-		BookOfTheDeadScreen.renderText(matrixStack, component, guiLeft + 200 - 9 - minecraft.textRenderer.getWidth(component.getString()) / 2, guiTop + 10);
-		BookOfTheDeadScreen.renderWrappingText(matrixStack, translationKey(), guiLeft + 140, guiTop + 31, 109);
+		TextUtils.renderText(matrixStack, component, guiLeft + 200 - 9 - minecraft.textRenderer.getWidth(component.getString()) / 2, guiTop + 10);
+		TextUtils.renderWrappingText(matrixStack, translationKey(), guiLeft + 140, guiTop + 31, 109);
 	}
 }

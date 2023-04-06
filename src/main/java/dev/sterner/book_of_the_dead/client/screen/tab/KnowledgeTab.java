@@ -1,7 +1,10 @@
 package dev.sterner.book_of_the_dead.client.screen.tab;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import dev.sterner.book_of_the_dead.client.screen.BookEntry;
 import dev.sterner.book_of_the_dead.client.screen.BookOfTheDeadScreen;
+import dev.sterner.book_of_the_dead.client.screen.page.HeadlineBookPage;
+import dev.sterner.book_of_the_dead.client.screen.page.TextPage;
 import dev.sterner.book_of_the_dead.client.screen.widget.BotDWidget;
 import dev.sterner.book_of_the_dead.client.screen.widget.KnowledgeWidget;
 import dev.sterner.book_of_the_dead.client.screen.widget.NavigationWidget;
@@ -13,7 +16,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 
-public class KnowledgeTab extends BotDTab {
+public class KnowledgeTab extends BookTab {
 	public final PlayerEntity player;
 	public static final Identifier TAB_TEXTURE = Constants.id("textures/gui/knowledge_tab.png");
 	public static final Identifier PARALLAX = Constants.id("textures/gui/parallax.png");
@@ -35,6 +38,11 @@ public class KnowledgeTab extends BotDTab {
 
 	@Override
 	public void init() {
+		ENTRIES.add(BookEntry.of()
+			.addPage(TextPage.of())
+			.addPage(HeadlineBookPage.of("knowledge", "knowledge.1"))
+		);
+
 		float x = (float) (width - 192) / 4 + 9 * 5 - 4;
 		float y = 18 * 6 + 10;
 		//Void
@@ -110,5 +118,6 @@ public class KnowledgeTab extends BotDTab {
 
 		matrices.pop();
 		disableScissor();
+		super.render(matrices, width, mouseX, mouseY, delta);
 	}
 }

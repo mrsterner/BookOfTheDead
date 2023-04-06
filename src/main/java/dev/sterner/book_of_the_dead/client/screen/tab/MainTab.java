@@ -18,8 +18,7 @@ public class MainTab extends BookTab {
 	public void init() {
 		ENTRIES.add(BookEntry.of()
 			.addPage(HeadlineBookPage.of("main", "main.1"))
-			.addPage(HeadlineBookPage.of("glossary", "empty"))
-
+			.addPage(HeadlineBookPage.of("glossary"))
 		);
 
 		widgets.add(new NavigationWidget(new ButcherTab(screen), 18 * 7 + 10, 70, 273, 23, this, screen));
