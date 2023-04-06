@@ -4,7 +4,7 @@ import dev.sterner.book_of_the_dead.client.screen.BookOfTheDeadScreen;
 import dev.sterner.book_of_the_dead.client.screen.tab.BotDTab;
 import dev.sterner.book_of_the_dead.client.screen.tab.MainTab;
 
-public class BackPageWidget extends PageWidget {
+public class BackPageWidget extends PulseWidget {
 
 	public BackPageWidget(int x, int y, BotDTab tab, BookOfTheDeadScreen screen) {
 		super(x, y, 273, 10, 18, 12, tab, screen);

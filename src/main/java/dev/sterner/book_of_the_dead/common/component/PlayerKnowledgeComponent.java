@@ -19,6 +19,7 @@ import java.util.Set;
 
 public class PlayerKnowledgeComponent implements AutoSyncedComponent {
 	private final PlayerEntity player;
+	private static final int MAX_POINTS = 64;
 
 	private boolean isAlchemist = false;
 	private final Set<KnowledgeData> knowledgeData = new HashSet<>();
@@ -34,18 +35,22 @@ public class PlayerKnowledgeComponent implements AutoSyncedComponent {
 	public boolean clearData() {
 		boolean bl = !getKnowledgeData().isEmpty();
 		getKnowledgeData().clear();
+		BotDComponents.KNOWLEDGE_COMPONENT.sync(this.player);
 		return bl;
 	}
 
-	public void increaseKnowledgePoints(Knowledge knowledge, int amount) {
+	public boolean increaseKnowledgePoints(Knowledge knowledge, int amount) {
 		for (KnowledgeData kd : knowledgeData) {
 			if (kd.knowledge().equals(knowledge)) {
 				int currentPoints = kd.points();
 				int newPoints = currentPoints + amount;
-				setKnowledgePoint(kd, newPoints);
-				break; // stop iterating after finding a match
+				if(newPoints <= MAX_POINTS){
+					setKnowledgePoint(kd, newPoints);
+					return true;
+				}
 			}
 		}
+		return false;
 	}
 
 	private void setKnowledgePoint(KnowledgeData kd, int newPoints) {
@@ -67,9 +72,12 @@ public class PlayerKnowledgeComponent implements AutoSyncedComponent {
 		BotDComponents.KNOWLEDGE_COMPONENT.sync(player);
 	}
 
-	public void addKnowledge(Knowledge knowledge) {
+	public boolean addKnowledge(Knowledge knowledge) {
 		boolean canAddKnowledge = true;
 		List<Knowledge> k = getKnowledgeData().stream().map(KnowledgeData::knowledge).toList();
+		if(k.contains(knowledge)){
+			return false;
+		}
 		for (Knowledge child : knowledge.children) {
 			if (!k.contains(child)) {
 				canAddKnowledge = false;
@@ -80,11 +88,12 @@ public class PlayerKnowledgeComponent implements AutoSyncedComponent {
 			getKnowledgeData().add(new KnowledgeData(knowledge, 0));
 		}
 		BotDComponents.KNOWLEDGE_COMPONENT.sync(this.player);
+		return canAddKnowledge;
 	}
 
 	@Override
 	public boolean shouldSyncWith(ServerPlayerEntity player) {
-		return player == this.player; // only sync with the provider itself
+		return player == this.player;
 	}
 
 	@Override
@@ -99,7 +108,6 @@ public class PlayerKnowledgeComponent implements AutoSyncedComponent {
 			Identifier id = Constants.id(nbtCompound.getString(Constants.Nbt.KNOWLEDGE));
 			if (BotDRegistries.KNOWLEDGE.getIds().contains(id)) {
 				Knowledge knowledge = BotDRegistries.KNOWLEDGE.get(id);
-				System.out.println("DataK: " + knowledge.identifier);
 				int points = nbtCompound.getInt(Constants.Nbt.POINTS);
 				knowledgeDataList.add(new KnowledgeData(knowledge, points));
 			}

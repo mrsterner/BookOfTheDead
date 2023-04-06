@@ -12,16 +12,11 @@ public class ButcherTab extends BookTab {
 
 	@Override
 	public void init() {
-		super.init();
-		ENTRIES.clear();
-
 		ENTRIES.add(BookEntry.of()
 			.addPage(HeadlineBookPage.of("butcher", "butcher.1"))
 			.addPage(TextPage.of("text"))
 			.addPage(TextPage.of("test2"))
 
 		);
-
-		openEntry = ENTRIES.get(0);
 	}
 }

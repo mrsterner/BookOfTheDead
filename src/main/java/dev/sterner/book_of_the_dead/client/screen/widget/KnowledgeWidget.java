@@ -7,15 +7,13 @@ import dev.sterner.book_of_the_dead.client.screen.tab.KnowledgeTab;
 import dev.sterner.book_of_the_dead.common.component.BotDComponents;
 import dev.sterner.book_of_the_dead.common.network.KnowledgeC2SPacket;
 import dev.sterner.book_of_the_dead.common.util.RenderUtils;
-import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
-import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.util.ChatNarratorManager;
 import net.minecraft.client.util.math.MatrixStack;
 
 import java.util.List;
 import java.util.Set;
 
-public class KnowledgeWidget extends ClickableWidget {
+public class KnowledgeWidget extends BotDWidget {
 	public Knowledge knowledge;
 	public KnowledgeTab tab;
 	public float x;
@@ -65,6 +63,7 @@ public class KnowledgeWidget extends ClickableWidget {
 		if (!this.active && !this.visible) {
 			return false;
 		}
+
 		List<Knowledge> knowledgeList = knowledgeDataList.stream().map(KnowledgeData::knowledge).toList();
 		if (isActive(knowledgeList)) {
 			double halfWidth = (double) this.width / 2;
@@ -103,10 +102,5 @@ public class KnowledgeWidget extends ClickableWidget {
 			}
 		}
 		return shouldRender;
-	}
-
-	@Override
-	protected void updateNarration(NarrationMessageBuilder builder) {
-
 	}
 }

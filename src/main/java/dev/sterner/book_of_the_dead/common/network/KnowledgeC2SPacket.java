@@ -10,6 +10,8 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Identifier;
 import org.quiltmc.qsl.networking.api.PacketSender;
 import org.quiltmc.qsl.networking.api.client.ClientPlayNetworking;
@@ -33,7 +35,12 @@ public class KnowledgeC2SPacket {
 
 			server.execute(() -> {
 				PlayerKnowledgeComponent component = BotDComponents.KNOWLEDGE_COMPONENT.get(player);
-				component.addKnowledge(knowledge);
+				if (knowledge != null) {
+					boolean bl = component.addKnowledge(knowledge);
+					if(bl){
+						player.world.playSound(null, player.getBlockPos(), SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.PLAYERS, 1,1);
+					}
+				}
 			});
 		}
 	}

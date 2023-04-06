@@ -4,13 +4,11 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import dev.sterner.book_of_the_dead.client.screen.BookOfTheDeadScreen;
 import dev.sterner.book_of_the_dead.client.screen.tab.BotDTab;
 import dev.sterner.book_of_the_dead.common.util.RenderUtils;
-import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
-import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.util.ChatNarratorManager;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
 
-public class PageWidget extends ClickableWidget {
+public class PulseWidget extends BotDWidget {
 	public int h;
 	public int w;
 	public int u;
@@ -21,7 +19,7 @@ public class PageWidget extends ClickableWidget {
 	public BotDTab tab;
 	public int hoverTick = 0;
 
-	public PageWidget(int x, int y, int u, int v, int w, int h, BotDTab tab, BookOfTheDeadScreen screen) {
+	public PulseWidget(int x, int y, int u, int v, int w, int h, BotDTab tab, BookOfTheDeadScreen screen) {
 		super(x, y, w, h, ChatNarratorManager.NO_TITLE);
 		this.x = x;
 		this.y = y;
@@ -60,14 +58,10 @@ public class PageWidget extends ClickableWidget {
 		return super.isHovered();
 	}
 
+	@Override
 	public void tick() {
 		if (!isHovered()) {
 			hoverTick = 0;
 		}
-	}
-
-	@Override
-	protected void updateNarration(NarrationMessageBuilder builder) {
-
 	}
 }

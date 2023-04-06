@@ -23,13 +23,18 @@ public abstract class BookTab extends BotDTab {
 		super(screen, background);
 	}
 
-
 	@Override
-	public void init() {
-		openEntry = null;
+	public void preInit() {
 		ENTRIES.clear();
+		widgets.clear();
 	}
 
+	@Override
+	public void postInit() {
+		if(ENTRIES.size() > 0){
+			openEntry = ENTRIES.get(0);
+		}
+	}
 
 	@Override
 	public void render(MatrixStack matrices, int width, int mouseX, int mouseY, float delta) {

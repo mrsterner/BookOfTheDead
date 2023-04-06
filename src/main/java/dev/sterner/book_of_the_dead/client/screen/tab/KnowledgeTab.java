@@ -2,7 +2,9 @@ package dev.sterner.book_of_the_dead.client.screen.tab;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.sterner.book_of_the_dead.client.screen.BookOfTheDeadScreen;
+import dev.sterner.book_of_the_dead.client.screen.widget.BotDWidget;
 import dev.sterner.book_of_the_dead.client.screen.widget.KnowledgeWidget;
+import dev.sterner.book_of_the_dead.client.screen.widget.NavigationWidget;
 import dev.sterner.book_of_the_dead.common.registry.BotDKnowledgeRegistry;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import dev.sterner.book_of_the_dead.common.util.RenderUtils;
@@ -10,9 +12,6 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class KnowledgeTab extends BotDTab {
 	public final PlayerEntity player;
@@ -24,7 +23,6 @@ public class KnowledgeTab extends BotDTab {
 	public int scissorY;
 	public int scissorWidth;
 	public int scissorHeight;
-	public List<KnowledgeWidget> widgets = new ArrayList<>();
 
 	public KnowledgeTab(BookOfTheDeadScreen screen) {
 		super(screen, Constants.id("textures/gui/background/knowledge_tab.png"));
@@ -33,13 +31,10 @@ public class KnowledgeTab extends BotDTab {
 		this.scissorY = 30;
 		this.scissorWidth = 122 + scissorX;
 		this.scissorHeight = 172 + scissorY;
-		this.setNextTab(null);
-		this.setPrevTab(null);
 	}
 
 	@Override
 	public void init() {
-		widgets.clear();
 		float x = (float) (width - 192) / 4 + 9 * 5 - 4;
 		float y = 18 * 6 + 10;
 		//Void
@@ -72,7 +67,7 @@ public class KnowledgeTab extends BotDTab {
 		widgets.add(new KnowledgeWidget(x - 9 - 18, y - 15 - 30, this, BotDKnowledgeRegistry.ROT));
 		widgets.add(new KnowledgeWidget(x - 18 - 18, y - 12 - 18 - 30, this, BotDKnowledgeRegistry.CADUCEUS));
 
-		for (KnowledgeWidget widget : widgets) {
+		for (BotDWidget widget : widgets) {
 			screen.addDrawableChild(widget);
 		}
 	}

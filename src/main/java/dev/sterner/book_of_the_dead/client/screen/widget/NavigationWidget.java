@@ -3,7 +3,7 @@ package dev.sterner.book_of_the_dead.client.screen.widget;
 import dev.sterner.book_of_the_dead.client.screen.BookOfTheDeadScreen;
 import dev.sterner.book_of_the_dead.client.screen.tab.BotDTab;
 
-public class NavigationWidget extends PageWidget {
+public class NavigationWidget extends PulseWidget {
 
 	public BotDTab targetTab;
 

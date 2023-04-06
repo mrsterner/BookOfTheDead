@@ -46,7 +46,9 @@ public class BookOfTheDeadScreen extends Screen {
 	public void initialize() {
 		if (tab != null) {
 			tab.width = this.width;
+			tab.preInit();
 			tab.init();
+			tab.postInit();
 		}
 
 		int x = (width - 192) / 4 + 9 * 12 + 3;
