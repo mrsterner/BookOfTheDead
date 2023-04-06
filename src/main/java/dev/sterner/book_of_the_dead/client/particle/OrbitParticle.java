@@ -32,7 +32,6 @@ public class OrbitParticle extends BotDParticle {
 
 	@Override
 	public void tick() {
-
 		if (this.age++ >= this.maxAge) {
 			this.markDead();
 		}
@@ -45,6 +44,15 @@ public class OrbitParticle extends BotDParticle {
 		double ny = this.y;
 		double nz = this.center.z + this.radius * Math.sin(this.angle);
 		Vec3d targetVector = new Vec3d(nx - this.x, ny - this.y, nz - this.z);
+
+		// Cap the speed of the particle
+		double speedCap = 0.02;
+		double currentSpeed = Math.sqrt(velocityX * velocityX + velocityY * velocityY + velocityZ * velocityZ);
+		if (currentSpeed > speedCap) {
+			velocityX = velocityX / currentSpeed * speedCap;
+			velocityY = velocityY / currentSpeed * speedCap;
+			velocityZ = velocityZ / currentSpeed * speedCap;
+		}
 
 		velocityX = (0.75) * velocityX + (0.25) * targetVector.x;
 		velocityY = (0.75) * velocityY + (0.25) * targetVector.y;

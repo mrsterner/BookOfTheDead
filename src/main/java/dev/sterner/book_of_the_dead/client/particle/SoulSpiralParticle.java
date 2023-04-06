@@ -5,6 +5,7 @@ import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleFactory;
 import net.minecraft.client.particle.SpriteProvider;
 import net.minecraft.client.world.ClientWorld;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.Nullable;
 import org.quiltmc.loader.api.minecraft.ClientOnly;
@@ -73,9 +74,18 @@ public class SoulSpiralParticle extends BotDParticle {
 		}
 		targetVector = targetVector.add(this.offset).multiply(factor);
 
+		double maxVelocity = 0.1; // Set your maximum velocity value here
+
 		velocityX = 0.5 * velocityX + 0.5 * targetVector.x;
 		velocityY = 0.5 * velocityY + 0.5 * targetVector.y;
 		velocityZ = 0.5 * velocityZ + 0.5 * targetVector.z;
+
+		double velocity = Math.sqrt(velocityX * velocityX + velocityY * velocityY + velocityZ * velocityZ);
+		if (velocity > maxVelocity) {
+			velocityX *= maxVelocity / velocity;
+			velocityY *= maxVelocity / velocity;
+			velocityZ *= maxVelocity / velocity;
+		}
 
 		if (!new Vec3d(x, y, z).equals(new Vec3d(xTarget, yTarget, zTarget))) {
 			this.move(velocityX, velocityY, velocityZ);
