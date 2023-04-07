@@ -16,7 +16,7 @@ public class BotDClient implements ClientModInitializer {
 		BotDBlockEntityRenderers.init();
 		BotDEntityModelLayers.init();
 		BotDEntityRenderers.init();
-		BotDClientPackages.init();
+		BotDClientPackets.init();
 		BotDModelRegistry.init();
 		BotDColorProviders.init();
 		BotDClientEvents.init();

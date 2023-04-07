@@ -12,18 +12,21 @@ public interface BotDColorProviders {
 
 	static void init() {
 		ColorProviderRegistry.ITEM.register((itemStack, index) -> {
-			if (index == 0) {
-				if (itemStack.hasNbt() && itemStack.getOrCreateNbt().contains(Constants.Nbt.STATUS_EFFECT_INSTANCE)) {
-					NbtCompound nbt = itemStack.getSubNbt(Constants.Nbt.STATUS_EFFECT_INSTANCE);
-					if (nbt != null) {
-						StatusEffect effect = Registries.STATUS_EFFECT.get(Identifier.tryParse(nbt.getString(Constants.Nbt.STATUS_EFFECT)));
-						if (effect != null) {
-							return effect.getColor();
-						}
-					}
-				}
+			if (index != 0) {
+				return -1;
 			}
-			return -1;
+
+			NbtCompound statusEffectNbt = itemStack.getSubNbt(Constants.Nbt.STATUS_EFFECT_INSTANCE);
+			if (statusEffectNbt == null || !statusEffectNbt.contains(Constants.Nbt.STATUS_EFFECT)) {
+				return -1;
+			}
+
+			StatusEffect effect = Registries.STATUS_EFFECT.get(Identifier.tryParse(statusEffectNbt.getString(Constants.Nbt.STATUS_EFFECT)));
+			if (effect == null) {
+				return -1;
+			}
+
+			return effect.getColor();
 		}, BotDObjects.SYRINGE);
 	}
 }

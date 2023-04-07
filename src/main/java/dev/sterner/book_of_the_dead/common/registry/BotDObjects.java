@@ -36,6 +36,10 @@ public interface BotDObjects {
 
 	Item SYRINGE = register("syringe", new SyringeItem(settings()));
 
+
+
+
+
 	Item SULFURIC_ACID = register("sulfuric_acid", new Item(settings()));
 	Item PHILOSOPHERS_STONE = register("philosophers_stone", new Item(settings()));
 
@@ -72,7 +76,10 @@ public interface BotDObjects {
 	Item BOTTLE_OF_BLOOD = register("bottle_of_blood", new Item(settings()));
 
 	Block VILLAGER_WALL_HEAD = register("villager_wall_head", new BotDWallSkullBlock(BotDSkullBlock.Type.VILLAGER, QuiltBlockSettings.copyOf(Blocks.ZOMBIE_HEAD)), settings(), false);
-	Block VILLAGER_HEAD = registerSkull("villager_head", new BotDSkullBlock(BotDSkullBlock.Type.VILLAGER, QuiltBlockSettings.copyOf(Blocks.ZOMBIE_HEAD)), VILLAGER_WALL_HEAD, settings(), true);
+	Block VILLAGER_HEAD = registerWallStanding("villager_head", new BotDSkullBlock(BotDSkullBlock.Type.VILLAGER, QuiltBlockSettings.copyOf(Blocks.ZOMBIE_HEAD)), VILLAGER_WALL_HEAD, settings(), true);
+
+	Block CANDLE_WALL = register("candle_wall", new CandleWallBlock(QuiltBlockSettings.of(Material.DECORATION)), settings(), false);
+	Block CANDLE = registerWallStanding("candle", new CandleBlock(QuiltBlockSettings.of(Material.DECORATION)), CANDLE_WALL, settings(), true);
 
 	Block BRAIN = register("brain", new BrainBlock(QuiltBlockSettings.of(Material.SOLID_ORGANIC)), settings(), true);
 	Item HEART = register("heart", new Item(settings()));
@@ -101,7 +108,7 @@ public interface BotDObjects {
 		return new Item.Settings();
 	}
 
-	static <T extends Block> T registerSkull(String name, T block, T wall, Item.Settings settings, boolean createItem) {
+	static <T extends Block> T registerWallStanding(String name, T block, T wall, Item.Settings settings, boolean createItem) {
 		BLOCKS.put(block, Constants.id(name));
 		if (createItem) {
 			ITEMS.put(new WallStandingBlockItem(block, wall, settings, Direction.DOWN), BLOCKS.get(block));

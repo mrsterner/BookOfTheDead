@@ -1,0 +1,165 @@
+{
+  "variants": {
+    "facing=east,height=0,lit=true": {
+      "model": "book_of_the_dead:block/candle_0_wall",
+      "y": 270
+    },
+    "facing=north,height=0,lit=true": {
+      "model": "book_of_the_dead:block/candle_0_wall",
+      "y": 180
+    },
+    "facing=south,height=0,lit=true": {
+      "model": "book_of_the_dead:block/candle_0_wall"
+    },
+    "facing=west,height=0,lit=true": {
+      "model": "book_of_the_dead:block/candle_0_wall",
+      "y": 90
+    },
+    "facing=east,height=0,lit=false": {
+      "model": "book_of_the_dead:block/candle_0_wall",
+      "y": 270
+    },
+    "facing=north,height=0,lit=false": {
+      "model": "book_of_the_dead:block/candle_0_wall",
+      "y": 180
+    },
+    "facing=south,height=0,lit=false": {
+      "model": "book_of_the_dead:block/candle_0_wall"
+    },
+    "facing=west,height=0,lit=false": {
+      "model": "book_of_the_dead:block/candle_0_wall",
+      "y": 90
+    },
+
+
+    "facing=east,height=1,lit=true": {
+      "model": "book_of_the_dead:block/candle_1_wall",
+      "y": 270
+    },
+    "facing=north,height=1,lit=true": {
+      "model": "book_of_the_dead:block/candle_1_wall",
+      "y": 180
+    },
+    "facing=south,height=1,lit=true": {
+      "model": "book_of_the_dead:block/candle_1_wall"
+    },
+    "facing=west,height=1,lit=true": {
+      "model": "book_of_the_dead:block/candle_1_wall",
+      "y": 90
+    },
+
+    "facing=east,height=1,lit=false": {
+      "model": "book_of_the_dead:block/candle_1_wall",
+      "y": 270
+    },
+    "facing=north,height=1,lit=false": {
+      "model": "book_of_the_dead:block/candle_1_wall",
+      "y": 180
+    },
+    "facing=south,height=1,lit=false": {
+      "model": "book_of_the_dead:block/candle_1_wall"
+    },
+    "facing=west,height=1,lit=false": {
+      "model": "book_of_the_dead:block/candle_1_wall",
+      "y": 90
+    },
+
+
+    "facing=east,height=2,lit=true": {
+      "model": "book_of_the_dead:block/candle_2_wall",
+      "y": 270
+    },
+    "facing=north,height=2,lit=true": {
+      "model": "book_of_the_dead:block/candle_2_wall",
+      "y": 180
+    },
+    "facing=south,height=2,lit=true": {
+      "model": "book_of_the_dead:block/candle_2_wall"
+    },
+    "facing=west,height=2,lit=true": {
+      "model": "book_of_the_dead:block/candle_2_wall",
+      "y": 90
+    },
+
+    "facing=east,height=2,lit=false": {
+      "model": "book_of_the_dead:block/candle_2_wall",
+      "y": 270
+    },
+    "facing=north,height=2,lit=false": {
+      "model": "book_of_the_dead:block/candle_2_wall",
+      "y": 180
+    },
+    "facing=south,height=2,lit=false": {
+      "model": "book_of_the_dead:block/candle_2_wall"
+    },
+    "facing=west,height=2,lit=false": {
+      "model": "book_of_the_dead:block/candle_2_wall",
+      "y": 90
+    },
+
+
+    "facing=east,height=3,lit=true": {
+      "model": "book_of_the_dead:block/candle_3_wall",
+      "y": 270
+    },
+    "facing=north,height=3,lit=true": {
+      "model": "book_of_the_dead:block/candle_3_wall",
+      "y": 180
+    },
+    "facing=south,height=3,lit=true": {
+      "model": "book_of_the_dead:block/candle_3_wall"
+    },
+    "facing=west,height=3,lit=true": {
+      "model": "book_of_the_dead:block/candle_3_wall",
+      "y": 90
+    },
+
+    "facing=east,height=3,lit=false": {
+      "model": "book_of_the_dead:block/candle_3_wall",
+      "y": 270
+    },
+    "facing=north,height=3,lit=false": {
+      "model": "book_of_the_dead:block/candle_3_wall",
+      "y": 180
+    },
+    "facing=south,height=3,lit=false": {
+      "model": "book_of_the_dead:block/candle_3_wall"
+    },
+    "facing=west,height=3,lit=false": {
+      "model": "book_of_the_dead:block/candle_3_wall",
+      "y": 90
+    },
+
+
+    "facing=east,height=4,lit=true": {
+      "model": "book_of_the_dead:block/candle_4_wall",
+      "y": 270
+    },
+    "facing=north,height=4,lit=true": {
+      "model": "book_of_the_dead:block/candle_4_wall",
+      "y": 180
+    },
+    "facing=south,height=4,lit=true": {
+      "model": "book_of_the_dead:block/candle_4_wall"
+    },
+    "facing=west,height=4,lit=true": {
+      "model": "book_of_the_dead:block/candle_4_wall",
+      "y": 90
+    },
+    "facing=east,height=4,lit=false": {
+      "model": "book_of_the_dead:block/candle_4_wall",
+      "y": 270
+    },
+    "facing=north,height=4,lit=false": {
+      "model": "book_of_the_dead:block/candle_4_wall",
+      "y": 180
+    },
+    "facing=south,height=4,lit=false": {
+      "model": "book_of_the_dead:block/candle_4_wall"
+    },
+    "facing=west,height=4,lit=false": {
+      "model": "book_of_the_dead:block/candle_4_wall",
+      "y": 90
+    }
+  }
+}
