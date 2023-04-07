@@ -87,6 +87,7 @@ public class BotDLanguageProvider extends FabricLanguageProvider {
 		builder.add("book_of_the_dead.gui.book.page.headline.main", "Book of the Dead");
 		builder.add("book_of_the_dead.gui.book.page.headline.glossary", "Glossary");
 		builder.add("book_of_the_dead.gui.book.page.headline.knowledge", "Knowledge");
+		builder.add("book_of_the_dead.gui.book.page.headline.knowledge.2", "Knowledge");
 
 		builder.add("book_of_the_dead.gui.book.page.headline.butcher", "Butchering");
 		builder.add("book_of_the_dead.gui.book.page.headline.butcher.1", "Butchering");

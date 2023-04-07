@@ -1,7 +1,7 @@
 package dev.sterner.book_of_the_dead.client.screen.widget;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import dev.sterner.book_of_the_dead.api.interfaces.InactiveButton;
+import dev.sterner.book_of_the_dead.api.interfaces.IInactiveButton;
 import dev.sterner.book_of_the_dead.client.screen.BookOfTheDeadScreen;
 import dev.sterner.book_of_the_dead.client.screen.tab.BotDTab;
 import dev.sterner.book_of_the_dead.common.util.RenderUtils;
@@ -37,7 +37,7 @@ public class PulseWidget extends BotDWidget {
 
 		float pulseAlpha = (MathHelper.sin(hoverTick / 20f) + 1) / 2;
 
-		boolean bl = this instanceof InactiveButton ib && ib.isInactive();
+		boolean bl = this instanceof IInactiveButton ib && ib.isInactive();
 
 		RenderSystem.setShaderTexture(0, BookOfTheDeadScreen.BOOK_TEXTURE);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, isHovered() && !bl ? this.alpha : 0.85F);
@@ -50,7 +50,7 @@ public class PulseWidget extends BotDWidget {
 		matrices.push();
 		if (isHovered() && !bl) {
 			matrices.translate(-pulseAlpha / 2, -pulseAlpha / 2, 0);
-			matrices.scale(1 + pulseAlpha * 0.001f, 1 + pulseAlpha * 0.001f, 1);
+			matrices.scale(1 + pulseAlpha * 0.005f, 1 + pulseAlpha * 0.005f, 1);
 		}
 		RenderUtils.drawTexture(matrices, x, y, u, v, w, h, 512, 256);
 		matrices.pop();

@@ -19,6 +19,7 @@ import net.minecraft.util.math.MathHelper;
 import java.util.List;
 
 public class KnowledgeTab extends BookTab {
+	public static final Identifier TAB_TEXTURE = Constants.id("textures/gui/knowledge_tab.png");
 	public final PlayerEntity player;
 	public static final Identifier PARALLAX = Constants.id("textures/gui/parallax.png");
 	public double xOffset = 0;
@@ -42,6 +43,7 @@ public class KnowledgeTab extends BookTab {
 		ENTRIES.add(BookEntry.of()
 			.addPage(TextPage.of())
 			.addPage(HeadlineBookPage.of("knowledge", "knowledge.1"))
+			.addPage(HeadlineBookPage.of("knowledge.2"))
 		);
 
 		float x = (float) (width - 192) / 4 + 9 * 5 - 4;
@@ -79,6 +81,10 @@ public class KnowledgeTab extends BookTab {
 
 	@Override
 	public boolean move(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
+		if(this.grouping != 0){
+			return false;
+		}
+
 		if (!this.isDragging) {
 			// Check if the mouse is within the screen texture
 			if (mouseX >= (double) (this.width - 192) / 4 - 16 && mouseX <= (double) (this.width - 192) / 4 - 16 + 122 && mouseY >= this.yOffset && mouseY <= this.scissorHeight) {
@@ -101,15 +107,22 @@ public class KnowledgeTab extends BookTab {
 	public void render(MatrixStack matrices, int width, int mouseX, int mouseY, float delta) {
 		int scaledWidth = (width - 192) / 4 - 5;
 
-		RenderSystem.setShaderTexture(0, PARALLAX);
-		enableScissor(scaledWidth, this.scissorY + 13, this.scissorWidth + scaledWidth - 61, this.scissorHeight + 1);
-		matrices.push();
-		matrices.translate(xOffset, yOffset, 0.0F);
+		if(this.grouping == 0){
+			matrices.push();
+			RenderUtils.renderTexture(matrices, TAB_TEXTURE, (width - 192) / 4 - 16, 32, 0, 0, 272, 182, 512, 256);
+			matrices.pop();
 
-		drawTexture(matrices, 0, 0, 300.0F, 200.0F, 2507, 1205, 2507, 1205);
+			RenderSystem.setShaderTexture(0, PARALLAX);
+			enableScissor(scaledWidth, this.scissorY + 13, this.scissorWidth + scaledWidth - 61, this.scissorHeight + 1);
+			matrices.push();
+			matrices.translate(xOffset, yOffset, 0.0F);
 
-		matrices.pop();
-		disableScissor();
+			drawTexture(matrices, 0, 0, 300.0F, 200.0F, 2507, 1205, 2507, 1205);
+
+			matrices.pop();
+			disableScissor();
+		}
+
 		super.render(matrices, width, mouseX, mouseY, delta);
 	}
 }
