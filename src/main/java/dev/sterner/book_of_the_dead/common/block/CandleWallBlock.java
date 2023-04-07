@@ -25,14 +25,14 @@ import org.jetbrains.annotations.Nullable;
 public class CandleWallBlock extends CandleBlock {
 	public static final IntProperty HEIGHT = IntProperty.of("height", 0, 4);
 	public static final float[] PARTICLE_HEIGHT = {0, 10 / 16f, 13 / 16f, 15 / 16f, 17 / 16f};
-	public static final float[] VOXEL_HEIGHT = { 4, 8, 11, 13, 15 };
+	public static final float[] VOXEL_HEIGHT = {4, 8, 11, 13, 15};
 
 	public CandleWallBlock(Settings settings) {
 		super(settings);
 		this.setDefaultState(
 			this.stateManager
 				.getDefaultState()
-				.with(Properties.LIT,false)
+				.with(Properties.LIT, false)
 				.with(HEIGHT, 4)
 				.with(Properties.HORIZONTAL_FACING, Direction.NORTH)
 		);
@@ -59,7 +59,7 @@ public class CandleWallBlock extends CandleBlock {
 		BlockPos blockPos = ctx.getBlockPos();
 		Direction[] directions = ctx.getPlacementDirections();
 
-		for(Direction direction : directions) {
+		for (Direction direction : directions) {
 			if (direction.getAxis().isHorizontal()) {
 				Direction direction2 = direction.getOpposite();
 				blockState = blockState.with(Properties.HORIZONTAL_FACING, direction2);
@@ -95,10 +95,10 @@ public class CandleWallBlock extends CandleBlock {
 
 	@Override
 	public void randomDisplayTick(BlockState state, World world, BlockPos pos, RandomGenerator random) {
-		if(state.get(Properties.LIT) && state.get(HEIGHT) > 0){
-			double d = (double)pos.getX() + 0.5;
-			double e = (double)pos.getY() + PARTICLE_HEIGHT[state.get(HEIGHT)];
-			double f = (double)pos.getZ() + 0.5;
+		if (state.get(Properties.LIT) && state.get(HEIGHT) > 0) {
+			double d = (double) pos.getX() + 0.5;
+			double e = (double) pos.getY() + PARTICLE_HEIGHT[state.get(HEIGHT)];
+			double f = (double) pos.getZ() + 0.5;
 			world.addParticle(ParticleTypes.SMOKE, d, e, f, 0.0, 0.0, 0.0);
 			world.addParticle(ParticleTypes.FLAME, d, e, f, 0.0, 0.0, 0.0);
 		}

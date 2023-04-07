@@ -1,7 +1,9 @@
 package dev.sterner.book_of_the_dead.common.block;
 
 import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.ShapeContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -25,8 +27,8 @@ import net.minecraft.world.event.GameEvent;
 
 public class CandleBlock extends Block {
 	public static final IntProperty HEIGHT = IntProperty.of("height", 0, 4);
-	public static final float[] PARTICLE_HEIGHT = { 0, 7 / 16f, 10 / 16f, 12 / 16f, 14 / 16f };
-	public static final float[] VOXEL_HEIGHT = { 2, 5, 8, 10, 12 };
+	public static final float[] PARTICLE_HEIGHT = {0, 7 / 16f, 10 / 16f, 12 / 16f, 14 / 16f};
+	public static final float[] VOXEL_HEIGHT = {2, 5, 8, 10, 12};
 
 	public CandleBlock(Settings settings) {
 		super(settings
@@ -37,7 +39,7 @@ public class CandleBlock extends Block {
 		this.setDefaultState(
 			this.stateManager
 				.getDefaultState()
-				.with(Properties.LIT,false)
+				.with(Properties.LIT, false)
 				.with(HEIGHT, 4)
 		);
 	}
@@ -45,25 +47,24 @@ public class CandleBlock extends Block {
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		ItemStack handStack = player.getMainHandStack();
-		if(hand == Hand.MAIN_HAND){
-			if(handStack.isOf(BotDObjects.FAT) || handStack.isOf(Items.HONEYCOMB)){
-				if(!state.get(Properties.LIT) && state.get(HEIGHT) < 4){
+		if (hand == Hand.MAIN_HAND) {
+			if (handStack.isOf(BotDObjects.FAT) || handStack.isOf(Items.HONEYCOMB)) {
+				if (!state.get(Properties.LIT) && state.get(HEIGHT) < 4) {
 					world.setBlockState(pos, state.with(HEIGHT, state.get(HEIGHT) + 1));
-					if(!player.isCreative()){
+					if (!player.isCreative()) {
 						handStack.decrement(1);
 					}
 					return ActionResult.CONSUME;
 				}
-			}else if(handStack.isEmpty() && state.get(Properties.LIT)){
+			} else if (handStack.isEmpty() && state.get(Properties.LIT)) {
 				world.setBlockState(pos, state.with(Properties.LIT, false));
 				world.playSound(null, pos, SoundEvents.ENTITY_GENERIC_EXTINGUISH_FIRE, SoundCategory.BLOCKS, 1.0F, 1.0F);
 
-			} else if(handStack.isOf(Items.FLINT_AND_STEEL) || handStack.isOf(Items.FIRE_CHARGE)){
+			} else if (handStack.isOf(Items.FLINT_AND_STEEL) || handStack.isOf(Items.FIRE_CHARGE)) {
 				world.playSound(player, pos, SoundEvents.ITEM_FLINTANDSTEEL_USE, SoundCategory.BLOCKS, 1.0F, world.getRandom().nextFloat() * 0.4F + 0.8F);
 				world.setBlockState(pos, state.with(Properties.LIT, true), Block.NOTIFY_ALL | Block.REDRAW_ON_MAIN_THREAD);
 				world.emitGameEvent(player, GameEvent.BLOCK_CHANGE, pos);
 				handStack.damage(1, player, p -> p.sendToolBreakStatus(hand));
-
 				return ActionResult.CONSUME;
 			}
 		}
@@ -98,10 +99,10 @@ public class CandleBlock extends Block {
 
 	@Override
 	public void randomDisplayTick(BlockState state, World world, BlockPos pos, RandomGenerator random) {
-		if(state.get(Properties.LIT) && state.get(HEIGHT) > 0){
-			double d = (double)pos.getX() + 0.5;
-			double e = (double)pos.getY() + PARTICLE_HEIGHT[state.get(HEIGHT)];
-			double f = (double)pos.getZ() + 0.5;
+		if (state.get(Properties.LIT) && state.get(HEIGHT) > 0) {
+			double d = (double) pos.getX() + 0.5;
+			double e = (double) pos.getY() + PARTICLE_HEIGHT[state.get(HEIGHT)];
+			double f = (double) pos.getZ() + 0.5;
 			world.addParticle(ParticleTypes.SMOKE, d, e, f, 0.0, 0.0, 0.0);
 			world.addParticle(ParticleTypes.FLAME, d, e, f, 0.0, 0.0, 0.0);
 		}

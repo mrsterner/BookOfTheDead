@@ -5,7 +5,7 @@ import org.quiltmc.qsl.networking.api.ServerPlayNetworking;
 
 public interface BotDServerPackets {
 
-	static void init(){
+	static void init() {
 		ServerPlayNetworking.registerGlobalReceiver(KnowledgeC2SPacket.ID, KnowledgeC2SPacket::handle);
 	}
 }

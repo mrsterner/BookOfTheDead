@@ -5,6 +5,7 @@ import dev.sterner.book_of_the_dead.client.renderer.block.BrainBlockEntityRender
 import dev.sterner.book_of_the_dead.client.renderer.block.ButcherTableBlockEntityRenderer;
 import dev.sterner.book_of_the_dead.client.renderer.block.NecroTableBlockEntityRenderer;
 import dev.sterner.book_of_the_dead.client.renderer.block.RetortFlaskBlockEntityRenderer;
+import dev.sterner.book_of_the_dead.client.renderer.entity.BloodParticleEntityRenderer;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 
 public interface BotDEntityModelLayers {
@@ -24,5 +25,6 @@ public interface BotDEntityModelLayers {
 		EntityModelLayerRegistry.registerModelLayer(KakuzuEntityModel.LAYER_LOCATION, KakuzuEntityModel::getTexturedModelData);
 		EntityModelLayerRegistry.registerModelLayer(KakuzuLivingEntityModel.LAYER_LOCATION, KakuzuLivingEntityModel::getTexturedModelData);
 		EntityModelLayerRegistry.registerModelLayer(CircleEntityModel.LAYER_LOCATION, CircleEntityModel::getTexturedModelData);
+		EntityModelLayerRegistry.registerModelLayer(BloodParticleEntityRenderer.LAYER_LOCATION, BloodParticleEntityRenderer::getTexturedModelData);
 	}
 }

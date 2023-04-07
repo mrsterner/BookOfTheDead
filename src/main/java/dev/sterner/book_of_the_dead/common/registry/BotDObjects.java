@@ -37,9 +37,6 @@ public interface BotDObjects {
 	Item SYRINGE = register("syringe", new SyringeItem(settings()));
 
 
-
-
-
 	Item SULFURIC_ACID = register("sulfuric_acid", new Item(settings()));
 	Item PHILOSOPHERS_STONE = register("philosophers_stone", new Item(settings()));
 

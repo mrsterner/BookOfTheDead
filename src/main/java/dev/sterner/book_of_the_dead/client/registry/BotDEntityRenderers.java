@@ -12,5 +12,6 @@ public interface BotDEntityRenderers {
 		EntityRendererRegistry.register(BotDEntityTypes.PLAYER_CORPSE_ENTITY, PlayerCorpseEntityRenderer::new);
 		EntityRendererRegistry.register(BotDEntityTypes.KAKUZU_ENTITY, KakuzuEntityRenderer::new);
 		EntityRendererRegistry.register(BotDEntityTypes.FLOATING_ITEM_ENTITY, FloatingItemEntityRenderer::new);
+		EntityRendererRegistry.register(BotDEntityTypes.BLOOD_PARTICLE_ENTITY, BloodParticleEntityRenderer::new);
 	}
 }

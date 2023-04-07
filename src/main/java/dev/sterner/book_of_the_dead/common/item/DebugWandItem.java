@@ -1,10 +1,13 @@
 package dev.sterner.book_of_the_dead.common.item;
 
+import dev.sterner.book_of_the_dead.client.network.BloodSplashParticlePacket;
+import dev.sterner.book_of_the_dead.client.particle.BloodSplashParticle;
 import dev.sterner.book_of_the_dead.client.particle.OrbitParticleEffect;
 import dev.sterner.book_of_the_dead.common.component.BotDComponents;
 import dev.sterner.book_of_the_dead.common.component.LivingEntityDataComponent;
 import dev.sterner.book_of_the_dead.common.component.PlayerKnowledgeComponent;
 import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
+import dev.sterner.book_of_the_dead.common.registry.BotDParticleTypes;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
@@ -18,6 +21,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
+import org.quiltmc.qsl.networking.api.PlayerLookup;
 
 import static dev.sterner.book_of_the_dead.BotD.isDebugMode;
 
@@ -59,14 +63,22 @@ public class DebugWandItem extends Item {
 
 		 */
 
+		if (world instanceof ServerWorld serverWorld) {
+			PlayerLookup.tracking(user).forEach(track -> BloodSplashParticlePacket.send(track, user.getX() + 0.5, user.getY(), user.getZ() + 0.5));
+			BloodSplashParticlePacket.send(user, user.getX() + 0.5, user.getY(), user.getZ() + 0.5);
+		}
+
 		PlayerKnowledgeComponent c = BotDComponents.KNOWLEDGE_COMPONENT.get(user);
 		if (c.clearData()) {
 			System.out.println("KnowledgeData Cleared!");
 		}
 
+		/*
 		if (world instanceof ServerWorld serverWorld) {
 			serverWorld.spawnParticles(new OrbitParticleEffect(1, 0, 0.25f, (float) user.getX(), (float) user.getY() + 1, (float) user.getZ(), 3), user.getX(), user.getY() + 1, user.getZ(), 0, 0, 0, 0, 0.05);
 		}
+
+		 */
 
 		/*
 		LivingEntityDataComponent component = BotDComponents.LIVING_COMPONENT.get(user);

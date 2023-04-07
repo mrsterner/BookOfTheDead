@@ -31,3 +31,4 @@ accessible field net/minecraft/entity/effect/StatusEffectInstance duration I
 
 accessible method net/minecraft/client/gui/screen/Screen addDrawableChild (Lnet/minecraft/client/gui/Element;)Lnet/minecraft/client/gui/Element;
 accessible method net/minecraft/client/gui/screen/Screen clearChildren ()V
+accessible field net/minecraft/client/model/ModelPart children Ljava/util/Map;

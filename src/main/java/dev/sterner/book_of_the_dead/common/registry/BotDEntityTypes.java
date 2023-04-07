@@ -65,6 +65,15 @@ public interface BotDEntityTypes {
 				.setDimensions(EntityDimensions.fixed(0.5F, 0.75F))
 				.build());
 
+	EntityType<BloodParticleEntity> BLOOD_PARTICLE_ENTITY =
+		register(
+			"blood_particle",
+			QuiltEntityTypeBuilder.<BloodParticleEntity>create()
+				.spawnGroup(SpawnGroup.MISC)
+				.entityFactory(BloodParticleEntity::new)
+				.setDimensions(EntityDimensions.fixed(0.1F, 0.1F))
+				.build());
+
 
 	static <T extends Entity> EntityType<T> register(String name, EntityType<T> type) {
 		ENTITY_TYPES.put(type, Constants.id(name));
