@@ -1,14 +1,11 @@
 package dev.sterner.book_of_the_dead.common.block;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.IntProperty;
 import net.minecraft.state.property.Properties;
@@ -24,21 +21,26 @@ import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Map;
 
 public class CandleWallBlock extends CandleBlock {
 	public static final IntProperty HEIGHT = IntProperty.of("height", 0, 4);
-
+	public static final float[] PARTICLE_HEIGHT = {0, 10 / 16f, 13 / 16f, 15 / 16f, 17 / 16f};
+	public static final float[] VOXEL_HEIGHT = { 4, 8, 11, 13, 15 };
 
 	public CandleWallBlock(Settings settings) {
 		super(settings);
 		this.setDefaultState(
 			this.stateManager
 				.getDefaultState()
-				.with(Properties.LIT,true)
+				.with(Properties.LIT,false)
 				.with(HEIGHT, 4)
 				.with(Properties.HORIZONTAL_FACING, Direction.NORTH)
 		);
+	}
+
+	@Override
+	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+		return Block.createCuboidShape(6.0, 0.0, 6.0, 10.0, VOXEL_HEIGHT[state.get(HEIGHT)], 10.0);
 	}
 
 	@Override
@@ -89,5 +91,16 @@ public class CandleWallBlock extends CandleBlock {
 	@Override
 	public BlockState mirror(BlockState state, BlockMirror mirror) {
 		return state.rotate(mirror.getRotation(state.get(Properties.HORIZONTAL_FACING)));
+	}
+
+	@Override
+	public void randomDisplayTick(BlockState state, World world, BlockPos pos, RandomGenerator random) {
+		if(state.get(Properties.LIT) && state.get(HEIGHT) > 0){
+			double d = (double)pos.getX() + 0.5;
+			double e = (double)pos.getY() + PARTICLE_HEIGHT[state.get(HEIGHT)];
+			double f = (double)pos.getZ() + 0.5;
+			world.addParticle(ParticleTypes.SMOKE, d, e, f, 0.0, 0.0, 0.0);
+			world.addParticle(ParticleTypes.FLAME, d, e, f, 0.0, 0.0, 0.0);
+		}
 	}
 }
