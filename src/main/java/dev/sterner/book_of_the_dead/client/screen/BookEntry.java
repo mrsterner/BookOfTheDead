@@ -11,7 +11,7 @@ public class BookEntry {
 	protected BookEntry() {
 	}
 
-	public static BookEntry of(){
+	public static BookEntry of() {
 		return new BookEntry();
 	}
 

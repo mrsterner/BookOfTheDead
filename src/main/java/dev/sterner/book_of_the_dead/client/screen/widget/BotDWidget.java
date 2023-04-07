@@ -6,6 +6,7 @@ import net.minecraft.text.Text;
 
 public abstract class BotDWidget extends ClickableWidget {
 	public int page;
+
 	public BotDWidget(int x, int y, int width, int height, Text message, int page) {
 		super(x, y, width, height, message);
 		this.page = page;

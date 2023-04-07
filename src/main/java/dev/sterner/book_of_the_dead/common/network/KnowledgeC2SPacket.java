@@ -37,8 +37,8 @@ public class KnowledgeC2SPacket {
 				PlayerKnowledgeComponent component = BotDComponents.KNOWLEDGE_COMPONENT.get(player);
 				if (knowledge != null) {
 					boolean bl = component.addKnowledge(knowledge);
-					if(bl){
-						player.world.playSound(null, player.getBlockPos(), SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.PLAYERS, 1,1);
+					if (bl) {
+						player.world.playSound(null, player.getBlockPos(), SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.PLAYERS, 1, 1);
 					}
 				}
 			});

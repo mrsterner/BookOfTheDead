@@ -5,9 +5,7 @@ import dev.sterner.book_of_the_dead.client.screen.BookEntry;
 import dev.sterner.book_of_the_dead.client.screen.BookOfTheDeadScreen;
 import dev.sterner.book_of_the_dead.client.screen.page.HeadlineBookPage;
 import dev.sterner.book_of_the_dead.client.screen.page.TextPage;
-import dev.sterner.book_of_the_dead.client.screen.widget.BotDWidget;
 import dev.sterner.book_of_the_dead.client.screen.widget.KnowledgeWidget;
-import dev.sterner.book_of_the_dead.client.screen.widget.NavigationWidget;
 import dev.sterner.book_of_the_dead.common.registry.BotDKnowledgeRegistry;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import dev.sterner.book_of_the_dead.common.util.RenderUtils;
@@ -81,7 +79,7 @@ public class KnowledgeTab extends BookTab {
 
 	@Override
 	public boolean move(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
-		if(this.grouping != 0){
+		if (this.grouping != 0) {
 			return false;
 		}
 
@@ -107,7 +105,7 @@ public class KnowledgeTab extends BookTab {
 	public void render(MatrixStack matrices, int width, int mouseX, int mouseY, float delta) {
 		int scaledWidth = (width - 192) / 4 - 5;
 
-		if(this.grouping == 0){
+		if (this.grouping == 0) {
 			matrices.push();
 			RenderUtils.renderTexture(matrices, TAB_TEXTURE, (width - 192) / 4 - 16, 32, 0, 0, 272, 182, 512, 256);
 			matrices.pop();

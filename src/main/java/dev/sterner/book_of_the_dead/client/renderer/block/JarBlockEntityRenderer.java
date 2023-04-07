@@ -1,7 +1,7 @@
 package dev.sterner.book_of_the_dead.client.renderer.block;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import dev.sterner.book_of_the_dead.BotDClient;
+import dev.sterner.book_of_the_dead.client.event.ClientTickHandler;
 import dev.sterner.book_of_the_dead.client.model.BrainEntityModel;
 import dev.sterner.book_of_the_dead.client.model.JarEntityModel;
 import dev.sterner.book_of_the_dead.common.block.JarBlock;
@@ -50,7 +50,7 @@ public class JarBlockEntityRenderer implements BlockEntityRenderer<JarBlockEntit
 		if (entity.hasBrain) {
 			matrices.push();
 			matrices.translate(0.5, -1.0, 0.5);
-			float ticks = (BotDClient.ClientTickHandler.ticksInGame + tickDelta) * 0.05f % 360;
+			float ticks = (ClientTickHandler.ticksInGame + tickDelta) * 0.05f % 360;
 			matrices.translate(0, 0.1 * MathHelper.sin(ticks), 0);
 			VertexConsumer buffer = vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(BrainBlockEntityRenderer.TEXTURE));
 			brainEntityModel.render(matrices, buffer, light, overlay, 1, 1, 1, 1);

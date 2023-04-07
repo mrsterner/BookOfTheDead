@@ -1,6 +1,5 @@
 package dev.sterner.book_of_the_dead.client.screen.page;
 
-import dev.sterner.book_of_the_dead.client.screen.BookOfTheDeadScreen;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import dev.sterner.book_of_the_dead.common.util.TextUtils;
 import net.minecraft.client.MinecraftClient;
@@ -14,11 +13,11 @@ public class TextPage extends BookPage {
 		this.translationKey = translationKey;
 	}
 
-	public static TextPage of(String translationKey){
+	public static TextPage of(String translationKey) {
 		return new TextPage(translationKey);
 	}
 
-	public static TextPage of(){
+	public static TextPage of() {
 		return new TextPage("empty");
 	}
 

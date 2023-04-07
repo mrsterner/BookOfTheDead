@@ -4,7 +4,7 @@ import dev.sterner.book_of_the_dead.client.screen.BookEntry;
 import dev.sterner.book_of_the_dead.client.screen.BookOfTheDeadScreen;
 import dev.sterner.book_of_the_dead.client.screen.page.HeadlineBookPage;
 
-public class NecroTab extends BookTab{
+public class NecroTab extends BookTab {
 	public NecroTab(BookOfTheDeadScreen screen) {
 		super(screen, null);
 	}

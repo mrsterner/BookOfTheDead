@@ -1,7 +1,7 @@
 package dev.sterner.book_of_the_dead.client.renderer.block;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import dev.sterner.book_of_the_dead.BotDClient;
+import dev.sterner.book_of_the_dead.client.event.ClientTickHandler;
 import dev.sterner.book_of_the_dead.client.renderer.renderlayer.BotDRenderLayer;
 import dev.sterner.book_of_the_dead.common.block.NecroTableBlock;
 import dev.sterner.book_of_the_dead.common.block.entity.NecroTableBlockEntity;
@@ -89,7 +89,7 @@ public class NecroTableBlockEntityRenderer<T extends BlockEntity> implements Blo
 				}
 
 				final float rotationModifier = 4F;
-				double ticks = (BotDClient.ClientTickHandler.ticksInGame + tickDelta) * 0.5;
+				double ticks = ClientTickHandler.ticksInGame + tickDelta * 0.5;
 				float deg = (float) (ticks / rotationModifier % 360F);
 				matrices.multiply(Axis.Z_POSITIVE.rotationDegrees(MathHelper.sin(deg) / (float) Math.PI));
 				matrices.multiply(Axis.X_POSITIVE.rotationDegrees(MathHelper.cos(deg) / (float) Math.PI));

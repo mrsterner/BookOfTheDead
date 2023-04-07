@@ -4,12 +4,15 @@ import com.mojang.blaze3d.lighting.DiffuseLighting;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
+import me.shedaniel.math.Color;
 import me.shedaniel.math.Rectangle;
+import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.fabricmc.fabric.api.renderer.v1.mesh.Mesh;
 import net.fabricmc.fabric.api.renderer.v1.mesh.MutableQuadView;
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
 import net.fabricmc.fabric.api.renderer.v1.model.ModelHelper;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
@@ -19,6 +22,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
@@ -137,5 +141,44 @@ public class RenderUtils {
 
 		RenderSystem.defaultBlendFunc();
 		RenderSystem.disableBlend();
+	}
+
+	public static void renderBlockAtPosition(WorldRenderContext context, Vec3d pos, Identifier texture, float alpha) {
+		renderBlockAtPosition(context.matrixStack(), context.camera(), pos, texture, alpha);
+	}
+
+	public static void renderBlockAtPosition(MatrixStack matrixStack, Camera camera, Vec3d pos, Identifier texture, float alpha) {
+		matrixStack.push();
+		Vec3d transformedPos = pos.subtract(camera.getPos());
+		matrixStack.translate(transformedPos.x, transformedPos.y, transformedPos.z);
+		Matrix4f positionMatrix = matrixStack.peek().getModel();
+
+		Tessellator tessellator = Tessellator.getInstance();
+		BufferBuilder buffer = tessellator.getBufferBuilder();
+
+		buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR_TEXTURE);
+
+		Color color = Color.ofRGBA(255, 255, 255, alpha);
+		int intColor = color.getColor();
+
+		for (Direction direction : Direction.values()) {
+			float x1 = direction == Direction.WEST || direction == Direction.DOWN || direction == Direction.NORTH ? 1 : 0;
+			float x2 = direction == Direction.EAST || direction == Direction.UP || direction == Direction.SOUTH ? 1 : 0;
+			float y1 = direction == Direction.DOWN || direction == Direction.NORTH || direction == Direction.WEST ? 1 : 0;
+			float y2 = direction == Direction.UP || direction == Direction.SOUTH || direction == Direction.EAST ? 1 : 0;
+			float z1 = direction == Direction.NORTH || direction == Direction.UP || direction == Direction.WEST ? 1 : 0;
+			float z2 = direction == Direction.SOUTH || direction == Direction.DOWN || direction == Direction.EAST ? 1 : 0;
+
+			buffer.vertex(positionMatrix, x1, y1, z1).color(intColor).uv(0, 1).next();
+			buffer.vertex(positionMatrix, x1, y2, z2).color(intColor).uv(0, 0).next();
+			buffer.vertex(positionMatrix, x2, y2, z2).color(intColor).uv(1, 0).next();
+			buffer.vertex(positionMatrix, x2, y1, z1).color(intColor).uv(1, 1).next();
+		}
+
+		RenderSystem.setShader(GameRenderer::getPositionColorTexShader);
+		RenderSystem.setShaderTexture(0, texture);
+		tessellator.draw();
+
+		matrixStack.pop();
 	}
 }

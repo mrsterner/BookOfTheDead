@@ -44,7 +44,7 @@ public class PlayerKnowledgeComponent implements AutoSyncedComponent {
 			if (kd.knowledge().equals(knowledge)) {
 				int currentPoints = kd.points();
 				int newPoints = currentPoints + amount;
-				if(newPoints <= MAX_POINTS){
+				if (newPoints <= MAX_POINTS) {
 					setKnowledgePoint(kd, newPoints);
 					return true;
 				}
@@ -75,7 +75,7 @@ public class PlayerKnowledgeComponent implements AutoSyncedComponent {
 	public boolean addKnowledge(Knowledge knowledge) {
 		boolean canAddKnowledge = true;
 		List<Knowledge> k = getKnowledgeData().stream().map(KnowledgeData::knowledge).toList();
-		if(k.contains(knowledge)){
+		if (k.contains(knowledge)) {
 			return false;
 		}
 		for (Knowledge child : knowledge.children) {

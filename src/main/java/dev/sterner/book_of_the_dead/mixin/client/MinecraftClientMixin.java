@@ -1,6 +1,6 @@
 package dev.sterner.book_of_the_dead.mixin.client;
 
-import dev.sterner.book_of_the_dead.BotDClient;
+import dev.sterner.book_of_the_dead.client.event.ClientTickHandler;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import org.jetbrains.annotations.Nullable;
@@ -29,6 +29,6 @@ public abstract class MinecraftClientMixin {
 
 	@Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/GameRenderer;render(FJZ)V"))
 	private void book_of_the_dead$onFrameStart(boolean tick, CallbackInfo ci) {
-		BotDClient.ClientTickHandler.renderTick(isPaused() ? pausedTickDelta : getTickDelta());
+		ClientTickHandler.renderTick(isPaused() ? pausedTickDelta : getTickDelta());
 	}
 }

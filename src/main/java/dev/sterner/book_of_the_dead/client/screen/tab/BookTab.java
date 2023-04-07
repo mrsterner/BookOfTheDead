@@ -32,12 +32,12 @@ public abstract class BookTab extends BotDTab {
 	@Override
 	public void postInit() {
 		for (BotDWidget widget : widgets) {
-			if(grouping == widget.page){
+			if (grouping == widget.page) {
 				screen.addDrawableChild(widget);
 			}
 
 		}
-		if(ENTRIES.size() > 0){
+		if (ENTRIES.size() > 0) {
 			openEntry = ENTRIES.get(0);
 		}
 	}

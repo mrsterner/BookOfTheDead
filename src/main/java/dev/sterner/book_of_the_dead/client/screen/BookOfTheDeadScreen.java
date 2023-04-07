@@ -63,7 +63,7 @@ public class BookOfTheDeadScreen extends Screen {
 		if (tab != null) {
 			if (tab.background != null) {
 				int bgIndex = MathHelper.ceil(tab.grouping / 2d);
-				if(bgIndex >= 0 && tab.background.size() > bgIndex){
+				if (bgIndex >= 0 && tab.background.size() > bgIndex) {
 					RenderUtils.renderTexture(matrices, tab.background.get(bgIndex), (this.width - 192) / 4 - 16, 32, 0, 0, 272, 182, 512, 256);
 				}
 			}
