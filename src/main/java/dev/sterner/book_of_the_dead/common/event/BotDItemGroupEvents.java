@@ -26,6 +26,7 @@ public class BotDItemGroupEvents {
 		e.addItem(HOOK);
 		e.addItem(METAL_HOOK);
 		e.addItem(ROPE);
+		e.addItem(CANDLE);
 		e.addItem(RETORT_FLASK);
 		e.addItem(SULFUR);
 		e.addItem(SULFURIC_ACID);
@@ -41,6 +42,7 @@ public class BotDItemGroupEvents {
 		e.addItem(WITHER_LEGGINGS);
 		e.addItem(WITHER_BOOTS);
 		e.addItem(EMERALD_TABLET);
+		e.addItem(QUARTZ_PEARL);
 		e.addItem(PHILOSOPHERS_STONE);
 		e.addItem(POPPY_POD);
 		e.addItem(POPPY_SEEDS);

@@ -55,6 +55,7 @@ public interface BotDObjects {
 	Item WITHER_BOOTS = register("wither_boots", new WitherArmorItem(ArmorItem.ArmorSlot.BOOTS, settings()));
 
 	Item SOAP = register("soap", new SoapItem(settings()));
+	Item QUARTZ_PEARL = register("quartz_pearl", new Item(settings()));
 
 	Item CELLAR_KEY = register("cellar_key", new CellarKeyItem(settings()));
 	Item CONTRACT = register("contract", new ContractItem(settings()));

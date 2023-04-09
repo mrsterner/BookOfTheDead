@@ -4,7 +4,6 @@ import dev.sterner.book_of_the_dead.common.event.BotDEvents;
 import dev.sterner.book_of_the_dead.common.event.BotDItemGroupEvents;
 import dev.sterner.book_of_the_dead.common.event.BotDUseEvents;
 import dev.sterner.book_of_the_dead.common.registry.*;
-import net.minecraft.client.render.block.entity.SkullBlockEntityRenderer;
 import org.quiltmc.loader.api.ModContainer;
 import org.quiltmc.loader.api.QuiltLoader;
 import org.quiltmc.qsl.base.api.entrypoint.ModInitializer;

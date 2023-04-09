@@ -2,8 +2,6 @@ package dev.sterner.book_of_the_dead.client.renderer.feature;
 
 import dev.sterner.book_of_the_dead.common.entity.BloodParticleEntity;
 import dev.sterner.book_of_the_dead.common.registry.BotDEntityTypes;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
@@ -46,7 +44,7 @@ public class StuckBloodFeatureRenderer<T extends LivingEntity, M extends PlayerE
 
 		//matrices.translate(0,-1.5,0);
 		//matrices.scale(1.1f,1.1f,1.1f);
-		if(!bloods.isEmpty()){
+		if (!bloods.isEmpty()) {
 
 			this.dispatcher.render(bloods.get(n), 0.0, 0.0, 0.0, 0, tickDelta, matrices, vertexConsumers, light);
 		}
@@ -57,7 +55,7 @@ public class StuckBloodFeatureRenderer<T extends LivingEntity, M extends PlayerE
 		int m = this.getObjectCount(livingEntity);
 		RandomGenerator randomGenerator = RandomGenerator.createLegacy(livingEntity.getId());
 		if (m > 0) {
-			for(int n = 0; n < m; ++n) {
+			for (int n = 0; n < m; ++n) {
 
 				matrixStack.push();
 				float yaw = (float) (bloods.get(n).getYaw() * (Math.PI / 180)); // convert to radians
@@ -70,7 +68,7 @@ public class StuckBloodFeatureRenderer<T extends LivingEntity, M extends PlayerE
 				Quaternionf rotationQuat = pitchQuat.mul(yawQuat);
 
 				matrixStack.multiply(rotationQuat);
-				matrixStack.translate(0, -livingEntity.getHeight(),0);
+				matrixStack.translate(0, -livingEntity.getHeight(), 0);
 
 				ModelPart modelPart = this.getContextModel().getRandomPart(randomGenerator);
 				ModelPart.Cuboid cuboid = modelPart.getRandomCuboid(randomGenerator);
@@ -91,8 +89,8 @@ public class StuckBloodFeatureRenderer<T extends LivingEntity, M extends PlayerE
 				if (bloods.size() <= n || bloods.get(n) == null) {
 					BloodParticleEntity bloodParticle = new BloodParticleEntity(BotDEntityTypes.BLOOD_PARTICLE_ENTITY, livingEntity.world);
 					bloodParticle.getDataTracker().set(BloodParticleEntity.VARIANT, livingEntity.world.random.nextInt(8));
-					bloodParticle.setYaw((float)(Math.atan2((double)o, (double)q) * 180.0F / (float)Math.PI));
-					bloodParticle.setPitch((float)(Math.atan2((double)p, (double)fd) * 180.0F / (float)Math.PI));
+					bloodParticle.setYaw((float) (Math.atan2((double) o, (double) q) * 180.0F / (float) Math.PI));
+					bloodParticle.setPitch((float) (Math.atan2((double) p, (double) fd) * 180.0F / (float) Math.PI));
 					bloodParticle.prevYaw = bloodParticle.getYaw();
 					bloodParticle.prevPitch = bloodParticle.getPitch();
 					if (bloods.size() <= n) {

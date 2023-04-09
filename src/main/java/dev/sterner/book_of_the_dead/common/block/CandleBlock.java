@@ -60,7 +60,7 @@ public class CandleBlock extends Block {
 				world.setBlockState(pos, state.with(Properties.LIT, false));
 				world.playSound(null, pos, SoundEvents.ENTITY_GENERIC_EXTINGUISH_FIRE, SoundCategory.BLOCKS, 1.0F, 1.0F);
 
-			} else if (handStack.isOf(Items.FLINT_AND_STEEL) || handStack.isOf(Items.FIRE_CHARGE)) {
+			} else if (state.get(HEIGHT) > 0 && (handStack.isOf(Items.FLINT_AND_STEEL) || handStack.isOf(Items.FIRE_CHARGE))) {
 				world.playSound(player, pos, SoundEvents.ITEM_FLINTANDSTEEL_USE, SoundCategory.BLOCKS, 1.0F, world.getRandom().nextFloat() * 0.4F + 0.8F);
 				world.setBlockState(pos, state.with(Properties.LIT, true), Block.NOTIFY_ALL | Block.REDRAW_ON_MAIN_THREAD);
 				world.emitGameEvent(player, GameEvent.BLOCK_CHANGE, pos);
@@ -91,8 +91,10 @@ public class CandleBlock extends Block {
 	@Override
 	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, RandomGenerator random) {
 		if (state.get(HEIGHT) > 0 && state.get(Properties.LIT) && random.nextFloat() < 0.001F) {
-			BlockState newState = state.with(HEIGHT, state.get(HEIGHT) - 1).with(Properties.LIT, state.get(HEIGHT) - 1 != 0);
-			world.setBlockState(pos, newState);
+			if (random.nextFloat() < 0.001F) {
+				BlockState newState = state.with(HEIGHT, state.get(HEIGHT) - 1).with(Properties.LIT, state.get(HEIGHT) - 1 != 0);
+				world.setBlockState(pos, newState);
+			}
 		}
 		super.randomTick(state, world, pos, random);
 	}

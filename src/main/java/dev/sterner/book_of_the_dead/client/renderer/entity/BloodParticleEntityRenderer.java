@@ -28,7 +28,7 @@ public class BloodParticleEntityRenderer extends EntityRenderer<BloodParticleEnt
 	@Override
 	public void render(BloodParticleEntity entity, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
 		int variant = entity.getDataTracker().get(BloodParticleEntity.VARIANT);
-		main.render(matrices, vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(TEXTURE[variant])), light, OverlayTexture.DEFAULT_UV, 1,1,1,1);
+		main.render(matrices, vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(TEXTURE[variant])), light, OverlayTexture.DEFAULT_UV, 1, 1, 1, 1);
 		super.render(entity, yaw, tickDelta, matrices, vertexConsumers, light);
 	}
 

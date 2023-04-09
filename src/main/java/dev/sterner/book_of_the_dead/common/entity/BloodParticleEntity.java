@@ -1,6 +1,5 @@
 package dev.sterner.book_of_the_dead.common.entity;
 
-import dev.sterner.book_of_the_dead.common.registry.BotDEntityTypes;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
