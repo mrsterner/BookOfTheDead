@@ -15,5 +15,6 @@ public interface BotDBlockEntityRenderers {
 		BlockEntityRendererFactories.register(BotDBlockEntityTypes.RETORT, RetortFlaskBlockEntityRenderer::new);
 		BlockEntityRendererFactories.register(BotDBlockEntityTypes.HEAD, ctx -> new BotDSkullBlockEntityRenderer());
 		BlockEntityRendererFactories.register(BotDBlockEntityTypes.BRAIN, BrainBlockEntityRenderer::new);
+		BlockEntityRendererFactories.register(BotDBlockEntityTypes.BOOK, BookBlockEntityRenderer::new);
 	}
 }

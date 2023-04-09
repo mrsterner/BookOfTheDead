@@ -57,6 +57,11 @@ public interface BotDBlockEntityTypes {
 			BotDObjects.BRAIN
 		).build());
 
+	BlockEntityType<BookBlockEntity> BOOK = register("book",
+		QuiltBlockEntityTypeBuilder.create(BookBlockEntity::new,
+			BotDObjects.BOOK_OF_THE_DEAD
+		).build());
+
 
 	static <T extends BlockEntity> BlockEntityType<T> register(String name, BlockEntityType<T> type) {
 		BLOCK_ENTITY_TYPES.put(type, Constants.id(name));

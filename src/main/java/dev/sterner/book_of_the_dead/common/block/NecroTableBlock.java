@@ -78,7 +78,7 @@ public class NecroTableBlock extends HorizontalFacingBlock implements BlockEntit
 	public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
 		if (world.getBlockEntity(pos) instanceof NecroTableBlockEntity be) {
 			if (be.hasBotD) {
-				ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), BotDObjects.BOOK_OF_THE_DEAD.getDefaultStack());
+				ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), BotDObjects.BOOK_OF_THE_DEAD.asItem().getDefaultStack());
 			}
 			if (be.hasEmeraldTablet) {
 				ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), BotDObjects.EMERALD_TABLET.getDefaultStack());

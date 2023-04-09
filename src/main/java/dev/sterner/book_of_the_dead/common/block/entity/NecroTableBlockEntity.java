@@ -135,7 +135,7 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 				if (handStack.isEmpty()) {
 					if (player.isSneaking()) {
 						if (hasBotD) {
-							player.setStackInHand(hand, BotDObjects.BOOK_OF_THE_DEAD.getDefaultStack());
+							player.setStackInHand(hand, BotDObjects.BOOK_OF_THE_DEAD.asItem().getDefaultStack());
 							hasBotD = false;
 						} else if (hasEmeraldTablet) {
 							player.setStackInHand(hand, BotDObjects.EMERALD_TABLET.getDefaultStack());
@@ -149,7 +149,7 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 					}
 					markDirty();
 					return ActionResult.CONSUME;
-				} else if (handStack.isOf(BotDObjects.BOOK_OF_THE_DEAD) && !hasBotD) {
+				} else if (handStack.isOf(BotDObjects.BOOK_OF_THE_DEAD.asItem()) && !hasBotD) {
 					hasBotD = true;
 					handStack.decrement(1);
 					playItemSound(world, pos);

@@ -31,7 +31,8 @@ public interface BotDObjects {
 	Item CARPENTER_TOOLS = register("carpenter_tools", new Item(settings().maxCount(1).maxDamage(32)));
 
 	Item MEAT_CLEAVER = register("meat_cleaver", new AxeItem(ToolMaterials.NETHERITE, 6, -2, settings()));
-	Item BOOK_OF_THE_DEAD = register("book_of_the_dead", new BookOfTheDeadItem(Constants.id("book_of_the_dead"), settings()));
+	//Item BOOK_OF_THE_DEAD = register("book_of_the_dead", new BookOfTheDeadItem(Constants.id("book_of_the_dead"), settings()));
+	Block BOOK_OF_THE_DEAD = registerBook("book_of_the_dead", new BookBlock(QuiltBlockSettings.of(Material.DECORATION)), settings());
 	Item ALL_BLACK = register("all_black", new AllBlackSwordItem(ToolMaterials.NETHERITE, 8, -2, settings()));
 
 	Item SYRINGE = register("syringe", new SyringeItem(settings()));
@@ -111,6 +112,12 @@ public interface BotDObjects {
 		if (createItem) {
 			ITEMS.put(new WallStandingBlockItem(block, wall, settings, Direction.DOWN), BLOCKS.get(block));
 		}
+		return block;
+	}
+
+	static <T extends Block> T registerBook(String name, T block, Item.Settings settings) {
+		BLOCKS.put(block, Constants.id(name));
+		ITEMS.put(new BookOfTheDeadItem(block, settings), BLOCKS.get(block));
 		return block;
 	}
 
