@@ -14,7 +14,7 @@ public class EmeraldTabletItem extends BlockItem {
 	@Override
 	public ActionResult useOnBlock(ItemUsageContext context) {
 		PlayerEntity playerEntity = context.getPlayer();
-		if(playerEntity != null && playerEntity.isSneaking() && !BookOfTheDeadItem.cancelPlacement(context.getWorld(), playerEntity)){
+		if (playerEntity != null && playerEntity.isSneaking() && !BookOfTheDeadItem.cancelPlacement(context.getWorld(), playerEntity)) {
 			return super.useOnBlock(context);
 		}
 		return ActionResult.PASS;

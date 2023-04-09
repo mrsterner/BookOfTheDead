@@ -2,7 +2,6 @@ package dev.sterner.book_of_the_dead.mixin.client;
 
 import dev.sterner.book_of_the_dead.client.renderer.feature.ExtraHeartsFeatureRenderer;
 import dev.sterner.book_of_the_dead.client.renderer.feature.ShoulderCropseFeatureRenderer;
-import dev.sterner.book_of_the_dead.client.renderer.feature.StuckBloodFeatureRenderer;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.LivingEntityRenderer;

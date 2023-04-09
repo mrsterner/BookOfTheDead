@@ -1,6 +1,6 @@
 package dev.sterner.book_of_the_dead.mixin.client;
 
-import dev.sterner.book_of_the_dead.client.renderer.renderlayer.BotDRenderLayer;
+import dev.sterner.book_of_the_dead.client.registry.BotDRenderLayer;
 import dev.sterner.book_of_the_dead.common.item.AllBlackSwordItem;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;

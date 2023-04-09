@@ -38,6 +38,7 @@ public record RitualRecipe(Identifier id,
 						   Identifier texture,
 						   boolean requireBotD,
 						   boolean requireEmeraldTablet,
+						   boolean isSpecial,
 						   int duration,
 						   @Nullable DefaultedList<Ingredient> inputs,
 						   @Nullable List<ItemStack> outputs,
@@ -115,6 +116,7 @@ public record RitualRecipe(Identifier id,
 
 			boolean requireBotD = JsonHelper.getBoolean(json, "requireBotD", false);
 			boolean requireEmeraldTablet = JsonHelper.getBoolean(json, "requireEmeraldTablet", false);
+			boolean isSpecial = JsonHelper.getBoolean(json, "isSpecial", false);
 
 			//Inputs
 			DefaultedList<Ingredient> inputs = DefaultedList.of();
@@ -160,7 +162,7 @@ public record RitualRecipe(Identifier id,
 				commands = RecipeUtils.deserializeCommands(commandArray);
 			}
 
-			return new RitualRecipe(id, ritual, texture, requireBotD, requireEmeraldTablet, duration, inputs, outputs, sacrifices, summons, statusEffectInstanceList, commands);
+			return new RitualRecipe(id, ritual, texture, requireBotD, requireEmeraldTablet, isSpecial, duration, inputs, outputs, sacrifices, summons, statusEffectInstanceList, commands);
 		}
 
 
@@ -173,6 +175,7 @@ public record RitualRecipe(Identifier id,
 
 			boolean requireBotD = buf.readBoolean();
 			boolean requireEmeraldTablet = buf.readBoolean();
+			boolean isSpecial = buf.readBoolean();
 
 			//Inputs
 			DefaultedList<Ingredient> inputs = DefaultedList.ofSize(buf.readVarInt(), Ingredient.EMPTY);
@@ -209,7 +212,7 @@ public record RitualRecipe(Identifier id,
 				commandTypeSet.add(new CommandType(buf.readString(), buf.readString()));
 			}
 
-			return new RitualRecipe(id, rite, texture, requireBotD, requireEmeraldTablet, duration, inputs, outputs, sacrificeList, summons, statusEffectInstanceList, commandTypeSet);
+			return new RitualRecipe(id, rite, texture, requireBotD, requireEmeraldTablet, isSpecial, duration, inputs, outputs, sacrificeList, summons, statusEffectInstanceList, commandTypeSet);
 		}
 
 		@Override
@@ -220,6 +223,7 @@ public record RitualRecipe(Identifier id,
 
 			buf.writeBoolean(recipe.requireBotD);
 			buf.writeBoolean(recipe.requireEmeraldTablet);
+			buf.writeBoolean(recipe.isSpecial);
 
 			//Inputs
 			buf.writeVarInt(recipe.inputs.size());

@@ -5,8 +5,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -130,24 +128,24 @@ public class CandleBlock extends Block {
 	@Override
 	public void randomDisplayTick(BlockState state, World world, BlockPos pos, RandomGenerator random) {
 		if (state.get(Properties.LIT) && state.get(HEIGHT) > 0) {
-			switch (state.get(CANDLES)){
+			switch (state.get(CANDLES)) {
 				case 1 -> {
-					addParticles(0,0,0, state, world, pos);
+					addParticles(0, 0, 0, state, world, pos);
 				}
 				case 2 -> {
-					addParticles(2 / 16D,- 2 / 16D,- 3 / 16D, state, world, pos);
-					addParticles(- 2 / 16D,0,3 / 16D, state, world, pos);
+					addParticles(2 / 16D, -2 / 16D, -3 / 16D, state, world, pos);
+					addParticles(-2 / 16D, 0, 3 / 16D, state, world, pos);
 				}
 				case 3 -> {
-					addParticles(- 3 / 16D,- 1 / 16D,- 4 / 16D, state, world, pos);
-					addParticles(4 / 16D,- 2 / 16D,- 1 / 16D, state, world, pos);
-					addParticles(- 2 / 16D,0,4 / 16D, state, world, pos);
+					addParticles(-3 / 16D, -1 / 16D, -4 / 16D, state, world, pos);
+					addParticles(4 / 16D, -2 / 16D, -1 / 16D, state, world, pos);
+					addParticles(-2 / 16D, 0, 4 / 16D, state, world, pos);
 				}
 			}
 		}
 	}
 
-	public void addParticles(double x, double y, double z, BlockState state, World world, BlockPos pos){
+	public void addParticles(double x, double y, double z, BlockState state, World world, BlockPos pos) {
 		double d = (double) pos.getX() + 0.5 + x;
 		double e = (double) pos.getY() + PARTICLE_HEIGHT[state.get(HEIGHT)] + y;
 		double f = (double) pos.getZ() + 0.5 + z;

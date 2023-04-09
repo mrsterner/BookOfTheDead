@@ -1,4 +1,4 @@
-package dev.sterner.book_of_the_dead.client.renderer.renderlayer;
+package dev.sterner.book_of_the_dead.client.registry;
 
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.VertexFormat;
@@ -45,23 +45,19 @@ public class BotDRenderLayer extends RenderLayer {
 		}
 	}
 
-	/*
-	private static final BiFunction<Identifier, Boolean, RenderLayer> ENTITY_TRANSLUCENT = Util.memoize(
-		(BiFunction)((texture, affectsOutline) -> {
-			RenderLayer.MultiPhaseParameters multiPhaseParameters = RenderLayer.MultiPhaseParameters.builder()
-				.shader(ENTITY_TRANSLUCENT_SHADER)
-				.texture(new RenderPhase.Texture(texture, false, false))
-				.transparency(TRANSLUCENT_TRANSPARENCY)
-				.cull(DISABLE_CULLING)
-				.lightmap(ENABLE_LIGHTMAP)
-				.overlay(ENABLE_OVERLAY_COLOR)
-				.build(affectsOutline);
-			return of(
-				"entity_translucent", VertexFormats.POSITION_COLOR_TEXTURE_OVERLAY_LIGHT_NORMAL, VertexFormat.DrawMode.QUADS, 256, true, true, multiPhaseParameters
-			);
-		})
+	public static final RenderLayer FX = RenderLayer.MultiPhase.of(
+		"fx",
+		VertexFormats.POSITION_COLOR,
+		VertexFormat.DrawMode.QUADS,
+		256,
+		true,
+		true,
+		RenderLayer.MultiPhaseParameters.builder()
+			.shader(RenderPhase.LIGHTNING_SHADER)
+			.transparency(RenderPhase.TRANSLUCENT_TRANSPARENCY)
+			.target(RenderPhase.OUTLINE_TARGET)
+			.build(false)
 	);
-	 */
 
 	public static final Function<Identifier, RenderLayer> GLOWING_LAYER = Util.memoize(texture -> {
 		MultiPhaseParameters multiPhaseParameters = MultiPhaseParameters.builder()

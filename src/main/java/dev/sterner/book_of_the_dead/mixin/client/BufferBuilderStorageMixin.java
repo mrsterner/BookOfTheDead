@@ -1,7 +1,7 @@
 package dev.sterner.book_of_the_dead.mixin.client;
 
 import com.mojang.blaze3d.vertex.BufferBuilder;
-import dev.sterner.book_of_the_dead.client.renderer.renderlayer.BotDRenderLayer;
+import dev.sterner.book_of_the_dead.client.registry.BotDRenderLayer;
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
 import net.minecraft.client.render.BufferBuilderStorage;
 import net.minecraft.client.render.RenderLayer;

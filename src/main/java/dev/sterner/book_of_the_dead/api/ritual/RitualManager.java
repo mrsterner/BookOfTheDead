@@ -74,6 +74,7 @@ public class RitualManager {
 				} else {
 					FloatingItemEntity itemEntity = new FloatingItemEntity(BotDEntityTypes.FLOATING_ITEM_ENTITY, world);
 					itemEntity.setItem(blockEntity.ritualRecipe.outputs().get(0).copy());
+					itemEntity.getDataTracker().set(FloatingItemEntity.IS_SPECIAL_RENDER, blockEntity.ritualRecipe.isSpecial());
 					itemEntity.refreshPositionAndAngles(blockPos.getX() + 0.5f, blockPos.getY() + 0.5f, blockPos.getZ() + 0.5f, 0, 0);
 					world.spawnEntity(itemEntity);
 				}

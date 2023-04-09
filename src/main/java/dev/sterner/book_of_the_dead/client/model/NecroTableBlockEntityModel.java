@@ -7,7 +7,7 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.client.util.math.MatrixStack;
 
-public class NecroTableBlockEntityModel extends Model{
+public class NecroTableBlockEntityModel extends Model {
 	public static final EntityModelLayer LAYER_LOCATION = new EntityModelLayer(Constants.id("necro_model"), "main");
 	public final ModelPart base;
 	public final ModelPart book;

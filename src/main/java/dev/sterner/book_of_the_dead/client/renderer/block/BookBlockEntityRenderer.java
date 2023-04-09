@@ -39,8 +39,8 @@ public class BookBlockEntityRenderer implements BlockEntityRenderer<BookBlockEnt
 			matrices.multiply(Axis.Y_POSITIVE.rotationDegrees(h));
 		}
 		matrices.scale(1F, -1F, -1F);
-		matrices.translate(0,-1,0);
-		model.render(matrices, vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(TEXTURE)), light, OverlayTexture.DEFAULT_UV, 1,1,1,1);
+		matrices.translate(0, -1, 0);
+		model.render(matrices, vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(TEXTURE)), light, OverlayTexture.DEFAULT_UV, 1, 1, 1, 1);
 		matrices.pop();
 	}
 

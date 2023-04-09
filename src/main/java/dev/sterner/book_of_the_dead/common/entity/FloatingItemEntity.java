@@ -22,6 +22,7 @@ import net.minecraft.world.World;
 
 public class FloatingItemEntity extends Entity {
 	private static final TrackedData<ItemStack> DATA_ITEM_STACK = DataTracker.registerData(FloatingItemEntity.class, TrackedDataHandlerRegistry.ITEM_STACK);
+	public static final TrackedData<Boolean> IS_SPECIAL_RENDER = DataTracker.registerData(FloatingItemEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
 	public final float hoverStart;
 	public ItemStack stack = ItemStack.EMPTY;
 
@@ -77,6 +78,7 @@ public class FloatingItemEntity extends Entity {
 	@Override
 	protected void initDataTracker() {
 		this.getDataTracker().startTracking(DATA_ITEM_STACK, ItemStack.EMPTY);
+		this.getDataTracker().startTracking(IS_SPECIAL_RENDER, false);
 	}
 
 	@Override
@@ -93,12 +95,14 @@ public class FloatingItemEntity extends Entity {
 		if (!itemStack.isEmpty()) {
 			tag.put(Constants.Nbt.ITEM, itemStack.writeNbt(new NbtCompound()));
 		}
+		tag.putBoolean(Constants.Nbt.IS_SPECIAL, this.getDataTracker().get(IS_SPECIAL_RENDER));
 	}
 
 	@Override
 	protected void readCustomDataFromNbt(NbtCompound tag) {
 		ItemStack itemstack = ItemStack.fromNbt(tag.getCompound(Constants.Nbt.ITEM));
 		this.setItem(itemstack);
+		this.getDataTracker().set(IS_SPECIAL_RENDER, tag.getBoolean(Constants.Nbt.IS_SPECIAL));
 	}
 
 	public float getYOffset(float partialTicks) {

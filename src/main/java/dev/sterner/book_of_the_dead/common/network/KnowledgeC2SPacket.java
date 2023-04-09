@@ -38,7 +38,7 @@ public class KnowledgeC2SPacket {
 				if (knowledge != null) {
 					boolean bl = component.addKnowledge(knowledge);
 					if (bl) {
-						player.world.playSound(null, player.getBlockPos(), SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.PLAYERS, 1, 1);
+						player.world.playSound(null, player.getBlockPos(), SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.PLAYERS, 0.5f, 0.9f);
 					}
 				}
 			});

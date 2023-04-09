@@ -50,7 +50,6 @@ public class Constants {
 		String HAS_EMERALD_TABLET = "HasEmeraldTablet";
 		String NECRO_RITUAL = "NecroRitual";
 		String TIMER = "Timer";
-		String AGE = "Age";
 		String RITUAL_POS = "RitualPos";
 		String PEDESTAL_ITEM = "PedestalItem";
 		String CRAFTING = "Crafting";
@@ -59,7 +58,6 @@ public class Constants {
 		String CLIENT_TIMER = "ClientTimer";
 		String DURATION = "Duration";
 		String TARGET_Y = "TargetY";
-
 		String BUTCHERING_LEVEL = "ButcheringLevel";
 		String IS_CORPSE = "IsCorpse";
 		String HEAD_VISIBLE = "HeadVisible";
@@ -117,6 +115,7 @@ public class Constants {
 		String ITEM = "Item";
 		String KNOWLEDGE = "Knowledge";
 		String KNOWLEDGE_DATA = "KnowledgeData";
-		String POINTS = "points";
+		String POINTS = "Points";
+		String IS_SPECIAL = "IsSpecial";
 	}
 }

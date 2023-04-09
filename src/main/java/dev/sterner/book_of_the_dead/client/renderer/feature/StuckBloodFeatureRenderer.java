@@ -23,7 +23,7 @@ import java.util.List;
 @ClientOnly
 public class StuckBloodFeatureRenderer<T extends LivingEntity, M extends PlayerEntityModel<T>> extends StuckObjectsFeatureRenderer<T, M> {
 	private final EntityRenderDispatcher dispatcher;
-	private List<Entity> bloods = new ArrayList<>();
+	private final List<Entity> bloods = new ArrayList<>();
 
 	public StuckBloodFeatureRenderer(EntityRendererFactory.Context context, LivingEntityRenderer<T, M> entityRenderer) {
 		super(entityRenderer);
@@ -89,8 +89,8 @@ public class StuckBloodFeatureRenderer<T extends LivingEntity, M extends PlayerE
 				if (bloods.size() <= n || bloods.get(n) == null) {
 					BloodParticleEntity bloodParticle = new BloodParticleEntity(BotDEntityTypes.BLOOD_PARTICLE_ENTITY, livingEntity.world);
 					bloodParticle.getDataTracker().set(BloodParticleEntity.VARIANT, livingEntity.world.random.nextInt(8));
-					bloodParticle.setYaw((float) (Math.atan2((double) o, (double) q) * 180.0F / (float) Math.PI));
-					bloodParticle.setPitch((float) (Math.atan2((double) p, (double) fd) * 180.0F / (float) Math.PI));
+					bloodParticle.setYaw((float) (Math.atan2(o, q) * 180.0F / (float) Math.PI));
+					bloodParticle.setPitch((float) (Math.atan2(p, fd) * 180.0F / (float) Math.PI));
 					bloodParticle.prevYaw = bloodParticle.getYaw();
 					bloodParticle.prevPitch = bloodParticle.getPitch();
 					if (bloods.size() <= n) {

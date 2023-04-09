@@ -115,7 +115,7 @@ public abstract class LivingEntityMixin extends Entity implements QuiltLivingEnt
 				if (livingEntity instanceof PlayerEntity) {
 					component.get().isCorpse(true);
 				}
-				if (livingEntity instanceof MobEntity mob) {
+				if (livingEntity instanceof MobEntity) {
 					component.get().isCorpse(true);
 					++livingEntity.deathTime;
 					if (livingEntity.deathTime == 1) {

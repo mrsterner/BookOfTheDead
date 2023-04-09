@@ -7,7 +7,6 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
@@ -32,8 +31,6 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.ToIntFunction;
-
-import static net.minecraft.state.property.Properties.LIT;
 
 public class NecroTableBlock extends HorizontalFacingBlock implements BlockEntityProvider {
 	protected static final VoxelShape WEST_SHAPE, NORTH_SHAPE, EAST_SHAPE, SOUTH_SHAPE;

@@ -2,7 +2,6 @@ package dev.sterner.book_of_the_dead.client.renderer.block;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import dev.sterner.book_of_the_dead.common.block.BookBlock;
-import dev.sterner.book_of_the_dead.common.block.entity.BookBlockEntity;
 import dev.sterner.book_of_the_dead.common.block.entity.TabletBlockEntity;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.block.BlockState;
@@ -40,8 +39,8 @@ public class TabletBlockEntityRenderer implements BlockEntityRenderer<TabletBloc
 			matrices.multiply(Axis.Y_POSITIVE.rotationDegrees(h));
 		}
 		matrices.scale(1F, -1F, -1F);
-		matrices.translate(0,-1,0);
-		model.render(matrices, vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(TEXTURE)), light, OverlayTexture.DEFAULT_UV, 1,1,1,1);
+		matrices.translate(0, -1, 0);
+		model.render(matrices, vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(TEXTURE)), light, OverlayTexture.DEFAULT_UV, 1, 1, 1, 1);
 		matrices.pop();
 	}
 

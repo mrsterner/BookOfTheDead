@@ -5,12 +5,10 @@ import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
@@ -28,7 +26,7 @@ public class BookOfTheDeadItem extends BlockItem {
 	@Override
 	public ActionResult useOnBlock(ItemUsageContext context) {
 		PlayerEntity playerEntity = context.getPlayer();
-		if(playerEntity != null && playerEntity.isSneaking() && !cancelPlacement(context.getWorld(), playerEntity)){
+		if (playerEntity != null && playerEntity.isSneaking() && !cancelPlacement(context.getWorld(), playerEntity)) {
 			return super.useOnBlock(context);
 		}
 		return ActionResult.PASS;
@@ -37,7 +35,7 @@ public class BookOfTheDeadItem extends BlockItem {
 	@Override
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
 		if (world.isClient && !player.isSneaking()) {
-			if(cancelPlacement(world, player)){
+			if (cancelPlacement(world, player)) {
 				return TypedActionResult.success(player.getStackInHand(hand));
 			}
 			BookOfTheDeadScreen.openScreen(player);
@@ -47,7 +45,7 @@ public class BookOfTheDeadItem extends BlockItem {
 		return TypedActionResult.success(player.getStackInHand(hand));
 	}
 
-	public static boolean cancelPlacement(World world, PlayerEntity player){
+	public static boolean cancelPlacement(World world, PlayerEntity player) {
 		BlockHitResult blockHitResult = raycast(world, player, RaycastContext.FluidHandling.SOURCE_ONLY);
 		if (blockHitResult.getType() == HitResult.Type.BLOCK) {
 			BlockPos pos = blockHitResult.getBlockPos();
