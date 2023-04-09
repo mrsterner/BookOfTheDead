@@ -24,6 +24,5 @@ public abstract class PlayerEntityRendererMixin extends LivingEntityRenderer<Abs
 	private void book_of_the_dead$playerEntityRenderer(EntityRendererFactory.Context ctx, boolean slim, CallbackInfo callbackInfo) {
 		addFeature(new ShoulderCropseFeatureRenderer(this, ctx.getModelLoader(), ctx.getRenderDispatcher()));
 		addFeature(new ExtraHeartsFeatureRenderer(this, ctx.getModelLoader()));
-		addFeature(new StuckBloodFeatureRenderer<>(ctx, this));
 	}
 }

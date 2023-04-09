@@ -25,9 +25,7 @@ import static dev.sterner.book_of_the_dead.common.registry.BotDConfiguredFeature
 
 public interface BotDPlacedFeatureRegistry {
 
-	//RegistryKey<PlacedFeature> SULFUR_FEATURE = placedFeature(Constants.id("sulfur_feature"));
 	RegistryKey<PlacedFeature> SULFUR_FEATURE = RegistryKey.of(RegistryKeys.PLACED_FEATURE, Constants.id("sulfur_feature"));
-
 
 	static void init(Registry<ConfiguredFeature<?, ?>> configured, DynamicRegistryManagerSetupContext.RegistryMap registryMap) {
 		Holder<ConfiguredFeature<?, ?>> sulfur = configured.getHolder(CONFIGURED_FEATURE_KEYS.get(CONFIGURED_SULFUR_FEATURE)).orElseThrow();

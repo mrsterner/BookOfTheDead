@@ -7,6 +7,8 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.Fluids;
+import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
@@ -31,6 +33,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.ToIntFunction;
 
+import static net.minecraft.state.property.Properties.LIT;
+
 public class NecroTableBlock extends HorizontalFacingBlock implements BlockEntityProvider {
 	protected static final VoxelShape WEST_SHAPE, NORTH_SHAPE, EAST_SHAPE, SOUTH_SHAPE;
 	protected static final Vec3d[] NORTH_PARTICLES, SOUTH_PARTICLES, WEST_PARTICLES, EAST_PARTICLES;
@@ -41,6 +45,12 @@ public class NecroTableBlock extends HorizontalFacingBlock implements BlockEntit
 	public NecroTableBlock(Settings settings) {
 		super(settings.nonOpaque().luminance(STATE_TO_LUMINANCE));
 		this.stateManager.getDefaultState().with(FACING, Direction.NORTH).with(LIT, Boolean.FALSE);
+	}
+
+	@Override
+	public BlockState getPlacementState(ItemPlacementContext ctx) {
+		PlayerEntity player = ctx.getPlayer();
+		return this.getDefaultState().with(FACING, player != null && player.isSneaking() ? ctx.getPlayerFacing().getOpposite() : ctx.getPlayerFacing()).with(LIT, false);
 	}
 
 	@Nullable

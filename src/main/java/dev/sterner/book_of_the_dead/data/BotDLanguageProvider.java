@@ -18,6 +18,16 @@ public class BotDLanguageProvider extends FabricLanguageProvider {
 	public void generateTranslations(TranslationBuilder builder) {
 		builder.add(Constants.BOTD_GROUP, "The Book of the Dead");
 
+		builder.add(BotDObjects.SKELETON_HELMET, "Skeleton Helmet");
+		builder.add(BotDObjects.SKELETON_CHESTPLATE, "Skeleton Chestplate");
+		builder.add(BotDObjects.SKELETON_LEGGINGS, "Skeleton Leggings");
+		builder.add(BotDObjects.SKELETON_BOOTS, "Skeleton Boots");
+		builder.add(BotDObjects.WITHER_HELMET, "Wither Helmet");
+		builder.add(BotDObjects.WITHER_CHESTPLATE, "Wither Chestplate");
+		builder.add(BotDObjects.WITHER_LEGGINGS, "Wither Leggings");
+		builder.add(BotDObjects.WITHER_BOOTS, "Wither Boots");
+
+
 		builder.add(BotDObjects.QUARTZ_PEARL, "Quartz Pearl");
 		builder.add(BotDObjects.CANDLE, "Candle");
 		builder.add(BotDObjects.CANDLE_WALL, "Candle");
