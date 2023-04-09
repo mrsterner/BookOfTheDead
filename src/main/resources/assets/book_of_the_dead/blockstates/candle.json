@@ -1,41 +1,124 @@
 {
   "variants": {
-    "height=0,lit=true": {
-      "model": "book_of_the_dead:block/candle_0"
+    "height=0,lit=true,candles=1": {
+      "model": "book_of_the_dead:block/candle_1_0"
     },
-    "height=0,lit=false": {
-      "model": "book_of_the_dead:block/candle_0"
-    },
-
-
-    "height=1,lit=true": {
-      "model": "book_of_the_dead:block/candle_1"
-    },
-    "height=1,lit=false": {
-      "model": "book_of_the_dead:block/candle_1"
-    },
-
-    "height=2,lit=true": {
-      "model": "book_of_the_dead:block/candle_2"
-    },
-    "height=2,lit=false": {
-      "model": "book_of_the_dead:block/candle_2"
+    "height=0,lit=false,candles=1": {
+      "model": "book_of_the_dead:block/candle_1_0"
     },
 
 
-    "height=3,lit=true": {
-      "model": "book_of_the_dead:block/candle_3"
+    "height=1,lit=true,candles=1": {
+      "model": "book_of_the_dead:block/candle_1_1"
     },
-    "height=3,lit=false": {
-      "model": "book_of_the_dead:block/candle_3"
+    "height=1,lit=false,candles=1": {
+      "model": "book_of_the_dead:block/candle_1_1"
+    },
+
+    "height=2,lit=true,candles=1": {
+      "model": "book_of_the_dead:block/candle_1_2"
+    },
+    "height=2,lit=false,candles=1": {
+      "model": "book_of_the_dead:block/candle_1_2"
     },
 
 
-    "height=4,lit=true": {
-      "model": "book_of_the_dead:block/candle_4"
+    "height=3,lit=true,candles=1": {
+      "model": "book_of_the_dead:block/candle_1_3"
     },
-    "height=4,lit=false": {
-      "model": "book_of_the_dead:block/candle_4"
+    "height=3,lit=false,candles=1": {
+      "model": "book_of_the_dead:block/candle_1_3"
+    },
+
+
+    "height=4,lit=true,candles=1": {
+      "model": "book_of_the_dead:block/candle_1_4"
+    },
+    "height=4,lit=false,candles=1": {
+      "model": "book_of_the_dead:block/candle_1_4"
+    },
+
+
+
+
+
+
+    "height=0,lit=true,candles=2": {
+      "model": "book_of_the_dead:block/candle_2_0"
+    },
+    "height=0,lit=false,candles=2": {
+      "model": "book_of_the_dead:block/candle_2_0"
+    },
+
+
+    "height=1,lit=true,candles=2": {
+      "model": "book_of_the_dead:block/candle_2_1"
+    },
+    "height=1,lit=false,candles=2": {
+      "model": "book_of_the_dead:block/candle_2_1"
+    },
+
+    "height=2,lit=true,candles=2": {
+      "model": "book_of_the_dead:block/candle_2_2"
+    },
+    "height=2,lit=false,candles=2": {
+      "model": "book_of_the_dead:block/candle_2_2"
+    },
+
+
+    "height=3,lit=true,candles=2": {
+      "model": "book_of_the_dead:block/candle_2_3"
+    },
+    "height=3,lit=false,candles=2": {
+      "model": "book_of_the_dead:block/candle_2_3"
+    },
+
+
+    "height=4,lit=true,candles=2": {
+      "model": "book_of_the_dead:block/candle_2_4"
+    },
+    "height=4,lit=false,candles=2": {
+      "model": "book_of_the_dead:block/candle_2_4"
+    },
+
+
+
+    "height=0,lit=true,candles=3": {
+      "model": "book_of_the_dead:block/candle_3_0"
+    },
+    "height=0,lit=false,candles=3": {
+      "model": "book_of_the_dead:block/candle_3_0"
+    },
+
+
+    "height=1,lit=true,candles=3": {
+      "model": "book_of_the_dead:block/candle_3_1"
+    },
+    "height=1,lit=false,candles=3": {
+      "model": "book_of_the_dead:block/candle_3_1"
+    },
+
+    "height=2,lit=true,candles=3": {
+      "model": "book_of_the_dead:block/candle_3_2"
+    },
+    "height=2,lit=false,candles=3": {
+      "model": "book_of_the_dead:block/candle_3_2"
+    },
+
+
+    "height=3,lit=true,candles=3": {
+      "model": "book_of_the_dead:block/candle_3_3"
+    },
+    "height=3,lit=false,candles=3": {
+      "model": "book_of_the_dead:block/candle_3_3"
+    },
+
+
+    "height=4,lit=true,candles=3": {
+      "model": "book_of_the_dead:block/candle_3_4"
+    },
+    "height=4,lit=false,candles=3": {
+      "model": "book_of_the_dead:block/candle_3_4"
     }
   }
 }
