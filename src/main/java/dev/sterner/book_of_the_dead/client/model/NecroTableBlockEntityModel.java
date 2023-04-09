@@ -31,8 +31,8 @@ public class NecroTableBlockEntityModel extends Model{
 	}
 
 	public static TexturedModelData createBodyLayer() {
-		ModelData meshdefinition = new ModelData();
-		ModelPartData ModelPartData = meshdefinition.getRoot();
+		ModelData modelData = new ModelData();
+		ModelPartData ModelPartData = modelData.getRoot();
 
 		ModelPartData base = ModelPartData.addChild("base", ModelPartBuilder.create(), ModelTransform.pivot(-8.0F, 24.0F, 0.0F));
 		ModelPartData foot = base.addChild("foot", ModelPartBuilder.create().uv(0, 23).cuboid(-12.0F, -3.0F, -8.0F, 24.0F, 3.0F, 16.0F, new Dilation(0.0F)).uv(0, 0).cuboid(-14.0F, -16.0F, -10.0F, 28.0F, 3.0F, 20.0F, new Dilation(0.0F)).uv(0, 59).cuboid(-10.0F, -10.0F, -6.0F, 20.0F, 7.0F, 12.0F, new Dilation(0.0F)).uv(0, 101).cuboid(-10.0F, -10.0F, -6.0F, 20.0F, 7.0F, 12.0F, new Dilation(0.001F)).uv(0, 42).cuboid(-11.0F, -13.0F, -7.0F, 22.0F, 3.0F, 14.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, 0.0F, 0.0F));
@@ -53,7 +53,7 @@ public class NecroTableBlockEntityModel extends Model{
 		ModelPartData tablet = ModelPartData.addChild("tablet", ModelPartBuilder.create(), ModelTransform.pivot(0.0F, 24.0F, 0.0F));
 		ModelPartData cube_r4 = tablet.addChild("cube_r4", ModelPartBuilder.create().uv(98, 75).cuboid(-2.0F, 0.5F, -1.5F, 6.0F, 1.0F, 9.0F, new Dilation(0.0F)), ModelTransform.of(-21.0F, -17.5F, 3.5F, 0.0F, 0.2618F, 0.0F));
 
-		return TexturedModelData.of(meshdefinition, 128, 128);
+		return TexturedModelData.of(modelData, 128, 128);
 	}
 
 	@Override

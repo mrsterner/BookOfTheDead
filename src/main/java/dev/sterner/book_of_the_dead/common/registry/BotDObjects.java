@@ -33,6 +33,8 @@ public interface BotDObjects {
 	Item MEAT_CLEAVER = register("meat_cleaver", new AxeItem(ToolMaterials.NETHERITE, 6, -2, settings()));
 	//Item BOOK_OF_THE_DEAD = register("book_of_the_dead", new BookOfTheDeadItem(Constants.id("book_of_the_dead"), settings()));
 	Block BOOK_OF_THE_DEAD = registerBook("book_of_the_dead", new BookBlock(QuiltBlockSettings.of(Material.DECORATION)), settings());
+	Block EMERALD_TABLET = registerTablet("emerald_tablet", new TabletBlock(QuiltBlockSettings.of(Material.DECORATION)), settings());
+
 	Item ALL_BLACK = register("all_black", new AllBlackSwordItem(ToolMaterials.NETHERITE, 8, -2, settings()));
 
 	Item SYRINGE = register("syringe", new SyringeItem(settings()));
@@ -85,7 +87,7 @@ public interface BotDObjects {
 
 	Block RETORT_FLASK_BLOCK = register("retort_flask_block", new RetortFlaskBlock(QuiltBlockSettings.of(Material.GLASS)), settings(), false);
 	Item RETORT_FLASK = register("retort_flask", new BlockItem(RETORT_FLASK_BLOCK, settings()));
-	Item EMERALD_TABLET = register("emerald_tablet", new Item(settings()));
+
 
 	Item POPPY_POD = register("poppy_pod", new Item(settings()));
 	Block POPPY_CROP = register("poppy_crop", new PoppyCropBlock(QuiltBlockSettings.copy(Blocks.WHEAT)), settings(), false);
@@ -118,6 +120,12 @@ public interface BotDObjects {
 	static <T extends Block> T registerBook(String name, T block, Item.Settings settings) {
 		BLOCKS.put(block, Constants.id(name));
 		ITEMS.put(new BookOfTheDeadItem(block, settings), BLOCKS.get(block));
+		return block;
+	}
+
+	static <T extends Block> T registerTablet(String name, T block, Item.Settings settings) {
+		BLOCKS.put(block, Constants.id(name));
+		ITEMS.put(new EmeraldTabletItem(block, settings), BLOCKS.get(block));
 		return block;
 	}
 

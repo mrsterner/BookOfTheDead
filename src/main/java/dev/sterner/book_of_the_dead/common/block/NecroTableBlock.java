@@ -91,7 +91,7 @@ public class NecroTableBlock extends HorizontalFacingBlock implements BlockEntit
 				ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), BotDObjects.BOOK_OF_THE_DEAD.asItem().getDefaultStack());
 			}
 			if (be.hasEmeraldTablet) {
-				ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), BotDObjects.EMERALD_TABLET.getDefaultStack());
+				ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), BotDObjects.EMERALD_TABLET.asItem().getDefaultStack());
 			}
 		}
 		super.onBreak(world, pos, state, player);

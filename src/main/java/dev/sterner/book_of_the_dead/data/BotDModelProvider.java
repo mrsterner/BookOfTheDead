@@ -47,7 +47,7 @@ public class BotDModelProvider extends FabricModelProvider {
 		itemModelGenerator.register(BotDObjects.METAL_HOOK, Models.SINGLE_LAYER_ITEM);
 		itemModelGenerator.register(BotDObjects.FLESH, Models.SINGLE_LAYER_ITEM);
 		itemModelGenerator.register(BotDObjects.COOKED_FLESH, Models.SINGLE_LAYER_ITEM);
-		itemModelGenerator.register(BotDObjects.EMERALD_TABLET, Models.SINGLE_LAYER_ITEM);
+		itemModelGenerator.register(BotDObjects.EMERALD_TABLET.asItem(), Models.SINGLE_LAYER_ITEM);
 		itemModelGenerator.register(BotDObjects.FAT, Models.SINGLE_LAYER_ITEM);
 		itemModelGenerator.register(BotDObjects.SKIN, Models.SINGLE_LAYER_ITEM);
 		itemModelGenerator.register(BotDObjects.BOTTLE_OF_BLOOD, Models.SINGLE_LAYER_ITEM);

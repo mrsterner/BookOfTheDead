@@ -137,11 +137,12 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 						if (hasBotD) {
 							player.setStackInHand(hand, BotDObjects.BOOK_OF_THE_DEAD.asItem().getDefaultStack());
 							hasBotD = false;
+							playItemSound(world, pos);
 						} else if (hasEmeraldTablet) {
-							player.setStackInHand(hand, BotDObjects.EMERALD_TABLET.getDefaultStack());
+							player.setStackInHand(hand, BotDObjects.EMERALD_TABLET.asItem().getDefaultStack());
 							hasEmeraldTablet = false;
+							playItemSound(world, pos);
 						}
-						playItemSound(world, pos);
 					} else {
 						Direction dir = state.get(NecroTableBlock.FACING);
 						ritualPos = pos.offset(dir, 4);
@@ -155,13 +156,14 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 					playItemSound(world, pos);
 					markDirty();
 					return ActionResult.CONSUME;
-				} else if (handStack.isOf(BotDObjects.EMERALD_TABLET) && !hasEmeraldTablet) {
+				} else if (handStack.isOf(BotDObjects.EMERALD_TABLET.asItem()) && !hasEmeraldTablet) {
 					hasEmeraldTablet = true;
 					handStack.decrement(1);
 					playItemSound(world, pos);
 					markDirty();
 					return ActionResult.CONSUME;
 				}
+
 				userUuid = player.getUuid();
 				markDirty();
 			}
@@ -235,7 +237,7 @@ public class NecroTableBlockEntity extends BaseBlockEntity {
 		markDirty();
 	}
 
-	private void playItemSound(World world, BlockPos pos) {
+	public void playItemSound(World world, BlockPos pos) {
 		world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.5f, ((world.getRandom().nextFloat() - world.getRandom().nextFloat()) * 0.7F + 1.0F) * 2.0F);
 	}
 

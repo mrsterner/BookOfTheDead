@@ -24,5 +24,6 @@ public interface BotDEntityModelLayers {
 		EntityModelLayerRegistry.registerModelLayer(CircleEntityModel.LAYER_LOCATION, CircleEntityModel::getTexturedModelData);
 		EntityModelLayerRegistry.registerModelLayer(BloodParticleEntityRenderer.LAYER_LOCATION, BloodParticleEntityRenderer::getTexturedModelData);
 		EntityModelLayerRegistry.registerModelLayer(BookBlockEntityRenderer.LAYER_LOCATION, BookBlockEntityRenderer::getTexturedModelData);
+		EntityModelLayerRegistry.registerModelLayer(TabletBlockEntityRenderer.LAYER_LOCATION, TabletBlockEntityRenderer::getTexturedModelData);
 	}
 }

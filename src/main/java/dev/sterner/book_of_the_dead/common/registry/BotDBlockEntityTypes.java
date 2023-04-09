@@ -62,6 +62,11 @@ public interface BotDBlockEntityTypes {
 			BotDObjects.BOOK_OF_THE_DEAD
 		).build());
 
+	BlockEntityType<TabletBlockEntity> TABLET = register("tablet",
+		QuiltBlockEntityTypeBuilder.create(TabletBlockEntity::new,
+			BotDObjects.EMERALD_TABLET
+		).build());
+
 
 	static <T extends BlockEntity> BlockEntityType<T> register(String name, BlockEntityType<T> type) {
 		BLOCK_ENTITY_TYPES.put(type, Constants.id(name));

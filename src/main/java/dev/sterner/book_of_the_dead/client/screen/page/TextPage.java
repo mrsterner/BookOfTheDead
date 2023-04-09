@@ -26,16 +26,16 @@ public class TextPage extends BookPage {
 	}
 
 	@Override
-	public void renderLeft(MinecraftClient minecraft, MatrixStack poseStack, float xOffset, float yOffset, int mouseX, int mouseY, float partialTicks) {
+	public void renderLeft(MinecraftClient minecraft, MatrixStack matrixStack, float xOffset, float yOffset, int mouseX, int mouseY, float partialTicks) {
 		int guiLeft = guiLeft();
 		int guiTop = guiTop();
-		TextUtils.renderWrappingText(poseStack, translationKey(), guiLeft, guiTop + 10, 109);
+		TextUtils.renderWrappingText(matrixStack, translationKey(), guiLeft, guiTop + 10, 109);
 	}
 
 	@Override
-	public void renderRight(MinecraftClient minecraft, MatrixStack poseStack, float xOffset, float yOffset, int mouseX, int mouseY, float partialTicks) {
+	public void renderRight(MinecraftClient minecraft, MatrixStack matrixStack, float xOffset, float yOffset, int mouseX, int mouseY, float partialTicks) {
 		int guiLeft = guiLeft();
 		int guiTop = guiTop();
-		TextUtils.renderWrappingText(poseStack, translationKey(), guiLeft + 140, guiTop + 10, 109);
+		TextUtils.renderWrappingText(matrixStack, translationKey(), guiLeft + 140, guiTop + 10, 109);
 	}
 }
