@@ -16,7 +16,9 @@ public interface BotDBlockRenderLayers {
 			BotDObjects.REINFORCED_DOOR,
 			BotDObjects.POPPY_CROP,
 			BotDObjects.PEDESTAL,
-			BotDObjects.RETORT_FLASK_BLOCK
+			BotDObjects.RETORT_FLASK_BLOCK,
+			BotDObjects.CANDLE,
+			BotDObjects.CANDLE_WALL
 		);
 	}
 }
