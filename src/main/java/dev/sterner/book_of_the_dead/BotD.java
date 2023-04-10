@@ -18,6 +18,7 @@ public class BotD implements ModInitializer {
 
 	@Override
 	public void onInitialize(ModContainer mod) {
+		BotDEntityAttributeRegistry.init();
 		BotDObjects.init();
 		BotDEntityTypes.init();
 		BotDBlockEntityTypes.init();

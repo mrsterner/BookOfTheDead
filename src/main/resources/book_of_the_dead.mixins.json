@@ -13,7 +13,10 @@
     "PlayerEntityMixin",
     "TargetGoalMixin",
     "TrackTargetGoalMixin",
-    "VillagerHostilesSensorMixin"
+    "VillagerHostilesSensorMixin",
+    "reach.LivingEntityMixin",
+    "reach.PlayerEntityMixin",
+    "reach.ServerPlayNetworkHandlerMixin"
   ],
   "client": [
     "client.BufferBuilderStorageMixin",
@@ -22,7 +25,8 @@
     "client.LivingEntityRendererMixin",
     "client.MinecraftClientMixin",
     "client.ParticleManagerMixin",
-    "client.PlayerEntityRendererMixin"
+    "client.PlayerEntityRendererMixin",
+    "reach.GameRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

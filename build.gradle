@@ -107,8 +107,6 @@ dependencies {
 	modImplementation 'com.github.Chocohead:Fabric-ASM:v2.3'
 	include 'com.github.Chocohead:Fabric-ASM:v2.3'
 
-	//Patchouli
-	//modImplementation("vazkii.patchouli:Patchouli:${project.patchouli_version}")
 
 	//REI
 	modImplementation("me.shedaniel:RoughlyEnoughItems-api-fabric:${project.rei_version}")
@@ -116,12 +114,7 @@ dependencies {
 	//EMI
 	modImplementation "dev.emi:emi:${project.emi_version}"
 
-	//Reach
-	//modImplementation include ("com.jamieswhiteshirt:reach-entity-attributes:${project.reach_entity_attributes_version}"){
-	//	exclude group: "net.fabricmc"
-	//	exclude group: "net.fabricmc.fabric-api"
-	//}
-
+	//SmartLib
 	modImplementation include("curse.maven:smartbrainlib-661293:${project.brain_version}")
 
 	//Mixin Extras
