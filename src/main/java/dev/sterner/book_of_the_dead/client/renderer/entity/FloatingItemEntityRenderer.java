@@ -1,6 +1,6 @@
 package dev.sterner.book_of_the_dead.client.renderer.entity;
 
-import dev.sterner.book_of_the_dead.client.LightFXRenderer;
+import dev.sterner.book_of_the_dead.client.renderer.LightFXRenderer;
 import dev.sterner.book_of_the_dead.common.entity.FloatingItemEntity;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.VertexConsumerProvider;

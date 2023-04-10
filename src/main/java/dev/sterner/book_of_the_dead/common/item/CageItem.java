@@ -36,21 +36,7 @@ public class CageItem extends Item {
 
 	@Override
 	public ActionResult useOnEntity(ItemStack stack, PlayerEntity user, LivingEntity target, Hand hand) {
-		if (target instanceof MobEntity mob && user.getWorld() instanceof ServerWorld serverWorld && !mob.getType().isIn(Constants.Tags.CAGEABLE_BLACKLIST)) {
-			ItemStack mainHand = user.getMainHandStack();
-			if (!mainHand.getOrCreateNbt().contains(Constants.Nbt.STORED_ENTITY)) {
-				NbtCompound nbt = new NbtCompound();
-				mob.extinguish();
-				mob.setFrozenTicks(0);
-				mob.setVelocity(Vec3d.ZERO);
-				mob.fallDistance = 0;
-				mob.saveSelfNbt(nbt);
-				mainHand.getOrCreateNbt().put(Constants.Nbt.STORED_ENTITY, nbt);
-				serverWorld.playSound(null, target.getBlockPos(), SoundEvents.ENTITY_ITEM_PICKUP, target.getSoundCategory(), 0.5f, target.getSoundPitch());
-				target.remove(Entity.RemovalReason.DISCARDED);
-				return ActionResult.CONSUME;
-			}
-		}
+
 
 		return super.useOnEntity(stack, user, target, hand);
 	}

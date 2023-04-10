@@ -15,7 +15,7 @@ import org.quiltmc.loader.api.minecraft.ClientOnly;
 
 import java.util.function.Function;
 
-public class BotDRenderLayer extends RenderLayer {
+public class BotDRenderLayers extends RenderLayer {
 	private static final ThreadLocal<ItemStack> targetStack = new ThreadLocal<>();
 
 	public static void setTargetStack(ItemStack stack) {
@@ -27,10 +27,10 @@ public class BotDRenderLayer extends RenderLayer {
 		return target != null && !target.isEmpty() && (target.isOf(BotDObjects.ALL_BLACK));
 	}
 
-	public static RenderLayer glintColor = BotDRenderLayer.buildGlintRenderLayer();
-	public static RenderLayer glintDirectColor = BotDRenderLayer.buildGlintDirectRenderLayer();
+	public static RenderLayer glintColor = BotDRenderLayers.buildGlintRenderLayer();
+	public static RenderLayer glintDirectColor = BotDRenderLayers.buildGlintDirectRenderLayer();
 
-	public BotDRenderLayer(String name, VertexFormat vertexFormat, VertexFormat.DrawMode drawMode, int expectedBufferSize, boolean hasCrumbling, boolean translucent, Runnable startAction, Runnable endAction) {
+	public BotDRenderLayers(String name, VertexFormat vertexFormat, VertexFormat.DrawMode drawMode, int expectedBufferSize, boolean hasCrumbling, boolean translucent, Runnable startAction, Runnable endAction) {
 		super(name, vertexFormat, drawMode, expectedBufferSize, hasCrumbling, translucent, startAction, endAction);
 	}
 
@@ -99,11 +99,11 @@ public class BotDRenderLayer extends RenderLayer {
 
 	@ClientOnly
 	public static RenderLayer getGlint() {
-		return checkAllBlack() ? BotDRenderLayer.glintColor : RenderLayer.getGlint();
+		return checkAllBlack() ? BotDRenderLayers.glintColor : RenderLayer.getGlint();
 	}
 
 	@ClientOnly
 	public static RenderLayer getGlintDirect() {
-		return checkAllBlack() ? BotDRenderLayer.glintDirectColor : RenderLayer.getDirectGlint();
+		return checkAllBlack() ? BotDRenderLayers.glintDirectColor : RenderLayer.getDirectGlint();
 	}
 }

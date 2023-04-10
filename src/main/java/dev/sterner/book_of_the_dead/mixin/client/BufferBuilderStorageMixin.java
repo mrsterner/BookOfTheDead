@@ -1,7 +1,7 @@
 package dev.sterner.book_of_the_dead.mixin.client;
 
 import com.mojang.blaze3d.vertex.BufferBuilder;
-import dev.sterner.book_of_the_dead.client.registry.BotDRenderLayer;
+import dev.sterner.book_of_the_dead.client.registry.BotDRenderLayers;
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
 import net.minecraft.client.render.BufferBuilderStorage;
 import net.minecraft.client.render.RenderLayer;
@@ -17,6 +17,6 @@ public class BufferBuilderStorageMixin {
 
 	@Inject(method = "assignBufferBuilder", at = @At("HEAD"))
 	private static void book_of_the_dead$addAllBlack(Object2ObjectLinkedOpenHashMap<RenderLayer, BufferBuilder> mapBuildersIn, RenderLayer renderTypeIn, CallbackInfo callbackInfo) {
-		BotDRenderLayer.addGlintTypes(mapBuildersIn);
+		BotDRenderLayers.addGlintTypes(mapBuildersIn);
 	}
 }

@@ -3,7 +3,7 @@ package dev.sterner.book_of_the_dead.client.renderer.block;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import dev.sterner.book_of_the_dead.client.event.ClientTickHandler;
 import dev.sterner.book_of_the_dead.client.model.NecroTableBlockEntityModel;
-import dev.sterner.book_of_the_dead.client.registry.BotDRenderLayer;
+import dev.sterner.book_of_the_dead.client.registry.BotDRenderLayers;
 import dev.sterner.book_of_the_dead.common.block.NecroTableBlock;
 import dev.sterner.book_of_the_dead.common.block.entity.NecroTableBlockEntity;
 import dev.sterner.book_of_the_dead.common.recipe.RitualRecipe;
@@ -114,7 +114,7 @@ public class NecroTableBlockEntityRenderer<T extends BlockEntity> implements Blo
 				Identifier texture;
 				if (recipe != null) {
 					texture = recipe.texture();
-					VertexConsumer vertexConsumer = vertexConsumers.getBuffer(BotDRenderLayer.GLOWING_LAYER.apply(texture));
+					VertexConsumer vertexConsumer = vertexConsumers.getBuffer(BotDRenderLayers.GLOWING_LAYER.apply(texture));
 					vertexConsumer.vertex(mat, -2.5F, 0, 2.5F).color(1f, 1f, 1f, alpha).uv(0, 1).overlay(overlay).light(light).normal(0, 1, 0).next();
 					vertexConsumer.vertex(mat, 2.5F, 0, 2.5F).color(1f, 1f, 1f, alpha).uv(1, 1).overlay(overlay).light(light).normal(0, 1, 0).next();
 					vertexConsumer.vertex(mat, 2.5F, 0, -2.5F).color(1f, 1f, 1f, alpha).uv(1, 0).overlay(overlay).light(light).normal(0, 1, 0).next();

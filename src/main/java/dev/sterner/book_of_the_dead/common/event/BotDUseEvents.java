@@ -5,15 +5,19 @@ import dev.sterner.book_of_the_dead.api.enums.HorizontalDoubleBlockHalf;
 import dev.sterner.book_of_the_dead.api.interfaces.IHauler;
 import dev.sterner.book_of_the_dead.common.block.RopeBlock;
 import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
+import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
+import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.BlockStateParticleEffect;
 import net.minecraft.particle.ParticleTypes;
@@ -24,8 +28,11 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
@@ -43,6 +50,26 @@ public class BotDUseEvents {
 		UseBlockCallback.EVENT.register(BotDUseEvents::createNecroTable);
 		UseBlockCallback.EVENT.register(BotDUseEvents::createButcherTable);
 		UseBlockCallback.EVENT.register(BotDUseEvents::createPedestal);
+		UseEntityCallback.EVENT.register(BotDUseEvents::cagePickup);
+	}
+
+	private static ActionResult cagePickup(PlayerEntity player, World world, Hand hand, Entity entity, @Nullable EntityHitResult entityHitResult) {
+		if (entity instanceof MobEntity mob && world instanceof ServerWorld serverWorld && !mob.getType().isIn(Constants.Tags.CAGEABLE_BLACKLIST)) {
+			ItemStack mainHand = player.getMainHandStack();
+			if (mainHand.isOf(BotDObjects.CAGE) && !mainHand.getOrCreateNbt().contains(Constants.Nbt.STORED_ENTITY)) {
+				NbtCompound nbt = new NbtCompound();
+				mob.extinguish();
+				mob.setFrozenTicks(0);
+				mob.setVelocity(Vec3d.ZERO);
+				mob.fallDistance = 0;
+				mob.saveSelfNbt(nbt);
+				mainHand.getOrCreateNbt().put(Constants.Nbt.STORED_ENTITY, nbt);
+				serverWorld.playSound(null, mob.getBlockPos(), SoundEvents.ENTITY_ITEM_PICKUP, mob.getSoundCategory(), 0.5f, mob.getSoundPitch());
+				mob.remove(Entity.RemovalReason.DISCARDED);
+				return ActionResult.SUCCESS;
+			}
+		}
+		return ActionResult.PASS;
 	}
 
 

@@ -1,8 +1,9 @@
-package dev.sterner.book_of_the_dead.client;
+package dev.sterner.book_of_the_dead.client.renderer;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import dev.sterner.book_of_the_dead.client.registry.BotDRenderLayer;
+import dev.sterner.book_of_the_dead.client.registry.BotDRenderLayers;
 import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.entity.EnderDragonEntityRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.Axis;
 import net.minecraft.util.random.RandomGenerator;
@@ -16,7 +17,7 @@ public class LightFXRenderer {
 	public static void render(MatrixStack matrices, VertexConsumerProvider vertexConsumers, Color color) {
 		float rotation = (float) ((System.currentTimeMillis() / 50d) % 20000d) / 150;
 		RandomGenerator random = RandomGenerator.createLegacy(4200);
-		VertexConsumer buffer = vertexConsumers.getBuffer(BotDRenderLayer.FX);
+		VertexConsumer buffer = vertexConsumers.getBuffer(BotDRenderLayers.FX);
 
 		matrices.push();
 
@@ -27,8 +28,8 @@ public class LightFXRenderer {
 			matrices.multiply(Axis.Y_POSITIVE.rotationDegrees(random.nextFloat() * 360.0F));
 			matrices.multiply(Axis.X_POSITIVE.rotationDegrees(random.nextFloat() * 360.0F - rotation * 90.0F));
 
-			float radius = random.nextFloat() * 20 + 50;
-			float width = random.nextFloat() * 2 + 2;
+			float radius = random.nextFloat() * 25 + 50;
+			float width = random.nextFloat() * 2 + 3;
 
 			sourceVertex(buffer, position, color.getAlpha());
 			negativeXTerminalVertex(buffer, position, radius, width, color);

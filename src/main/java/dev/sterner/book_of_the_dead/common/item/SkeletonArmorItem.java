@@ -1,6 +1,6 @@
 package dev.sterner.book_of_the_dead.common.item;
 
-import dev.sterner.book_of_the_dead.client.renderer.SkeletonArmorRenderer;
+import dev.sterner.book_of_the_dead.client.renderer.armor.SkeletonArmorRenderer;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;

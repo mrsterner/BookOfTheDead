@@ -31,6 +31,7 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.UUID;
 
 public class SyringeItem extends Item {
 	private static final int MAX_USE_TIME = 32;
@@ -73,8 +74,14 @@ public class SyringeItem extends Item {
 				}
 				emptySyringe = true;
 			} else if (stack.getOrCreateNbt().contains(Constants.Nbt.BLOOD)) {
-				//TODO Inject Blood for some reason
-				playerEntity.addStatusEffect(new StatusEffectInstance(BotDStatusEffects.SANGUINE, 20 * 20));
+				NbtCompound nbt = stack.getSubNbt(Constants.Nbt.BLOOD);
+				if (nbt != null) {
+					UUID uuid = nbt.getUuid(Constants.Nbt.UUID);
+					if(uuid != playerEntity.getUuid()){
+						playerEntity.addStatusEffect(new StatusEffectInstance(BotDStatusEffects.SANGUINE, 20 * 20));
+					}
+				}
+
 				emptySyringe = true;
 			} else {
 				NbtCompound nbt = new NbtCompound();
