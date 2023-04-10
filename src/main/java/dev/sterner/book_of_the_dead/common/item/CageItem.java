@@ -2,7 +2,6 @@ package dev.sterner.book_of_the_dead.common.item;
 
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.client.item.TooltipContext;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.mob.MobEntity;
@@ -22,7 +21,6 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
@@ -32,13 +30,6 @@ import java.util.UUID;
 public class CageItem extends Item {
 	public CageItem(Settings settings) {
 		super(settings);
-	}
-
-	@Override
-	public ActionResult useOnEntity(ItemStack stack, PlayerEntity user, LivingEntity target, Hand hand) {
-
-
-		return super.useOnEntity(stack, user, target, hand);
 	}
 
 	@Override

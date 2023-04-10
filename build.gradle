@@ -1,6 +1,6 @@
 plugins {
 	id 'maven-publish'
-	id 'io.github.juuxel.loom-quiltflower' version '1.8.+' // For loom 0.8-0.9, 0.11+
+	id 'io.github.juuxel.loom-quiltflower' version '1.8.+'
 	id 'org.quiltmc.loom' version '1.1.+'
 }
 
@@ -42,7 +42,7 @@ repositories {
 		url  = "https://maven.quiltmc.org/repository/release"
 	}
 	maven {
-		name = "Jitpack"
+		name = "Jitpack, ASM, Mixin Extras"
 		url  = "https://jitpack.io"
 	}
 	maven {
@@ -50,31 +50,15 @@ repositories {
 		url = "https://maven.shedaniel.me"
 	}
 	maven {
-		name = "Architectury"
-		url  = "https://maven.architectury.dev/"
-	}
-	maven {
-		name = "TerraformersMC"
+		name = "EMI"
 		url  = "https://maven.terraformersmc.com/"
 	}
 	maven {
-		name = "Modrinth"
-		url  = "https://api.modrinth.com/maven"
+		name = "CCA"
+		url = "https://ladysnake.jfrog.io/artifactory/mods"
 	}
 	maven {
-		name = "Reach Entity Attributes"
-		url  = "https://maven.jamieswhiteshirt.com/libs-release"
-	}
-	maven {
-		name = 'Ladysnake Mods'
-		url = 'https://ladysnake.jfrog.io/artifactory/mods'
-	}
-	maven {
-		name = "CurseForge"
-		url = "https://minecraft.curseforge.com/api/maven"
-	}
-	maven {
-		name = "Curse"
+		name = "Curse, SmartBrainLib"
 		url = "https://www.cursemaven.com"
 	}
 	maven {
@@ -87,7 +71,6 @@ dependencies {
 	minecraft "com.mojang:minecraft:${minecraft_version}"
 
 	mappings "org.quiltmc:quilt-mappings:${minecraft_version}+build.${quilt_mappings}:intermediary-v2"
-
 
 	modImplementation "org.quiltmc:quilt-loader:${project.loader_version}"
 	modImplementation "org.quiltmc:qsl:${qsl_version}+${minecraft_version}"
@@ -104,9 +87,7 @@ dependencies {
 	}
 
 	//Fabric ASM
-	modImplementation 'com.github.Chocohead:Fabric-ASM:v2.3'
-	include 'com.github.Chocohead:Fabric-ASM:v2.3'
-
+	modImplementation include ("com.github.Chocohead:Fabric-ASM:v2.3")
 
 	//REI
 	modImplementation("me.shedaniel:RoughlyEnoughItems-api-fabric:${project.rei_version}")

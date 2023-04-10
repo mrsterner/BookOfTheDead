@@ -1,19 +1,12 @@
 package dev.sterner.book_of_the_dead.common.util;
 
-import dev.sterner.book_of_the_dead.mixin.reach.PlayerEntityMixin;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.attribute.ClampedEntityAttribute;
-import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Hand;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.function.BooleanBiFunction;
@@ -22,14 +15,11 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
-import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Predicate;
 
 public class BotDUtils {
 
@@ -167,7 +157,6 @@ public class BotDUtils {
 			.min(Comparator.comparingDouble(entity -> entity.squaredDistanceTo(pos.getX(), pos.getY(), pos.getZ())));
 		return closestEntity.orElse(null);
 	}
-
 
 
 }

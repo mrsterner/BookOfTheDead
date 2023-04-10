@@ -77,7 +77,7 @@ public class SyringeItem extends Item {
 				NbtCompound nbt = stack.getSubNbt(Constants.Nbt.BLOOD);
 				if (nbt != null) {
 					UUID uuid = nbt.getUuid(Constants.Nbt.UUID);
-					if(uuid != playerEntity.getUuid()){
+					if (uuid != playerEntity.getUuid()) {
 						playerEntity.addStatusEffect(new StatusEffectInstance(BotDStatusEffects.SANGUINE, 20 * 20));
 					}
 				}

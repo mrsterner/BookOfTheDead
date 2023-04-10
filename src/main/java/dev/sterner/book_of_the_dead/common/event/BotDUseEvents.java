@@ -53,6 +53,16 @@ public class BotDUseEvents {
 		UseEntityCallback.EVENT.register(BotDUseEvents::cagePickup);
 	}
 
+	/**
+	 * Picks up mobs in the Cage item for transport
+	 *
+	 * @param player			player
+	 * @param world				world
+	 * @param hand				hand
+	 * @param entity			entity to picked up
+	 * @param entityHitResult	hitresult
+	 * @return Success if the entity was picked up, otherwise Pass
+	 */
 	private static ActionResult cagePickup(PlayerEntity player, World world, Hand hand, Entity entity, @Nullable EntityHitResult entityHitResult) {
 		if (entity instanceof MobEntity mob && world instanceof ServerWorld serverWorld && !mob.getType().isIn(Constants.Tags.CAGEABLE_BLACKLIST)) {
 			ItemStack mainHand = player.getMainHandStack();

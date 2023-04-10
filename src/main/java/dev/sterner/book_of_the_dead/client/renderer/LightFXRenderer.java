@@ -3,7 +3,6 @@ package dev.sterner.book_of_the_dead.client.renderer;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import dev.sterner.book_of_the_dead.client.registry.BotDRenderLayers;
 import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.entity.EnderDragonEntityRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.Axis;
 import net.minecraft.util.random.RandomGenerator;

@@ -3,7 +3,6 @@ package dev.sterner.book_of_the_dead.common.item;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 import dev.sterner.book_of_the_dead.common.registry.BotDEntityAttributeRegistry;
-import dev.sterner.book_of_the_dead.common.util.BotDUtils;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;

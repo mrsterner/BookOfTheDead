@@ -19,22 +19,22 @@ public interface BotDBlockEntityTypes {
 		QuiltBlockEntityTypeBuilder.create(HookBlockEntity::new,
 			BotDObjects.HOOK_BLOCK,
 			BotDObjects.METAL_HOOK_BLOCK
-		).build(null));
+		).build());
 
 	BlockEntityType<JarBlockEntity> JAR = register("jar",
 		QuiltBlockEntityTypeBuilder.create(JarBlockEntity::new,
 			BotDObjects.JAR
-		).build(null));
+		).build());
 
 	BlockEntityType<NecroTableBlockEntity> NECRO = register("necro",
 		QuiltBlockEntityTypeBuilder.create(NecroTableBlockEntity::new,
 			BotDObjects.NECRO_TABLE
-		).build(null));
+		).build());
 
 	BlockEntityType<ButcherTableBlockEntity> BUTCHER = register("butcher",
 		QuiltBlockEntityTypeBuilder.create(ButcherTableBlockEntity::new,
 			BotDObjects.BUTCHER_TABLE
-		).build(null));
+		).build());
 
 	BlockEntityType<PedestalBlockEntity> PEDESTAL = register("pedestal",
 		QuiltBlockEntityTypeBuilder.create(PedestalBlockEntity::new,
@@ -67,12 +67,10 @@ public interface BotDBlockEntityTypes {
 			BotDObjects.EMERALD_TABLET
 		).build());
 
-
 	static <T extends BlockEntity> BlockEntityType<T> register(String name, BlockEntityType<T> type) {
 		BLOCK_ENTITY_TYPES.put(type, Constants.id(name));
 		return type;
 	}
-
 
 	static void init() {
 		BLOCK_ENTITY_TYPES.keySet().forEach(blockEntityType -> Registry.register(Registries.BLOCK_ENTITY_TYPE, BLOCK_ENTITY_TYPES.get(blockEntityType), blockEntityType));

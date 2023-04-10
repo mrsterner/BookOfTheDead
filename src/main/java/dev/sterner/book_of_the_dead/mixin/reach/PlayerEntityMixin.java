@@ -14,6 +14,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 	PlayerEntityMixin(final EntityType<? extends LivingEntity> type, final World world) {
 		super(type, world);
 	}
+
 	@ModifyConstant(method = "attack(Lnet/minecraft/entity/Entity;)V", constant = @Constant(doubleValue = 9.0))
 	private double book_of_the_dead$getActualAttackRange(final double attackRange) {
 		return BotDEntityAttributeRegistry.getSquaredAttackRange(this, attackRange);

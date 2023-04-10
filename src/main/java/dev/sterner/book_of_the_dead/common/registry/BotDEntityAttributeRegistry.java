@@ -33,6 +33,6 @@ public interface BotDEntityAttributeRegistry {
 	}
 
 	static void init() {
-		Registry.register(Registries.ENTITY_ATTRIBUTE, Constants.id( "attack_range"), ATTACK_RANGE);
+		Registry.register(Registries.ENTITY_ATTRIBUTE, Constants.id("attack_range"), ATTACK_RANGE);
 	}
 }

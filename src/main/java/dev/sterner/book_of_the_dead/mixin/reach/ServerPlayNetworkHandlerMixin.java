@@ -13,8 +13,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(targets = "net/minecraft/server/network/ServerPlayNetworkHandler$C_wsexhymd")
 public abstract class ServerPlayNetworkHandlerMixin implements PlayerInteractionWithEntityC2SPacket.Handler {
-	@Shadow(aliases = "field_28963") @Final private ServerPlayNetworkHandler field_28963;
-	@Shadow(aliases = "field_28962") @Final private Entity field_28962;
+	@Shadow(aliases = "field_28963")
+	@Final
+	private ServerPlayNetworkHandler field_28963;
+	@Shadow(aliases = "field_28962")
+	@Final
+	private Entity field_28962;
 
 	@Inject(method = "attack()V", at = @At("HEAD"), require = 1, allow = 1, cancellable = true)
 	public void book_of_the_dead$onPlayerInteractEntity(CallbackInfo info) {

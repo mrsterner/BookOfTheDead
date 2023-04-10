@@ -1,7 +1,6 @@
 package dev.sterner.book_of_the_dead.mixin.reach;
 
 import dev.sterner.book_of_the_dead.common.registry.BotDEntityAttributeRegistry;
-import dev.sterner.book_of_the_dead.common.util.BotDUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;

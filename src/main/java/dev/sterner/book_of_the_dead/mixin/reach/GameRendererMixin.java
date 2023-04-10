@@ -1,8 +1,6 @@
 package dev.sterner.book_of_the_dead.mixin.reach;
 
-import dev.sterner.book_of_the_dead.BotD;
 import dev.sterner.book_of_the_dead.common.registry.BotDEntityAttributeRegistry;
-import dev.sterner.book_of_the_dead.common.util.BotDUtils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.resource.SynchronousResourceReloader;
