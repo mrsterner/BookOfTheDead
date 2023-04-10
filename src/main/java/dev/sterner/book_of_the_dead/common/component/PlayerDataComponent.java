@@ -343,7 +343,6 @@ public class PlayerDataComponent implements AutoSyncedComponent {
 		}
 	}
 
-
 	public int getButcheringLevel() {
 		return butcheringLevel;
 	}
@@ -501,7 +500,6 @@ public class PlayerDataComponent implements AutoSyncedComponent {
 		return isLich;
 	}
 
-
 	public void setLich(boolean isLich) {
 		this.isLich = isLich;
 		this.syncAbility();
@@ -523,6 +521,4 @@ public class PlayerDataComponent implements AutoSyncedComponent {
 	private void syncAbility() {
 		BotDComponents.PLAYER_COMPONENT.sync(this.player);
 	}
-
-
 }

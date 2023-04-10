@@ -65,7 +65,6 @@ public abstract class LivingEntityMixin extends Entity implements QuiltLivingEnt
 	@Unique
 	private boolean shouldDie = false;
 
-
 	public LivingEntityMixin(EntityType<?> type, World world) {
 		super(type, world);
 	}
@@ -140,7 +139,6 @@ public abstract class LivingEntityMixin extends Entity implements QuiltLivingEnt
 							LootContext.Builder builder = this.getLootContextBuilder(true, this.damageSource);
 							lootTable.generateLoot(builder.build(LootContextTypes.ENTITY), this::dropStack);
 						}
-
 					}
 				}
 			}

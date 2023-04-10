@@ -40,7 +40,7 @@ public class ParticleUtils {
 	}
 
 	/**
-	 * Handles the output items sound and particle effect
+	 * Handles the output items particle effect
 	 *
 	 * @param serverWorld serverWorld
 	 * @param x           coordinate for sound and particle
