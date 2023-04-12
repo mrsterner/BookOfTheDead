@@ -1,19 +1,15 @@
 package dev.sterner.book_of_the_dead.client;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.*;
 import dev.sterner.book_of_the_dead.common.util.Constants;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.GameRenderer;
+import dev.sterner.book_of_the_dead.common.util.RenderUtils;
+import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.random.RandomGenerator;
-import org.joml.Matrix4f;
 
 
-
-public class EyeManager {
-	public static EyeManager manager = null;
+public class EyeManager extends DrawableHelper{
 	private RandomGenerator random;
 	public static final Identifier EYES_UP = Constants.id("textures/gui/eyes/1.png");
 	public static final Identifier EYES_MIDDLE = Constants.id("textures/gui/eyes/2.png");
@@ -27,8 +23,11 @@ public class EyeManager {
 	public final int MAX_Y = 4;
 	public final int MAX_X = 4;
 
-	public EyeDirection eyeDirection = EyeDirection.NONE;
-	public int moveDelay = 20 * 5;
+	public EyeDirection verticalEyeDirection = EyeDirection.NONE;
+	public EyeDirection horizontalEyeDirection = EyeDirection.NONE;
+	public int moveDelay = 20 * 3;
+	public int moveDelayV = 20 * 3;
+
 	public int blinkDelay = 20 * 2;
 
 	public int horizontalTick = 0;
@@ -37,20 +36,9 @@ public class EyeManager {
 
 	boolean lookBack = false;
 	boolean blinkUpp = false;
-	boolean shouldResetVertical = false;
 
 	public EyeManager(RandomGenerator randomGenerator){
 		this.random = randomGenerator;
-	}
-
-	public static void tickEye(MinecraftClient client) {
-		if(client.world != null){
-			if (manager == null) {
-				manager = new EyeManager(client.world.random);
-			} else {
-				manager.tick();
-			}
-		}
 	}
 
 	public void tick(){
@@ -60,18 +48,62 @@ public class EyeManager {
 			blinkUpp = false;
 		}
 
-		boolean bl = switch (eyeDirection){
+		if(horizontalEyeDirection == EyeDirection.NONE){
+			if(random.nextFloat() < 0.01f){
+				int i = random.nextInt(2);
+				horizontalEyeDirection = switch (i){
+					case 0 -> EyeDirection.LEFT;
+					case 1 -> EyeDirection.RIGHT;
+					default -> EyeDirection.NONE;
+				};
+			}
+		}
+
+		if(verticalEyeDirection == EyeDirection.NONE){
+			if(random.nextFloat() < 0.01f){
+				int i = random.nextInt(2);
+				verticalEyeDirection = switch (i){
+					case 0 -> {
+						texture = EYES_UP;
+						yield EyeDirection.UP;
+					}
+					case 1 -> {
+						texture = EYES_DOWN;
+						yield EyeDirection.DOWN;
+					}
+					default -> EyeDirection.NONE;
+				};
+			}
+		}
+
+		boolean bl = switch (horizontalEyeDirection){
 			case LEFT -> lookLeft();
 			case RIGHT -> lookRight();
-			case UP -> lookUp(shouldResetVertical);
-			case DOWN -> lookDown(shouldResetVertical);
+			default -> false;
+		};
+
+		boolean bl2 = switch (horizontalEyeDirection){
+			case UP -> lookUp();
+			case DOWN -> lookDown();
 			default -> false;
 		};
 
 		if (bl) {
-			eyeDirection = EyeDirection.NONE;
+			horizontalEyeDirection = EyeDirection.NONE;
 			moveDelay = 20 * 5;
 			lookBack = false;
+		}
+
+		if (bl2) {
+			verticalEyeDirection = EyeDirection.NONE;
+			moveDelayV = 20 * 5;
+		}
+
+		if(verticalEyeDirection != EyeDirection.NONE){
+			if(random.nextFloat() < 0.01){
+				verticalEyeDirection = EyeDirection.NONE;
+				texture = EYES_MIDDLE;
+			}
 		}
 	}
 
@@ -92,37 +124,26 @@ public class EyeManager {
 			}
 		}
 
-
 		return bl;
 	}
 
-	private boolean lookDown(boolean reset) {
+	private boolean lookDown() {
 		boolean bl = false;
 		verticalTick++;
-		if(verticalTick >= moveDelay){
+		if(verticalTick >= moveDelayV){
 			verticalTick = 0;
-			if(reset){
-				texture = EYES_MIDDLE;
-				bl = true;
-			}else{
-				texture = EYES_DOWN;
-			}
+			bl = true;
 		}
 
 		return bl;
 	}
 
-	private boolean lookUp(boolean reset) {
+	private boolean lookUp() {
 		boolean bl = false;
 		verticalTick++;
-		if(verticalTick >= moveDelay){
+		if(verticalTick >= moveDelayV){
 			verticalTick = 0;
-			if(reset){
-				texture = EYES_MIDDLE;
-				bl = true;
-			}else{
-				texture = EYES_UP;
-			}
+			bl = true;
 		}
 
 		return bl;
@@ -182,20 +203,14 @@ public class EyeManager {
 		return bl;
 	}
 
+	public void drawTexture(MatrixStack matrixStack, float x, float y){
+		int u = (textureCoord.x) * 14;
+		int v = (textureCoord.y) * 10;
 
-
-	private static void drawTexturedQuad(Identifier texture, MatrixStack matrixStack, int x, int y, int width, int height, float minU, float maxU, float minV, float maxV) {
-		Matrix4f matrix = matrixStack.peek().getModel();
-		RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		RenderSystem.setShaderTexture(0, texture);
-		BufferBuilder bufferBuilder = Tessellator.getInstance().getBufferBuilder();
-		bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
-		bufferBuilder.vertex(matrix, x, y, 0).uv(minU, minV).next();
-		bufferBuilder.vertex(matrix, x, y + height, 0).uv(minU, maxV).next();
-		bufferBuilder.vertex(matrix, x + width, y + height, 0).uv(maxU, maxV).next();
-		bufferBuilder.vertex(matrix, x + width, y, 0).uv(maxU, minV).next();
-		BufferRenderer.drawWithShader(bufferBuilder.end());
+		RenderUtils.drawTexture(matrixStack, x, y, u, v, 14, 10, 70, 50);
 	}
+
 
 	public SpriteCoordinates traverseDown(SpriteCoordinates origin){
 		return new SpriteCoordinates(origin.x, Math.min(origin.y + 1, 4));
