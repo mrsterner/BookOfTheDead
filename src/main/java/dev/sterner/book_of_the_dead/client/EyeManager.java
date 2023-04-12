@@ -6,6 +6,7 @@ import dev.sterner.book_of_the_dead.common.util.RenderUtils;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.random.RandomGenerator;
 
 @Deprecated
@@ -30,6 +31,7 @@ public class EyeManager extends DrawableHelper {
 	public int moveDelayVertical = 20 * 3;
 	public int blinkDelay = 20 * 5;
 	public int blinkTopCoord = 0;
+	public float chanceToLook = 0.01f;
 
 	public EyeManager(RandomGenerator randomGenerator) {
 		this.random = randomGenerator;
@@ -43,8 +45,8 @@ public class EyeManager extends DrawableHelper {
 		}
 
 		if (horizontalEyeDirection == EyeDirection.NONE) {
-			if (random.nextFloat() < 0.01f) {
-				int i = random.nextInt(2);
+			if (MathHelper.nextFloat(random, 0f ,1f) < 0.01f + chanceToLook) {
+				int i = MathHelper.nextInt(random, 0, 1);
 				horizontalEyeDirection = switch (i) {
 					case 0 -> EyeDirection.LEFT;
 					case 1 -> EyeDirection.RIGHT;
@@ -54,8 +56,8 @@ public class EyeManager extends DrawableHelper {
 		}
 
 		if (verticalEyeDirection == EyeDirection.NONE) {
-			if (random.nextFloat() < 0.01f) {
-				int i = random.nextInt(2);
+			if (MathHelper.nextFloat(random, 0f ,1f) < 0.01f + chanceToLook) {
+				int i = MathHelper.nextInt(random, 0, 1);
 				verticalEyeDirection = switch (i) {
 					case 0 -> {
 						texture = EYES_UP;
@@ -92,7 +94,7 @@ public class EyeManager extends DrawableHelper {
 		}
 
 		if (verticalEyeDirection != EyeDirection.NONE) {
-			if (random.nextFloat() < 0.01) {
+			if (MathHelper.nextFloat(random, 0f ,1f) < 0.01f + (chanceToLook / 2)) {
 				verticalEyeDirection = EyeDirection.NONE;
 				texture = EYES_MIDDLE;
 			}

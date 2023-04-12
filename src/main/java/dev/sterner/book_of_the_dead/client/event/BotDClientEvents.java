@@ -26,10 +26,11 @@ public interface BotDClientEvents {
 		PlayerSanityComponent component = BotDComponents.EYE_COMPONENT.get(player);
 		Window window = mc.getWindow();
 		matrixStack.push();
-		float k = (float) window.getScaledWidth() / 2 - 7 - 0.5f;
-		float l = (window.getScaledHeight()) - 30 - 15;
-		component.drawTexture(matrixStack, k, l);
-
+		if(component.manager != null) {
+			float k = (float) window.getScaledWidth() / 2 - 7 - 0.5f;
+			float l = (window.getScaledHeight()) - 30 - 15;
+			component.manager.drawTexture(matrixStack, k, l);
+		}
 		matrixStack.pop();
 	}
 }

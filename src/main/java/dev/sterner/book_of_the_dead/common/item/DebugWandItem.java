@@ -1,13 +1,11 @@
 package dev.sterner.book_of_the_dead.common.item;
 
 import dev.sterner.book_of_the_dead.client.network.BloodSplashParticlePacket;
-import dev.sterner.book_of_the_dead.client.network.SanityS2CPacket;
 import dev.sterner.book_of_the_dead.common.component.BotDComponents;
 import dev.sterner.book_of_the_dead.common.component.LivingEntityDataComponent;
 import dev.sterner.book_of_the_dead.common.component.PlayerKnowledgeComponent;
 import dev.sterner.book_of_the_dead.common.component.PlayerSanityComponent;
 import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;

@@ -2,6 +2,7 @@ package dev.sterner.book_of_the_dead.common.component;
 
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import dev.onyxstudios.cca.api.v3.component.tick.ClientTickingComponent;
+import dev.sterner.book_of_the_dead.BotD;
 import dev.sterner.book_of_the_dead.client.EyeManager;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.entity.player.PlayerEntity;
@@ -32,13 +33,16 @@ public class PlayerSanityComponent implements AutoSyncedComponent, ClientTicking
 		if(this.manager == null || player == null){
 			return;
 		}
+		double percent = sanity / 100d;
+		this.manager.blinkDelay = (int)(10 + 20 * 8 * percent);
+		this.manager.blinkTopCoord = sanity >= 80 ? 4 : sanity >= 60 ? 3 : sanity >= 40 ? 2 : sanity >= 20 ? 1 : 0;
+		this.manager.moveDelayHorizontal =(int)( 10 + 20 * 3 * percent);
+		this.manager.moveDelayVertical =(int)( 10 + 20 * 3 * percent);
+		this.manager.chanceToLook = sanity < 10 ? 0.9f : sanity < 20 ? 0.5f : 0;
 
-		SanityClientData data = SanityClientData.getDataFromSanity(getSanity());
-		System.out.println(getSanity() + "blinkDelay: " + data.blinkDelay + " : " + data.eyeLevel);
-		this.manager.blinkDelay = data.blinkDelay;
-		this.manager.blinkTopCoord = data.eyeLevel;
-		this.manager.moveDelayVertical = data.moveDelayVertical;
-		this.manager.moveDelayHorizontal = data.moveDelayHorizontal;
+		if(BotD.isDebugMode()){
+			System.out.println("Delay: " +this.manager.blinkDelay + " : Coord: " + this.manager.blinkTopCoord + " : ");
+		}
 	}
 
 	@Override
@@ -70,25 +74,6 @@ public class PlayerSanityComponent implements AutoSyncedComponent, ClientTicking
 	public void setSanity(int sanity) {
 		this.sanity = sanity;
 		BotDComponents.EYE_COMPONENT.sync(this.player);
-	}
-
-
-
-	public record SanityClientData(int blinkDelay, int eyeLevel, int moveDelayHorizontal, int moveDelayVertical) {
-
-		public static SanityClientData of(int blinkDelay, int eyeLevel, int moveDelayHorizontal, int moveDelayVertical) {
-			return new SanityClientData(blinkDelay, eyeLevel, moveDelayHorizontal, moveDelayVertical);
-		}
-
-		public static SanityClientData getDataFromSanity(int sanity) {
-			int percent = sanity / 100;
-
-			int blinkDelay = 10 + 20 * 8 * ( percent);
-			int eyeLevel = sanity >= 80 ? 4 : sanity >= 60 ? 3 : sanity >= 40 ? 2 : sanity >= 20 ? 1 : 0;
-			int moveDelayHorizontal = 10 + 20 * 3 * percent;
-			int moveDelayVertical = 10 + 20 * 3 * percent;
-
-			return of(blinkDelay, eyeLevel, moveDelayHorizontal, moveDelayVertical);
-		}
+		updateSanity();
 	}
 }
