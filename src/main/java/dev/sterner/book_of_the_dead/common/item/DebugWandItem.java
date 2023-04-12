@@ -1,10 +1,13 @@
 package dev.sterner.book_of_the_dead.common.item;
 
 import dev.sterner.book_of_the_dead.client.network.BloodSplashParticlePacket;
+import dev.sterner.book_of_the_dead.client.network.SanityS2CPacket;
 import dev.sterner.book_of_the_dead.common.component.BotDComponents;
 import dev.sterner.book_of_the_dead.common.component.LivingEntityDataComponent;
 import dev.sterner.book_of_the_dead.common.component.PlayerKnowledgeComponent;
+import dev.sterner.book_of_the_dead.common.component.PlayerSanityComponent;
 import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
@@ -61,9 +64,22 @@ public class DebugWandItem extends Item {
 		 */
 
 		if (world instanceof ServerWorld serverWorld) {
+
+
+			//SanityS2CPacket.send(user);
+
 			PlayerLookup.tracking(user).forEach(track -> BloodSplashParticlePacket.send(track, user.getX() + 0.5, user.getY(), user.getZ() + 0.5));
 			BloodSplashParticlePacket.send(user, user.getX() + 0.5, user.getY(), user.getZ() + 0.5);
 		}
+		PlayerSanityComponent component = BotDComponents.EYE_COMPONENT.get(user);
+		if(user.isSneaking()){
+			component.increaseSanity(10);
+		}else{
+			component.decreaseSanity(10);
+		}
+
+
+
 
 		PlayerKnowledgeComponent c = BotDComponents.KNOWLEDGE_COMPONENT.get(user);
 		if (c.clearData()) {

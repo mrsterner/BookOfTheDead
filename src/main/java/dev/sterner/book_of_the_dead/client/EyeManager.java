@@ -8,50 +8,44 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.random.RandomGenerator;
 
-
-public class EyeManager extends DrawableHelper{
-	private RandomGenerator random;
-	public static final Identifier EYES_UP = Constants.id("textures/gui/eyes/1.png");
-	public static final Identifier EYES_MIDDLE = Constants.id("textures/gui/eyes/2.png");
-	public static final Identifier EYES_DOWN = Constants.id("textures/gui/eyes/3.png");
+@Deprecated
+public class EyeManager extends DrawableHelper {
+	private final RandomGenerator random;
+	private static final Identifier EYES_UP = Constants.id("textures/gui/eyes/1.png");
+	private static final Identifier EYES_MIDDLE = Constants.id("textures/gui/eyes/2.png");
+	private static final Identifier EYES_DOWN = Constants.id("textures/gui/eyes/3.png");
+	private SpriteCoordinates textureCoord = new SpriteCoordinates(2, 2);
+	protected final int MAX_Y = 4;
+	protected final int MAX_X = 4;
+	private EyeDirection verticalEyeDirection = EyeDirection.NONE;
+	private EyeDirection horizontalEyeDirection = EyeDirection.NONE;
+	private int horizontalTick = 0;
+	private int verticalTick = 0;
+	private int blinkTick = 0;
+	private boolean lookBack = false;
+	private boolean blinkUpp = false;
 
 	public Identifier texture = EYES_MIDDLE;
+	public int moveDelayHorizontal = 20 * 3;
+	public int moveDelayVertical = 20 * 3;
+	public int blinkDelay = 20 * 5;
+	public int blinkTopCoord = 0;
 
-	public int width = 14;
-	public int height = 10;
-	public SpriteCoordinates textureCoord = new SpriteCoordinates(2,2);
-	public final int MAX_Y = 4;
-	public final int MAX_X = 4;
-
-	public EyeDirection verticalEyeDirection = EyeDirection.NONE;
-	public EyeDirection horizontalEyeDirection = EyeDirection.NONE;
-	public int moveDelay = 20 * 3;
-	public int moveDelayV = 20 * 3;
-
-	public int blinkDelay = 20 * 2;
-
-	public int horizontalTick = 0;
-	public int verticalTick = 0;
-	public int blinkTick = 0;
-
-	boolean lookBack = false;
-	boolean blinkUpp = false;
-
-	public EyeManager(RandomGenerator randomGenerator){
+	public EyeManager(RandomGenerator randomGenerator) {
 		this.random = randomGenerator;
 	}
 
-	public void tick(){
+	public void tick() {
 		boolean blink = blink();
-		if(blink){
+		if (blink) {
 			blinkTick = 0;
 			blinkUpp = false;
 		}
 
-		if(horizontalEyeDirection == EyeDirection.NONE){
-			if(random.nextFloat() < 0.01f){
+		if (horizontalEyeDirection == EyeDirection.NONE) {
+			if (random.nextFloat() < 0.01f) {
 				int i = random.nextInt(2);
-				horizontalEyeDirection = switch (i){
+				horizontalEyeDirection = switch (i) {
 					case 0 -> EyeDirection.LEFT;
 					case 1 -> EyeDirection.RIGHT;
 					default -> EyeDirection.NONE;
@@ -59,10 +53,10 @@ public class EyeManager extends DrawableHelper{
 			}
 		}
 
-		if(verticalEyeDirection == EyeDirection.NONE){
-			if(random.nextFloat() < 0.01f){
+		if (verticalEyeDirection == EyeDirection.NONE) {
+			if (random.nextFloat() < 0.01f) {
 				int i = random.nextInt(2);
-				verticalEyeDirection = switch (i){
+				verticalEyeDirection = switch (i) {
 					case 0 -> {
 						texture = EYES_UP;
 						yield EyeDirection.UP;
@@ -76,13 +70,13 @@ public class EyeManager extends DrawableHelper{
 			}
 		}
 
-		boolean bl = switch (horizontalEyeDirection){
+		boolean bl = switch (horizontalEyeDirection) {
 			case LEFT -> lookLeft();
 			case RIGHT -> lookRight();
 			default -> false;
 		};
 
-		boolean bl2 = switch (horizontalEyeDirection){
+		boolean bl2 = switch (horizontalEyeDirection) {
 			case UP -> lookUp();
 			case DOWN -> lookDown();
 			default -> false;
@@ -90,35 +84,34 @@ public class EyeManager extends DrawableHelper{
 
 		if (bl) {
 			horizontalEyeDirection = EyeDirection.NONE;
-			moveDelay = 20 * 5;
 			lookBack = false;
 		}
 
 		if (bl2) {
 			verticalEyeDirection = EyeDirection.NONE;
-			moveDelayV = 20 * 5;
 		}
 
-		if(verticalEyeDirection != EyeDirection.NONE){
-			if(random.nextFloat() < 0.01){
+		if (verticalEyeDirection != EyeDirection.NONE) {
+			if (random.nextFloat() < 0.01) {
 				verticalEyeDirection = EyeDirection.NONE;
 				texture = EYES_MIDDLE;
 			}
 		}
 	}
 
-	private boolean blink(){
+	private boolean blink() {
 		boolean bl = false;
 		blinkTick++;
-		if(blinkTick > blinkDelay){
-			if(blinkUpp){
-				textureCoord = traverseUp(textureCoord);
-				if(textureCoord.y == 0){
+		if (blinkTick > blinkDelay) {
+			if (blinkUpp) {
+				if (textureCoord.y == blinkTopCoord) {
 					bl = true;
+				}else{
+					textureCoord = traverseUp(textureCoord);
 				}
-			}else{
+			} else {
 				textureCoord = traverseDown(textureCoord);
-				if(textureCoord.y == MAX_Y){
+				if (textureCoord.y == MAX_Y) {
 					blinkUpp = true;
 				}
 			}
@@ -130,7 +123,7 @@ public class EyeManager extends DrawableHelper{
 	private boolean lookDown() {
 		boolean bl = false;
 		verticalTick++;
-		if(verticalTick >= moveDelayV){
+		if (verticalTick >= moveDelayVertical) {
 			verticalTick = 0;
 			bl = true;
 		}
@@ -141,7 +134,7 @@ public class EyeManager extends DrawableHelper{
 	private boolean lookUp() {
 		boolean bl = false;
 		verticalTick++;
-		if(verticalTick >= moveDelayV){
+		if (verticalTick >= moveDelayVertical) {
 			verticalTick = 0;
 			bl = true;
 		}
@@ -149,61 +142,61 @@ public class EyeManager extends DrawableHelper{
 		return bl;
 	}
 
-	public boolean lookLeft(){
+	public boolean lookLeft() {
 		boolean bl = false;
 		horizontalTick++;
-		if(horizontalTick >= moveDelay){
+		if (horizontalTick >= moveDelayHorizontal) {
 			horizontalTick = 0;
-			if(lookBack){
+			if (lookBack) {
 				textureCoord = traverseRight(textureCoord);
-				if(textureCoord.x == 2){
+				if (textureCoord.x == 2) {
 					bl = true;
 				}
-			}else{
+			} else {
 				textureCoord = traverseLeft(textureCoord);
 			}
-			if(textureCoord.x == 1 && random.nextFloat() < 0.35f){
+			if (textureCoord.x == 1 && random.nextFloat() < 0.35f) {
 				lookBack = true;
 			} else if (textureCoord.x == 0) {
 				lookBack = true;
 			}
 			// Add a random delay offset to moveDelay
-			moveDelay += (int)(Math.random() * 10) - 5; // Offset by -5 to +5 ticks
-			if(moveDelay < 1){
-				moveDelay = 1;
+			moveDelayHorizontal += (int) (Math.random() * 10) - 5; // Offset by -5 to +5 ticks
+			if (moveDelayHorizontal < 1) {
+				moveDelayHorizontal = 1;
 			}
 		}
 		return bl;
 	}
 
-	public boolean lookRight(){
+	public boolean lookRight() {
 		boolean bl = false;
 		horizontalTick++;
-		if(horizontalTick >= moveDelay){
+		if (horizontalTick >= moveDelayHorizontal) {
 			horizontalTick = 0;
-			if(lookBack){
+			if (lookBack) {
 				textureCoord = traverseLeft(textureCoord);
-				if(textureCoord.x == 2){
+				if (textureCoord.x == 2) {
 					bl = true;
 				}
-			}else{
+			} else {
 				textureCoord = traverseRight(textureCoord);
 			}
-			if(textureCoord.x == 3 && random.nextFloat() < 0.35f){
+			if (textureCoord.x == 3 && random.nextFloat() < 0.35f) {
 				lookBack = true;
 			} else if (textureCoord.x == MAX_X) {
 				lookBack = true;
 			}
 			// Add a random delay offset to moveDelay
-			moveDelay += (int)(Math.random() * 10) - 5; // Offset by -5 to +5 ticks
-			if(moveDelay < 1){
-				moveDelay = 1;
+			moveDelayHorizontal += (int) (Math.random() * 10) - 5; // Offset by -5 to +5 ticks
+			if (moveDelayHorizontal < 1) {
+				moveDelayHorizontal = 1;
 			}
 		}
 		return bl;
 	}
 
-	public void drawTexture(MatrixStack matrixStack, float x, float y){
+	public void drawTexture(MatrixStack matrixStack, float x, float y) {
 		int u = (textureCoord.x) * 14;
 		int v = (textureCoord.y) * 10;
 
@@ -212,19 +205,19 @@ public class EyeManager extends DrawableHelper{
 	}
 
 
-	public SpriteCoordinates traverseDown(SpriteCoordinates origin){
+	public SpriteCoordinates traverseDown(SpriteCoordinates origin) {
 		return new SpriteCoordinates(origin.x, Math.min(origin.y + 1, 4));
 	}
 
-	public SpriteCoordinates traverseUp(SpriteCoordinates origin){
+	public SpriteCoordinates traverseUp(SpriteCoordinates origin) {
 		return new SpriteCoordinates(origin.x, Math.max(origin.y - 1, 0));
 	}
 
-	public SpriteCoordinates traverseLeft(SpriteCoordinates origin){
+	public SpriteCoordinates traverseLeft(SpriteCoordinates origin) {
 		return new SpriteCoordinates(Math.max(origin.x - 1, 0), origin.y);
 	}
 
-	public SpriteCoordinates traverseRight(SpriteCoordinates origin){
+	public SpriteCoordinates traverseRight(SpriteCoordinates origin) {
 		return new SpriteCoordinates(Math.min(origin.x + 1, 4), origin.y);
 	}
 
@@ -238,11 +231,11 @@ public class EyeManager extends DrawableHelper{
 		}
 	}
 
-	public enum EyeDirection{
+	public enum EyeDirection {
 		NONE,
 		UP,
 		DOWN,
 		RIGHT,
-		LEFT;
+		LEFT
 	}
 }

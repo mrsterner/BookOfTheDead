@@ -1,7 +1,6 @@
 package dev.sterner.book_of_the_dead.common.component;
 
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
-import dev.onyxstudios.cca.api.v3.component.tick.ServerTickingComponent;
 import dev.sterner.book_of_the_dead.common.util.BotDUtils;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.entity.EntityType;
@@ -13,7 +12,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.tag.TagKey;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -103,32 +101,32 @@ public class LivingEntityDataComponent implements AutoSyncedComponent {
 		return isSource ? 1 - strength : strength;
 	}
 
-	public int entangleVillagerPlayer(int i, PlayerEntity player, VillagerEntity villagerEntity){
+	public int entangleVillagerPlayer(int i, PlayerEntity player, VillagerEntity villagerEntity) {
 		int r = villagerEntity.getReputation(player);
 		if (r <= -100) {
 			i -= 2;
-		} else if (r > 50){
+		} else if (r > 50) {
 			i += 2;
 		}
 
 		return i;
 	}
 
-	public int entangleHostilePlayer(int i, PlayerEntity player, HostileEntity hostileEntity){
+	public int entangleHostilePlayer(int i, PlayerEntity player, HostileEntity hostileEntity) {
 		LivingEntity livingEntity1 = hostileEntity.getTarget();
 		PlayerDataComponent c = BotDComponents.PLAYER_COMPONENT.get(player);
 		if (c.getLich() && hostileEntity.isUndead()) {
 			i += 3;
-		} else if(livingEntity1 != null && livingEntity1.getUuid() == player.getUuid()){
+		} else if (livingEntity1 != null && livingEntity1.getUuid() == player.getUuid()) {
 			i -= 3;
 		}
 
 		return i;
 	}
 
-	public int entangleTameablePlayer(int i, PlayerEntity player, TameableEntity tameable){
+	public int entangleTameablePlayer(int i, PlayerEntity player, TameableEntity tameable) {
 		UUID uuid = tameable.getOwnerUuid();
-		if(uuid != null && uuid == player.getUuid()){
+		if (uuid != null && uuid == player.getUuid()) {
 			i += 3;
 		}
 
