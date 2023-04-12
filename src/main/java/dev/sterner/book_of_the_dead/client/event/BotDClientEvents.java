@@ -23,7 +23,7 @@ public interface BotDClientEvents {
 		if (player == null) {
 			return;
 		}
-		PlayerSanityComponent component = BotDComponents.EYE_COMPONENT.get(player);
+		PlayerSanityComponent component = BotDComponents.SANITY_COMPONENT.get(player);
 		Window window = mc.getWindow();
 		matrixStack.push();
 		if(component.manager != null) {

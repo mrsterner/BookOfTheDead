@@ -14,7 +14,7 @@ public class BotDComponents implements EntityComponentInitializer {
 	public static final ComponentKey<PlayerDataComponent> PLAYER_COMPONENT = ComponentRegistry.getOrCreate(Constants.id("player"), PlayerDataComponent.class);
 	public static final ComponentKey<LivingEntityDataComponent> LIVING_COMPONENT = ComponentRegistry.getOrCreate(Constants.id("living"), LivingEntityDataComponent.class);
 	public static final ComponentKey<PlayerKnowledgeComponent> KNOWLEDGE_COMPONENT = ComponentRegistry.getOrCreate(Constants.id("knowledge"), PlayerKnowledgeComponent.class);
-	public static final ComponentKey<PlayerSanityComponent> EYE_COMPONENT = ComponentRegistry.getOrCreate(Constants.id("eye"), PlayerSanityComponent.class);
+	public static final ComponentKey<PlayerSanityComponent> SANITY_COMPONENT = ComponentRegistry.getOrCreate(Constants.id("eye"), PlayerSanityComponent.class);
 
 	@Override
 	public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
@@ -22,6 +22,6 @@ public class BotDComponents implements EntityComponentInitializer {
 		registry.beginRegistration(PlayerEntity.class, PLAYER_COMPONENT).respawnStrategy(RespawnCopyStrategy.ALWAYS_COPY).end(PlayerDataComponent::new);
 		registry.beginRegistration(LivingEntity.class, LIVING_COMPONENT).respawnStrategy(RespawnCopyStrategy.ALWAYS_COPY).end(LivingEntityDataComponent::new);
 		registry.beginRegistration(PlayerEntity.class, KNOWLEDGE_COMPONENT).respawnStrategy(RespawnCopyStrategy.ALWAYS_COPY).end(PlayerKnowledgeComponent::new);
-		registry.beginRegistration(PlayerEntity.class, EYE_COMPONENT).respawnStrategy(RespawnCopyStrategy.NEVER_COPY).end(PlayerSanityComponent::new);
+		registry.beginRegistration(PlayerEntity.class, SANITY_COMPONENT).respawnStrategy(RespawnCopyStrategy.NEVER_COPY).end(PlayerSanityComponent::new);
 	}
 }

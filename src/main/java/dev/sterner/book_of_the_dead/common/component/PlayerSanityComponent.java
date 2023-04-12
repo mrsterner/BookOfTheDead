@@ -73,7 +73,7 @@ public class PlayerSanityComponent implements AutoSyncedComponent, ClientTicking
 
 	public void setSanity(int sanity) {
 		this.sanity = sanity;
-		BotDComponents.EYE_COMPONENT.sync(this.player);
+		BotDComponents.SANITY_COMPONENT.sync(this.player);
 		updateSanity();
 	}
 }

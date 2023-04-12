@@ -63,13 +63,10 @@ public class DebugWandItem extends Item {
 
 		if (world instanceof ServerWorld serverWorld) {
 
-
-			//SanityS2CPacket.send(user);
-
 			PlayerLookup.tracking(user).forEach(track -> BloodSplashParticlePacket.send(track, user.getX() + 0.5, user.getY(), user.getZ() + 0.5));
 			BloodSplashParticlePacket.send(user, user.getX() + 0.5, user.getY(), user.getZ() + 0.5);
 		}
-		PlayerSanityComponent component = BotDComponents.EYE_COMPONENT.get(user);
+		PlayerSanityComponent component = BotDComponents.SANITY_COMPONENT.get(user);
 		if(user.isSneaking()){
 			component.increaseSanity(10);
 		}else{
