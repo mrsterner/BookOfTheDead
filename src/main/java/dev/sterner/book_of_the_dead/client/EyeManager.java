@@ -56,7 +56,7 @@ public class EyeManager extends DrawableHelper {
 		}
 
 		if (verticalEyeDirection == EyeDirection.NONE) {
-			if (MathHelper.nextFloat(random, 0f ,1f) < 0.01f + chanceToLook) {
+			if (MathHelper.nextFloat(random, 0f ,1f) < 0.01f + chanceToLook / 2) {
 				int i = MathHelper.nextInt(random, 0, 1);
 				verticalEyeDirection = switch (i) {
 					case 0 -> {

@@ -118,5 +118,6 @@ public class Constants {
 		String POINTS = "Points";
 		String IS_SPECIAL = "IsSpecial";
 		String SANITY = "Sanity";
+		String ADVICE = "Advice";
 	}
 }
