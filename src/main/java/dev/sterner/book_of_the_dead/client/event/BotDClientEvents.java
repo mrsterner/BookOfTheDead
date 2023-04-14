@@ -39,7 +39,7 @@ public interface BotDClientEvents {
 		matrixStack.pop();
 
 		PlayerAdviceComponent advice = BotDComponents.ADVICE_COMPONENT.get(player);
-		if(advice.isActive() || true){
+		if(advice.isActive()){
 			matrixStack.push();
 			advice.drawTexture(matrixStack, k + 18 - 4, l - 18 - 9 - 9);
 			TextUtils.renderWrappingText(matrixStack, advice.getActiveAdvice(), (int)k + 18 + 9 + 4, (int)l - 18 - 9 - 9 + 3, 80);
