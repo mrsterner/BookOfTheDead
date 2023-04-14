@@ -9,7 +9,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.random.RandomGenerator;
 
-@Deprecated
+
 public class EyeManager extends DrawableHelper {
 	private final RandomGenerator random;
 	private static final Identifier EYES_UP = Constants.id("textures/gui/eyes/1.png");
@@ -56,7 +56,7 @@ public class EyeManager extends DrawableHelper {
 		}
 
 		if (verticalEyeDirection == EyeDirection.NONE) {
-			if (MathHelper.nextFloat(random, 0f ,1f) < 0.01f + chanceToLook / 2) {
+			if (MathHelper.nextFloat(random, 0f ,1f) < 0.01f + chanceToLook / 10) {
 				int i = MathHelper.nextInt(random, 0, 1);
 				verticalEyeDirection = switch (i) {
 					case 0 -> {
@@ -94,7 +94,7 @@ public class EyeManager extends DrawableHelper {
 		}
 
 		if (verticalEyeDirection != EyeDirection.NONE) {
-			if (MathHelper.nextFloat(random, 0f ,1f) < 0.01f + (chanceToLook / 2)) {
+			if (MathHelper.nextFloat(random, 0f ,1f) < 0.01f + (chanceToLook / 4)) {
 				verticalEyeDirection = EyeDirection.NONE;
 				texture = EYES_MIDDLE;
 			}
@@ -110,11 +110,16 @@ public class EyeManager extends DrawableHelper {
 					bl = true;
 				}else{
 					textureCoord = traverseUp(textureCoord);
+					if(textureCoord.y != blinkTopCoord && chanceToLook >= 0.8 && random.nextBoolean()){
+						textureCoord = traverseUp(textureCoord);
+					}
 				}
 			} else {
 				textureCoord = traverseDown(textureCoord);
 				if (textureCoord.y == MAX_Y) {
 					blinkUpp = true;
+				} else if (chanceToLook >= 0.8 && random.nextBoolean()) {
+					textureCoord = traverseDown(textureCoord);
 				}
 			}
 		}
@@ -157,7 +162,7 @@ public class EyeManager extends DrawableHelper {
 			} else {
 				textureCoord = traverseLeft(textureCoord);
 			}
-			if (textureCoord.x == 1 && random.nextFloat() < 0.35f) {
+			if (textureCoord.x == 1 && random.nextFloat() < 0.35f - 0.35 * chanceToLook) {
 				lookBack = true;
 			} else if (textureCoord.x == 0) {
 				lookBack = true;
@@ -184,7 +189,7 @@ public class EyeManager extends DrawableHelper {
 			} else {
 				textureCoord = traverseRight(textureCoord);
 			}
-			if (textureCoord.x == 3 && random.nextFloat() < 0.35f) {
+			if (textureCoord.x == 3 && random.nextFloat() < 0.35f - 0.35 * chanceToLook) {
 				lookBack = true;
 			} else if (textureCoord.x == MAX_X) {
 				lookBack = true;
