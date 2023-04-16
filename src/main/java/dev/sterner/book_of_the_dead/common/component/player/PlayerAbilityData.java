@@ -1,4 +1,4 @@
-package dev.sterner.book_of_the_dead.common.component;
+package dev.sterner.book_of_the_dead.common.component.player;
 
 
 import net.minecraft.entity.attribute.EntityAttributeInstance;

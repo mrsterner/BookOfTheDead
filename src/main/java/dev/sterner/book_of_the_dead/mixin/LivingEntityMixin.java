@@ -2,7 +2,11 @@ package dev.sterner.book_of_the_dead.mixin;
 
 import dev.sterner.book_of_the_dead.api.BotDApi;
 import dev.sterner.book_of_the_dead.api.event.OnEntityDeathEvent;
-import dev.sterner.book_of_the_dead.common.component.*;
+import dev.sterner.book_of_the_dead.common.component.BotDComponents;
+import dev.sterner.book_of_the_dead.common.component.CorpseDataComponent;
+import dev.sterner.book_of_the_dead.common.component.LivingEntityDataComponent;
+import dev.sterner.book_of_the_dead.common.component.player.PlayerAbilityData;
+import dev.sterner.book_of_the_dead.common.component.player.PlayerDataComponent;
 import dev.sterner.book_of_the_dead.common.registry.BotDStatusEffects;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;

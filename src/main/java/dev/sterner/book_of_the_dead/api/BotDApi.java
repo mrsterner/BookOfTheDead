@@ -2,7 +2,7 @@ package dev.sterner.book_of_the_dead.api;
 
 import dev.sterner.book_of_the_dead.common.component.BotDComponents;
 import dev.sterner.book_of_the_dead.common.component.LivingEntityDataComponent;
-import dev.sterner.book_of_the_dead.common.component.PlayerDataComponent;
+import dev.sterner.book_of_the_dead.common.component.player.PlayerDataComponent;
 import dev.sterner.book_of_the_dead.common.entity.KakuzuEntity;
 import dev.sterner.book_of_the_dead.common.registry.BotDEnchantments;
 import dev.sterner.book_of_the_dead.common.registry.BotDEntityTypes;

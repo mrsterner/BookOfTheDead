@@ -1,7 +1,7 @@
 package dev.sterner.book_of_the_dead.common.entity;
 
 import dev.sterner.book_of_the_dead.common.component.BotDComponents;
-import dev.sterner.book_of_the_dead.common.component.PlayerDataComponent;
+import dev.sterner.book_of_the_dead.common.component.player.PlayerDataComponent;
 import dev.sterner.book_of_the_dead.common.entity.brain.KakuzuBrain;
 import dev.sterner.book_of_the_dead.common.registry.BotDMemoryModuleTypes;
 import dev.sterner.book_of_the_dead.common.util.Constants;

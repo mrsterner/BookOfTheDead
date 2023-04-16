@@ -1,7 +1,7 @@
 package dev.sterner.book_of_the_dead.mixin;
 
 import dev.sterner.book_of_the_dead.common.component.BotDComponents;
-import dev.sterner.book_of_the_dead.common.component.PlayerDataComponent;
+import dev.sterner.book_of_the_dead.common.component.player.PlayerDataComponent;
 import net.minecraft.entity.mob.PhantomEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;

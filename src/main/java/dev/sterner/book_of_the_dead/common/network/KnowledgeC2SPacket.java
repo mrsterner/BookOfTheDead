@@ -2,7 +2,7 @@ package dev.sterner.book_of_the_dead.common.network;
 
 import dev.sterner.book_of_the_dead.api.Knowledge;
 import dev.sterner.book_of_the_dead.common.component.BotDComponents;
-import dev.sterner.book_of_the_dead.common.component.PlayerKnowledgeComponent;
+import dev.sterner.book_of_the_dead.common.component.player.PlayerKnowledgeComponent;
 import dev.sterner.book_of_the_dead.common.registry.BotDRegistries;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import io.netty.buffer.Unpooled;

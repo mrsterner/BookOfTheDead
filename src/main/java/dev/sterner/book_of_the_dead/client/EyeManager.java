@@ -45,7 +45,7 @@ public class EyeManager extends DrawableHelper {
 		}
 
 		if (horizontalEyeDirection == EyeDirection.NONE) {
-			if (MathHelper.nextFloat(random, 0f ,1f) < 0.01f + chanceToLook) {
+			if (MathHelper.nextFloat(random, 0f, 1f) < 0.01f + chanceToLook) {
 				int i = MathHelper.nextInt(random, 0, 1);
 				horizontalEyeDirection = switch (i) {
 					case 0 -> EyeDirection.LEFT;
@@ -56,7 +56,7 @@ public class EyeManager extends DrawableHelper {
 		}
 
 		if (verticalEyeDirection == EyeDirection.NONE) {
-			if (MathHelper.nextFloat(random, 0f ,1f) < 0.01f + chanceToLook / 10) {
+			if (MathHelper.nextFloat(random, 0f, 1f) < 0.01f + chanceToLook / 10) {
 				int i = MathHelper.nextInt(random, 0, 1);
 				verticalEyeDirection = switch (i) {
 					case 0 -> {
@@ -94,7 +94,7 @@ public class EyeManager extends DrawableHelper {
 		}
 
 		if (verticalEyeDirection != EyeDirection.NONE) {
-			if (MathHelper.nextFloat(random, 0f ,1f) < 0.01f + (chanceToLook / 4)) {
+			if (MathHelper.nextFloat(random, 0f, 1f) < 0.01f + (chanceToLook / 4)) {
 				verticalEyeDirection = EyeDirection.NONE;
 				texture = EYES_MIDDLE;
 			}
@@ -108,9 +108,9 @@ public class EyeManager extends DrawableHelper {
 			if (blinkUpp) {
 				if (textureCoord.y == blinkTopCoord) {
 					bl = true;
-				}else{
+				} else {
 					textureCoord = traverseUp(textureCoord);
-					if(textureCoord.y != blinkTopCoord && chanceToLook >= 0.8 && random.nextBoolean()){
+					if (textureCoord.y != blinkTopCoord && chanceToLook >= 0.8 && random.nextBoolean()) {
 						textureCoord = traverseUp(textureCoord);
 					}
 				}

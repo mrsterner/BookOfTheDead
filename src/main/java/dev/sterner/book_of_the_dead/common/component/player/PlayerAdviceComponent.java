@@ -1,7 +1,8 @@
-package dev.sterner.book_of_the_dead.common.component;
+package dev.sterner.book_of_the_dead.common.component.player;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
+import dev.sterner.book_of_the_dead.common.component.BotDComponents;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import dev.sterner.book_of_the_dead.common.util.RenderUtils;
 import net.minecraft.client.util.math.MatrixStack;
@@ -16,7 +17,7 @@ public class PlayerAdviceComponent implements AutoSyncedComponent {
 	private boolean isActive = false;
 	private String activeAdvice = "I wouldn't do that if I were you";
 
-	public PlayerAdviceComponent(PlayerEntity player){
+	public PlayerAdviceComponent(PlayerEntity player) {
 		this.player = player;
 	}
 
@@ -48,7 +49,7 @@ public class PlayerAdviceComponent implements AutoSyncedComponent {
 		return this.activeAdvice;
 	}
 
-	public void setActiveAdvice(String string){
+	public void setActiveAdvice(String string) {
 		this.activeAdvice = string;
 		BotDComponents.ADVICE_COMPONENT.sync(this.player);
 	}

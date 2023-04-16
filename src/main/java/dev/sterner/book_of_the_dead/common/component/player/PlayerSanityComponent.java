@@ -1,9 +1,10 @@
-package dev.sterner.book_of_the_dead.common.component;
+package dev.sterner.book_of_the_dead.common.component.player;
 
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import dev.onyxstudios.cca.api.v3.component.tick.ClientTickingComponent;
 import dev.sterner.book_of_the_dead.BotD;
 import dev.sterner.book_of_the_dead.client.EyeManager;
+import dev.sterner.book_of_the_dead.common.component.BotDComponents;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -23,25 +24,25 @@ public class PlayerSanityComponent implements AutoSyncedComponent, ClientTicking
 
 	@Override
 	public void clientTick() {
-		if(this.manager == null){
+		if (this.manager == null) {
 			return;
 		}
 		this.manager.tick();
 	}
 
 	public void updateSanity() {
-		if(this.manager == null || player == null){
+		if (this.manager == null || player == null) {
 			return;
 		}
 		double percent = sanity / 100d;
-		this.manager.blinkDelay = (int)(10 + 20 * 8 * percent);
+		this.manager.blinkDelay = (int) (10 + 20 * 8 * percent);
 		this.manager.blinkTopCoord = sanity >= 80 ? 4 : sanity >= 60 ? 3 : sanity >= 40 ? 2 : sanity >= 20 ? 1 : 0;
-		this.manager.moveDelayHorizontal =(int)( 10 + 20 * 3 * percent);
-		this.manager.moveDelayVertical =(int)( 10 + 20 * 3 * percent);
+		this.manager.moveDelayHorizontal = (int) (10 + 20 * 3 * percent);
+		this.manager.moveDelayVertical = (int) (10 + 20 * 3 * percent);
 		this.manager.chanceToLook = sanity < 10 ? 0.9f : sanity < 20 ? 0.5f : 0;
 
-		if(BotD.isDebugMode()){
-			System.out.println("Delay: " +this.manager.blinkDelay + " : Coord: " + this.manager.blinkTopCoord + " : ");
+		if (BotD.isDebugMode()) {
+			System.out.println("Delay: " + this.manager.blinkDelay + " : Coord: " + this.manager.blinkTopCoord + " : ");
 		}
 	}
 

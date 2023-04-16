@@ -2,7 +2,7 @@ package dev.sterner.book_of_the_dead.common.event;
 
 import dev.sterner.book_of_the_dead.common.component.BotDComponents;
 import dev.sterner.book_of_the_dead.common.component.CorpseDataComponent;
-import dev.sterner.book_of_the_dead.common.component.PlayerDataComponent;
+import dev.sterner.book_of_the_dead.common.component.player.PlayerDataComponent;
 import dev.sterner.book_of_the_dead.common.registry.BotDConfiguredFeatureRegistry;
 import dev.sterner.book_of_the_dead.common.registry.BotDPlacedFeatureRegistry;
 import dev.sterner.book_of_the_dead.common.registry.BotDStatusEffects;

@@ -3,8 +3,8 @@ package dev.sterner.book_of_the_dead.common.item;
 import dev.sterner.book_of_the_dead.client.network.BloodSplashParticlePacket;
 import dev.sterner.book_of_the_dead.common.component.BotDComponents;
 import dev.sterner.book_of_the_dead.common.component.LivingEntityDataComponent;
-import dev.sterner.book_of_the_dead.common.component.PlayerKnowledgeComponent;
-import dev.sterner.book_of_the_dead.common.component.PlayerSanityComponent;
+import dev.sterner.book_of_the_dead.common.component.player.PlayerKnowledgeComponent;
+import dev.sterner.book_of_the_dead.common.component.player.PlayerSanityComponent;
 import dev.sterner.book_of_the_dead.common.registry.BotDObjects;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -67,13 +67,11 @@ public class DebugWandItem extends Item {
 			BloodSplashParticlePacket.send(user, user.getX() + 0.5, user.getY(), user.getZ() + 0.5);
 		}
 		PlayerSanityComponent component = BotDComponents.SANITY_COMPONENT.get(user);
-		if(user.isSneaking()){
+		if (user.isSneaking()) {
 			component.increaseSanity(10);
-		}else{
+		} else {
 			component.decreaseSanity(10);
 		}
-
-
 
 
 		PlayerKnowledgeComponent c = BotDComponents.KNOWLEDGE_COMPONENT.get(user);

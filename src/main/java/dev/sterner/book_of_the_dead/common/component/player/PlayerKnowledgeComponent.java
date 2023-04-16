@@ -1,8 +1,9 @@
-package dev.sterner.book_of_the_dead.common.component;
+package dev.sterner.book_of_the_dead.common.component.player;
 
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import dev.sterner.book_of_the_dead.api.Knowledge;
 import dev.sterner.book_of_the_dead.api.KnowledgeData;
+import dev.sterner.book_of_the_dead.common.component.BotDComponents;
 import dev.sterner.book_of_the_dead.common.registry.BotDRegistries;
 import dev.sterner.book_of_the_dead.common.util.Constants;
 import net.minecraft.entity.player.PlayerEntity;
